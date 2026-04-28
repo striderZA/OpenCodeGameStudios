@@ -1,0 +1,31 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["./.opencode/plugins/ccgs-hooks.ts"],
+  "permission": {
+    "bash": {
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git branch*": "allow",
+      "git rev-parse*": "allow",
+      "ls *": "allow",
+      "dir *": "allow",
+      "python -m json.tool*": "allow",
+      "python -m pytest*": "allow",
+      "py -m pytest*": "allow",
+      "rm -rf *": "deny",
+      "git push --force*": "deny",
+      "git push -f *": "deny",
+      "git reset --hard*": "deny",
+      "git clean -f*": "deny",
+      "sudo *": "deny",
+      "chmod 777*": "deny",
+      "*>.env*": "deny",
+      "cat *.env*": "deny",
+      "type *.env*": "deny"
+    },
+    "read": {
+      "**/.env*": "deny"
+    }
+  }
+}

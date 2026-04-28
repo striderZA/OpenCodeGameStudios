@@ -1,0 +1,8 @@
+node_modules/
+*.log
+.env
+.env.*
+opencode-config-debug*.json
+opencode-debug-latest.json
+fixed-debug.json
+opencode-config-verify.json
