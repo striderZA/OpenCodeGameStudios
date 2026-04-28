@@ -1,67 +1,70 @@
 # Godot — Breaking Changes
 
-*Last verified: 2026-04-28*  
-*Applies to: Godot 4.6.2*  
-*Training cutoff: May 2025*
+Last verified: 2026-02-12
 
----
+Changes between Godot versions, focused on post-LLM-cutoff changes (4.4+).
 
-## 4.4 → 4.5
+## 4.5 → 4.6 (Jan 2026 — POST-CUTOFF, HIGH RISK)
 
-### TileMap Deprecation (Continued)
-- **TileMap** is officially deprecated in favor of **TileMapLayer**
-- TileMapLayer provides better performance and cleaner API
-- Migration: Replace TileMap nodes with TileMapLayer nodes in scenes
-- **Impact for this project**: HIGH — 2D isometric tile-based course design is central. Use TileMapLayer from day one.
+| Subsystem | Change | Details |
+|-----------|--------|---------|
+| Physics | Jolt is now the DEFAULT 3D physics engine | New projects use Jolt automatically. Existing projects keep their setting. Some HingeJoint3D properties (like `damp`) only work with GodotPhysics. |
+| Rendering | Glow processes BEFORE tonemapping | Was after tonemapping. Scenes with glow will look different. Adjust intensity/blend in WorldEnvironment. |
+| Rendering | D3D12 default on Windows | Was Vulkan. For better driver compatibility. |
+| Rendering | AgX tonemapper new controls | White point and contrast parameters added. |
+| Core | Quaternion initializes to identity | Was zero. Unlikely to affect most code but technically breaking. |
+| UI | Dual-focus system | Mouse/touch focus now separate from keyboard/gamepad focus. Visual feedback differs by input method. |
+| Animation | IK system fully restored | CCDIK, FABRIK, Jacobian IK, Spline IK, TwoBoneIK via SkeletonModifier3D nodes. |
+| Editor | New "Modern" theme default | Grayscale replaces blue-tint. Restore: Editor Settings → Interface → Theme → Style: Classic |
+| Editor | "Select Mode" keybind changed | New "Select Mode" (v key) prevents accidental transforms. Old mode renamed "Transform Mode" (q key). |
+| 2D | TileMapLayer scene tile rotation | Scene tiles can now be rotated like atlas tiles. |
+| Localization | CSV plural form support | No longer requires Gettext for plurals. Context columns added. |
+| C# | Automatic string extraction | Translation strings auto-extracted from C# code. |
+| Plugins | New EditorDock class | Specialized container for plugin docks with layout control. |
 
-### NavigationServer2D/3D Improvements
-- Navigation mesh baking improvements
-- New navigation obstacle types
-- Better agent avoidance
-- **Impact for this project**: MEDIUM — AI golfer pathfinding will use NavigationAgent2D
+## 4.4 → 4.5 (Late 2025 — POST-CUTOFF, HIGH RISK)
 
----
+| Subsystem | Change | Details |
+|-----------|--------|---------|
+| GDScript | Variadic arguments added | Functions can accept `...` arbitrary params — new language feature |
+| GDScript | `@abstract` decorator | Abstract classes and methods now enforceable |
+| GDScript | Script backtracing | Detailed call stacks available even in Release builds |
+| Rendering | Stencil buffer support | New capability for advanced visual effects |
+| Rendering | SMAA 1x antialiasing | New post-processing AA option |
+| Rendering | Shader Baker | Pre-compiles shaders — reportedly 20x faster startup on some demos |
+| Rendering | Bent normal maps, specular occlusion | New material features |
+| Accessibility | Screen reader support | Control nodes work with accessibility tools via AccessKit |
+| Editor | Live translation preview | Test GUI layouts in different languages in-editor |
+| Physics | 3D interpolation rearchitected | Moved from RenderingServer to SceneTree. API unchanged but internals differ. |
+| Animation | BoneConstraint3D | New: AimModifier3D, CopyTransformModifier3D, ConvertTransformModifier3D |
+| Resources | `duplicate_deep()` added | New explicit method for deep duplication of nested resources |
+| Navigation | Dedicated 2D navigation server | No longer a proxy to 3D navigation; smaller export for 2D games |
+| UI | FoldableContainer node | New accordion-style container for collapsible UI sections |
+| UI | Recursive Control behavior | Disable mouse/focus interactions across entire node hierarchies |
+| Platform | visionOS export support | New platform target |
+| Platform | SDL3 gamepad driver | Delegated gamepad handling to SDL library |
+| Platform | Android 16KB page support | Required for Google Play targeting Android 15+ |
 
-## 4.5 → 4.6
+## 4.3 → 4.4 (Mid 2025 — NEAR CUTOFF, VERIFY)
 
-### Rendering Changes
-- **Default glow blend mode** changed from `softlight` to `screen`
-- Default glow levels have changed
-- Glow blending now occurs before tonemapping
-- `softlight` glow blending changed to always appear as it did when using HDR 2D on Viewport
-- **Impact for this project**: LOW — pixel art 2D game unlikely to use glow heavily
+| Subsystem | Change | Details |
+|-----------|--------|---------|
+| Core | `FileAccess.store_*` return `bool` | Was `void`. Methods: `store_8`, `store_16`, `store_32`, `store_64`, `store_buffer`, `store_csv_line`, `store_double`, `store_float`, `store_half`, `store_line`, `store_pascal_string`, `store_real`, `store_string`, `store_var` |
+| Core | `OS.execute_with_pipe` | Added optional `blocking` parameter |
+| Core | `RegEx.compile/create_from_string` | Added optional `show_error` parameter |
+| Rendering | `RenderingDevice.draw_list_begin` | Many parameters removed; `breadcrumb` parameter added |
+| Rendering | Shader texture types | Parameter/return types changed from `Texture2D` to `Texture` |
+| Particles | `.restart()` method | Added optional `keep_seed` parameter (CPU/GPU 2D/3D) |
+| GUI | `RichTextLabel.push_meta` | Added optional `tooltip` parameter |
+| GUI | `GraphEdit.connect_node` | Added optional `keep_alive` parameter |
 
-### Core Changes
-- **Quaternion** now correctly initializes with identity under `Variant`
-- Previous behavior: Quaternion defaulted to zero rotation in some contexts
-- **Impact for this project**: LOW — 2D game, Quaternion rarely used
+## 4.2 → 4.3 (In Training Data — LOW RISK)
 
-### Editor Improvements
-- Add support for rotating scene tiles in TileMapLayer
-- Rename Select Mode to Transform Mode
-- Add ObjectDB Profiling Tool
-- Add drag and drop export variables
-- Add game speed controls to embedded game window
-- Add indicator to linked resources
-- **Impact for this project**: MEDIUM — improved TileMapLayer editor tools benefit course design workflow
-
----
-
-## Migration Recommendations
-
-### For New Projects (like this one)
-1. Use **TileMapLayer** instead of TileMap from the start
-2. Use **NavigationAgent2D** for AI pathfinding
-3. Avoid deprecated APIs — consult this doc before using any API not in 4.3 docs
-
-### For Code Review
-- Flag any use of `TileMap` — migrate to `TileMapLayer`
-- Flag any Quaternion initialization assumptions
-- Verify glow settings if using WorldEnvironment
-
----
-
-## Sources
-- Godot 4.6 beta 1 release notes: https://godotengine.org/article/dev-snapshot-godot-4-6-beta-1/
-- Godot 4.6.2 maintenance release: https://godotengine.org/article/maintenance-release-godot-4-6-2/
-- GitHub breaks-compat label (4.6 milestone): https://github.com/godotengine/godot/issues?q=milestone%3A4.6+is%3Amerged+label%3A%22breaks+compat%22
+| Subsystem | Change | Details |
+|-----------|--------|---------|
+| Animation | `Skeleton3D.add_bone` returns `int32` | Was `void` |
+| Animation | `bone_pose_updated` signal | Replaced by `skeleton_updated` |
+| TileMap | `TileMapLayer` replaces `TileMap` | One node per layer instead of multi-layer single node |
+| Navigation | `NavigationRegion2D` | Removed `avoidance_layers`, `constrain_avoidance` properties |
+| Editor | `EditorSceneFormatImporterFBX` | Renamed to `EditorSceneFormatImporterFBX2GLTF` |
+| Animation | AnimationMixer base class | AnimationPlayer and AnimationTree now extend AnimationMixer |

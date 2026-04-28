@@ -1,161 +1,101 @@
 # Godot — Current Best Practices
 
-*Last verified: 2026-04-28*  
-*Applies to: Godot 4.6.2*  
-*Training cutoff: May 2025*
+Last verified: 2026-02-12 | Engine: Godot 4.6
 
----
+Practices that are **new or changed** since the model's training data (~4.3).
+This supplements (not replaces) the agent's built-in knowledge.
 
-## TileMap → TileMapLayer (Critical for 2D Projects)
+## GDScript (4.5+)
 
-### Use TileMapLayer for all new 2D tile work
-```gdscript
-# OLD (deprecated) — TileMap
-extends TileMap
+- **Variadic arguments**: Functions can accept arbitrary parameter counts
+  ```gdscript
+  func log_values(prefix: String, values: Variant...) -> void:
+      for v in values:
+          print(prefix, ": ", v)
+  ```
 
-func _ready():
-    set_cell(0, Vector2i(1, 2), 0)
+- **Abstract classes and methods**: Use `@abstract` to enforce inheritance
+  ```gdscript
+  @abstract
+  class_name BaseEnemy extends CharacterBody3D
 
-# NEW — TileMapLayer
-extends TileMapLayer
+  @abstract
+  func get_attack_pattern() -> Array[Attack]:
+      pass  # Subclasses MUST override
+  ```
 
-func _ready():
-    set_cell(Vector2i(1, 2), 0)
-```
+- **Script backtracing**: Detailed call stacks available even in Release builds
 
-### Key differences
-- TileMapLayer is a single layer — use multiple TileMapLayer nodes for multiple layers
-- No layer index parameter in method calls
-- Better performance due to reduced overhead
-- Cleaner scene tree structure
+## Physics (4.6)
 
-### For this project
-- Course terrain (fairway, rough, green, bunker, water) = separate TileMapLayer nodes
-- Decoration (trees, benches, flags) = additional TileMapLayer nodes
-- This maps cleanly to the "readable beauty" pillar
+- **Jolt Physics is the default 3D engine** for new projects
+  - Better determinism and stability than GodotPhysics3D
+  - Some HingeJoint3D properties (`damp`) only work with GodotPhysics
+  - Switch: Project Settings → Physics → 3D → Physics Engine
+  - 2D physics unchanged (still Godot Physics 2D)
 
----
+## Rendering (4.6)
 
-## Navigation in 2D
+- **D3D12 is the default backend on Windows** (was Vulkan) — for better driver compatibility
+- **Glow now processes before tonemapping** with screen blending mode — existing glow setups may look different
+- **SSR overhauled** — significant improvement in realism, stability, and performance
+- **AgX tonemapper** — new white point and contrast controls
 
-### Use NavigationAgent2D for AI pathfinding
-```gdscript
-extends CharacterBody2D
+## Rendering (4.5)
 
-@onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
+- **Shader Baker**: Pre-compile shaders to eliminate startup hitching
+- **SMAA 1x**: New AA option — sharper than FXAA, cheaper than TAA
+- **Stencil buffer**: Available for advanced masking/portal effects
+- **Bent normal maps**: Directional occlusion in normal map textures
+- **Specular occlusion**: Ambient occlusion now affects reflections
 
-func _ready():
-    nav_agent.path_desired_distance = 4.0
-    nav_agent.target_desired_distance = 4.0
+## Accessibility (4.5+)
 
-func set_target_position(target: Vector2):
-    nav_agent.target_position = target
+- **Screen reader support**: Control nodes integrate with accessibility tools via AccessKit
+- **Live translation preview**: Test GUI layouts in different languages directly in-editor
+- **FoldableContainer**: New accordion-style UI node for collapsible sections
+- **Recursive Control disable**: Disable mouse/focus interactions for entire node hierarchies with a single property
 
-func _physics_process(delta: float):
-    if nav_agent.is_navigation_finished():
-        return
-    
-    var next_path_position: Vector2 = nav_agent.get_next_path_position()
-    var new_velocity: Vector2 = global_position.direction_to(next_path_position) * speed
-    velocity = new_velocity
-    move_and_slide()
-```
+## Animation (4.5+)
 
-### NavigationRegion2D for walkable areas
-- Use NavigationRegion2D to define walkable polygons
-- Bake navigation mesh from TileMapLayer or polygon data
-- Update navigation mesh when terrain changes (e.g., player places a bunker)
+- **BoneConstraint3D**: Bind bones to other bones with modifiers
+  - AimModifier3D, CopyTransformModifier3D, ConvertTransformModifier3D
 
----
+## Animation (4.6)
 
-## GDScript Improvements (4.4+)
+- **IK system fully restored**: Complete inverse kinematics reintroduced for 3D
+  - Available modifiers: CCDIK, FABRIK, Jacobian IK, Spline IK, TwoBoneIK
+  - Applied via `SkeletonModifier3D` nodes
 
-### Typed dictionaries
-```gdscript
-# Godot 4.4+ supports typed dictionaries
-var terrain_modifiers: Dictionary[String, float] = {
-    "fairway": 1.0,
-    "rough": 0.8,
-    "bunker": 0.5,
-}
-```
+## Resources (4.5+)
 
-### Better static typing enforcement
-- `@static_unbound` methods
-- Improved type inference in loops
+- **`duplicate_deep()`**: Explicit deep duplication for nested resource trees
+  - Old `duplicate()` behavior retained for backward compatibility
+  - Use `duplicate_deep()` when you need per-instance copies of nested resources
 
----
+## Navigation (4.5+)
 
-## Rendering for 2D Pixel Art
+- **Dedicated 2D navigation server**: No longer proxied through 3D NavigationServer
+  - Reduces export binary size for 2D-only games
 
-### Recommended viewport settings
-```
-Project Settings → Display → Window:
-  - Viewport Width: 640 (or 480)
-  - Viewport Height: 360 (or 270)
-  - Stretch Mode: viewport
-  - Stretch Aspect: keep
-```
+## UI (4.6)
 
-### CanvasItem texture filtering
-```gdscript
-# For pixel art textures, use nearest-neighbor filtering
-extends Sprite2D
+- **Dual-focus system**: Mouse/touch focus is now separate from keyboard/gamepad focus
+  - Visual feedback differs depending on input method
+  - Consider this when designing custom focus behavior
 
-func _ready():
-    texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-```
+## Editor Workflow (4.6)
 
-### TileMapLayer for pixel art
-- Set `rendering_quadrant_size` to match tile size (e.g., 16 or 32)
-- Use `CanvasItem.TEXTURE_FILTER_NEAREST` on TileMapLayer
+- Flexible dock drag-and-drop with blue outline preview (including bottom panel)
+- Most panels support floating windows (except Debugger)
+- New keyboard shortcuts: Alt+O (Output), Alt+S (Shader)
+- Export variable auto-generation: drag resource from FileSystem into script editor
+- Live preview in Quick Open dialog when "Live Preview" enabled
+- New "Select Mode" (v key) prevents accidental transforms; old mode renamed "Transform Mode" (q key)
 
----
+## Platform (4.5+)
 
-## Performance Best Practices
-
-### For isometric tile-based games
-1. **Use Y-sort** on TileMapLayer for proper depth ordering
-2. **Limit tile updates** — don't redraw the entire course every frame
-3. **Object pooling** for golf balls, particle effects
-4. **Navigation mesh baking** — bake once after design changes, not every frame
-
-### Memory management
-- Use `ResourceLoader.load()` with cache mode for repeated assets
-- Free nodes explicitly when removing course objects
-- Monitor with Godot's built-in Memory Profiler
-
----
-
-## Editor Workflow Improvements (4.6)
-
-### Embedded game window speed controls
-- Use while prototyping to fast-forward AI rounds
-- Access via the embedded game window toolbar
-
-### Drag-and-drop export variables
-- Drag resources directly onto export variables in the Inspector
-- Faster iteration when assigning textures, scenes, etc.
-
-### ObjectDB Profiling Tool
-- Use to detect memory leaks during long play sessions
-- Access: Debugger → Monitors → Object Counts
-
----
-
-## Version-Specific Gotchas
-
-### Quaternion (4.6)
-- If using Quaternion in 3D contexts (not applicable to this 2D project), note that `Quaternion()` now initializes to identity
-- Old code relying on zero-initialization may behave differently
-
-### Glow (4.6)
-- If using WorldEnvironment for post-processing, verify glow settings
-- Default changed from `softlight` to `screen`
-
----
-
-## Sources
-- Godot 4.6 beta 1 release notes: https://godotengine.org/article/dev-snapshot-godot-4-6-beta-1/
-- Godot 4.6.2 maintenance release: https://godotengine.org/article/maintenance-release-godot-4-6-2/
-- Godot 4.6 stable features: https://docs.godotengine.org/en/stable/about/list_of_features.html
+- **visionOS export**: First new platform since open-sourcing (windowed app mode)
+- **SDL3 gamepad driver**: Better cross-platform gamepad support
+- **Android**: Edge-to-edge display, camera feed access, 16KB page support (Android 15+)
+- **Linux**: Wayland subwindow support for multi-window capability
