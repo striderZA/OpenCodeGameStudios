@@ -357,6 +357,48 @@ export function handleDetectGaps(projectRoot: string) {
 
 const ASSETS_PATH_RE = /(?:^|\/)assets\//
 
+export function validateCommitFiles(projectRoot: string, stagedFiles: string[]): { warnings: string[]; errors: string[] } {
+  const warnings: string[] = []
+  const errors: string[] = []
+
+  for (const file of stagedFiles) {
+    const fp = path.join(projectRoot, file)
+    if (!fs.existsSync(fp)) continue
+
+    if (file.startsWith("design/gdd/") && file.endsWith(".md")) {
+      const content = fs.readFileSync(fp, "utf8")
+      for (const section of DESIGN_SECTIONS) {
+        if (!content.toLowerCase().includes(section.toLowerCase())) {
+          warnings.push(`DESIGN: ${file} missing required section: ${section}`)
+        }
+      }
+    }
+
+    if (/^assets\/data\/.*\.json$/.test(file)) {
+      if (!validateJson(fp)) {
+        errors.push(`BLOCKED: ${file} is not valid JSON. Fix before committing.`)
+      }
+    }
+
+    if (file.startsWith("src/gameplay/")) {
+      const content = fs.readFileSync(fp, "utf8")
+      if (/(damage|health|speed|rate|chance|cost|duration)\s*[:=]\s*\d+/.test(content)) {
+        warnings.push(`CODE: ${file} may contain hardcoded gameplay values. Use data files.`)
+      }
+    }
+
+    if (file.startsWith("src/")) {
+      const content = fs.readFileSync(fp, "utf8")
+      const badTodos = content.split("\n").filter((l: string) => /(TODO|FIXME|HACK)[^(]/.test(l))
+      if (badTodos.length > 0) {
+        warnings.push(`STYLE: ${file} has TODO/FIXME without owner tag. Use TODO(name) format.`)
+      }
+    }
+  }
+
+  return { warnings, errors }
+}
+
 export function validateAssetPath(projectRoot: string, filePath: string): { warnings: string[]; errors: string[] } {
   const warnings: string[] = []
   const errors: string[] = []
@@ -483,47 +525,15 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
           const staged = git(projectRoot, "diff", "--cached", "--name-only")
           if (!staged) return
 
-          const warnings: string[] = []
-          const files = staged.split("\n")
+          const result = validateCommitFiles(projectRoot, staged.split("\n"))
 
-          for (const file of files) {
-            const fp = path.join(projectRoot, file)
-            if (!fs.existsSync(fp)) continue
-
-            if (file.startsWith("design/gdd/") && file.endsWith(".md")) {
-              const content = fs.readFileSync(fp, "utf8")
-              for (const section of DESIGN_SECTIONS) {
-                if (!content.toLowerCase().includes(section.toLowerCase())) {
-                  warnings.push(`DESIGN: ${file} missing required section: ${section}`)
-                }
-              }
-            }
-
-            if (/^assets\/data\/.*\.json$/.test(file)) {
-              if (!validateJson(fp)) {
-                throw new Error(`BLOCKED: ${file} is not valid JSON. Fix before committing.`)
-              }
-            }
-
-            if (file.startsWith("src/gameplay/")) {
-              const content = fs.readFileSync(fp, "utf8")
-              if (/(damage|health|speed|rate|chance|cost|duration)\s*[:=]\s*\d+/.test(content)) {
-                warnings.push(`CODE: ${file} may contain hardcoded gameplay values. Use data files.`)
-              }
-            }
-
-            if (file.startsWith("src/")) {
-              const content = fs.readFileSync(fp, "utf8")
-              const badTodos = content.split("\n").filter((l: string) => /(TODO|FIXME|HACK)[^(]/.test(l))
-              if (badTodos.length > 0) {
-                warnings.push(`STYLE: ${file} has TODO/FIXME without owner tag. Use TODO(name) format.`)
-              }
-            }
+          if (result.errors.length > 0) {
+            throw new Error(result.errors.join("\n"))
           }
 
-          if (warnings.length > 0) {
+          if (result.warnings.length > 0) {
             logAudit(projectRoot, "=== Commit Validation Warnings ===")
-            warnings.forEach((w) => logAudit(projectRoot, w))
+            result.warnings.forEach((w) => logAudit(projectRoot, w))
           }
         }
       }
