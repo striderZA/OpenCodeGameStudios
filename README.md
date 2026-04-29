@@ -56,6 +56,7 @@ Type `/` to see all 72 commands, or try `/start` for onboarding.
 ├── docs/                        # Technical documentation
 ├── production/                  # Sprint plans, session logs
 └── ...                          # Standard game project directories
+```
 
 ## Hooks Plugin
 
@@ -77,4 +78,3 @@ All 12 bash hooks from CCGS are ported to `.opencode/plugins/ccgs-hooks.ts`:
 | `notify.sh` | Utility (`showNotification`) | — |
 
 Run all tests: `node .opencode/plugins/tests/test-<name>.mjs`
-```
