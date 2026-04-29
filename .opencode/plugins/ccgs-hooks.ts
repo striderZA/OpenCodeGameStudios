@@ -429,6 +429,113 @@ export function validateAssetPath(projectRoot: string, filePath: string): { warn
   return { warnings, errors }
 }
 
+function runGit(cwd: string, cmd: string): string {
+  try {
+    return execSync(cmd, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] }).trim()
+  } catch {
+    return ""
+  }
+}
+
+export function buildCompactionContext(projectRoot: string): string {
+  const lines: string[] = []
+  const push = (s: string) => lines.push(s)
+
+  push("=== SESSION STATE BEFORE COMPACTION ===")
+  push(`Timestamp: ${new Date().toISOString()}`)
+
+  const activeState = path.join(projectRoot, "production", "session-state", "active.md")
+  if (fs.existsSync(activeState)) {
+    const content = fs.readFileSync(activeState, "utf8")
+    const contentLines = content.split("\n")
+    push("")
+    push("## Active Session State (from production/session-state/active.md)")
+    if (contentLines.length > 100) {
+      push(contentLines.slice(0, 100).join("\n"))
+      push(`... (truncated — ${contentLines.length} total lines, showing first 100)`)
+    } else {
+      push(content)
+    }
+  } else {
+    push("")
+    push("## No active session state file found")
+    push("Consider maintaining production/session-state/active.md for better recovery.")
+  }
+
+  // Git working tree changes
+  push("")
+  push("## Files Modified (git working tree)")
+  const hasGit = isGitRepo(projectRoot)
+  if (hasGit) {
+    const changed = runGit(projectRoot, "git diff --name-only")
+    const staged = runGit(projectRoot, "git diff --staged --name-only")
+    const untracked = runGit(projectRoot, "git ls-files --others --exclude-standard")
+
+    let anyChanges = false
+    if (changed) {
+      anyChanges = true
+      push("Unstaged changes:")
+      changed.split("\n").forEach((f) => push(`  - ${f}`))
+    }
+    if (staged) {
+      anyChanges = true
+      push("Staged changes:")
+      staged.split("\n").forEach((f) => push(`  - ${f}`))
+    }
+    if (untracked) {
+      anyChanges = true
+      push("New untracked files:")
+      untracked.split("\n").forEach((f) => push(`  - ${f}`))
+    }
+    if (!anyChanges) {
+      push("  (no uncommitted changes)")
+    }
+  } else {
+    push("  (not a git repository)")
+  }
+
+  // WIP markers in design docs
+  push("")
+  push("## Design Docs — Work In Progress")
+  const gddDir = path.join(projectRoot, "design", "gdd")
+  let wipFound = false
+  if (fs.existsSync(gddDir)) {
+    const designFiles = findFilesRecursive(gddDir, (name) => name.endsWith(".md"))
+    for (const fp of designFiles) {
+      try {
+        const content = fs.readFileSync(fp, "utf8")
+        const wipLines = content.split("\n").filter((l) => /TODO|WIP|PLACEHOLDER|\[TO BE|\[TBD\]/.test(l))
+        if (wipLines.length > 0) {
+          wipFound = true
+          const rel = normalizePath(path.relative(projectRoot, fp))
+          push(`  ${rel}:`)
+          wipLines.forEach((l) => push(`    ${l}`))
+        }
+      } catch { /* skip */ }
+    }
+  }
+  if (!wipFound) {
+    push("  (no WIP markers found in design docs)")
+  }
+
+  push("")
+  push("## Recovery Instructions")
+  push("After compaction, read production/session-state/active.md to recover full working context.")
+  push("Then read any files listed above that are being actively worked on.")
+  push("=== END SESSION STATE ===")
+
+  return lines.join("\n")
+}
+
+function logCompactionEvent(projectRoot: string) {
+  try {
+    const logDir = path.join(projectRoot, "production", "session-logs")
+    if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true })
+    const timestamp = new Date().toISOString()
+    fs.appendFileSync(path.join(logDir, "compaction-log.txt"), `Context compaction occurred at ${timestamp}.\n`)
+  } catch { /* ignore */ }
+}
+
 export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktree }) => {
   const projectRoot = getProjectRoot(directory, worktree)
   console.log(`[CCGS Plugin] Loaded. Project root: ${projectRoot}`)
@@ -455,51 +562,9 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
     // PRE-COMPACT (replaces pre-compact.sh)
     // ================================================================
     "experimental.session.compacting": async (input, output) => {
-      const extraContext: string[] = []
-      extraContext.push("=== SESSION STATE BEFORE COMPACTION ===")
-      extraContext.push(`Timestamp: ${new Date().toISOString()}`)
-
-      const activeState = path.join(projectRoot, "production", "session-state", "active.md")
-      if (fs.existsSync(activeState)) {
-        const content = fs.readFileSync(activeState, "utf8")
-        const lines = content.split("\n")
-        extraContext.push(`## Active Session State`)
-        if (lines.length > 100) {
-          extraContext.push(...lines.slice(0, 100))
-          extraContext.push(`... (truncated — ${lines.length} total lines)`)
-        } else {
-          extraContext.push(content)
-        }
-      } else {
-        extraContext.push("No active session state file found.")
-      }
-
-      extraContext.push(`## Files with WIP markers`)
-      let wipFound = false
-      const srcDir = path.join(projectRoot, "src")
-      if (fs.existsSync(srcDir)) {
-        const allFiles = fs.readdirSync(srcDir, { recursive: true }).filter((f: string) =>
-          [".gd", ".cs", ".cpp", ".c", ".h", ".hpp", ".rs", ".py", ".js", ".ts"].some((e) => String(f).endsWith(e))
-        ) as string[]
-        for (const file of allFiles) {
-          const fp = path.join(srcDir, file)
-          if (!fs.existsSync(fp)) continue
-          const content = fs.readFileSync(fp, "utf8")
-          const wipLines = content.split("\n").filter((l: string) => /TODO|WIP|PLACEHOLDER|\[TO BE|\[TBD\]/.test(l))
-          if (wipLines.length > 0) {
-            wipFound = true
-            extraContext.push(`  ${file}:`)
-            wipLines.forEach((l: string) => extraContext.push(`    ${l}`))
-          }
-        }
-      }
-      if (!wipFound) extraContext.push("  (no WIP markers found)")
-
-      extraContext.push("## Recovery Instructions")
-      extraContext.push("After compaction, read production/session-state/active.md to recover full working context.")
-      extraContext.push("=== END SESSION STATE ===")
-
-      output.context.push(extraContext.join("\n"))
+      const context = buildCompactionContext(projectRoot)
+      logCompactionEvent(projectRoot)
+      output.context.push(context)
     },
 
     // ================================================================
