@@ -536,6 +536,24 @@ function logCompactionEvent(projectRoot: string) {
   } catch { /* ignore */ }
 }
 
+export function handlePostCompact(projectRoot: string) {
+  console.log("=== Context Restored After Compaction ===")
+  const active = path.join(projectRoot, "production", "session-state", "active.md")
+  if (fs.existsSync(active)) {
+    let size = "?"
+    try {
+      size = String(fs.readFileSync(active, "utf8").split("\n").length)
+    } catch { /* ignore */ }
+    console.log(`Session state file exists: production/session-state/active.md (${size} lines)`)
+    console.log("IMPORTANT: Read this file now to restore your working context.")
+    console.log("It contains: current task, decisions made, files in progress, open questions.")
+  } else {
+    console.log("No session state file found at production/session-state/active.md")
+    console.log("If you were mid-task, check production/session-logs/ for the last session audit.")
+  }
+  console.log("=========================================")
+}
+
 export function detectPushToProtected(cmd: string, currentBranch: string): string {
   for (const b of PROTECTED_BRANCHES) {
     if (currentBranch === b || new RegExp(`\\s${b}(\\s|$)`).test(cmd)) {
@@ -574,6 +592,13 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
       const context = buildCompactionContext(projectRoot)
       logCompactionEvent(projectRoot)
       output.context.push(context)
+    },
+
+    // ================================================================
+    // POST-COMPACT (replaces post-compact.sh)
+    // ================================================================
+    "experimental.compaction.autocontinue": async (input, output) => {
+      handlePostCompact(projectRoot)
     },
 
     // ================================================================
