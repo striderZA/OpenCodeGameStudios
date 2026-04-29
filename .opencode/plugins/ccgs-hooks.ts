@@ -247,6 +247,18 @@ function getSubdirNames(root: string): string[] {
     .map((d) => d.name)
 }
 
+export function handleLogAgentStop(projectRoot: string, agentType: string) {
+  const timestamp = sessionTimestamp()
+  const dir = path.join(projectRoot, "production", "session-logs")
+  if (!fs.existsSync(dir)) {
+    try { fs.mkdirSync(dir, { recursive: true }) } catch { return }
+  }
+  const name = agentType || "unknown"
+  try {
+    fs.appendFileSync(path.join(dir, "agent-audit.log"), `${timestamp} | Agent completed: ${name}\n`)
+  } catch { /* ignore */ }
+}
+
 export function handleLogAgent(projectRoot: string, agentType: string) {
   const timestamp = sessionTimestamp()
   const dir = path.join(projectRoot, "production", "session-logs")
@@ -554,6 +566,25 @@ export function handlePostCompact(projectRoot: string) {
   console.log("=========================================")
 }
 
+export function showNotification(message: string) {
+  const text = (message || "Claude Code needs your attention").slice(0, 200)
+  try {
+    execSync(
+      `powershell.exe -NonInteractive -WindowStyle Hidden -Command "` +
+      `Add-Type -AssemblyName System.Windows.Forms; ` +
+      `$n = New-Object System.Windows.Forms.NotifyIcon; ` +
+      `$n.Icon = [System.Drawing.SystemIcons]::Information; ` +
+      `$n.BalloonTipTitle = 'Claude Code'; ` +
+      `$n.BalloonTipText = '${text.replace(/'/g, "''")}'; ` +
+      `$n.Visible = $true; ` +
+      `$n.ShowBalloonTip(5000); ` +
+      `Start-Sleep -Seconds 6; ` +
+      `$n.Dispose()"`,
+      { stdio: "ignore", timeout: 10000 }
+    )
+  } catch { /* ignore */ }
+}
+
 export function detectPushToProtected(cmd: string, currentBranch: string): string {
   for (const b of PROTECTED_BRANCHES) {
     if (currentBranch === b || new RegExp(`\\s${b}(\\s|$)`).test(cmd)) {
@@ -677,6 +708,17 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
         logAudit(projectRoot, "=== Asset Validation: ERRORS (Blocking) ===")
         assetResult.errors.forEach((e) => logAudit(projectRoot, e))
         throw new Error("Asset validation failed. Fix errors before proceeding.")
+      }
+
+      // --- log-agent-stop: track subagent completion ---
+      if (input.tool === "task") {
+        const agentType =
+          (output.args?.subagent_type as string) ||
+          (output.args?.subagentType as string) ||
+          (output.args?.agent_type as string) ||
+          (output.args?.agentType as string) ||
+          ""
+        handleLogAgentStop(projectRoot, agentType)
       }
 
       // --- validate-skill-change: advise test after skill edit ---
