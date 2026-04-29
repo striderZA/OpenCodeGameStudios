@@ -66,7 +66,35 @@ function validateJson(filePath: string): boolean {
   }
 }
 
-function handleSessionCreated(projectRoot: string) {
+function findFilesRecursive(root: string, predicate: (name: string, filePath: string) => boolean): string[] {
+  const results: string[] = []
+  try {
+    const entries = fs.readdirSync(root, { withFileTypes: true })
+    for (const entry of entries) {
+      const fullPath = path.join(root, entry.name)
+      if (entry.isDirectory()) {
+        results.push(...findFilesRecursive(fullPath, predicate))
+      } else if (entry.isFile() && predicate(entry.name, fullPath)) {
+        results.push(fullPath)
+      }
+    }
+  } catch { /* permission denied, skip */ }
+  return results
+}
+
+function getFilesByMtime(dir: string, filter: (name: string) => boolean): string[] {
+  if (!fs.existsSync(dir)) return []
+  return fs.readdirSync(dir)
+    .filter(filter)
+    .map((f) => path.join(dir, f))
+    .sort((a, b) => {
+      try {
+        return fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs
+      } catch { return 0 }
+    })
+}
+
+export function handleSessionCreated(projectRoot: string) {
   console.log("=== Claude Code Game Studios — Session Context ===")
   logAudit(projectRoot, "session.created fired")
 
@@ -85,29 +113,27 @@ function handleSessionCreated(projectRoot: string) {
     }
   }
 
-  const sprintDir = path.join(projectRoot, "production", "sprints")
-  if (fs.existsSync(sprintDir)) {
-    const sprints = fs.readdirSync(sprintDir).filter((f: string) => f.startsWith("sprint-") && f.endsWith(".md"))
-    if (sprints.length > 0) {
-      const latest = sprints.sort().reverse()[0]
-      console.log(`Active sprint: ${latest.replace(".md", "")}`)
-    }
+  const sprintFiles = getFilesByMtime(
+    path.join(projectRoot, "production", "sprints"),
+    (f) => /^sprint-.*\.md$/.test(f)
+  )
+  if (sprintFiles.length > 0) {
+    console.log("")
+    console.log(`Active sprint: ${path.basename(sprintFiles[0], ".md")}`)
   }
 
-  const milestoneDir = path.join(projectRoot, "production", "milestones")
-  if (fs.existsSync(milestoneDir)) {
-    const milestones = fs.readdirSync(milestoneDir).filter((f: string) => f.endsWith(".md"))
-    if (milestones.length > 0) {
-      const latest = milestones.sort().reverse()[0]
-      console.log(`Active milestone: ${latest.replace(".md", "")}`)
-    }
+  const milestoneFiles = getFilesByMtime(
+    path.join(projectRoot, "production", "milestones"),
+    (f) => f.endsWith(".md")
+  )
+  if (milestoneFiles.length > 0) {
+    console.log(`Active milestone: ${path.basename(milestoneFiles[0], ".md")}`)
   }
 
   let bugCount = 0
   for (const dir of [path.join(projectRoot, "tests", "playtest"), path.join(projectRoot, "production")]) {
     if (fs.existsSync(dir)) {
-      const bugs = fs.readdirSync(dir).filter((f: string) => f.startsWith("BUG-") && f.endsWith(".md"))
-      bugCount += bugs.length
+      bugCount += findFilesRecursive(dir, (name) => /^BUG-.*\.md$/.test(name)).length
     }
   }
   if (bugCount > 0) {
@@ -115,16 +141,21 @@ function handleSessionCreated(projectRoot: string) {
   }
 
   const srcDir = path.join(projectRoot, "src")
-  if (hasGit && fs.existsSync(srcDir)) {
-    try {
-      const todoOut = execSync('git grep -r "TODO" src/', { encoding: "utf8", cwd: projectRoot, stdio: ["pipe", "pipe", "ignore"] }).trim()
-      const fixmeOut = execSync('git grep -r "FIXME" src/', { encoding: "utf8", cwd: projectRoot, stdio: ["pipe", "pipe", "ignore"] }).trim()
-      const todoCount = todoOut ? todoOut.split("\n").length : 0
-      const fixmeCount = fixmeOut ? fixmeOut.split("\n").length : 0
-      if (todoCount > 0 || fixmeCount > 0) {
-        console.log(`Code health: ${todoCount} TODOs, ${fixmeCount} FIXMEs in src/`)
-      }
-    } catch { /* ignore */ }
+  if (fs.existsSync(srcDir)) {
+    let todoCount = 0
+    let fixmeCount = 0
+    const srcFiles = findFilesRecursive(srcDir, () => true)
+    for (const fp of srcFiles) {
+      try {
+        const content = fs.readFileSync(fp, "utf8")
+        todoCount += (content.match(/TODO/g) || []).length
+        fixmeCount += (content.match(/FIXME/g) || []).length
+      } catch { /* skip binary/unreadable */ }
+    }
+    if (todoCount > 0 || fixmeCount > 0) {
+      console.log("")
+      console.log(`Code health: ${todoCount} TODOs, ${fixmeCount} FIXMEs in src/`)
+    }
   }
 
   const activeState = path.join(projectRoot, "production", "session-state", "active.md")
@@ -135,8 +166,9 @@ function handleSessionCreated(projectRoot: string) {
     console.log("Read this file to recover context and continue where you left off.")
     console.log("")
     console.log("Quick summary:")
-    const lines = fs.readFileSync(activeState, "utf8").split("\n")
-    lines.slice(0, 20).forEach((l: string) => console.log(l))
+    const content = fs.readFileSync(activeState, "utf8")
+    const lines = content.split("\n")
+    console.log(lines.slice(0, 20).join("\n"))
     const totalLines = lines.length
     if (totalLines > 20) {
       console.log(`  ... (${totalLines} total lines — read the full file to continue)`)
