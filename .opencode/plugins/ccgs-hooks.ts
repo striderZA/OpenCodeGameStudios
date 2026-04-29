@@ -247,6 +247,18 @@ function getSubdirNames(root: string): string[] {
     .map((d) => d.name)
 }
 
+export function handleLogAgent(projectRoot: string, agentType: string) {
+  const timestamp = sessionTimestamp()
+  const dir = path.join(projectRoot, "production", "session-logs")
+  if (!fs.existsSync(dir)) {
+    try { fs.mkdirSync(dir, { recursive: true }) } catch { return }
+  }
+  const name = agentType || "unknown"
+  try {
+    fs.appendFileSync(path.join(dir, "agent-audit.log"), `${timestamp} | Agent invoked: ${name}\n`)
+  } catch { /* ignore */ }
+}
+
 export function handleDetectGaps(projectRoot: string) {
   console.log("=== Checking for Documentation Gaps ===")
 
@@ -489,6 +501,17 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
             warnings.forEach((w) => logAudit(projectRoot, w))
           }
         }
+      }
+
+      // --- log-agent: track subagent invocations ---
+      if (input.tool === "task") {
+        const agentType =
+          (output.args?.subagent_type as string) ||
+          (output.args?.subagentType as string) ||
+          (output.args?.agent_type as string) ||
+          (output.args?.agentType as string) ||
+          ""
+        handleLogAgent(projectRoot, agentType)
       }
     },
 
