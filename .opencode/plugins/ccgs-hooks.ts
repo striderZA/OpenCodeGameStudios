@@ -369,7 +369,7 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
       }
 
       // --- validate-skill-change: advise test after skill edit ---
-      if (filePath.includes("/.claude/skills/") || filePath.includes("/.opencode/commands/")) {
+      if (filePath.includes("/.opencode/commands/") || filePath.includes("/.opencode/commands/")) {
         const match = filePath.match(/\/(skills|commands)\/([^/]+)/)
         if (match) {
           const skillName = match[2]

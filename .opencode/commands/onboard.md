@@ -13,7 +13,7 @@ model: deepseek-v4-flash
 
 Read CLAUDE.md for project overview and standards.
 
-Read the relevant agent definition from `.claude/agents/` if a specific role is specified.
+Read the relevant agent definition from `.opencode/agents/` if a specific role is specified.
 
 ---
 

@@ -10,7 +10,7 @@ description: "Validate skill files for structural compliance and behavioral corr
 
 # Skill Test
 
-Validates `.claude/skills/*/SKILL.md` files for structural compliance and
+Validates `.opencode/commands/*/SKILL.md` files for structural compliance and
 behavioral correctness. No external dependencies — runs entirely within the
 existing skill/hook/template architecture.
 
@@ -30,7 +30,7 @@ existing skill/hook/template architecture.
 Determine mode from the first argument:
 
 - `static [name]` → run 7 structural checks on one skill
-- `static all` → run 7 structural checks on all skills (Glob `.claude/skills/*/SKILL.md`)
+- `static all` → run 7 structural checks on all skills (Glob `.opencode/commands/*/SKILL.md`)
 - `spec [name]` → read skill + test spec, evaluate assertions
 - `category [name]` → run category-specific rubric from `CCGS Skill Testing Framework/quality-rubric.md`
 - `category all` → run category rubric for every skill that has a `category:` in catalog
@@ -140,12 +140,12 @@ Aggregate Verdict: N WARNINGS / N FAILURES
 
 ### Step 1 — Locate Files
 
-Find skill at `.claude/skills/[name]/SKILL.md`.
+Find skill at `.opencode/commands/[name]/SKILL.md`.
 Look up the spec path from `CCGS Skill Testing Framework/catalog.yaml` — use the
 `spec:` field for the matching skill entry.
 
 If either is missing:
-- Missing skill: "Skill '[name]' not found in `.claude/skills/`."
+- Missing skill: "Skill '[name]' not found in `.opencode/commands/`."
 - Missing spec path in catalog: "No spec path set for '[name]' in catalog.yaml."
 - Spec file not found at path: "Spec file missing at [path]. Run `/skill-test audit`
   to see coverage gaps."
@@ -221,7 +221,7 @@ If yes:
 
 ### Step 1 — Locate Skill and Category
 
-Find skill at `.claude/skills/[name]/SKILL.md`.
+Find skill at `.opencode/commands/[name]/SKILL.md`.
 Look up `category:` field in `CCGS Skill Testing Framework/catalog.yaml`.
 
 If skill not found: "Skill '[name]' not found."
@@ -282,7 +282,7 @@ yet (first-run state).
 
 ### Step 2 — Enumerate All Skills and Agents
 
-Glob `.claude/skills/*/SKILL.md` to get the complete list of skills.
+Glob `.opencode/commands/*/SKILL.md` to get the complete list of skills.
 Extract skill name from each path (directory name).
 
 Also read the `agents:` section from `CCGS Skill Testing Framework/catalog.yaml` to get the

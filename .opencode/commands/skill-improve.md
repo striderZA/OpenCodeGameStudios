@@ -24,7 +24,7 @@ Usage: /skill-improve [skill-name]
 Example: /skill-improve tech-debt
 ```
 
-Verify `.claude/skills/[name]/SKILL.md` exists. If not, stop with:
+Verify `.opencode/commands/[name]/SKILL.md` exists. If not, stop with:
 "Skill '[name]' not found."
 
 ---
@@ -69,7 +69,7 @@ If BOTH static and category baselines are 0 FAILs and 0 WARNs, stop:
 
 ## Phase 3: Diagnose
 
-Read the full skill file at `.claude/skills/[name]/SKILL.md`.
+Read the full skill file at `.opencode/commands/[name]/SKILL.md`.
 
 For each failing or warning **static** check, identify the exact gap:
 
@@ -99,7 +99,7 @@ Write a targeted fix for each failure and warning. Show the proposed changes
 as clearly marked before/after blocks. Only change what is failing — do not
 rewrite sections that are passing.
 
-Ask: "May I write this improved version to `.claude/skills/[name]/SKILL.md`?"
+Ask: "May I write this improved version to `.opencode/commands/[name]/SKILL.md`?"
 
 If the user says no, stop here.
 
@@ -109,7 +109,7 @@ If the user says no, stop here.
 
 Record the current content of the skill file (for revert if needed).
 
-Write the improved skill to `.claude/skills/[name]/SKILL.md`.
+Write the improved skill to `.opencode/commands/[name]/SKILL.md`.
 
 Re-run `/skill-test static [name]` and record the new static score.
 If a category was assigned, also re-run `/skill-test category [name]` and record the new category score.
@@ -134,8 +134,8 @@ Show a summary of what was fixed in each dimension.
 **If combined score is the same or worse:**
 Report: "Combined score did not improve."
 Show what changed and why it may not have helped.
-Ask: "May I revert `.claude/skills/[name]/SKILL.md` using git checkout?"
-If yes: run `git checkout -- .claude/skills/[name]/SKILL.md`
+Ask: "May I revert `.opencode/commands/[name]/SKILL.md` using git checkout?"
+If yes: run `git checkout -- .opencode/commands/[name]/SKILL.md`
 
 ---
 
