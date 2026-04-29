@@ -399,6 +399,13 @@ export function validateCommitFiles(projectRoot: string, stagedFiles: string[]):
   return { warnings, errors }
 }
 
+const SKILL_CHANGE_RE = /\.opencode\/(?:skills|commands)\/([^/]+)/
+
+export function detectSkillChange(filePath: string): string | null {
+  const match = filePath.match(SKILL_CHANGE_RE)
+  return match ? match[1] : null
+}
+
 export function validateAssetPath(projectRoot: string, filePath: string): { warnings: string[]; errors: string[] } {
   const warnings: string[] = []
   const errors: string[] = []
@@ -580,13 +587,10 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
       }
 
       // --- validate-skill-change: advise test after skill edit ---
-      if (filePath.includes("/.opencode/commands/") || filePath.includes("/.opencode/commands/")) {
-        const match = filePath.match(/\/(skills|commands)\/([^/]+)/)
-        if (match) {
-          const skillName = match[2]
-          logAudit(projectRoot, `=== Skill Modified: ${skillName} ===`)
-          logAudit(projectRoot, `Run /skill-test static ${skillName} to validate structural compliance.`)
-        }
+      const skillChange = detectSkillChange(filePath)
+      if (skillChange) {
+        logAudit(projectRoot, `=== Skill Modified: ${skillChange} ===`)
+        logAudit(projectRoot, `Run /skill-test static ${skillChange} to validate structural compliance.`)
       }
     },
   }
