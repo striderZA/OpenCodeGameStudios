@@ -536,6 +536,15 @@ function logCompactionEvent(projectRoot: string) {
   } catch { /* ignore */ }
 }
 
+export function detectPushToProtected(cmd: string, currentBranch: string): string {
+  for (const b of PROTECTED_BRANCHES) {
+    if (currentBranch === b || new RegExp(`\\s${b}(\\s|$)`).test(cmd)) {
+      return b
+    }
+  }
+  return ""
+}
+
 export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktree }) => {
   const projectRoot = getProjectRoot(directory, worktree)
   console.log(`[CCGS Plugin] Loaded. Project root: ${projectRoot}`)
@@ -576,16 +585,10 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
       if (isGitRepo(projectRoot) && input.tool === "bash" && output.args?.command) {
         const cmd = output.args.command as string
         if (/^git\s+push/.test(cmd)) {
-          const currentBranch = git(projectRoot, "rev-parse", "--abbrev-ref", "HEAD")
-          let matched = ""
-          for (const b of PROTECTED_BRANCHES) {
-            if (currentBranch === b || new RegExp(`\\s${b}(\\s|$)`).test(cmd)) {
-              matched = b
-              break
-            }
-          }
+          const matched = detectPushToProtected(cmd, git(projectRoot, "rev-parse", "--abbrev-ref", "HEAD"))
           if (matched) {
-            logAudit(projectRoot, `WARN: Push to protected branch '${matched}' detected.`)
+            logAudit(projectRoot, `Push to protected branch '${matched}' detected.`)
+            logAudit(projectRoot, "Reminder: Ensure build passes, unit tests pass, and no S1/S2 bugs exist.")
           }
         }
       }
