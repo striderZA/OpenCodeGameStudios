@@ -355,6 +355,31 @@ export function handleDetectGaps(projectRoot: string) {
   console.log("===================================")
 }
 
+const ASSETS_PATH_RE = /(?:^|\/)assets\//
+
+export function validateAssetPath(projectRoot: string, filePath: string): { warnings: string[]; errors: string[] } {
+  const warnings: string[] = []
+  const errors: string[] = []
+
+  if (!ASSETS_PATH_RE.test(filePath)) {
+    return { warnings, errors }
+  }
+
+  const filename = path.basename(filePath)
+
+  if (/[A-Z\s-]/.test(filename)) {
+    warnings.push(`NAMING: ${filePath} must be lowercase with underscores (got: ${filename})`)
+  }
+
+  if (/\/assets\/data\/.*\.json$/.test(filePath)) {
+    if (fs.existsSync(filePath) && !validateJson(filePath)) {
+      errors.push(`FORMAT: ${filePath} is not valid JSON`)
+    }
+  }
+
+  return { warnings, errors }
+}
+
 export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktree }) => {
   const projectRoot = getProjectRoot(directory, worktree)
   console.log(`[CCGS Plugin] Loaded. Project root: ${projectRoot}`)
@@ -532,31 +557,16 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
       if (!filePath) return
 
       // --- validate-assets: check assets/ files ---
-      if (filePath.includes("/assets/")) {
-        const filename = path.basename(filePath)
-        const warnings: string[] = []
-        const errors: string[] = []
-
-        if (/[A-Z\s-]/.test(filename)) {
-          warnings.push(`NAMING: ${filePath} must be lowercase with underscores (got: ${filename})`)
-        }
-
-        if (/\/assets\/data\/.*\.json$/.test(filePath)) {
-          if (fs.existsSync(filePath) && !validateJson(filePath)) {
-            errors.push(`FORMAT: ${filePath} is not valid JSON`)
-          }
-        }
-
-        if (warnings.length > 0) {
-          logAudit(projectRoot, "=== Asset Validation: Warnings ===")
-          warnings.forEach((w) => logAudit(projectRoot, w))
-          logAudit(projectRoot, "(Warnings are advisory. Fix before final commit.)")
-        }
-        if (errors.length > 0) {
-          logAudit(projectRoot, "=== Asset Validation: ERRORS (Blocking) ===")
-          errors.forEach((e) => logAudit(projectRoot, e))
-          throw new Error("Asset validation failed. Fix errors before proceeding.")
-        }
+      const assetResult = validateAssetPath(projectRoot, filePath)
+      if (assetResult.warnings.length > 0) {
+        logAudit(projectRoot, "=== Asset Validation: Warnings ===")
+        assetResult.warnings.forEach((w) => logAudit(projectRoot, w))
+        logAudit(projectRoot, "(Warnings are advisory. Fix before final commit.)")
+      }
+      if (assetResult.errors.length > 0) {
+        logAudit(projectRoot, "=== Asset Validation: ERRORS (Blocking) ===")
+        assetResult.errors.forEach((e) => logAudit(projectRoot, e))
+        throw new Error("Asset validation failed. Fix errors before proceeding.")
       }
 
       // --- validate-skill-change: advise test after skill edit ---
