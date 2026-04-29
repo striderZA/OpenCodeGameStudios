@@ -9,6 +9,7 @@ import * as path from "path"
  */
 
 const PROTECTED_BRANCHES = ["main", "master", "develop"]
+const SOURCE_EXTENSIONS = [".gd", ".cs", ".cpp", ".c", ".h", ".hpp", ".rs", ".py", ".js", ".ts"]
 const DESIGN_SECTIONS = [
   "Overview",
   "Player Fantasy",
@@ -215,6 +216,133 @@ export function handleSessionIdle(projectRoot: string) {
   }
 }
 
+function isEngineConfigured(projectRoot: string): boolean {
+  const agentsMd = path.join(projectRoot, "AGENTS.md")
+  if (!fs.existsSync(agentsMd)) return false
+  try {
+    const content = fs.readFileSync(agentsMd, "utf8")
+    const engineLine = content.split("\n").find((l) => /^\s*-\s*\*\*Engine\*\*:/.test(l))
+    return !engineLine?.includes("[CHOOSE:")
+  } catch {
+    return false
+  }
+}
+
+function countSourceFiles(projectRoot: string): number {
+  const srcDir = path.join(projectRoot, "src")
+  if (!fs.existsSync(srcDir)) return 0
+  return findFilesRecursive(srcDir, (name) => SOURCE_EXTENSIONS.some((ext) => name.endsWith(ext))).length
+}
+
+function countDesignDocs(projectRoot: string): number {
+  const gddDir = path.join(projectRoot, "design", "gdd")
+  if (!fs.existsSync(gddDir)) return 0
+  return findFilesRecursive(gddDir, (name) => name.endsWith(".md")).length
+}
+
+function getSubdirNames(root: string): string[] {
+  if (!fs.existsSync(root)) return []
+  return fs.readdirSync(root, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+}
+
+export function handleDetectGaps(projectRoot: string) {
+  console.log("=== Checking for Documentation Gaps ===")
+
+  // --- Check 0: Fresh project ---
+  const engineConfigured = isEngineConfigured(projectRoot)
+  const hasGameConcept = fs.existsSync(path.join(projectRoot, "design", "gdd", "game-concept.md"))
+  const srcCount = countSourceFiles(projectRoot)
+  const isFresh = !engineConfigured && !hasGameConcept && srcCount === 0
+
+  if (isFresh) {
+    console.log("")
+    console.log("NEW PROJECT: No engine configured, no game concept, no source code.")
+    console.log("   This looks like a fresh start! Run: /start")
+    console.log("")
+    console.log("To get a comprehensive project analysis, run: /project-stage-detect")
+    console.log("===================================")
+    return
+  }
+
+  // --- Check 1: Code without design docs ---
+  const designCount = countDesignDocs(projectRoot)
+  if (srcCount > 50 && designCount < 5) {
+    console.log(`GAP: Substantial codebase (${srcCount} source files) but sparse design docs (${designCount} files)`)
+    console.log("    Suggested action: /reverse-document design src/[system]")
+    console.log("    Or run: /project-stage-detect to get full analysis")
+  }
+
+  // --- Check 2: Undocumented prototypes ---
+  const protoDir = path.join(projectRoot, "prototypes")
+  if (fs.existsSync(protoDir)) {
+    const undocumented: string[] = []
+    for (const dir of getSubdirNames(protoDir)) {
+      const readme = path.join(protoDir, dir, "README.md")
+      const concept = path.join(protoDir, dir, "CONCEPT.md")
+      if (!fs.existsSync(readme) && !fs.existsSync(concept)) {
+        undocumented.push(dir)
+      }
+    }
+    if (undocumented.length > 0) {
+      console.log(`GAP: ${undocumented.length} undocumented prototype(s) found:`)
+      for (const proto of undocumented) {
+        console.log(`    - prototypes/${proto}/ (no README or CONCEPT doc)`)
+      }
+      console.log("    Suggested action: /reverse-document concept prototypes/[name]")
+    }
+  }
+
+  // --- Check 3: Core systems without architecture docs ---
+  const coreDir = path.join(projectRoot, "src", "core")
+  const engineDir = path.join(projectRoot, "src", "engine")
+  const archDir = path.join(projectRoot, "docs", "architecture")
+  if (fs.existsSync(coreDir) || fs.existsSync(engineDir)) {
+    if (!fs.existsSync(archDir)) {
+      console.log("GAP: Core engine/systems exist but no docs/architecture/ directory")
+      console.log("    Suggested action: Create docs/architecture/ and run /architecture-decision")
+    } else {
+      const adrCount = findFilesRecursive(archDir, (name) => name.endsWith(".md")).length
+      if (adrCount < 3) {
+        console.log(`GAP: Core systems exist but only ${adrCount} ADR(s) documented`)
+        console.log("    Suggested action: /reverse-document architecture src/core/[system]")
+      }
+    }
+  }
+
+  // --- Check 4: Gameplay systems without design docs ---
+  const gameplayDir = path.join(projectRoot, "src", "gameplay")
+  if (fs.existsSync(gameplayDir)) {
+    for (const system of getSubdirNames(gameplayDir)) {
+      const sysPath = path.join(gameplayDir, system)
+      const fileCount = findFilesRecursive(sysPath, () => true).length
+      if (fileCount >= 5) {
+        const doc1 = path.join(projectRoot, "design", "gdd", `${system}-system.md`)
+        const doc2 = path.join(projectRoot, "design", "gdd", `${system}.md`)
+        if (!fs.existsSync(doc1) && !fs.existsSync(doc2)) {
+          console.log(`GAP: Gameplay system 'src/gameplay/${system}/' (${fileCount} files) has no design doc`)
+          console.log(`    Expected: design/gdd/${system}-system.md or design/gdd/${system}.md`)
+          console.log(`    Suggested action: /reverse-document design src/gameplay/${system}`)
+        }
+      }
+    }
+  }
+
+  // --- Check 5: Production planning ---
+  if (srcCount > 100) {
+    if (!fs.existsSync(path.join(projectRoot, "production", "sprints")) &&
+        !fs.existsSync(path.join(projectRoot, "production", "milestones"))) {
+      console.log(`GAP: Large codebase (${srcCount} files) but no production planning found`)
+      console.log("    Suggested action: /sprint-plan or create production/ directory")
+    }
+  }
+
+  console.log("")
+  console.log("To get a comprehensive project analysis, run: /project-stage-detect")
+  console.log("===================================")
+}
+
 export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktree }) => {
   const projectRoot = getProjectRoot(directory, worktree)
   console.log(`[CCGS Plugin] Loaded. Project root: ${projectRoot}`)
@@ -228,6 +356,7 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
       try {
         if (event.type === "session.created") {
           handleSessionCreated(projectRoot)
+          handleDetectGaps(projectRoot)
         } else if (event.type === "session.idle" || event.type === "server.instance.disposed") {
           handleSessionIdle(projectRoot)
         }
