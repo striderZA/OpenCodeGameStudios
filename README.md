@@ -3,10 +3,10 @@
 > ⚡ Port of [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) to [OpenCode](https://opencode.ai)
 
 ```text
-     ╔══════════════════════════════════════╗
+     ╔════════════════════════════════════════╗
      ║    49 AGENTS · 72 COMMANDS · 12 HOOKS  ║
      ║         129 TESTS · ALL GREEN          ║
-     ╚══════════════════════════════════════╝
+     ╚════════════════════════════════════════╝
 ```
 
 ---
