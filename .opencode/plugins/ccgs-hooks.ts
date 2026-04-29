@@ -31,7 +31,8 @@ function isGitRepo(cwd: string): boolean {
 
 function git(cwd: string, ...args: string[]): string {
   try {
-    return execSync(`git ${args.join(" ")}`, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] }).trim()
+    const cmd = args.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")
+    return execSync(`git ${cmd}`, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] }).trim()
   } catch {
     return ""
   }
@@ -179,10 +180,16 @@ export function handleSessionCreated(projectRoot: string) {
   console.log("===================================")
 }
 
-function handleSessionIdle(projectRoot: string) {
+function sessionTimestamp(): string {
+  const d = new Date()
+  const pad = (n: number) => String(n).padStart(2, "0")
+  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`
+}
+
+export function handleSessionIdle(projectRoot: string) {
   logAudit(projectRoot, "Session idle/shutdown")
 
-  const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
+  const timestamp = sessionTimestamp()
   const logDir = path.join(projectRoot, "production", "session-logs")
   if (!fs.existsSync(logDir)) {
     try { fs.mkdirSync(logDir, { recursive: true }) } catch { /* ignore */ }
