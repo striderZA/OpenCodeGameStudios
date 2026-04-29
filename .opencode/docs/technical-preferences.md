@@ -1,109 +1,87 @@
 # Technical Preferences
 
-Project: The 19th Hole (cozy golf course management)  
-Engine: Godot 4.6.2  
-Language: GDScript  
-Last updated: 2026-04-28
-
----
+<!-- Populated by /setup-engine. Updated as the user makes decisions throughout development. -->
+<!-- All agents reference this file for project-specific standards and conventions. -->
 
 ## Engine & Language
 
-- **Engine**: Godot 4.6.2
-- **Language**: GDScript
-- **Build System**: SCons (engine), Godot Export Templates
-- **Asset Pipeline**: Godot Import System + custom resource pipeline
-
----
-
-## Naming Conventions
-
-### GDScript
-- **Classes**: PascalCase (e.g., `PlayerController`)
-- **Variables / functions**: snake_case (e.g., `move_speed`)
-- **Signals**: snake_case past tense (e.g., `health_changed`)
-- **Files**: snake_case matching class (e.g., `player_controller.gd`)
-- **Scenes**: PascalCase matching root node (e.g., `PlayerController.tscn`)
-- **Constants**: UPPER_SNAKE_CASE (e.g., `MAX_HEALTH`)
-
----
+- **Engine**: [TO BE CONFIGURED — run /setup-engine]
+- **Language**: [TO BE CONFIGURED]
+- **Rendering**: [TO BE CONFIGURED]
+- **Physics**: [TO BE CONFIGURED]
 
 ## Input & Platform
 
-- **Target Platforms**: PC (Steam / Epic)
-- **Input Methods**: Keyboard / Mouse
-- **Primary Input**: Keyboard / Mouse
-- **Gamepad Support**: Partial (recommended for accessibility)
-- **Touch Support**: None
-- **Platform Notes**: All UI must support keyboard navigation. No hover-only interactions.
+<!-- Written by /setup-engine. Read by /ux-design, /ux-review, /test-setup, /team-ui, and /dev-story -->
+<!-- to scope interaction specs, test helpers, and implementation to the correct input methods. -->
 
----
+- **Target Platforms**: [TO BE CONFIGURED — e.g., PC, Console, Mobile, Web]
+- **Input Methods**: [TO BE CONFIGURED — e.g., Keyboard/Mouse, Gamepad, Touch, Mixed]
+- **Primary Input**: [TO BE CONFIGURED — the dominant input for this game]
+- **Gamepad Support**: [TO BE CONFIGURED — Full / Partial / None]
+- **Touch Support**: [TO BE CONFIGURED — Full / Partial / None]
+- **Platform Notes**: [TO BE CONFIGURED — any platform-specific UX constraints]
+
+## Naming Conventions
+
+- **Classes**: [TO BE CONFIGURED]
+- **Variables**: [TO BE CONFIGURED]
+- **Signals/Events**: [TO BE CONFIGURED]
+- **Files**: [TO BE CONFIGURED]
+- **Scenes/Prefabs**: [TO BE CONFIGURED]
+- **Constants**: [TO BE CONFIGURED]
 
 ## Performance Budgets
 
-- **Target Frame Rate**: 60 fps
-- **Frame Budget**: 16.6 ms
-- **Target Hardware**: Mid-range PC (equivalent to GTX 1060 / RX 580)
-- **Draw Calls**: Budget TBD — set during architecture phase
-- **Memory Budget**: Budget TBD — set during architecture phase
-
----
+- **Target Framerate**: [TO BE CONFIGURED]
+- **Frame Budget**: [TO BE CONFIGURED]
+- **Draw Calls**: [TO BE CONFIGURED]
+- **Memory Ceiling**: [TO BE CONFIGURED]
 
 ## Testing
 
-- **Unit Testing Framework**: GUT (Godot Unit Testing)
-- **Integration Testing**: Manual + automated scene tests
-- **Performance Testing**: Custom performance monitors via Godot profiler
-- **CI/CD**: TBD — set during devops setup
-
----
+- **Framework**: [TO BE CONFIGURED]
+- **Minimum Coverage**: [TO BE CONFIGURED]
+- **Required Tests**: Balance formulas, gameplay systems, networking (if applicable)
 
 ## Forbidden Patterns
 
-- [TO BE CONFIGURED — populated during architecture phase]
+<!-- Add patterns that should never appear in this project's codebase -->
+- [None configured yet — add as architectural decisions are made]
 
----
+## Allowed Libraries / Addons
 
-## Allowed Libraries
+<!-- Add approved third-party dependencies here -->
+- [None configured yet — add as dependencies are approved]
 
-- [TO BE CONFIGURED — only add when actively integrating]
+## Architecture Decisions Log
 
-> **Guardrail**: Never add speculative dependencies. Only add a library here when it is actively being integrated, not speculatively.
-
----
+<!-- Quick reference linking to full ADRs in docs/architecture/ -->
+- [No ADRs yet — use /architecture-decision to create one]
 
 ## Engine Specialists
 
-- **Primary**: godot-specialist
-- **Language/Code Specialist**: godot-gdscript-specialist (all .gd files)
-- **Shader Specialist**: godot-shader-specialist (.gdshader files, VisualShader resources)
-- **UI Specialist**: godot-specialist (no dedicated UI specialist — primary covers all UI)
-- **Additional Specialists**: godot-gdextension-specialist (GDExtension / native C++ bindings only)
-- **Routing Notes**: Invoke primary for architecture decisions, ADR validation, and cross-cutting code review. Invoke GDScript specialist for code quality, signal architecture, static typing enforcement, and GDScript idioms. Invoke shader specialist for material design and shader code. Invoke GDExtension specialist only when native extensions are involved.
+<!-- Written by /setup-engine when engine is configured. -->
+<!-- Read by /code-review, /architecture-decision, /architecture-review, and team skills -->
+<!-- to know which specialist to spawn for engine-specific validation. -->
+
+- **Primary**: [TO BE CONFIGURED — run /setup-engine]
+- **Language/Code Specialist**: [TO BE CONFIGURED]
+- **Shader Specialist**: [TO BE CONFIGURED]
+- **UI Specialist**: [TO BE CONFIGURED]
+- **Additional Specialists**: [TO BE CONFIGURED]
+- **Routing Notes**: [TO BE CONFIGURED]
 
 ### File Extension Routing
 
+<!-- Skills use this table to select the right specialist per file type. -->
+<!-- If a row says [TO BE CONFIGURED], fall back to Primary for that file type. -->
+
 | File Extension / Type | Specialist to Spawn |
 |-----------------------|---------------------|
-| Game code (.gd files) | godot-gdscript-specialist |
-| Shader / material files (.gdshader, VisualShader) | godot-shader-specialist |
-| UI / screen files (Control nodes, CanvasLayer) | godot-specialist |
-| Scene / prefab / level files (.tscn, .tres) | godot-specialist |
-| Native extension / plugin files (.gdextension, C++) | godot-gdextension-specialist |
-| General architecture review | godot-specialist |
-
----
-
-## Version Awareness
-
-All engine specialists must:
-1. Read `docs/engine-reference/godot/VERSION.md` before suggesting code
-2. Check deprecated APIs in `docs/engine-reference/godot/deprecated-apis.md` before using older patterns
-3. Check breaking changes in `docs/engine-reference/godot/breaking-changes.md` for relevant version transitions
-4. Use WebSearch to verify uncertain APIs when working with features introduced after Godot 4.3
-
----
-
-## Engine Version Reference
-
-@docs/engine-reference/godot/VERSION.md
+| Game code (primary language) | [TO BE CONFIGURED] |
+| Shader / material files | [TO BE CONFIGURED] |
+| UI / screen files | [TO BE CONFIGURED] |
+| Scene / prefab / level files | [TO BE CONFIGURED] |
+| Native extension / plugin files | [TO BE CONFIGURED] |
+| General architecture review | Primary |
