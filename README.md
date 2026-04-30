@@ -12,6 +12,24 @@
 
 ---
 
+## 📑 Table of Contents
+
+- [💡 Motivation](#-motivation)
+- [📊 Port Status](#-port-status)
+- [🚀 Quick Start](#-quick-start)
+- [🔌 Recommended Plugins](#-recommended-plugins)
+- [🗺️ Key Mappings](#️-key-mappings)
+- [🧠 Model Mapping](#-model-mapping)
+- [🎯 Model Assignment Strategy](#-model-assignment-strategy)
+- [🔄 Customizing Models](#-customizing-models)
+- [📁 Directory Tree](#-directory-tree)
+- [🔗 Hooks Plugin](#-hooks-plugin)
+- [🏗️ Studio Hierarchy](#️-studio-hierarchy)
+- [🐛 Known Issues](#-known-issues)
+- [📄 License](#-license)
+
+---
+
 ## 💡 Motivation
 
 Claude Code's strict session and usage limits make it impractical for large-scale,
@@ -230,6 +248,12 @@ at **`.opencode/plugins/ccgs-hooks.ts`**:
 | Issue | Impact | Workaround |
 |-------|--------|------------|
 | **Subagent model resolution via `task`** — Agent `model:` frontmatter fails with `ProviderModelNotFoundError` for models that work when used directly via `opencode -m <model>`. Subagents inherit the caller's model per OpenCode docs, so the frontmatter model may only apply when the agent runs as a primary session. | Agents using `opencode-go/kimi-k2.6` and `opencode-go/deepseek-v4-flash` as subagents via `task` | Use `opencode-go/qwen3.6-plus` for subagent-heavy workflows, or start dedicated sessions with `opencode -m <model>` for director-level agents. Root cause being tracked upstream in OpenCode. |
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) — Free for any use.
 
 ---
 
