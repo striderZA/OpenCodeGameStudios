@@ -96,8 +96,9 @@ function getFilesByMtime(dir: string, filter: (name: string) => boolean): string
     })
 }
 
-export function handleSessionCreated(projectRoot: string) {
-  console.log("=== Claude Code Game Studios — Session Context ===")
+export function handleSessionCreated(projectRoot: string): string {
+  const lines: string[] = []
+  const push = (s: string) => lines.push(s)
   logAudit(projectRoot, "session.created fired")
 
   const hasGit = isGitRepo(projectRoot)
@@ -105,12 +106,12 @@ export function handleSessionCreated(projectRoot: string) {
   if (hasGit) {
     const branch = git(projectRoot, "rev-parse", "--abbrev-ref", "HEAD")
     if (branch) {
-      console.log(`Branch: ${branch}`)
-      console.log("")
-      console.log("Recent commits:")
+      push(`Branch: ${branch}`)
+      push("")
+      push("Recent commits:")
       const commits = git(projectRoot, "log", "--oneline", "-5")
       if (commits) {
-        commits.split("\n").forEach((line) => console.log(`  ${line}`))
+        commits.split("\n").forEach((line) => push(`  ${line}`))
       }
     }
   }
@@ -120,8 +121,8 @@ export function handleSessionCreated(projectRoot: string) {
     (f) => /^sprint-.*\.md$/.test(f)
   )
   if (sprintFiles.length > 0) {
-    console.log("")
-    console.log(`Active sprint: ${path.basename(sprintFiles[0], ".md")}`)
+    push("")
+    push(`Active sprint: ${path.basename(sprintFiles[0], ".md")}`)
   }
 
   const milestoneFiles = getFilesByMtime(
@@ -129,7 +130,7 @@ export function handleSessionCreated(projectRoot: string) {
     (f) => f.endsWith(".md")
   )
   if (milestoneFiles.length > 0) {
-    console.log(`Active milestone: ${path.basename(milestoneFiles[0], ".md")}`)
+    push(`Active milestone: ${path.basename(milestoneFiles[0], ".md")}`)
   }
 
   let bugCount = 0
@@ -139,7 +140,7 @@ export function handleSessionCreated(projectRoot: string) {
     }
   }
   if (bugCount > 0) {
-    console.log(`Open bugs: ${bugCount}`)
+    push(`Open bugs: ${bugCount}`)
   }
 
   const srcDir = path.join(projectRoot, "src")
@@ -155,30 +156,12 @@ export function handleSessionCreated(projectRoot: string) {
       } catch { /* skip binary/unreadable */ }
     }
     if (todoCount > 0 || fixmeCount > 0) {
-      console.log("")
-      console.log(`Code health: ${todoCount} TODOs, ${fixmeCount} FIXMEs in src/`)
+      push("")
+      push(`Code health: ${todoCount} TODOs, ${fixmeCount} FIXMEs in src/`)
     }
   }
 
-  const activeState = path.join(projectRoot, "production", "session-state", "active.md")
-  if (fs.existsSync(activeState)) {
-    console.log("")
-    console.log("=== ACTIVE SESSION STATE DETECTED ===")
-    console.log(`A previous session left state at: ${activeState}`)
-    console.log("Read this file to recover context and continue where you left off.")
-    console.log("")
-    console.log("Quick summary:")
-    const content = fs.readFileSync(activeState, "utf8")
-    const lines = content.split("\n")
-    console.log(lines.slice(0, 20).join("\n"))
-    const totalLines = lines.length
-    if (totalLines > 20) {
-      console.log(`  ... (${totalLines} total lines — read the full file to continue)`)
-    }
-    console.log("=== END SESSION STATE PREVIEW ===")
-  }
-
-  console.log("===================================")
+  return lines.join("\n")
 }
 
 function sessionTimestamp(): string {
@@ -269,34 +252,26 @@ export function handleLogAgent(projectRoot: string, agentType: string) {
   } catch { /* ignore */ }
 }
 
-export function handleDetectGaps(projectRoot: string) {
-  console.log("=== Checking for Documentation Gaps ===")
+export function handleDetectGaps(projectRoot: string): string[] {
+  const gaps: string[] = []
+  const add = (g: string) => gaps.push(g)
 
-  // --- Check 0: Fresh project ---
   const engineConfigured = isEngineConfigured(projectRoot)
   const hasGameConcept = fs.existsSync(path.join(projectRoot, "design", "gdd", "game-concept.md"))
   const srcCount = countSourceFiles(projectRoot)
   const isFresh = !engineConfigured && !hasGameConcept && srcCount === 0
 
   if (isFresh) {
-    console.log("")
-    console.log("NEW PROJECT: No engine configured, no game concept, no source code.")
-    console.log("   This looks like a fresh start! Run: /start")
-    console.log("")
-    console.log("To get a comprehensive project analysis, run: /project-stage-detect")
-    console.log("===================================")
-    return
+    add("NEW PROJECT: No engine configured, no game concept, no source code. Run: /start")
+    add("For comprehensive analysis, run: /project-stage-detect")
+    return gaps
   }
 
-  // --- Check 1: Code without design docs ---
   const designCount = countDesignDocs(projectRoot)
   if (srcCount > 50 && designCount < 5) {
-    console.log(`GAP: Substantial codebase (${srcCount} source files) but sparse design docs (${designCount} files)`)
-    console.log("    Suggested action: /reverse-document design src/[system]")
-    console.log("    Or run: /project-stage-detect to get full analysis")
+    add(`GAP: ${srcCount} source files but only ${designCount} design docs. Run: /reverse-document design src/[system]`)
   }
 
-  // --- Check 2: Undocumented prototypes ---
   const protoDir = path.join(projectRoot, "prototypes")
   if (fs.existsSync(protoDir)) {
     const undocumented: string[] = []
@@ -308,32 +283,24 @@ export function handleDetectGaps(projectRoot: string) {
       }
     }
     if (undocumented.length > 0) {
-      console.log(`GAP: ${undocumented.length} undocumented prototype(s) found:`)
-      for (const proto of undocumented) {
-        console.log(`    - prototypes/${proto}/ (no README or CONCEPT doc)`)
-      }
-      console.log("    Suggested action: /reverse-document concept prototypes/[name]")
+      add(`GAP: ${undocumented.length} undocumented prototypes (${undocumented.join(", ")}). Run: /reverse-document concept [name]`)
     }
   }
 
-  // --- Check 3: Core systems without architecture docs ---
   const coreDir = path.join(projectRoot, "src", "core")
   const engineDir = path.join(projectRoot, "src", "engine")
   const archDir = path.join(projectRoot, "docs", "architecture")
   if (fs.existsSync(coreDir) || fs.existsSync(engineDir)) {
     if (!fs.existsSync(archDir)) {
-      console.log("GAP: Core engine/systems exist but no docs/architecture/ directory")
-      console.log("    Suggested action: Create docs/architecture/ and run /architecture-decision")
+      add("GAP: Core systems exist but no docs/architecture/. Run: /architecture-decision")
     } else {
       const adrCount = findFilesRecursive(archDir, (name) => name.endsWith(".md")).length
       if (adrCount < 3) {
-        console.log(`GAP: Core systems exist but only ${adrCount} ADR(s) documented`)
-        console.log("    Suggested action: /reverse-document architecture src/core/[system]")
+        add(`GAP: Only ${adrCount} ADRs for core systems. Run: /reverse-document architecture src/core/[system]`)
       }
     }
   }
 
-  // --- Check 4: Gameplay systems without design docs ---
   const gameplayDir = path.join(projectRoot, "src", "gameplay")
   if (fs.existsSync(gameplayDir)) {
     for (const system of getSubdirNames(gameplayDir)) {
@@ -343,26 +310,20 @@ export function handleDetectGaps(projectRoot: string) {
         const doc1 = path.join(projectRoot, "design", "gdd", `${system}-system.md`)
         const doc2 = path.join(projectRoot, "design", "gdd", `${system}.md`)
         if (!fs.existsSync(doc1) && !fs.existsSync(doc2)) {
-          console.log(`GAP: Gameplay system 'src/gameplay/${system}/' (${fileCount} files) has no design doc`)
-          console.log(`    Expected: design/gdd/${system}-system.md or design/gdd/${system}.md`)
-          console.log(`    Suggested action: /reverse-document design src/gameplay/${system}`)
+          add(`GAP: src/gameplay/${system}/ (${fileCount} files) has no design doc. Run: /reverse-document design src/gameplay/${system}`)
         }
       }
     }
   }
 
-  // --- Check 5: Production planning ---
   if (srcCount > 100) {
     if (!fs.existsSync(path.join(projectRoot, "production", "sprints")) &&
         !fs.existsSync(path.join(projectRoot, "production", "milestones"))) {
-      console.log(`GAP: Large codebase (${srcCount} files) but no production planning found`)
-      console.log("    Suggested action: /sprint-plan or create production/ directory")
+      add(`GAP: ${srcCount} files but no production planning. Run: /sprint-plan`)
     }
   }
 
-  console.log("")
-  console.log("To get a comprehensive project analysis, run: /project-stage-detect")
-  console.log("===================================")
+  return gaps
 }
 
 const ASSETS_PATH_RE = /(?:^|\/)assets\//
@@ -546,22 +507,16 @@ function logCompactionEvent(projectRoot: string) {
   } catch { /* ignore */ }
 }
 
-export function handlePostCompact(projectRoot: string) {
-  console.log("=== Context Restored After Compaction ===")
+export function handlePostCompact(projectRoot: string): string {
   const active = path.join(projectRoot, "production", "session-state", "active.md")
   if (fs.existsSync(active)) {
     let size = "?"
     try {
       size = String(fs.readFileSync(active, "utf8").split("\n").length)
     } catch { /* ignore */ }
-    console.log(`Session state file exists: production/session-state/active.md (${size} lines)`)
-    console.log("IMPORTANT: Read this file now to restore your working context.")
-    console.log("It contains: current task, decisions made, files in progress, open questions.")
-  } else {
-    console.log("No session state file found at production/session-state/active.md")
-    console.log("If you were mid-task, check production/session-logs/ for the last session audit.")
+    return `Session state restored: production/session-state/active.md (${size} lines) — read this file to continue working.`
   }
-  console.log("=========================================")
+  return "No session state file found. Check production/session-logs/ for the last session audit."
 }
 
 export function showNotification(message: string) {
@@ -592,82 +547,80 @@ export function detectPushToProtected(cmd: string, currentBranch: string): strin
   return ""
 }
 
+type PluginLogger = ReturnType<typeof createPluginLogger>
+function createPluginLogger(client: any, service: string) {
+  const log = (level: string, message: string, extra?: any) => {
+    client.app.log({ body: { service, level, message, extra } }).catch(() => {})
+  }
+  return { debug: (m: string, x?: any) => log("debug", m, x), info: (m: string, x?: any) => log("info", m, x), warn: (m: string, x?: any) => log("warn", m, x), error: (m: string, x?: any) => log("error", m, x) }
+}
+
 export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktree }) => {
   const projectRoot = getProjectRoot(directory, worktree)
-  console.log(`[CCGS Plugin] Loaded. Project root: ${projectRoot}`)
+  const logger = createPluginLogger(client, "ccgs-hooks")
+  const gc = (s: string) => globalThis[s as any]
+  const log = client?.app?.log ? logger : { debug: gc, info: gc, warn: gc, error: gc }
+
+  log.info("Plugin loaded", { projectRoot })
   logAudit(projectRoot, "Plugin loaded")
 
   return {
-    // ================================================================
-    // EVENT HANDLER (session.created, session.idle, etc.)
-    // ================================================================
     event: async ({ event }) => {
       try {
         if (event.type === "session.created") {
-          handleSessionCreated(projectRoot)
-          handleDetectGaps(projectRoot)
+          const ctx = handleSessionCreated(projectRoot)
+          const gaps = handleDetectGaps(projectRoot)
+          log.info("Session context", { summary: ctx.split("\n")[0] || "no context" })
+          if (gaps.length > 0) {
+            log.warn("Documentation gaps", { gaps: gaps.length, details: gaps })
+          }
         } else if (event.type === "session.idle" || event.type === "server.instance.disposed") {
           handleSessionIdle(projectRoot)
+          log.info("Session idle — state archived")
         }
       } catch (err) {
+        log.error(`Error in event ${event.type}`, { error: String(err) })
         logAudit(projectRoot, `ERROR in event ${event.type}: ${err}`)
       }
     },
 
-    // ================================================================
-    // PRE-COMPACT (replaces pre-compact.sh)
-    // ================================================================
     "experimental.session.compacting": async (input, output) => {
       const context = buildCompactionContext(projectRoot)
       logCompactionEvent(projectRoot)
       output.context.push(context)
     },
 
-    // ================================================================
-    // POST-COMPACT (replaces post-compact.sh)
-    // ================================================================
     "experimental.compaction.autocontinue": async (input, output) => {
-      handlePostCompact(projectRoot)
+      const msg = handlePostCompact(projectRoot)
+      log.info(msg)
     },
 
-    // ================================================================
-    // PRE-TOOL-USE VALIDATION (replaces validate-commit.sh + validate-push.sh)
-    // ================================================================
     "tool.execute.before": async (input, output) => {
-
-      // --- validate-push: warn on protected branches ---
       if (isGitRepo(projectRoot) && input.tool === "bash" && output.args?.command) {
         const cmd = output.args.command as string
         if (/^git\s+push/.test(cmd)) {
           const matched = detectPushToProtected(cmd, git(projectRoot, "rev-parse", "--abbrev-ref", "HEAD"))
           if (matched) {
+            log.warn(`Push to protected branch '${matched}'`, { branch: matched })
             logAudit(projectRoot, `Push to protected branch '${matched}' detected.`)
             logAudit(projectRoot, "Reminder: Ensure build passes, unit tests pass, and no S1/S2 bugs exist.")
           }
         }
-      }
-
-      // --- validate-commit: validate staged files before commit ---
-      if (isGitRepo(projectRoot) && input.tool === "bash" && output.args?.command) {
-        const cmd = output.args.command as string
         if (/^git\s+commit/.test(cmd)) {
           const staged = git(projectRoot, "diff", "--cached", "--name-only")
           if (!staged) return
-
           const result = validateCommitFiles(projectRoot, staged.split("\n"))
-
           if (result.errors.length > 0) {
+            log.error("Commit blocked by validation errors", { errors: result.errors })
             throw new Error(result.errors.join("\n"))
           }
-
           if (result.warnings.length > 0) {
-            logAudit(projectRoot, "=== Commit Validation Warnings ===")
+            log.warn("Commit warnings", { warnings: result.warnings })
             result.warnings.forEach((w) => logAudit(projectRoot, w))
           }
         }
       }
 
-      // --- log-agent: track subagent invocations ---
       if (input.tool === "task") {
         const agentType =
           (output.args?.subagent_type as string) ||
@@ -676,15 +629,11 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
           (output.args?.agentType as string) ||
           ""
         handleLogAgent(projectRoot, agentType)
+        log.debug("Agent invoked", { agentType })
       }
     },
 
-    // ================================================================
-    // POST-TOOL-USE VALIDATION (replaces validate-assets.sh + validate-skill-change.sh)
-    // ================================================================
     "tool.execute.after": async (input, output) => {
-
-      // Get file path from all possible locations
       const filePath = normalizePath(
         (input.args?.filePath as string) ||
         (input.args?.path as string) ||
@@ -695,20 +644,18 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
 
       if (!filePath) return
 
-      // --- validate-assets: check assets/ files ---
       const assetResult = validateAssetPath(projectRoot, filePath)
       if (assetResult.warnings.length > 0) {
-        logAudit(projectRoot, "=== Asset Validation: Warnings ===")
+        log.warn("Asset warnings", { warnings: assetResult.warnings })
         assetResult.warnings.forEach((w) => logAudit(projectRoot, w))
         logAudit(projectRoot, "(Warnings are advisory. Fix before final commit.)")
       }
       if (assetResult.errors.length > 0) {
-        logAudit(projectRoot, "=== Asset Validation: ERRORS (Blocking) ===")
+        log.error("Asset validation failed", { errors: assetResult.errors })
         assetResult.errors.forEach((e) => logAudit(projectRoot, e))
         throw new Error("Asset validation failed. Fix errors before proceeding.")
       }
 
-      // --- log-agent-stop: track subagent completion ---
       if (input.tool === "task") {
         const agentType =
           (output.args?.subagent_type as string) ||
@@ -717,11 +664,12 @@ export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktre
           (output.args?.agentType as string) ||
           ""
         handleLogAgentStop(projectRoot, agentType)
+        log.debug("Agent completed", { agentType })
       }
 
-      // --- validate-skill-change: advise test after skill edit ---
       const skillChange = detectSkillChange(filePath)
       if (skillChange) {
+        log.info(`Skill modified: ${skillChange}`, { skill: skillChange })
         logAudit(projectRoot, `=== Skill Modified: ${skillChange} ===`)
         logAudit(projectRoot, `Run /skill-test static ${skillChange} to validate structural compliance.`)
       }
