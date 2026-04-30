@@ -4,9 +4,10 @@
 
 ```text
      ╔════════════════════════════════════════╗
-     ║    49 AGENTS · 72 COMMANDS · 12 HOOKS  ║
-     ║         129 TESTS · ALL GREEN          ║
-     ╚════════════════════════════════════════╝
+      ║    49 AGENTS · 72 COMMANDS · 12 HOOKS  ║
+      ║         129 TESTS · ALL GREEN          ║
+      ║           MIT LICENSE · FREE           ║
+      ╚════════════════════════════════════════╝
 ```
 
 ---
@@ -236,6 +237,8 @@ at **`.opencode/plugins/ccgs-hooks.ts`**:
   <sub>Built with ❤️ for AI-assisted game development</sub>
   <br>
   <sub>OpenCode Game Studios · CCGS Port</sub>
+  <br>
+  <sub>MIT License · Free for any use</sub>
   <br><br>
   <a href="https://paypal.me/striderZA">☕ Support development</a>
 </p>

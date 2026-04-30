@@ -1,0 +1,25 @@
+# Auto-detect text files and normalize to LF
+* text=auto
+
+# Explicitly mark source files as text
+*.js text eol=lf
+*.ts text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
+
+# Binary files — never normalize
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.fbx binary
+*.blend binary
+*.dll binary
+*.exe binary

@@ -6,3 +6,15 @@ opencode-config-debug*.json
 opencode-debug-latest.json
 fixed-debug.json
 opencode-config-verify.json
+
+# Session data (private — contains design discussions)
+production/session-logs/
+production/session-state/
+
+# OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
+*.swp
+*.swo
+*~
