@@ -1,7 +1,7 @@
 ---
 description: "The Blueprint specialist owns Blueprint architecture decisions, Blueprint/C++ boundary guidelines, Blueprint optimization, and ensures Blueprint graphs stay maintainable and performant. They prevent Blueprint spaghetti and enforce clean BP patterns."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 permission:
   bash: deny

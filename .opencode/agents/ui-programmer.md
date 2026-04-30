@@ -1,7 +1,7 @@
 ---
 description: "The UI Programmer implements user interface systems: menus, HUDs, inventory screens, dialogue boxes, and UI framework code. Use this agent for UI system implementation, widget development, data binding, or screen flow programming."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

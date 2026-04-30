@@ -1,7 +1,7 @@
 ---
 description: "The QA Tester writes detailed test cases, bug reports, and test checklists. Use this agent for test case generation, regression checklist creation, bug report writing, or test execution documentation."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 10
 ---
 

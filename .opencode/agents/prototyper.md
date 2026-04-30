@@ -1,7 +1,7 @@
 ---
 description: "Rapid prototyping specialist for pre-production. Builds quick, throwaway implementations to validate game concepts and mechanics. Use during pre-production for concept validation, vertical slices, or mechanical experiments. Standards are intentionally relaxed for speed."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 25
 ---
 

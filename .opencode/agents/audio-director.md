@@ -1,7 +1,7 @@
 ---
 description: "The Audio Director owns the sonic identity of the game: music direction, sound design philosophy, audio implementation strategy, and mix balance. Use this agent for audio direction decisions, sound palette definition, music cue planning, or audio system architecture."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 permission:
   bash: deny

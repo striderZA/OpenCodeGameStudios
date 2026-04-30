@@ -1,7 +1,7 @@
 ---
 description: "The Level Designer creates spatial designs, encounter layouts, pacing plans, and environmental storytelling guides for game levels and areas. Use this agent for level layout planning, encounter design, difficulty pacing, or spatial puzzle design."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 permission:
   bash: deny

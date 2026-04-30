@@ -1,7 +1,7 @@
 ---
 description: "The Tools Programmer builds internal development tools: editor extensions, content authoring tools, debug utilities, and pipeline automation. Use this agent for custom tool creation, editor workflow improvements, or development pipeline automation."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

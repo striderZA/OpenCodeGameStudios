@@ -1,7 +1,7 @@
 ---
 description: "The Writer creates dialogue, lore entries, item descriptions, environmental text, and all player-facing written content. Use this agent for dialogue writing, lore creation, item/ability descriptions, or in-game text of any kind."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 permission:
   bash: deny

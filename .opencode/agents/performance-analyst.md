@@ -1,7 +1,7 @@
 ---
 description: "The Performance Analyst profiles game performance, identifies bottlenecks, recommends optimizations, and tracks performance metrics over time. Use this agent for performance profiling, memory analysis, frame time investigation, or optimization strategy."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

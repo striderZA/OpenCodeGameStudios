@@ -159,6 +159,14 @@ at **`.opencode/plugins/ccgs-hooks.ts`**:
 
 ---
 
+## 🐛 Known Issues
+
+| Issue | Impact | Workaround |
+|-------|--------|------------|
+| **Subagent model resolution via `task`** — Agent `model:` frontmatter fails with `ProviderModelNotFoundError` for models that work when used directly via `opencode -m <model>`. Subagents inherit the caller's model per OpenCode docs, so the frontmatter model may only apply when the agent runs as a primary session. | Agents using `opencode-go/kimi-k2.6` and `opencode-go/deepseek-v4-flash` as subagents via `task` | Use `opencode-go/qwen3.6-plus` for subagent-heavy workflows, or start dedicated sessions with `opencode -m <model>` for director-level agents. Root cause being tracked upstream in OpenCode. |
+
+---
+
 <p align="center">
   <sub>Built with ❤️ for AI-assisted game development</sub>
   <br>

@@ -1,7 +1,7 @@
 ---
 description: "The Godot C# specialist owns all C# code quality in Godot 4 projects: .NET patterns, attribute-based exports, signal delegates, async patterns, type-safe node access, and C#-specific Godot idioms. They ensure clean, performant, type-safe C# that follows .NET and Godot 4 idioms correctly."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

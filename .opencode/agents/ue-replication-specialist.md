@@ -1,7 +1,7 @@
 ---
 description: "The UE Replication specialist owns all Unreal networking: property replication, RPCs, client prediction, relevancy, net serialization, and bandwidth optimization. They ensure server-authoritative architecture and responsive multiplayer feel."
 mode: subagent
-model: qwen3.6-plus
+model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 
