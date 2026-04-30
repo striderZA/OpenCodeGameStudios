@@ -116,6 +116,52 @@ The default session model (set via `opencode -m`) should match the tier of work:
 
 ---
 
+## 🔄 Customizing Models
+
+OpenCode supports **any model provider** — switch the studio to your preferred
+models, including local ones, with a single command.
+
+### Quick switch
+
+```bash
+# Preview the change first
+node utils/assign-models.js --dry-run --map '{
+  "opencode-go/kimi-k2.6":         "anthropic/claude-opus-4",
+  "opencode-go/qwen3.6-plus":      "openai/gpt-4o",
+  "opencode-go/deepseek-v4-flash": "ollama/llama3.2"
+}'
+
+# Apply it
+node utils/assign-models.js --map '{
+  "opencode-go/kimi-k2.6":         "anthropic/claude-opus-4",
+  "opencode-go/qwen3.6-plus":      "openai/gpt-4o",
+  "opencode-go/deepseek-v4-flash": "ollama/llama3.2"
+}'
+```
+
+Or save your mapping to a JSON file and refer to it:
+
+```bash
+node utils/assign-models.js --config my-models.json
+```
+
+### Provider examples
+
+| Provider | Model ID Format | Example |
+|----------|----------------|---------|
+| **OpenCode** (default) | `opencode-go/<model>` | `opencode-go/qwen3.6-plus` |
+| **Anthropic Claude** | `anthropic/<model>` | `anthropic/claude-opus-4`, `anthropic/claude-sonnet-4` |
+| **OpenAI** | `openai/<model>` | `openai/gpt-4o`, `openai/o3` |
+| **Google Gemini** | `google/<model>` | `google/gemini-2.5-pro` |
+| **Ollama** (local) | `ollama/<model>` | `ollama/llama3.2`, `ollama/mistral` |
+| **OpenAI-compatible** | `<endpoint>/<model>` | `http://localhost:11434/v1/llama3.2` |
+
+> **Tip:** Run `opencode models` to list all models available through your
+> configured providers. See the [OpenCode provider docs](https://opencode.ai)
+> for setup instructions.
+
+---
+
 ## 📁 Directory Tree
 
 ```
@@ -134,6 +180,8 @@ The default session model (set via `opencode -m`) should match the tier of work:
 ├── design/                    🎨 Game design documents
 ├── docs/                      📐 Technical documentation
 ├── production/                📊 Sprint plans, session logs
+├── utils/                     🔧 Developer utilities
+│   └── assign-models.js       🎯 Batch-model assignment tool
 └── ...                        🎮 Game source & assets
 ```
 
