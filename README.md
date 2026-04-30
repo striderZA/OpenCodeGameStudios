@@ -2,9 +2,13 @@
 
 > ⚡ Port of [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) to [OpenCode](https://opencode.ai)
 
-| 🤖 Agents | ⌨️ Commands | 🔗 Hooks | 🧪 Tests | ⚖️ License |
-|:---------:|:----------:|:--------:|:--------:|:---------:|
-| 49 | 72 | 12 | 129 ✅ | MIT |
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
+[![Commands](https://img.shields.io/badge/commands-72-brightgreen)](.opencode/commands/)
+[![Hooks](https://img.shields.io/badge/hooks-12-orange)](.opencode/plugins/)
+[![Tests](https://img.shields.io/badge/tests-129-success)](.opencode/plugins/tests/)
+[![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
+
 ---
 
 ## 📑 Table of Contents
