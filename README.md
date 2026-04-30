@@ -11,6 +11,20 @@
 
 ---
 
+## 💡 Motivation
+
+Claude Code's strict session and usage limits make it impractical for large-scale,
+long-running game development — sessions expire, context is frequently wiped, and
+high usage quickly hits rate caps. **OpenCode** removes those constraints,
+allowing sustained development over the full lifecycle of a game project.
+
+This port adapts the complete [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
+framework — its 49 agents, 72 commands, 12 hooks, and all rules — to run natively
+on OpenCode, giving game teams the same structured AI-assisted workflow without
+the artificial limits.
+
+---
+
 ## 📊 Port Status
 
 | Component | CCGS (Claude Code) | OpenCode | Status |
