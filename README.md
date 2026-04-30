@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Commands](https://img.shields.io/badge/commands-72-brightgreen)](.opencode/commands/)
+[![Skills](https://img.shields.io/badge/skills-72-brightgreen)](.opencode/skills/)
 [![Hooks](https://img.shields.io/badge/hooks-12-orange)](.opencode/plugins/)
 [![Tests](https://img.shields.io/badge/tests-129-success)](.opencode/plugins/tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
