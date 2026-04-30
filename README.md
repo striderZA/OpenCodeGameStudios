@@ -80,7 +80,7 @@ Add them to your `opencode.json`:
 
 | CCGS (Claude Code) | OpenCode |
 |--------------------|----------|
-| `.claude/skills/*.md` → | `.opencode/commands/*.md` |
+| `.claude/skills/*.md` → | `.opencode/skills/*.md` |
 | `.claude/agents/*.md` → | `.opencode/agents/*.md` |
 | `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` |
 | `.claude/rules/*.md` → | `.opencode/rules/*.md` |
