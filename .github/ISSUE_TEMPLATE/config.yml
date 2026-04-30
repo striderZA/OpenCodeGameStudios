@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: OpenCode Game Studios Discussion
+    url: https://github.com/striderZA/OpenCodeGameStudios/discussions
+    about: Please ask questions and discuss ideas in GitHub Discussions.
+  - name: Contributing Guide
+    url: https://github.com/striderZA/OpenCodeGameStudios/blob/master/CONTRIBUTING.md
+    about: Review the contributing guide before submitting.
