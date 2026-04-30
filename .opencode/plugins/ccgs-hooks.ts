@@ -51,7 +51,7 @@ function logAudit(projectRoot: string, message: string) {
   try {
     const dir = path.join(projectRoot, "production", "session-logs")
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
+    const timestamp = sessionTimestamp()
     fs.appendFileSync(path.join(dir, "agent-audit.log"), `${timestamp} | ${message}\n`)
   } catch (err) {
     console.error("[CCGS Plugin] Failed to write audit log:", err)
@@ -182,9 +182,7 @@ export function handleSessionCreated(projectRoot: string) {
 }
 
 function sessionTimestamp(): string {
-  const d = new Date()
-  const pad = (n: number) => String(n).padStart(2, "0")
-  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`
+  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
 }
 
 export function handleSessionIdle(projectRoot: string) {

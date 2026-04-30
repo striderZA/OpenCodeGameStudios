@@ -4,7 +4,7 @@
  * Tests behavioral equivalence with the original bash session-stop.sh:
  *   - Archives active session state to session-log.md
  *   - Logs recent commits and modified files
- *   - Timestamp format: YYYYMMDD_HHMMSS (matching `date +%Y%m%d_%H%M%S`)
+ *   - Timestamp format: YYYY-MM-DDTHH-MM-SS
  *   - Section headers: ## Archived Session State, ## Session End, etc.
  */
 
@@ -37,9 +37,7 @@ function git(cwd, ...args) {
 }
 
 function sessionTimestamp() {
-  const d = new Date()
-  const pad = (n) => String(n).padStart(2, "0")
-  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`
+  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
 }
 
 function handleSessionIdle(projectRoot) {
@@ -134,9 +132,9 @@ console.log("\n🧪 session-stop hook tests\n")
     assert.ok(log.includes("Implement AI"), "should include state content")
     assert.ok(log.includes("---"), "should end with separator")
     assert.ok(log.endsWith("---\n") || log.includes("---\n\n"), "should have trailing separator")
-    // Timestamp format: YYYYMMDD_HHMMSS
-    const tsMatch = log.match(/## Archived Session State: (\d{8}_\d{6})/)
-    assert.ok(tsMatch, `expected YYYYMMDD_HHMMSS timestamp, got: ${log.slice(0, 60)}`)
+    // Timestamp format: YYYY-MM-DDTHH-MM-SS
+    const tsMatch = log.match(/## Archived Session State: (\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2})/)
+    assert.ok(tsMatch, `expected ISO timestamp, got: ${log.slice(0, 60)}`)
   })
   cleanup(root)
 }
@@ -165,7 +163,7 @@ console.log("\n🧪 session-stop hook tests\n")
   cleanup(root)
 }
 
-// ── S3: Timestamp format matches bash `date +%Y%m%d_%H%M%S` ──
+// ── S3: Timestamp format: YYYY-MM-DDTHH-MM-SS ──
 {
   const root = makeTempProject()
   const stateFile = path.join(root, "production", "session-state", "active.md")
@@ -174,11 +172,11 @@ console.log("\n🧪 session-stop hook tests\n")
   handleSessionIdle(root)
 
   const log = readLog(root)
-  run("S3: Timestamp in YYYYMMDD_HHMMSS format", () => {
-    const matches = log.match(/\d{8}_\d{6}/g)
-    assert.ok(matches && matches.length > 0, "no YYYYMMDD_HHMMSS timestamp found")
+  run("S3: Timestamp in ISO format", () => {
+    const matches = log.match(/\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}/g)
+    assert.ok(matches && matches.length > 0, "no ISO timestamp found")
     for (const ts of matches) {
-      assert.ok(/^\d{8}_\d{6}$/.test(ts), `bad timestamp format: ${ts}`)
+      assert.ok(/^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}$/.test(ts), `bad timestamp format: ${ts}`)
     }
   })
   cleanup(root)

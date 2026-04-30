@@ -3,7 +3,7 @@
  *
  * Tests behavioral equivalence with bash log-agent-stop.sh:
  *   - Logs agent completion to agent-audit.log
- *   - Timestamp format YYYYMMDD_HHMMSS
+ *   - Timestamp format: YYYY-MM-DDTHH-MM-SS
  *   - Fallback to 'unknown' for missing agent type
  */
 
@@ -17,9 +17,7 @@ import { strict as assert } from "node:assert"
 // ──────────────────────────────────────────────
 
 function sessionTimestamp() {
-  const d = new Date()
-  const pad = (n) => String(n).padStart(2, "0")
-  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`
+  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
 }
 
 function handleLogAgentStop(projectRoot, agentType) {
@@ -75,7 +73,7 @@ run("S1: Logs 'Agent completed:' with agent type", () => {
   handleLogAgentStop(root, "ai-programmer")
   const log = readLog(root)
   assert.ok(log.includes("Agent completed: ai-programmer"))
-  assert.ok(/^\d{8}_\d{6}/.test(log))
+  assert.ok(/^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}/.test(log))
   cleanup(root)
 })
 

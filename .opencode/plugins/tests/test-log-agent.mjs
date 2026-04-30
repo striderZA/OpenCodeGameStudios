@@ -3,7 +3,7 @@
  *
  * Tests behavioral equivalence with the original bash log-agent.sh:
  *   - Logs agent invocation to agent-audit.log
- *   - Timestamp format matches YYYYMMDD_HHMMSS
+ *   - Timestamp format: YYYY-MM-DDTHH-MM-SS
  *   - Handles unknown/missing agent type
  */
 
@@ -17,9 +17,7 @@ import { strict as assert } from "node:assert"
 // ──────────────────────────────────────────────
 
 function sessionTimestamp() {
-  const d = new Date()
-  const pad = (n) => String(n).padStart(2, "0")
-  return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`
+  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
 }
 
 function handleLogAgent(projectRoot, agentType) {
@@ -80,8 +78,8 @@ console.log("\n🧪 log-agent hook tests\n")
   run("S1: Logs agent type to audit file", () => {
     assert.ok(log.includes("Agent invoked: gameplay-programmer"), "should include agent name")
     assert.ok(log.endsWith("\n"), "should end with newline")
-    const tsMatch = log.match(/^\d{8}_\d{6} \| Agent invoked:/)
-    assert.ok(tsMatch, `expected YYYYMMDD_HHMMSS timestamp, got: ${log.slice(0, 40)}`)
+    const tsMatch = log.match(/^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2} \| Agent invoked:/)
+    assert.ok(tsMatch, `expected ISO timestamp, got: ${log.slice(0, 40)}`)
   })
   cleanup(root)
 }
@@ -139,21 +137,19 @@ console.log("\n🧪 log-agent hook tests\n")
   cleanup(root)
 }
 
-// ── S5: Timestamp format matches bash date +%Y%m%d_%H%M%S ──
+// ── S5: Timestamp format: YYYY-MM-DDTHH-MM-SS ──
 {
   const root = makeTempProject()
 
   handleLogAgent(root, "test-agent")
 
   const log = readLog(root)
-  const matches = log.match(/(\d{8}_\d{6})/)
-  run("S5: Uses YYYYMMDD_HHMMSS timestamp format", () => {
+  const matches = log.match(/(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2})/)
+  run("S5: Uses ISO timestamp format", () => {
     assert.ok(matches, "no timestamp found")
     const ts = matches[1]
-    assert.equal(ts.length, 15, `expected 15 chars (8_6), got ${ts.length}: ${ts}`)
-    const [datePart, timePart] = ts.split("_")
-    assert.equal(datePart.length, 8, "date part should be 8 digits")
-    assert.equal(timePart.length, 6, "time part should be 6 digits")
+    assert.equal(ts.length, 19, `expected 19 chars, got ${ts.length}: ${ts}`)
+    assert.ok(/^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}$/.test(ts), `bad format: ${ts}`)
   })
   cleanup(root)
 }
