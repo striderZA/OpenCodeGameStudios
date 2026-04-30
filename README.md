@@ -53,6 +53,29 @@ Type `/` to browse all 72 commands, or `/start` for onboarding.
 
 ---
 
+## 🔌 Recommended Plugins
+
+These plugins enhance the OpenCode experience and are recommended for
+all game development sessions:
+
+| Plugin | Purpose |
+|--------|---------|
+| [**context-mode**](https://github.com/anthropics/claude-code/tree/main/.claude/plugins/context-mode) | Dynamic context pruning — automatically manages context window size, indexes content for search, and prevents context overflow during long sessions |
+| [**Superpowers**](https://github.com/obra/superpowers) | Enhanced skill library — provides structured workflows for brainstorming, test-driven development, writing plans, code review, and parallel agent dispatch |
+
+Add them to your `opencode.json`:
+
+```json
+{
+  "plugin": [
+    "./.opencode/plugins/ccgs-hooks.ts",
+    "PLUGIN_NAME"
+  ]
+}
+```
+
+---
+
 ## 🗺️ Key Mappings
 
 | CCGS (Claude Code) | OpenCode |
