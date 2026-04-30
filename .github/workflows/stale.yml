@@ -10,6 +10,8 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/stale@v9
         with:
