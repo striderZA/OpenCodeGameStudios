@@ -171,4 +171,6 @@ at **`.opencode/plugins/ccgs-hooks.ts`**:
   <sub>Built with ❤️ for AI-assisted game development</sub>
   <br>
   <sub>OpenCode Game Studios · CCGS Port</sub>
+  <br><br>
+  <a href="https://paypal.me/striderZA">☕ Support development</a>
 </p>
