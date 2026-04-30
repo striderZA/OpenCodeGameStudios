@@ -25,6 +25,12 @@ the artificial limits.
 
 ---
 
+> ⚠️ **Early Prototype** — This is an active work-in-progress port. Things will
+> break, change, and improve. Report bugs at
+> [github.com/striderZA/OpenCodeGameStudios/issues](https://github.com/striderZA/OpenCodeGameStudios/issues).
+
+---
+
 ## 📊 Port Status
 
 | Component | CCGS (Claude Code) | OpenCode | Status |
