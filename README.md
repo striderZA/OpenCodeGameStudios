@@ -99,6 +99,23 @@ Add them to your `opencode.json`:
 
 ---
 
+## 🎯 Model Assignment Strategy
+
+| Tier | Model | Agents | Rationale |
+|------|-------|--------|-----------|
+| **Directors** (Tier 1) | `opencode-go/kimi-k2.6` | 3 (creative-director, technical-director, producer) | Heaviest model for strategic planning, architecture decisions, and cross-team coordination |
+| **Workhorses** (Tier 2-3) | `opencode-go/qwen3.6-plus` | 43 (all other agents) | Balanced model for day-to-day design, implementation, testing, and review tasks |
+| **Lightweight** (Special) | `opencode-go/deepseek-v4-flash` | 3 (community-manager, devops-engineer, sound-designer) | Fast, low-latency model for simple, repetitive, or always-running agents |
+
+> **Note:** Subagents invoked via the `task` tool inherit the caller's model regardless of their frontmatter `model:` field. See [Known Issues](#known-issues).
+
+The default session model (set via `opencode -m`) should match the tier of work:
+- `opencode -m opencode-go/kimi-k2.6` — director-level sessions
+- `opencode -m opencode-go/qwen3.6-plus` — general development sessions
+- `opencode -m opencode-go/deepseek-v4-flash` — quick QA or maintenance sessions
+
+---
+
 ## 📁 Directory Tree
 
 ```
