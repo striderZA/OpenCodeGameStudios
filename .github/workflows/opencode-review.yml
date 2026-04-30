@@ -12,6 +12,7 @@ jobs:
       contents: read
       pull-requests: write
       issues: read
+    if: github.actor != 'dependabot[bot]' # Skip dependabot
     steps:
       - uses: actions/checkout@v6
         with:
