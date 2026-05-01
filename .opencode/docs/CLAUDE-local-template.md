@@ -32,6 +32,6 @@ This file is gitignored and will not be committed.
 
 ## Setup
 
-1. Copy this template to your project root: `cp .claude/docs/CLAUDE-local-template.md CLAUDE.local.md`
+1. Copy this template to your project root: `cp .opencode/docs/CLAUDE-local-template.md CLAUDE.local.md`
 2. Edit to match your preferences
 3. Verify `CLAUDE.local.md` is in `.gitignore` (Claude Code reads it from the project root)
