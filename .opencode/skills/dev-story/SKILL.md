@@ -116,7 +116,7 @@ If a dependency file cannot be found: warn "Dependency story not found: [path]. 
 ---
 
 ### Engine reference
-Read `.claude/docs/technical-preferences.md`:
+Read `.opencode/docs/technical-preferences.md`:
 - `Engine:` value — determines which programmer agents to use
 - Naming conventions (class names, file names, signal/event names)
 - Performance budgets (frame budget, memory ceiling)
@@ -146,7 +146,7 @@ If the story's Type is `Config/Data`, no programmer agent or engine specialist i
 
 ### Engine specialist — always spawn as secondary for code stories
 
-Read the `Engine Specialists` section of `.claude/docs/technical-preferences.md`
+Read the `Engine Specialists` section of `.opencode/docs/technical-preferences.md`
 to get the configured primary specialist. Spawn them alongside the primary agent
 when the story involves engine-specific APIs, patterns, or the ADR has HIGH
 engine risk.

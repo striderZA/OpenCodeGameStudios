@@ -3,7 +3,7 @@
 ```text
 /
 ├── CLAUDE.md                    # Master configuration
-├── .claude/                     # Agent definitions, skills, hooks, rules, docs
+├── .opencode/                     # Agent definitions, skills, hooks, rules, docs
 ├── src/                         # Game source code (core, gameplay, ai, networking, ui, tools)
 ├── assets/                      # Game assets (art, audio, vfx, shaders, data)
 ├── design/                      # Game design documents (gdd, narrative, levels, balance)
