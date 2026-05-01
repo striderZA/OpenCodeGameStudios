@@ -11,6 +11,9 @@ opencode-config-verify.json
 production/session-logs/
 production/session-state/
 
+# Git worktrees
+.worktrees/
+
 # OS junk
 Thumbs.db
 .DS_Store
