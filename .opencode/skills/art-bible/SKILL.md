@@ -3,7 +3,7 @@ name: art-bible
 description: "Guided, section-by-section Art Bible authoring. Creates the visual identity specification that gates all asset production. Run after /brainstorm is approved and before /map-systems or any GDD authoring begins."
 argument-hint: "[--review full|lean|solo]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Edit, Task, question
 ---
 
 ## Phase 0: Parse Arguments and Context Check
@@ -13,7 +13,7 @@ Resolve the review mode (once, store for all gate spawns this run):
 2. Else read `production/review-mode.txt` → use that value
 3. Else → default to `lean`
 
-See `.claude/docs/director-gates.md` for the full check pattern.
+See `.opencode/docs/director-gates.md` for the full check pattern.
 
 Read `design/gdd/game-concept.md`. If it does not exist, fail with:
 > "No game concept found. Run `/brainstorm` first — the art bible is authored after the game concept is approved."
@@ -50,7 +50,7 @@ Section | Status
 
 If the file does not exist, this is a fresh authoring session — proceed normally.
 
-Read `.claude/docs/technical-preferences.md` if it exists — extract performance budgets and engine for asset standard constraints.
+Read `.opencode/docs/technical-preferences.md` if it exists — extract performance budgets and engine for asset standard constraints.
 
 ---
 
@@ -58,7 +58,7 @@ Read `.claude/docs/technical-preferences.md` if it exists — extract performanc
 
 Present the session context and ask two questions before authoring anything:
 
-Use `AskUserQuestion` with two tabs:
+Use `question` with two tabs:
 - Tab **"Scope"** — "Which sections need to be authored today?"
   Options: `Full bible — all 9 sections` / `Visual identity core (sections 1–4 only)` / `Asset standards only (section 8)` / `Resume — fill in missing sections`
 - Tab **"References"** — "Do you have reference games, films, or art that define the visual direction?"
@@ -86,7 +86,7 @@ If a visual anchor exists from game-concept.md: present it and ask:
 - Provide: game concept (elevator pitch, core fantasy), full pillar set, platform target, any reference games/art from Phase 1 framing, the visual anchor if it exists
 - Ask: "Draft a Visual Identity Statement for this game. Provide: (1) a one-line visual rule that could resolve any visual decision ambiguity, (2) 2–3 supporting visual principles, each with a one-sentence design test ('when X is ambiguous, this principle says choose Y'). Anchor all principles directly in the stated pillars — each principle must serve a specific pillar."
 
-Present the art-director's draft to the user. Use `AskUserQuestion`:
+Present the art-director's draft to the user. Use `question`:
 - Options: `[A] Lock this in` / `[B] Revise the one-liner` / `[C] Revise a supporting principle` / `[D] Describe my own direction`
 
 Write the approved section to file immediately.
@@ -158,7 +158,7 @@ Write the approved section to file.
 - **`art-director`**: Visual style for UI — diegetic vs. screen-space HUD, typography direction (font personality, weight, size hierarchy), iconography style (flat/outlined/illustrated/photorealistic), animation feel for UI elements
 - **`ux-designer`**: UX alignment check — does the visual direction support the interaction patterns this game requires? Flag any conflicts between art direction and readability/accessibility needs.
 
-Collect both. If they conflict (e.g., art-director wants elaborate diegetic UI but ux-designer flags it would reduce combat readability), surface the conflict explicitly with both positions. Do NOT silently resolve — use `AskUserQuestion` to let the user decide.
+Collect both. If they conflict (e.g., art-director wants elaborate diegetic UI but ux-designer flags it would reduce combat readability), surface the conflict explicitly with both positions. Do NOT silently resolve — use `question` to let the user decide.
 
 Write the approved section to file.
 
@@ -166,7 +166,7 @@ Write the approved section to file.
 
 **Agent delegation**: Spawn in parallel:
 - **`art-director`**: File format preferences, naming convention direction, texture resolution tiers, LOD level expectations, export settings philosophy
-- **`technical-artist`**: Engine-specific hard constraints — poly count budgets per asset category, texture memory limits, material slot counts, importer constraints, anything from the performance budgets in `.claude/docs/technical-preferences.md`
+- **`technical-artist`**: Engine-specific hard constraints — poly count budgets per asset category, texture memory limits, material slot counts, importer constraints, anything from the performance budgets in `.opencode/docs/technical-preferences.md`
 
 If any art preference conflicts with a technical constraint (e.g., art-director wants 4K textures but performance budget requires 2K for mobile), resolve the conflict explicitly — note both the ideal and the constrained standard, and explain the tradeoff. Ambiguity in asset standards is where production costs are born.
 
@@ -191,7 +191,7 @@ Write the approved section to file.
 - `lean` → skip (not a PHASE-GATE). Note: "AD-ART-BIBLE skipped — Lean mode." Proceed to Phase 6.
 - `full` → spawn as normal.
 
-After all sections are complete (or the scoped set from Phase 1 is complete), spawn `creative-director` via Task using gate **AD-ART-BIBLE** (`.claude/docs/director-gates.md`).
+After all sections are complete (or the scoped set from Phase 1 is complete), spawn `creative-director` via Task using gate **AD-ART-BIBLE** (`.opencode/docs/director-gates.md`).
 
 Pass: art bible file path, game pillars, visual identity anchor.
 
@@ -204,12 +204,12 @@ Handle verdict per standard rules in `director-gates.md`. Record the verdict in 
 
 Before presenting next steps, check project state:
 - Does `design/gdd/systems-index.md` exist? → map-systems is done, skip that option
-- Does `.claude/docs/technical-preferences.md` contain a configured engine (not `[TO BE CONFIGURED]`)? → setup-engine is done, skip that option
+- Does `.opencode/docs/technical-preferences.md` contain a configured engine (not `[TO BE CONFIGURED]`)? → setup-engine is done, skip that option
 - Does `design/gdd/` contain any `*.md` files? → design-system has been run, skip that option
 - Does `design/gdd/gdd-cross-review-*.md` exist? → review-all-gdds is done
 - Do GDDs exist (check above)? → include /consistency-check option
 
-Use `AskUserQuestion` for next steps. Only include options that are genuinely next based on the state check above:
+Use `question` for next steps. Only include options that are genuinely next based on the state check above:
 
 **Option pool — include only if not already done:**
 - `[_] Run /map-systems — decompose the concept into systems before writing GDDs` (skip if systems-index.md exists)

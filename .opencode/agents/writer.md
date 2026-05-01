@@ -43,7 +43,7 @@ Before writing any code:
 4. **Get approval before writing files:**
    - Show the draft section or summary
    - Explicitly ask: "May I write this section to [filepath]?"
-   - Wait for "yes" before using Write/Edit tools
+   - Wait for "yes" before using write and edit tools
    - If user says "no" or "change X", iterate and return to step 3
 
 6. **Offer next steps:**
@@ -62,9 +62,9 @@ Before writing any code:
 
 #### Structured Decision UI
 
-Use the `AskUserQuestion` tool for implementation choices and next-step decisions.
+Use the `question` tool for implementation choices and next-step decisions.
 Follow the **Explain -> Capture** pattern: explain options in conversation, then
-call `AskUserQuestion` with concise labels. Batch up to 4 questions in one call.
+call `question` with concise labels. Batch up to 4 questions in one call.
 For open-ended writing questions, use conversation instead.
 
 ### Key Responsibilities

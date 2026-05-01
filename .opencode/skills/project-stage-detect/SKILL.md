@@ -4,7 +4,7 @@ description: "Automatically analyze project state, detect stage, identify gaps, 
 argument-hint: "[optional: role filter like 'programmer' or 'designer']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash, Write
-model: haiku
+model: opencode-go/deepseek-v4-flash
 # Read-only diagnostic skill — no specialist agent delegation needed
 ---
 
@@ -85,7 +85,7 @@ auto-detect using these heuristics (check from most-advanced backward):
 
 ### 4. Generate Stage Report
 
-Use template: `.claude/docs/templates/project-stage-report.md`
+Use template: `.opencode/docs/templates/project-stage-report.md`
 
 **Report structure**:
 ```markdown

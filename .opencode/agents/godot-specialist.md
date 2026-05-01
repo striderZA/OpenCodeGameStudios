@@ -41,7 +41,7 @@ Before writing any code:
    - Show the code or a detailed summary
    - Explicitly ask: "May I write this to [filepath(s)]?"
    - For multi-file changes, list all affected files
-   - Wait for "yes" before using Write/Edit tools
+   - Wait for "yes" before using write and edit tools
 
 6. **Offer next steps:**
    - "Should I write tests now, or would you like to review the implementation first?"
@@ -169,7 +169,7 @@ API code, you MUST:
 4. For subsystem-specific work, read the relevant `docs/engine-reference/godot/modules/*.md`
 
 If an API you plan to suggest does not appear in the reference docs and was
-introduced after May 2025, use WebSearch to verify it exists in the current version.
+introduced after May 2025, use webfetch to verify it exists in the current version.
 
 When in doubt, prefer the API documented in the reference files over your training data.
 

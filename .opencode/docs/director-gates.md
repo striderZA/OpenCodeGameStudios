@@ -15,7 +15,7 @@ In any skill, replace an inline director prompt with a reference:
 
 ```
 Spawn `creative-director` via Task using gate **CD-PILLARS** from
-`.claude/docs/director-gates.md`.
+`.opencode/docs/director-gates.md`.
 ```
 
 Pass the context listed under that gate's **Context to pass** field, then handle
@@ -79,7 +79,7 @@ Apply the resolved mode:
 ```
 # Apply mode check, then:
 Spawn `[agent-name]` via Task:
-- Gate: [GATE-ID] (see .claude/docs/director-gates.md)
+- Gate: [GATE-ID] (see .opencode/docs/director-gates.md)
 - Context: [fields listed under that gate]
 - Await the verdict before proceeding.
 ```
@@ -573,7 +573,7 @@ Agent: `art-director` | Model tier: Sonnet | Domain: Visual identity, art bible,
 **Context to pass**:
 - Art bible path (`design/art/art-bible.md`)
 - Game pillars and core fantasy
-- Platform and performance constraints (from `.claude/docs/technical-preferences.md` if configured)
+- Platform and performance constraints (from `.opencode/docs/technical-preferences.md` if configured)
 - Visual identity anchor chosen during brainstorm (from `design/gdd/game-concept.md`)
 
 **Prompt**:

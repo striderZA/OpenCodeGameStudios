@@ -3,11 +3,11 @@ name: asset-spec
 description: "Generate per-asset visual specifications and AI generation prompts from GDDs, level docs, or character profiles. Produces structured spec files and updates the master asset manifest. Run after art bible and GDD/level design are approved, before production begins."
 argument-hint: "[system:<name> | level:<name> | character:<name>] [--review full|lean|solo]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Edit, Task, question
 ---
 
 If no argument is provided, check whether `design/assets/asset-manifest.md` exists:
-- If it exists: read it, find the first context (system/level/character) with any asset at status "Needed" but no spec file written yet, and use `AskUserQuestion`:
+- If it exists: read it, find the first context (system/level/character) with any asset at status "Needed" but no spec file written yet, and use `question`:
   - Prompt: "The next unspecced context is **[target]**. Generate asset specs for it?"
   - Options: `[A] Yes — spec [target]` / `[B] Pick a different target` / `[C] Stop here`
 - If no manifest: fail with:
@@ -40,12 +40,12 @@ Read all source material **before** asking the user anything.
   > "No art bible found. Run `/art-bible` first — asset specs are anchored to the art bible's visual rules and asset standards."
   Extract: Visual Identity Statement, Color System (semantic colors), Shape Language, Asset Standards (Section 8 — dimensions, formats, polycount budgets, texture resolution tiers).
 
-- **Technical preferences**: Read `.claude/docs/technical-preferences.md` — extract performance budgets and naming conventions.
+- **Technical preferences**: Read `.opencode/docs/technical-preferences.md` — extract performance budgets and naming conventions.
 
 ### Source doc reads (by target type):
 - **system**: Read `design/gdd/[target-name].md`. Extract the **Visual/Audio Requirements** section. If it doesn't exist or reads `[To be designed]`:
   > "The Visual/Audio section of `design/gdd/[target-name].md` is empty. Either run `/design-system [target-name]` to complete the GDD, or describe the visual needs manually."
-  Use `AskUserQuestion`: `[A] Describe needs manually` / `[B] Stop — complete the GDD first`
+  Use `question`: `[A] Describe needs manually` / `[B] Stop — complete the GDD first`
 - **level**: Read `design/levels/[target-name].md`. Extract art requirements, asset list, VFX needs, and the art-director's production concept specs from Step 4.
 - **character**: Read `design/narrative/characters/[target-name].md` or search `design/narrative/` for the character profile. Extract visual description, role, and any specified distinguishing features.
 
@@ -80,7 +80,7 @@ Group assets into categories:
 - **Audio** — SFX, music tracks, ambient loops *(note: audio specs are descriptions only — no generation prompts)*
 - **3D Assets** — meshes, materials (if applicable per engine)
 
-Present the full identified list to the user. Use `AskUserQuestion`:
+Present the full identified list to the user. Use `question`:
 - Prompt: "I identified [N] assets across [N] categories for **[target]**. Review before speccing:"
 - Show the grouped list in conversation text first
 - Options: `[A] Proceed — spec all of these` / `[B] Remove some assets` / `[C] Add assets I didn't catch` / `[D] Adjust categories`
@@ -140,7 +140,7 @@ Combine the agent outputs into a draft spec per asset. Present all specs in conv
 **Status:** Needed
 ```
 
-After presenting all specs, use `AskUserQuestion`:
+After presenting all specs, use `question`:
 - Prompt: "Asset specs for **[target]** — [N] assets. Review complete?"
 - Options: `[A] Approve all — write to file` / `[B] Revise a specific asset` / `[C] Regenerate with different direction`
 
@@ -196,7 +196,7 @@ Ask: "May I update `design/assets/asset-manifest.md`?"
 
 ## Phase 6: Close
 
-Use `AskUserQuestion`:
+Use `question`:
 - Prompt: "Asset specs complete for **[target]**. What's next?"
 - Options:
   - `[A] Spec another system — /asset-spec system:[next-system]`

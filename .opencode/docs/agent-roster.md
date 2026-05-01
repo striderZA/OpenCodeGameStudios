@@ -1,7 +1,7 @@
 # Agent Roster
 
 The following agents are available. Each has a dedicated definition file in
-`.claude/agents/`. Use the agent best suited to the task at hand. When a task
+`.opencode/agents/`. Use the agent best suited to the task at hand. When a task
 spans multiple domains, the coordinating agent (usually `producer` or the
 domain lead) should delegate to specialists.
 

@@ -3,7 +3,7 @@ name: day-one-patch
 description: "Prepare a day-one patch for a game launch. Scopes, prioritises, implements, and QA-gates a focused patch addressing known issues discovered after gold master but before or immediately after public launch. Treats the patch as a mini-sprint with its own QA gate and rollback plan."
 argument-hint: "[scope: known-bugs | cert-feedback | all]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, question
 ---
 
 # Day-One Patch
@@ -62,7 +62,7 @@ For each open bug, evaluate:
 
 ### Step 2b — Present patch scope to user
 
-Use `AskUserQuestion`:
+Use `question`:
 - Prompt: "Based on open bugs and cert feedback, here is the proposed day-one patch scope. Does this look right?"
 - Show: table of included bugs (ID, severity, description, estimated effort)
 - Show: table of deferred bugs (ID, severity, reason deferred)
@@ -75,7 +75,7 @@ If [C]: output "No day-one patch required. Proceed to `/launch-checklist`." Stop
 Sum estimated effort. If total exceeds 1 day of work:
 > "⚠️ Patch scope is [N hours] — this exceeds a safe day-one window. Consider deferring lower-priority items to patch 1.1. A bloated day-one patch introduces more risk than it removes."
 
-Use `AskUserQuestion` to confirm proceeding or reduce scope.
+Use `question` to confirm proceeding or reduce scope.
 
 ---
 

@@ -3,7 +3,7 @@ name: ux-design
 description: "Guided, section-by-section UX spec authoring for a screen, flow, or HUD. Reads game concept, player journey, and relevant GDDs to provide context-aware design guidance. Produces ux-spec.md (per screen/flow) or hud-design.md using the studio templates."
 argument-hint: "[screen/flow name] or 'hud' or 'patterns'"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Edit, AskUserQuestion, Task
+allowed-tools: Read, Glob, Grep, Write, Edit, question, Task
 agent: ux-designer
 ---
 
@@ -20,7 +20,7 @@ Three authoring modes exist based on the argument:
 | Any other value (e.g., `main-menu`, `inventory`) | UX spec for a screen or flow | `design/ux/[argument].md` |
 | No argument | Ask the user | (see below) |
 
-**If no argument is provided**, do not fail — ask instead. Use `AskUserQuestion`:
+**If no argument is provided**, do not fail — ask instead. Use `question`:
 - "What are we designing today?"
   - Options: "A specific screen or flow (I'll name it)", "The game HUD", "The interaction pattern library", "I'm not sure — help me figure it out"
 
@@ -90,7 +90,7 @@ must satisfy the accessibility tier committed to there.
 
 ### 2h: Input Method (from Project Config)
 
-Read `.claude/docs/technical-preferences.md` and extract the `## Input & Platform`
+Read `.opencode/docs/technical-preferences.md` and extract the `## Input & Platform`
 section. Store these values for use throughout the skill — they drive the
 Interaction Map and inform accessibility requirements:
 
@@ -409,10 +409,10 @@ Context  ->  Questions  ->  Options  ->  Decision  ->  Draft  ->  Approval  ->  
 
 1. **Context**: State what this section needs to contain and surface any relevant
    constraints from context gathered in Phase 2.
-2. **Questions**: Ask what is needed to draft this section. Use `AskUserQuestion`
+2. **Questions**: Ask what is needed to draft this section. Use `question`
    for constrained choices, conversational text for open-ended exploration.
 3. **Options**: Where design choices exist, present 2-4 approaches with pros/cons.
-   Explain reasoning in conversation, then use `AskUserQuestion` to capture the decision.
+   Explain reasoning in conversation, then use `question` to capture the decision.
 4. **Decision**: User picks an approach or provides custom direction.
 5. **Draft**: Write the section content in conversation for review. Flag provisional
    assumptions explicitly.
@@ -513,7 +513,7 @@ This is the largest and most interactive section. Work through it in sub-section
 
 **Sub-section 4 — ASCII Wireframe**:
 - Offer to generate an ASCII wireframe based on the zone layout and component list.
-- Use `AskUserQuestion`: "Want an ASCII wireframe as part of this spec?"
+- Use `question`: "Want an ASCII wireframe as part of this spec?"
   - Options: "Yes, include one", "No, I'll attach a separate file"
 - If yes, produce the wireframe in conversation first. Ask for feedback before
   writing it to file.
@@ -631,7 +631,7 @@ Walk through the ux-designer agent's standard checklist for this screen:
 - Screen reader considerations for any non-text elements
 - Any motion or animation that needs a reduced-motion alternative
 
-Use `AskUserQuestion` to surface any open questions on accessibility tier:
+Use `question` to surface any open questions on accessibility tier:
 - "Has the accessibility tier been committed to for this project?"
   - Options: "Yes, read from requirements doc", "Not yet — let's flag it as a question", "Skip accessibility section for now"
 
@@ -716,7 +716,7 @@ For each item, ask the user to categorize it:
 | **On Demand** | Player must actively request it (toggle, hold button) |
 | **Hidden** | Communicated through world/audio, never on-screen text |
 
-Use `AskUserQuestion` to step through items in groups of 3-4, not all at once.
+Use `question` to step through items in groups of 3-4, not all at once.
 This is the most consequential design decision in the HUD — do not rush it.
 
 **Conflict check**: If the information philosophy (Section A) says "nearly HUD-free"
@@ -882,7 +882,7 @@ Before presenting options, state clearly:
 > implementation pipeline. The Pre-Production gate requires all key screen specs
 > to have a review verdict."
 
-Then use `AskUserQuestion`:
+Then use `question`:
 - "Run `/ux-review [filename]` now, or do something else first?"
   - Options:
     - "Run `/ux-review` now — validate this spec"
@@ -942,7 +942,7 @@ When delegating to another agent via the Task tool:
 This skill follows the collaborative design principle at every step:
 
 1. **Question -> Options -> Decision -> Draft -> Approval** for every section
-2. **AskUserQuestion** at every decision point (Explain -> Capture pattern):
+2. **question** at every decision point (Explain -> Capture pattern):
    - Phase 2: "Ready to start, or need more context?"
    - Phase 3: "May I create the skeleton?"
    - Phase 4 (each section): design questions, approach options, draft approval

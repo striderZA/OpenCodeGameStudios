@@ -3,9 +3,9 @@ name: architecture-review
 description: "Validates completeness and consistency of the project architecture against all GDDs. Builds a traceability matrix mapping every GDD technical requirement to ADRs, identifies coverage gaps, detects cross-ADR conflicts, verifies engine compatibility consistency across all decisions, and produces a PASS/CONCERNS/FAIL verdict. The architecture equivalent of /design-review."
 argument-hint: "[focus: full | coverage | consistency | engine | single-gdd path/to/gdd.md]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Task, question
 agent: technical-director
-model: opus
+model: opencode-go/kimi-k2.6
 ---
 
 # Architecture Review
@@ -68,7 +68,7 @@ Read all inputs appropriate to the mode:
 - All files in `docs/engine-reference/[engine]/modules/`
 
 ### Project Standards
-- `.claude/docs/technical-preferences.md`
+- `.opencode/docs/technical-preferences.md`
 
 Report a count: "Loaded [N] GDDs, [M] ADRs, engine: [name + version]."
 
@@ -324,7 +324,7 @@ Post-Cutoff API Conflicts:
 ### Engine Specialist Consultation
 
 After completing the engine audit above, spawn the **primary engine specialist** via Task for a domain-expert second opinion:
-- Read `.claude/docs/technical-preferences.md` `Engine Specialists` section to get the primary specialist
+- Read `.opencode/docs/technical-preferences.md` `Engine Specialists` section to get the primary specialist
 - If no engine is configured, skip this consultation
 - Spawn `subagent_type: [primary specialist]` with: all ADRs that contain engine-specific decisions or `Post-Cutoff APIs Used` fields, the engine reference docs, and the Phase 5 audit findings. Ask them to:
   1. Confirm or challenge each audit finding — specialists may know of engine nuances not captured in the reference docs
@@ -451,7 +451,7 @@ FAIL: Critical gaps (Foundation/Core layer requirements uncovered),
 
 ## Phase 8: Write and Update Traceability Index
 
-Use `AskUserQuestion` for the write approval:
+Use `question` for the write approval:
 - "Review complete. What would you like to write?"
   - [A] Write all three files (review report + traceability index + TR registry)
   - [B] Write review report only — `docs/architecture/architecture-review-[date].md`
@@ -605,7 +605,7 @@ After completing the review and writing approved files, present:
 3. **Rerun trigger**: "Re-run `/architecture-review` after each new ADR is written
    to verify coverage improves"
 
-Then close with `AskUserQuestion`:
+Then close with `question`:
 - "Architecture review complete. What would you like to do next?"
   - [A] Write a missing ADR — open a fresh session and run `/architecture-decision [system]`
   - [B] Run `/gate-check pre-production` — if all blocking gaps are resolved
@@ -619,7 +619,7 @@ If any spawned agent returns BLOCKED, errors, or fails to complete:
 
 1. **Surface immediately**: Report "[AgentName]: BLOCKED — [reason]" before continuing
 2. **Assess dependencies**: If the blocked agent's output is required by a later phase, do not proceed past that phase without user input
-3. **Offer options** via AskUserQuestion with three choices:
+3. **Offer options** via question with three choices:
    - Skip this agent and note the gap in the final report
    - Retry with narrower scope (fewer GDDs, single-system focus)
    - Stop here and resolve the blocker first

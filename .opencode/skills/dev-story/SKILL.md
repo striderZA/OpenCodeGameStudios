@@ -3,7 +3,7 @@ name: dev-story
 description: "Read a story file and implement it. Loads the full context (story, GDD requirement, ADR guidelines, control manifest), routes to the right programmer agent for the system and engine, implements the code and test, and confirms each acceptance criterion. The core implementation skill — run after /story-readiness, before /code-review and /story-done."
 argument-hint: "[story-path]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Bash, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Bash, Task, question
 ---
 
 # Dev Story
@@ -83,7 +83,7 @@ Read `docs/architecture/control-manifest.md`. Extract the rules for this story's
 - Performance guardrails
 
 Check: does the story's embedded Manifest Version match the current manifest header date?
-If they differ, use `AskUserQuestion` before proceeding:
+If they differ, use `question` before proceeding:
 - Prompt: "Story was written against manifest v[story-date]. Current manifest is v[current-date]. New rules may apply. How do you want to proceed?"
 - Options:
   - `[A] Update story manifest version and implement with current rules (Recommended)`
@@ -101,7 +101,7 @@ After extracting the **Dependencies** list from the story file, validate each:
 1. Glob `production/epics/**/*.md` to find each dependency story file.
 2. Read its `Status:` field.
 3. If any dependency has Status other than `Complete` or `Done`:
-   - Use `AskUserQuestion`:
+   - Use `question`:
      - Prompt: "Story '[current story]' depends on '[dependency title]' which is currently [status], not Complete. How do you want to proceed?"
      - Options:
        - `[A] Proceed anyway — I accept the dependency risk`
@@ -116,7 +116,7 @@ If a dependency file cannot be found: warn "Dependency story not found: [path]. 
 ---
 
 ### Engine reference
-Read `.claude/docs/technical-preferences.md`:
+Read `.opencode/docs/technical-preferences.md`:
 - `Engine:` value — determines which programmer agents to use
 - Naming conventions (class names, file names, signal/event names)
 - Performance budgets (frame budget, memory ceiling)
@@ -146,7 +146,7 @@ If the story's Type is `Config/Data`, no programmer agent or engine specialist i
 
 ### Engine specialist — always spawn as secondary for code stories
 
-Read the `Engine Specialists` section of `.claude/docs/technical-preferences.md`
+Read the `Engine Specialists` section of `.opencode/docs/technical-preferences.md`
 to get the configured primary specialist. Spawn them alongside the primary agent
 when the story involves engine-specific APIs, patterns, or the ADR has HIGH
 engine risk.
@@ -280,7 +280,7 @@ If any spawned agent (via Task) returns BLOCKED, errors, or cannot complete:
 
 1. **Surface immediately**: Report "[AgentName]: BLOCKED — [reason]" to the user before continuing to dependent phases
 2. **Assess dependencies**: Check whether the blocked agent's output is required by subsequent phases. If yes, do not proceed past that dependency point without user input.
-3. **Offer options** via AskUserQuestion with choices:
+3. **Offer options** via question with choices:
    - Skip this agent and note the gap in the final report
    - Retry with narrower scope
    - Stop here and resolve the blocker first
