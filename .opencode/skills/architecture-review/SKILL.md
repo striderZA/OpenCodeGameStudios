@@ -5,7 +5,7 @@ argument-hint: "[focus: full | coverage | consistency | engine | single-gdd path
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Task, question
 agent: technical-director
-model: opus
+model: opencode-go/kimi-k2.6
 ---
 
 # Architecture Review
