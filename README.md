@@ -34,7 +34,9 @@
 Claude Code's strict session and usage limits make it impractical for large-scale,
 long-running game development — sessions expire, context is frequently wiped, and
 high usage quickly hits rate caps. **OpenCode** removes those constraints,
-allowing sustained development over the full lifecycle of a game project.
+allowing sustained development over the full lifecycle of a game project. While there
+are some workarounds for Claude Code to access other models through local proxies, 
+this is not the intended use of Claude Code and such setups are fragile at best. 
 
 This port adapts the complete [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
 framework — its 49 agents, 72 skills, 12 hooks, and all rules — to run natively
@@ -78,7 +80,7 @@ all game development sessions:
 
 | Plugin | Purpose |
 |--------|---------|
-| [**context-mode**](https://github.com/anthropics/claude-code/tree/main/.claude/plugins/context-mode) | Dynamic context pruning — automatically manages context window size, indexes content for search, and prevents context overflow during long sessions |
+| [**dynamic-context-purging**](https://github.com/Opencode-DCP/opencode-dynamic-context-pruning)| Dynamic context pruning — automatically manages context window size, indexes content for search, and prevents context overflow during long sessions |
 | [**Superpowers**](https://github.com/obra/superpowers) | Enhanced skill library — provides structured workflows for brainstorming, test-driven development, writing plans, code review, and parallel agent dispatch |
 
 Add them to your `opencode.json`:
