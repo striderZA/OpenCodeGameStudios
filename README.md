@@ -37,7 +37,7 @@ high usage quickly hits rate caps. **OpenCode** removes those constraints,
 allowing sustained development over the full lifecycle of a game project.
 
 This port adapts the complete [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
-framework — its 49 agents, 72 commands, 12 hooks, and all rules — to run natively
+framework — its 49 agents, 72 skills, 12 hooks, and all rules — to run natively
 on OpenCode, giving game teams the same structured AI-assisted workflow without
 the artificial limits.
 
@@ -54,7 +54,7 @@ the artificial limits.
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
 | 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Commands** | 72 skills (`.claude/skills/`) | 72 commands (`.opencode/commands/`) | ✅ |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 72 skills (`.opencode/skills/`) | ✅ |
 | 🔗 **Hooks** | 12 bash hooks (`.claude/hooks/`) | 1 TS plugin (`.opencode/plugins/`) | ✅ **129 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
@@ -67,7 +67,7 @@ the artificial limits.
 opencode
 ```
 
-Type `/` to browse all 72 commands, or `/start` for onboarding.
+Type `/` to browse all 72 skills, or `/start` for onboarding.
 
 ---
 
@@ -187,12 +187,11 @@ node utils/assign-models.js --config my-models.json
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .opencode/
-│   ├── commands/              ⌨️ 72 slash commands
+│   ├── skills/              ⌨️ 72 skills 
 │   ├── agents/                🤖 49 agent definitions
 │   ├── plugins/
 │   │   ├── ccgs-hooks.ts     🔗 TS plugin (all 12 hooks)
 │   │   └── tests/             🧪 11 test suites (129 tests)
-│   ├── skills/                📚 Skill files
 │   └── rules/                 📏 Coding standards
 ├── .claude/docs/              📖 CCGS documentation
 ├── design/                    🎨 Game design documents
