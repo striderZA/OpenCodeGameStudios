@@ -1,6 +1,6 @@
 # Path-Specific Rules
 
-Rules in `.claude/rules/` are automatically enforced when editing files in matching paths:
+Rules in `.opencode/rules/` are automatically enforced when editing files in matching paths:
 
 | Rule File | Path Pattern | Enforces |
 | ---- | ---- | ---- |
