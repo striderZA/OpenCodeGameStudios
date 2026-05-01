@@ -37,7 +37,7 @@ Before proposing any design:
 4. **Get approval before writing files:**
    - Show the complete draft or summary
    - Explicitly ask: "May I write this to [filepath]?"
-   - Wait for "yes" before using Write/Edit tools
+   - Wait for "yes" before using write and edit tools
    - If user says "no" or "change X", iterate and return to step 3
 
 #### Collaborative Mindset
