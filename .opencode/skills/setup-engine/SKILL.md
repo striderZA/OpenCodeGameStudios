@@ -1,9 +1,9 @@
 ---
 name: setup-engine
-description: "Configure the project's game engine and version. Pins the engine in CLAUDE.md, detects knowledge gaps, and populates engine reference docs via WebSearch when the version is beyond the LLM's training data."
+description: "Configure the project's game engine and version. Pins the engine in CLAUDE.md, detects knowledge gaps, and populates engine reference docs via webfetch when the version is beyond the LLM's training data."
 argument-hint: "[engine] | [engine version] | refresh | upgrade [old-version] [new-version] | no args for guided selection"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Edit, WebSearch, WebFetch, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Edit, webfetch, WebFetch, Task, question
 ---
 
 When this skill is invoked:
@@ -34,7 +34,7 @@ If no engine is specified, run an interactive engine selection process:
 
 ### If the user wants to pick without a concept, ask in this order:
 
-**Question 1 — Prior experience** (ask this first, always, via `AskUserQuestion`):
+**Question 1 — Prior experience** (ask this first, always, via `question`):
 - Prompt: "Have you worked in any of these engines before?"
 - Options: `Godot` / `Unity` / `Unreal Engine 5` / `Multiple — I'll explain` / `None of them`
 - If they pick a specific engine → recommend that engine. Prior experience outweighs all other factors. Confirm with them and skip the matrix.
@@ -42,7 +42,7 @@ If no engine is specified, run an interactive engine selection process:
 
 **Questions 2-6 — Decision matrix inputs** (only if no prior engine experience):
 
-**Question 2 — Target platform** (ask this second, always, via `AskUserQuestion` — platform eliminates or heavily weights engines before any other factor):
+**Question 2 — Target platform** (ask this second, always, via `question` — platform eliminates or heavily weights engines before any other factor):
 - Prompt: "What platforms are you targeting for this game?"
 - Options: `PC (Steam / Epic)` / `Mobile (iOS / Android)` / `Console` / `Web / Browser` / `Multiple platforms`
 - Platform rules that feed directly into the recommendation:
@@ -99,11 +99,11 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 2. Give a primary recommendation with honest reasoning
 3. Name the best alternative and when to choose it instead
 4. Explicitly state: "This is a starting point, not a verdict — you can always migrate engines, and many developers switch between projects."
-5. Use `AskUserQuestion` to confirm: "Does this recommendation feel right, or would you like to explore a different engine?"
+5. Use `question` to confirm: "Does this recommendation feel right, or would you like to explore a different engine?"
    - Options: `[Primary engine] (Recommended)` / `[Alternative engine]` / `[Third engine]` / `Explore further` / `Type something`
 
 **If the user picks "Explore further":**
-Use `AskUserQuestion` with concept-specific deep-dive topics. Always generate these options from the user's actual concept — do not use generic options. Always include at minimum:
+Use `question` with concept-specific deep-dive topics. Always generate these options from the user's actual concept — do not use generic options. Always include at minimum:
 - The primary engine's specific limitations for this concept (e.g., "How far can Godot 3D actually go for [genre]?")
 - The alternative engine's specific tradeoffs for this concept
 - Language choice impact on this concept's technical challenges
@@ -118,7 +118,7 @@ The user can select multiple topics. Answer each selected topic in depth before 
 Once the engine is chosen:
 
 - If version was provided, use it
-- If no version provided, use WebSearch to find the latest stable release:
+- If no version provided, use webfetch to find the latest stable release:
   - Search: `"[engine] latest stable version [current year]"`
   - Confirm with the user: "The latest stable [engine] is [version]. Use this?"
 
@@ -171,7 +171,7 @@ Update the Technology Stack section, replacing the `[CHOOSE]` placeholders with 
 
 ## 5. Populate Technical Preferences
 
-After updating CLAUDE.md, create or update `.claude/docs/technical-preferences.md` with
+After updating CLAUDE.md, create or update `.opencode/docs/technical-preferences.md` with
 engine-appropriate defaults. Read the existing template first, then fill in:
 
 ### Engine & Language Section
@@ -230,7 +230,7 @@ Example filled section:
 ```
 
 ### Remaining Sections
-- **Performance Budgets**: Use `AskUserQuestion`:
+- **Performance Budgets**: Use `question`:
   - Prompt: "Should I set default performance budgets now, or leave them for later?"
   - Options: `[A] Set defaults now (60fps, 16.6ms frame budget, engine-appropriate draw call limit)` / `[B] Leave as [TO BE CONFIGURED] — I'll set these when I know my target hardware`
   - If [A]: populate with the suggested defaults. If [B]: leave as placeholder.
@@ -416,7 +416,7 @@ The section should instruct the agent to:
 1. Read `docs/engine-reference/<engine>/VERSION.md`
 2. Check deprecated APIs before suggesting code
 3. Check breaking changes for relevant version transitions
-4. Use WebSearch to verify uncertain APIs
+4. Use webfetch to verify uncertain APIs
 
 ---
 
@@ -426,7 +426,7 @@ If invoked as `/setup-engine refresh`:
 
 1. Read the existing `docs/engine-reference/<engine>/VERSION.md` to get
    the current engine and version
-2. Use WebSearch to check for:
+2. Use webfetch to check for:
    - New engine releases since last verification
    - Updated migration guides
    - Newly deprecated APIs
@@ -449,7 +449,7 @@ file.
 
 ### Step 2 — Fetch Migration Guide
 
-Use WebSearch and WebFetch to locate the official migration guide between
+Use webfetch and WebFetch to locate the official migration guide between
 `old-version` and `new-version`:
 
 - Search: `"[engine] [old-version] to [new-version] migration guide"`
@@ -571,11 +571,11 @@ Verdict: **COMPLETE** — engine configured and reference docs populated.
 
 ## Guardrails
 
-- NEVER guess an engine version — always verify via WebSearch or user confirmation
+- NEVER guess an engine version — always verify via webfetch or user confirmation
 - NEVER overwrite existing reference docs without asking — append or update
 - If reference docs already exist for a different engine, ask before replacing
 - Always show the user what you're about to change before making CLAUDE.md edits
-- If WebSearch returns ambiguous results, show the user and let them decide
+- If webfetch returns ambiguous results, show the user and let them decide
 - When the user chose **GDScript**: copy the GDScript CLAUDE.md template from Appendix A1 exactly. NEVER add "C++ via GDExtension" to the Language field. GDScript projects may use GDExtension, but it is not a primary project language. The `godot-gdextension-specialist` in the routing table is available for when native extensions are needed — it does not make C++ a project language.
 
 ---

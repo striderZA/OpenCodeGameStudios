@@ -4,7 +4,7 @@ description: "Analyze a feature or sprint for scope creep by comparing current s
 argument-hint: "[feature-name or sprint-N]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash
-model: haiku
+model: opencode-go/deepseek-v4-flash
 ---
 
 # Scope Check

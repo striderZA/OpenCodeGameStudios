@@ -4,14 +4,14 @@ description: "Generates a contextual onboarding document for a new contributor o
 argument-hint: "[role|area]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
-model: haiku
+model: opencode-go/deepseek-v4-flash
 ---
 
 ## Phase 1: Load Project Context
 
 Read CLAUDE.md for project overview and standards.
 
-Read the relevant agent definition from `.claude/agents/` if a specific role is specified.
+Read the relevant agent definition from `.opencode/agents/` if a specific role is specified.
 
 ---
 

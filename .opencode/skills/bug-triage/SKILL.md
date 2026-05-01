@@ -60,7 +60,7 @@ If no sprint file exists: note "No sprint plan found — assigning to backlog on
 
 ### Step 2c — Load severity reference
 
-Read `.claude/docs/coding-standards.md` for severity/priority definitions if they
+Read `.opencode/docs/coding-standards.md` for severity/priority definitions if they
 exist. If they do not exist, use the standard definitions in Step 3.
 
 ---
