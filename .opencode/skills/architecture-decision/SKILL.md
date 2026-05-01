@@ -3,7 +3,7 @@ name: architecture-decision
 description: "Creates an Architecture Decision Record (ADR) documenting a significant technical decision, its context, alternatives considered, and consequences. Every major technical choice should have an ADR."
 argument-hint: "[title] [--review full|lean|solo]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Edit, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Edit, Task, question
 ---
 
 When this skill is invoked:
@@ -169,7 +169,7 @@ or explicitly accepted as an intentional exception.
 
 Before asking anything, derive the skill's best guesses from the context already
 gathered (GDDs read, engine reference loaded, existing ADRs scanned). Then present
-a **confirm/adjust** prompt using `AskUserQuestion` — not open-ended questions.
+a **confirm/adjust** prompt using `question` — not open-ended questions.
 
 **Derive assumptions first:**
 - **Problem**: Infer from the title + GDD context what decision needs to be made
@@ -178,11 +178,11 @@ a **confirm/adjust** prompt using `AskUserQuestion` — not open-ended questions
 - **GDD linkage**: Extract which GDD systems the title directly relates to
 - **Status**: Always `Proposed` for new ADRs — never ask the user what the status is
 
-**Scope of assumptions tab**: Assumptions cover only: problem framing, alternative approaches, upstream dependencies, GDD linkage, and status. Schema design questions (e.g., "How should spawn timing work?", "Should data be inline or external?") are NOT assumptions — they are design decisions belonging to a separate step after the assumptions are confirmed. Do not include schema design questions in the assumptions AskUserQuestion widget.
+**Scope of assumptions tab**: Assumptions cover only: problem framing, alternative approaches, upstream dependencies, GDD linkage, and status. Schema design questions (e.g., "How should spawn timing work?", "Should data be inline or external?") are NOT assumptions — they are design decisions belonging to a separate step after the assumptions are confirmed. Do not include schema design questions in the assumptions question widget.
 
-**After assumptions are confirmed**, if the ADR involves schema or data design choices, use a separate multi-tab `AskUserQuestion` to ask each design question independently before drafting.
+**After assumptions are confirmed**, if the ADR involves schema or data design choices, use a separate multi-tab `question` to ask each design question independently before drafting.
 
-**Present assumptions with `AskUserQuestion`:**
+**Present assumptions with `question`:**
 
 ```
 Here's what I'm assuming before drafting:
@@ -206,7 +206,7 @@ Status: Proposed
 Do not generate the ADR until the user confirms assumptions or provides corrections.
 
 **After engine specialist and TD reviews return** (Step 4.5/4.6), if unresolved
-decisions remain, present each one as a separate `AskUserQuestion` with the proposed
+decisions remain, present each one as a separate `question` with the proposed
 options as choices plus a free-text escape:
 
 ```
@@ -371,7 +371,7 @@ developers reading the GDD from implementing the wrong interface.
 
 If no inconsistencies: skip this block silently.
 
-5. **Write approval** — Use `AskUserQuestion`:
+5. **Write approval** — Use `question`:
 
 If GDD sync issues were found:
 - "ADR draft is complete. How would you like to proceed?"
@@ -414,7 +414,7 @@ Registry candidates from this ADR:
 
 **BLOCKING — do not write to `docs/registry/architecture.yaml` without explicit user approval.**
 
-Ask using `AskUserQuestion`:
+Ask using `question`:
 - "May I update `docs/registry/architecture.yaml` with these [N] new stances?"
   - Options: "Yes — update the registry", "Not yet — I want to review the candidates", "Skip registry update"
 
@@ -425,7 +425,7 @@ changing, set the old entry to `status: superseded_by: ADR-[NNNN]` and add the n
 
 ## 7. Closing Next Steps
 
-After the ADR is written (and registry optionally updated), close with `AskUserQuestion`.
+After the ADR is written (and registry optionally updated), close with `question`.
 
 Before generating the widget:
 1. Read `docs/registry/architecture.yaml` — check if any priority ADRs are still unwritten (look for ADRs flagged in technical-preferences.md or systems-index.md as prerequisites)

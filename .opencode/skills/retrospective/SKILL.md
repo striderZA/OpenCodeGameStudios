@@ -48,7 +48,7 @@ Read the sprint or milestone plan from the appropriate location:
 > "No sprint data found for [sprint/milestone]. Run `/sprint-status` to generate
 > sprint data first, or provide the sprint details manually."
 
-Then use `AskUserQuestion` to present two options:
+Then use `question` to present two options:
 
 - **[A] Provide data manually** — ask the user to paste or describe the sprint
   tasks, dates, and outcomes; use that as the source of truth for the retrospective.

@@ -3,7 +3,7 @@ name: create-stories
 description: "Break a single epic into implementable story files. Reads the epic, its GDD, governing ADRs, and control manifest. Each story embeds its GDD requirement TR-ID, ADR guidance, acceptance criteria, story type, and test evidence path. Run after /create-epics for each epic."
 argument-hint: "[epic-slug | epic-path] [--review full|lean|solo]"
 user-invocable: true
-allowed-tools: Read, Glob, Grep, Write, Task, AskUserQuestion
+allowed-tools: Read, Glob, Grep, Write, Task, question
 agent: lead-programmer
 ---
 
@@ -157,7 +157,7 @@ Story 003: [title] — Visual/Feel — ADR-NNNN
 [N stories total: N Logic, N Integration, N Visual/Feel, N UI, N Config/Data]
 ```
 
-Use `AskUserQuestion`:
+Use `question`:
 - Prompt: "May I write these [N] stories to `production/epics/[epic-slug]/`?"
 - Options: `[A] Yes — write all [N] stories` / `[B] Not yet — I want to review or adjust first`
 
@@ -280,7 +280,7 @@ Replace the "Stories: Not yet created" line with a populated table:
 
 ## 7. After Writing
 
-Use `AskUserQuestion` to close with context-aware next steps:
+Use `question` to close with context-aware next steps:
 
 Check:
 - Are there other epics in `production/epics/` without stories yet? List them.
