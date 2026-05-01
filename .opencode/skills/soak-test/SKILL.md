@@ -52,7 +52,7 @@ human does the actual playing.**
 ## 2. Load Context
 
 Read:
-- `.claude/docs/technical-preferences.md` — engine (for engine-specific memory
+- `.opencode/docs/technical-preferences.md` — engine (for engine-specific memory
   monitoring guidance), performance budgets (memory ceiling, target FPS)
 - `design/gdd/game-concept.md` — intended session length (for comparison against
   soak duration), core loop description
