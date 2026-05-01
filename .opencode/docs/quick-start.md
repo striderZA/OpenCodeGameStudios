@@ -263,13 +263,13 @@ If you have design docs, prototypes, or code already:
 ## File Structure Reference
 
 ```
-CLAUDE.md                          -- Master config (read this first, ~60 lines)
-.claude/
-  settings.json                    -- Claude Code hooks and project settings
-  agents/                          -- 48 agent definitions (YAML frontmatter)
-  skills/                          -- 68 slash command definitions (YAML frontmatter)
-  hooks/                           -- 12 hook scripts (.sh) wired by settings.json
-  rules/                           -- 11 path-specific rule files
+AGENTS.md                          -- Master config (read this first)
+.opencode/
+  config.json                      -- OpenCode settings and plugin configuration
+  agents/                          -- Agent definitions (YAML frontmatter)
+  skills/                          -- Skill definitions (YAML frontmatter)
+  hooks/                           -- Hook scripts wired by config
+  rules/                           -- Path-specific rule files
   docs/
     quick-start.md                 -- This file
     technical-preferences.md       -- Project-specific standards (populated by /setup-engine)
