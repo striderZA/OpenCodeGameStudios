@@ -1,5 +1,9 @@
 # OpenCode Game Studios
 
+<p align="center">
+  <img src="assets/banner.png" alt="OpenCode Game Studios Banner" width="100%">
+</p>
+
 > ⚡ Port of [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) to [OpenCode](https://opencode.ai)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
