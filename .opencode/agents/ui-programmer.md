@@ -99,3 +99,7 @@ Before writing any code:
 
 ### Reports to: `lead-programmer`
 ### Implements specs from: `art-director`, `ux-designer`
+
+### MCP Integration
+
+- Use the godot-mcp server (run_project, get_debug_output) to test UI scenes in-game
