@@ -4,7 +4,7 @@ description: "Validate that a story file is implementation-ready. Checks for emb
 argument-hint: "[story-file-path or 'all' or 'sprint']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, AskUserQuestion, Task
-model: haiku
+model: opencode-go/deepseek-v4-flash
 ---
 
 # Story Readiness

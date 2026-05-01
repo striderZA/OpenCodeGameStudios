@@ -6,7 +6,7 @@ user-invocable: true
 allowed-tools: Read, Glob, Grep
 context: |
   !echo "=== Live Project State ===" && echo "Stage: $(cat production/stage.txt 2>/dev/null | tr -d '[:space:]' || echo 'not set')" && echo "Latest sprint: $(ls -t production/sprints/*.md 2>/dev/null | head -1 || echo 'none')" && echo "Session state: $(head -5 production/session-state/active.md 2>/dev/null || echo 'none')"
-model: haiku
+model: opencode-go/deepseek-v4-flash
 ---
 
 # Studio Help — What Do I Do Next?
