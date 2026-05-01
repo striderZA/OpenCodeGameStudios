@@ -384,6 +384,59 @@ Wait for confirmation before writing any files.
 5. **For module files**: Only create modules for subsystems where significant
    changes occurred. Don't create empty or minimal module files.
 
+### 7.5. Configure godot-mcp (Optional — Godot Only)
+
+If Godot was chosen as the engine, the AI can work more effectively with the
+[godot-mcp](https://github.com/Coding-Solo/godot-mcp) server, which provides
+runtime tools for interacting with the Godot editor and running project:
+
+**Available MCP tools:**
+- `launch_editor` — launch the Godot editor
+- `run_project` — run the current project
+- `get_debug_output` — capture live debug output from the running project
+- `stop_project` — stop the running project
+- `get_godot_version` — check the installed Godot version
+- `list_projects` — list all Godot projects
+- `get_project_info` — get metadata about the project
+- `create_scene` — create a new scene file
+- `add_node` — add nodes to a scene
+- `load_sprite` — load a sprite resource
+- `save_scene` — save a scene file
+- `export_mesh_library` — export a mesh library
+- `get_uid` — get a resource UID
+- `update_project_uids` — update project resource UIDs
+
+**Installation:**
+```bash
+# Install via npx (no global install needed)
+npx @coding-solo/godot-mcp
+```
+
+**OpenCode MCP configuration:**
+Add to `opencode.json` or the appropriate MCP config file:
+```json
+{
+  "mcpServers": {
+    "godot": {
+      "command": "npx",
+      "args": ["@coding-solo/godot-mcp"],
+      "env": {
+        "DEBUG": "true"
+      }
+    }
+  }
+}
+```
+
+**Environment setup:**
+Optionally set `GODOT_PATH` if the Godot binary is not in PATH:
+```json
+"env": {
+  "GODOT_PATH": "/path/to/godot",
+  "DEBUG": "true"
+}
+```
+
 ---
 
 ## 8. Update CLAUDE.md Import
