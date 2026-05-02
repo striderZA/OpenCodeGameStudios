@@ -4,56 +4,52 @@ This template requires a few tools to be installed for full functionality.
 All hooks fail gracefully if tools are missing — nothing will break, but
 you'll lose validation features.
 
-> **New projects:** After cloning this template, run `/init-template` before anything else. It customizes the template with your game name, engine choice, and team preferences, and cleans out example files.
+> **New projects:** After cloning this template, run `/start` before anything else. It customizes the template with your game name, engine choice, and team preferences, and cleans out example files.
 
 ## Required
 
 | Tool | Purpose | Install |
 | ---- | ---- | ---- |
 | **Git** | Version control, branch management | [git-scm.com](https://git-scm.com/) |
-| **Claude Code** | AI agent CLI | `npm install -g @anthropic-ai/claude-code` |
+| **OpenCode** | AI agent CLI | `npm install -g opencode` |
 
 ## Recommended
 
 | Tool | Used By | Purpose | Install |
 | ---- | ---- | ---- | ---- |
-| **jq** | Hooks (4 of 8) | JSON parsing in commit/push/asset/agent hooks | See below |
-| **Python 3** | Hooks (2 of 8) | JSON validation for data files | [python.org](https://www.python.org/) |
-| **Bash** | All hooks | Shell script execution | Included with Git for Windows |
+| **Node.js 18+** | Hooks plugin | Runtime for the CCGS TypeScript hooks plugin | [nodejs.org](https://nodejs.org/) |
 
-### Installing jq
+### Installing Node.js
 
 **Windows** (any of these):
 ```
-winget install jqlang.jq
-choco install jq
-scoop install jq
+winget install OpenJS.NodeJS.LTS
+choco install nodejs-lts
+scoop install nodejs
 ```
 
 **macOS**:
 ```
-brew install jq
+brew install node
 ```
 
 **Linux**:
 ```
-sudo apt install jq     # Debian/Ubuntu
-sudo dnf install jq     # Fedora
-sudo pacman -S jq       # Arch
+sudo apt install nodejs npm     # Debian/Ubuntu
+sudo dnf install nodejs         # Fedora
+sudo pacman -S nodejs npm       # Arch
 ```
 
 ## Platform Notes
 
 ### Windows
-- Git for Windows includes **Git Bash**, which provides the `bash` command
-  used by all hooks in `settings.json`
+- Git for Windows includes **Git Bash**, which provides `bash`
 - Ensure Git Bash is on your PATH (default if installed via the Git installer)
-- Hooks use `bash .opencode/hooks/[name].sh` — this works on Windows because
-  Claude Code invokes commands through a shell that can find `bash.exe`
+- OpenCode runs natively in PowerShell, CMD, Git Bash, and Windows Terminal
 
 ### macOS / Linux
-- Bash is available natively
-- Install `jq` via your package manager for full hook support
+- Node.js and npm are available via your package manager
+- OpenCode works in any standard terminal
 
 ## Verifying Your Setup
 
@@ -61,25 +57,23 @@ Run these commands to check prerequisites:
 
 ```bash
 git --version          # Should show git version
-bash --version         # Should show bash version
-jq --version           # Should show jq version (optional)
-python3 --version      # Should show python version (optional)
+node --version         # Should show Node.js 18+
+npx opencode --version # Should show OpenCode version
 ```
 
 ## What Happens Without Optional Tools
 
 | Missing Tool | Effect |
 | ---- | ---- |
-| **jq** | Commit validation, push protection, asset validation, and agent audit hooks silently skip their checks. Commits and pushes still work. |
-| **Python 3** | JSON data file validation in commit and asset hooks is skipped. Invalid JSON can be committed without warning. |
-| **Both** | All hooks still execute without error (exit 0) but provide no validation. You're flying without safety nets. |
+| **Node.js** | The hooks plugin (`ccgs-hooks.ts`) cannot execute. All hook events silently pass through. Commits, pushes, and all other operations still work. |
 
 ## Recommended IDE
 
-Claude Code works with any editor, but the template is optimized for:
-- **VS Code** with the Claude Code extension
-- **Cursor** (Claude Code compatible)
-- Terminal-based Claude Code CLI
+OpenCode works with any editor:
+- **VS Code** with the OpenCode CLI
+- **Cursor** (OpenCode compatible)
+- **Terminal** — `opencode` CLI directly in any shell
+- **JetBrains IDEs** — via the terminal
 
 ## Optional Engine Dependencies
 

@@ -1,21 +1,37 @@
 # Active Hooks
 
-Hooks are configured in `.opencode/settings.json` and fire automatically:
+All 12 bash hooks from CCGS are ported to a single TypeScript plugin
+at **`.opencode/plugins/ccgs-hooks.ts`**. Hooks fire automatically
+via OpenCode's plugin event system:
 
-| Hook | Event | Trigger | Action |
-| ---- | ----- | ------- | ------ |
-| `validate-commit.sh` | PreToolUse (Bash) | `git commit` commands | Validates design doc sections, JSON data files, hardcoded values, TODO format |
-| `validate-push.sh` | PreToolUse (Bash) | `git push` commands | Warns on pushes to protected branches (develop/main) |
-| `validate-assets.sh` | PostToolUse (Write/Edit) | Asset file changes | Checks naming conventions and JSON validity for files in `assets/` |
-| `session-start.sh` | SessionStart | Session begins | Loads sprint context, milestone, git activity; detects and previews active session state file for recovery |
-| `detect-gaps.sh` | SessionStart | Session begins | Detects fresh projects (suggests /start) and missing documentation when code/prototypes exist, suggests /reverse-document or /project-stage-detect |
-| `pre-compact.sh` | PreCompact | Context compression | Dumps session state (active.md, modified files, WIP design docs) into conversation before compaction so it survives summarization |
-| `post-compact.sh` | PostCompact | After compaction | Reminds Claude to restore session state from `active.md` checkpoint |
-| `notify.sh` | Notification | Notification event | Shows Windows toast notification via PowerShell |
-| `session-stop.sh` | Stop | Session ends | Summarizes accomplishments and updates session log |
-| `log-agent.sh` | SubagentStart | Agent spawned | Audit trail start — logs subagent invocation with timestamp |
-| `log-agent-stop.sh` | SubagentStop | Agent stops | Audit trail stop — completes subagent record |
-| `validate-skill-change.sh` | PostToolUse (Write/Edit) | Skill file changes | Advises running `/skill-test` after any `.opencode/skills/` file is written or edited |
+| # | Bash Hook | 🔌 OpenCode Event | 🧪 Tests |
+|---|-----------|-------------------|:--------:|
+| 1 | `session-start.sh` | `session.created` | **18** |
+| 2 | `session-stop.sh` | `session.idle` / `server.instance.disposed` | **10** |
+| 3 | `detect-gaps.sh` | `session.created` | **15** |
+| 4 | `log-agent.sh` | `tool.execute.before` (task) | **5** |
+| 5 | `log-agent-stop.sh` | `tool.execute.after` (task) | **4** |
+| 6 | `validate-assets.sh` | `tool.execute.after` | **16** |
+| 7 | `validate-commit.sh` | `tool.execute.before` (git commit) | **17** |
+| 8 | `validate-push.sh` | `tool.execute.before` (git push) | **13** |
+| 9 | `validate-skill-change.sh` | `tool.execute.after` | **12** |
+| 10 | `pre-compact.sh` | `experimental.session.compacting` | **14** |
+| 11 | `post-compact.sh` | `experimental.compaction.autocontinue` | **5** |
+| 12 | `notify.sh` | Utility (`showNotification`) | — |
+
+## Running Tests
+
+Run a test suite against the hooks plugin:
+
+```bash
+node .opencode/plugins/tests/test-<name>.mjs
+```
+
+For example, to run the commit validation tests:
+
+```bash
+node .opencode/plugins/tests/test-validate-commit.mjs
+```
 
 Hook reference documentation: `.opencode/docs/hooks-reference/`
 Hook input schema documentation: `.opencode/docs/hooks-reference/hook-input-schemas.md`
