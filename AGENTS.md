@@ -97,6 +97,8 @@ Or jump directly to:
 - `/brainstorm` — explore game ideas from scratch
 - `/setup-engine godot 4.6` — configure your engine
 - `/project-stage-detect` — analyze an existing project
+- `/prototype` — rapid prototype a concept
+- `/hybrid-prototype` — fast-lane prototype for discovery phase
 
 ## Available Commands
 
@@ -108,6 +110,7 @@ Type `/` in OpenCode to see all 72 commands. Key categories:
 - **Stories**: `/create-epics`, `/create-stories`, `/dev-story`, `/sprint-plan`
 - **Reviews**: `/design-review`, `/code-review`, `/balance-check`, `/gate-check`
 - **QA**: `/qa-plan`, `/smoke-check`, `/soak-test`, `/regression-suite`
+- **Prototyping**: `/prototype`, `/hybrid-prototype`
 - **Team**: `/team-combat`, `/team-narrative`, `/team-ui`, `/team-release`
 
 ## Studio Hierarchy
