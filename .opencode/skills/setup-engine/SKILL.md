@@ -384,7 +384,7 @@ Wait for confirmation before writing any files.
 5. **For module files**: Only create modules for subsystems where significant
    changes occurred. Don't create empty or minimal module files.
 
-### 7.5. Configure godot-mcp (Optional — Godot Only)
+### 7.3. Configure godot-mcp (Optional — Godot Only)
 
 If Godot was chosen as the engine, the AI can work more effectively with the
 [godot-mcp](https://github.com/Coding-Solo/godot-mcp) server, which provides
@@ -409,7 +409,8 @@ runtime tools for interacting with the Godot editor and running project:
 **Installation:**
 ```bash
 # Install via npx (no global install needed)
-npx @coding-solo/godot-mcp
+# Pin to a specific version in production (e.g., @coding-solo/godot-mcp@1.0.0)
+npx @coding-solo/godot-mcp@latest
 ```
 
 **OpenCode MCP configuration:**
@@ -427,6 +428,8 @@ Add to `opencode.json` or the appropriate MCP config file:
   }
 }
 ```
+
+> **Note:** `DEBUG=true` enables verbose logging of all MCP communication (requests, responses, and debug info). Use it when troubleshooting MCP tool issues or during initial setup. Disable (`"DEBUG": "false"` or remove the variable) in normal use to reduce log noise.
 
 **Environment setup:**
 Optionally set `GODOT_PATH` if the Godot binary is not in PATH:
