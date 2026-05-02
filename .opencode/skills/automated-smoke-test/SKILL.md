@@ -72,14 +72,12 @@ If `run_project` returns an error or the project fails to start:
 > project's scope (from Phase 2's project info) and scale up for complex titles.
 > For headless CI runs, prefer longer durations to account for slower hardware.
 
-<<<<<<< HEAD
 If `get_debug_output` returns an error:
 - Report: "Could not capture debug output: [error message]"
 - Verdict: **FAIL**
 - Skip to Phase 6 (stop project), then continue to Phase 7 for the report
-=======
+
 Do not use a fixed sleep. Instead, poll `get_debug_output` in a loop:
->>>>>>> fix/smoke-quality
 
 1. Every 2 seconds, call `get_debug_output`.
 2. If the output contains any ERROR, crash, or assertion pattern (see Phase 5),
