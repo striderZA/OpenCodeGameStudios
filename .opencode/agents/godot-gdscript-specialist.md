@@ -261,6 +261,6 @@ When in doubt, prefer the API documented in the reference files over your traini
 - Work with **systems-designer** for data-driven design patterns
 - Work with **performance-analyst** for profiling GDScript bottlenecks
 
-### MCP Integration
+## MCP Integration
 
 - Use the godot-mcp server (create_scene, add_node, save_scene) for rapid scene prototyping and verification

@@ -182,6 +182,6 @@ Always involve this agent when:
 - Configuring export presets for any platform
 - Optimizing rendering, physics, or memory in Godot
 
-### MCP Integration
+## MCP Integration
 
 - Use the godot-mcp server (get_project_info, list_projects) to audit project structure and configuration
