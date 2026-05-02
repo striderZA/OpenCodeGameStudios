@@ -4,7 +4,7 @@ This template requires a few tools to be installed for full functionality.
 All hooks fail gracefully if tools are missing — nothing will break, but
 you'll lose validation features.
 
-> **New projects:** After cloning this template, run `/start` before anything else. It customizes the template with your game name, engine choice, and team preferences, and cleans out example files.
+> **New projects:** After cloning this template, run `/init-template` before anything else. It customizes the template with your game name, engine choice, and team preferences, and cleans out example files.
 
 ## Required
 

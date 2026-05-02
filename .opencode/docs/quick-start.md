@@ -275,10 +275,10 @@ If you have design docs, prototypes, or code already:
 ```
 AGENTS.md                          -- Master config (read this first)
 .opencode/
-  config.json                      -- OpenCode settings and plugin configuration
+  (opencode.json at root)          -- OpenCode settings and plugin configuration
   agents/                          -- Agent definitions (YAML frontmatter)
   skills/                          -- Skill definitions (YAML frontmatter)
-  hooks/                           -- Hook scripts wired by config
+  plugins/                         -- TypeScript hooks plugin (ccgs-hooks.ts)
   rules/                           -- Path-specific rule files
   docs/
     quick-start.md                 -- This file
@@ -288,7 +288,6 @@ AGENTS.md                          -- Master config (read this first)
     context-management.md          -- Context budgets and compaction instructions
     directory-structure.md         -- Project directory layout
     workflow-catalog.yaml          -- 7-phase pipeline definition (read by /help)
-    setup-requirements.md          -- System prerequisites (Git Bash, jq, Python)
-    settings-local-template.md     -- Personal settings.local.json guide
+    setup-requirements.md          -- System prerequisites (Git, Node.js, OpenCode CLI)
     templates/                     -- 37 document templates
 ```

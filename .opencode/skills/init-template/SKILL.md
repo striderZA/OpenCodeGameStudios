@@ -72,9 +72,10 @@ Replace `[Game Name]`, `[One-line description]`, and `[Engine]` with the user's 
 ## Phase 3: Update AGENTS.md
 
 Read AGENTS.md and update:
-- Replace the Model Mapping section at the top with the user's engine and model preference
-- Set the engine to the user's choice
+- Set the engine to the user's choice by changing the `## Technology Stack` section
+- Update the model assignment: replace the model table with the user's preference (default/workhorse/lightweight), mapping to their engine's specialist agents
 - Remove or update any project-specific settings
+- If AGENTS.md is missing or malformed, warn and skip this phase
 
 ## Phase 4: Update opencode.json
 
@@ -82,15 +83,17 @@ Read opencode.json and clean it up:
 - Remove any internal-only plugin paths
 - Set project name appropriately
 - Keep the ccgs-hooks.ts plugin reference only if the file actually exists: `if [ -f .opencode/plugins/ccgs-hooks.ts ]; then ...`
+- If opencode.json is missing or malformed, warn and skip this phase
 
 ## Phase 5: Remove Internal Files
 
-Remove these files/directories with existence guards (`rm -f` or `[ -f ] && rm`):
+For each file/directory below, check existence first before deleting. If the directory already has user-created content, warn and skip rather than destroying it:
 
 - `rm -f UPGRADING.md CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md`
-- Clear `design/` directory contents: `rm -rf design/*` but keep the directory
-- Clear `src/` contents: `rm -rf src/*` then `touch src/.gitkeep`
-- Clear `production/` contents: `rm -rf production/*`
+- Clear `design/` contents only if empty of user files: `if ls design/*.md >/dev/null 2>&1; then echo "WARNING: design/ has content, skipping"; else rm -rf design/*; fi`
+- Clear `src/` contents only if empty of user files: `if ls src/*.gd src/*.cs src/*.cpp src/*.ts >/dev/null 2>&1; then echo "WARNING: src/ has code files, skipping"; else rm -rf src/* && touch src/.gitkeep; fi`
+- Clear `production/` contents only if empty of user files: similar guard
+- On any error (file locked, permission denied), warn and continue to next item
 
 ## Phase 6: Optional Git Reset
 
@@ -99,8 +102,8 @@ If the user selected `--reset-git` or agrees when prompted:
 - `git checkout --orphan fresh-root`
 - `git add -A`
 - `git commit -m "Initial commit: scaffolded from OpenCode Game Studios template"`
-- Delete all old tags (optional)
-- Force push if needed (warn about consequences)
+- Delete all old tags (optional) — warn: if tags were previously pushed to remote, deletion requires `git push origin --delete <tag>` for each one
+- Force push if needed (warn: this rewrites remote history for anyone who has cloned this repo)
 
 ## Phase 7: Summary
 
