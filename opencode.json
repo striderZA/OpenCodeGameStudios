@@ -1,6 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": ["./.opencode/plugins/ccgs-hooks.ts"],
+  "command": {
+    "hybrid-prototype": {
+      "load": ".opencode/skills/hybrid-prototype/SKILL.md",
+      "description": "Fast-lane prototype skill for the hybrid workflow. Builds a playable prototype in 2-3 days with minimal process overhead."
+    }
+  },
   "permission": {
     "bash": {
       "git status*": "allow",

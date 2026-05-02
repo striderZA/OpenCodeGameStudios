@@ -80,7 +80,7 @@ Build, polish, and ship the game with full quality gates.
 | 3 | `sound-designer` | Audio direction |
 | 3 | `writer` | Narrative, lore, dialogue |
 
-> **Note**: The `producer` role is merged into `technical-director`. Cross-domain coordination falls to `technical-director`, with design conflicts escalated to `creative-director`.
+> **Note**: The `producer` role is merged into `technical-director`. Cross-domain coordination falls to `technical-director` (sprint planning, milestone reviews, scope management). Gate checks and release coordination are shared with `creative-director`. Design conflicts escalate to `creative-director`.
 
 ### Merged / Deferred Roles
 The following roles from the full 49-agent roster are either merged into the 10 above, or deferred until late production:
@@ -112,7 +112,7 @@ The following roles from the full 49-agent roster are either merged into the 10 
 
 ---
 
-## The `/prototype` Fast Lane
+## The `/hybrid-prototype` Fast Lane
 
 A new skill/command that shortcuts the path to a playable prototype:
 
@@ -176,4 +176,4 @@ If a project starts with the hybrid workflow and later needs the full OCGS frame
 
 ## Notes
 
-This workflow is a **first-class citizen** of the OCGS framework, not a hack. All existing OCGS skills, gates, and documentation remain valid and are simply deferred to the Production phase. The `/prototype` skill is designed to integrate cleanly with the existing command structure.
+This workflow is a **first-class citizen** of the OCGS framework, not a hack. All existing OCGS skills, gates, and documentation remain valid and are simply deferred to the Production phase. The `/hybrid-prototype` skill is designed to integrate cleanly with the existing command structure.
