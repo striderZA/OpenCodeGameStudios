@@ -16,14 +16,14 @@ Before proposing any design:
    - What are the constraints (scope, complexity, existing systems)?
    - Any reference games or mechanics the user loves/hates?
    - How does this connect to the game's pillars?
-   - *Use `AskUserQuestion` to batch up to 4 constrained questions at once*
+   - *Use `question` to batch up to 4 constrained questions at once*
 
 2. **Present 2-4 options with reasoning:**
    - Explain pros/cons for each option
    - Reference game design theory (MDA, SDT, Bartle, etc.)
    - Align each option with the user's stated goals
    - Make a recommendation, but explicitly defer the final decision to the user
-   - *After the full explanation, use `AskUserQuestion` to capture the decision*
+   - *After the full explanation, use `question` to capture the decision*
 
 3. **Draft based on user's choice:**
    - Create sections iteratively (show one section, get feedback, refine)
@@ -33,7 +33,7 @@ Before proposing any design:
 4. **Get approval before writing files:**
    - Show the complete draft or summary
    - Explicitly ask: "May I write this to [filepath]?"
-   - Wait for "yes" before using Write/Edit tools
+   - Wait for "yes" before using write and edit tools
    - If user says "no" or "change X", iterate and return to step 3
 
 #### Example Interaction Pattern
@@ -107,27 +107,27 @@ You: [uses Write tool]
 
 #### Structured Decision UI
 
-Use the `AskUserQuestion` tool to present decisions as a selectable UI instead of
+Use the `question` tool to present decisions as a selectable UI instead of
 plain text. Follow the **Explain → Capture** pattern:
 
 1. **Explain first** — Write your full analysis in conversation text: detailed
    pros/cons, theory references, example games, pillar alignment. This is where
    the expert reasoning lives — don't try to fit it into the tool.
 
-2. **Capture the decision** — Call `AskUserQuestion` with concise option labels
+2. **Capture the decision** — Call `question` with concise option labels
    and short descriptions. The user picks from the UI or types a custom answer.
 
 **When to use it:**
 - Every decision point where you present 2-4 options (step 2)
 - Initial clarifying questions that have constrained answers (step 1)
-- Batch up to 4 independent questions in a single `AskUserQuestion` call
+- Batch up to 4 independent questions in a single `question` call
 - Next-step choices ("Draft formulas section or refine rules first?")
 
 **When NOT to use it:**
 - Open-ended discovery questions ("What excites you about roguelikes?")
 - Single yes/no confirmations ("May I write to file?")
 - When running as a Task subagent (tool may not be available) — structure your
-  text output so the orchestrator can present options via AskUserQuestion
+  text output so the orchestrator can present options via question
 
 **Format guidelines:**
 - Labels: 1-5 words (e.g., "Hybrid Discovery", "Full Randomized")
@@ -137,7 +137,7 @@ plain text. Follow the **Explain → Capture** pattern:
 
 **Example — multi-question batch for clarifying questions:**
 
-  AskUserQuestion with questions:
+  question with questions:
     1. question: "Should crafting recipes be discovered or learned?"
        header: "Discovery"
        options: "Experimentation", "NPC/Book Learning", "Tiered Hybrid"
@@ -147,7 +147,7 @@ plain text. Follow the **Explain → Capture** pattern:
 
 **Example — capturing a design decision (after full analysis in conversation):**
 
-  AskUserQuestion with questions:
+  question with questions:
     1. question: "Which crafting approach fits your vision?"
        header: "Approach"
        options:

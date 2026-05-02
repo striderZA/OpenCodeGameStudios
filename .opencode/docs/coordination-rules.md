@@ -36,7 +36,7 @@ high-stakes output; otherwise leave unset (Sonnet).
 This project uses two distinct multi-agent patterns:
 
 ### Subagents (current, always active)
-Spawned via `Task` within a single Claude Code session. Used by all `team-*` skills
+Spawned via `Task` within a single OpenCode session. Used by all `team-*` skills
 and orchestration skills. Subagents share the session's permission context, run
 sequentially or in parallel within the session, and return results to the parent.
 
@@ -45,23 +45,13 @@ needs the other's output to begin), spawn both Task calls simultaneously rather
 than waiting. Example: `/review-all-gdds` Phase 1 (consistency) and Phase 2
 (design theory) are independent — spawn both at the same time.
 
-### Agent Teams (experimental — opt-in)
-Multiple independent Claude Code *sessions* running simultaneously, coordinated
+### Agent Teams (future)
+Multiple independent OpenCode *sessions* running simultaneously, coordinated
 via a shared task list. Each session has its own context window and token budget.
-Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable.
+OpenCode does not currently support this pattern.
 
-**Use agent teams when**:
-- Work spans multiple subsystems that will not touch the same files
-- Each workstream would take >30 minutes and benefits from true parallelism
-- A senior agent (technical-director, producer) needs to coordinate 3+ specialist
-  sessions working on different epics simultaneously
-
-**Do not use agent teams when**:
-- One session's output is required as input for another (use sequential subagents)
-- The task fits in a single session's context (use subagents instead)
-- Cost is a concern — each team member burns tokens independently
-
-**Current status**: Not yet used in this project. Document usage here when first adopted.
+**Use subagents instead** — the `Task` tool spawns agents within a single session
+and supports both sequential and parallel execution. See the Subagents section above.
 
 ## Parallel Task Protocol
 

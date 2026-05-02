@@ -2,7 +2,7 @@
 
 ## What Is This?
 
-This is a complete Claude Code agent architecture for game development. It
+This is a complete OpenCode agent architecture for game development. It
 organizes 48 specialized AI agents into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
@@ -75,6 +75,7 @@ Ask yourself: "What department would handle this in a real studio?"
 
 | Command | What it does |
 |---------|-------------|
+| `/init-template` | First-time repo setup — customizes the cloned template with your game identity, engine, and team preferences |
 | `/start` | First-time onboarding — asks where you are, guides you to the right workflow |
 | `/help` | Context-aware "what do I do next?" — reads your current phase and artifacts |
 | `/project-stage-detect` | Analyze project state, detect stage, identify gaps |
@@ -210,27 +211,28 @@ If you already know what you need, jump directly to the relevant path:
    what excites you, what you've played, your constraints
    - Generates 3 concepts, helps you pick one, defines core loop and pillars
    - Produces a game concept document and recommends an engine
-2. **Set up the engine** — Run `/setup-engine` (uses the brainstorm recommendation)
+2. **Initialize your project** — Run `/init-template` to customize the template with your game name, engine, and clean out example files.
+3. **Set up the engine** — Run `/setup-engine` (uses the brainstorm recommendation)
    - Configures CLAUDE.md, detects knowledge gaps, populates reference docs
    - Creates `.opencode/docs/technical-preferences.md` with naming conventions,
      performance budgets, and engine-specific defaults
    - If the engine version is newer than the LLM's training data, it fetches
      current docs from the web so agents suggest correct APIs
-3. **Enhance with godot-mcp (Godot only)** — Install the optional MCP server
+4. **Enhance with godot-mcp (Godot only)** — Install the optional MCP server
    for automated editor control and smoke testing:
    ```bash
    npx @coding-solo/godot-mcp
    ```
    Once configured, run `/automated-smoke-test` to verify the project launches
    without errors.
-4. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
-5. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
-6. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
+5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
+6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
+7. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
    to write GDDs in dependency order
-7. **Test the core loop** — Run `/prototype [core-mechanic]`
-8. **Playtest it** — Run `/playtest-report` to validate the hypothesis
-9. **Plan the first sprint** — Run `/sprint-plan new`
-10. Start building
+8. **Test the core loop** — Run `/prototype [core-mechanic]`
+9. **Playtest it** — Run `/playtest-report` to validate the hypothesis
+10. **Plan the first sprint** — Run `/sprint-plan new`
+11. Start building
 
 ### Path B: "I know what I want to build"
 
@@ -273,10 +275,10 @@ If you have design docs, prototypes, or code already:
 ```
 AGENTS.md                          -- Master config (read this first)
 .opencode/
-  config.json                      -- OpenCode settings and plugin configuration
+  (opencode.json at root)          -- OpenCode settings and plugin configuration
   agents/                          -- Agent definitions (YAML frontmatter)
   skills/                          -- Skill definitions (YAML frontmatter)
-  hooks/                           -- Hook scripts wired by config
+  plugins/                         -- TypeScript hooks plugin (ccgs-hooks.ts)
   rules/                           -- Path-specific rule files
   docs/
     quick-start.md                 -- This file
@@ -286,8 +288,6 @@ AGENTS.md                          -- Master config (read this first)
     context-management.md          -- Context budgets and compaction instructions
     directory-structure.md         -- Project directory layout
     workflow-catalog.yaml          -- 7-phase pipeline definition (read by /help)
-    setup-requirements.md          -- System prerequisites (Git Bash, jq, Python)
-    settings-local-template.md     -- Personal settings.local.json guide
+    setup-requirements.md          -- System prerequisites (Git, Node.js, OpenCode CLI)
     templates/                     -- 37 document templates
 ```
-

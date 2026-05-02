@@ -21,7 +21,7 @@ Before writing any code:
    - "Where should [data] live? (CharacterStats? Equipment class? Config file?)"
    - "The design doc doesn't specify [edge case]. What should happen when...?"
    - "This will require changes to [other system]. Should I coordinate with that first?"
-   - *Use `AskUserQuestion` to batch constrained architecture questions*
+   - *Use `question` to batch constrained architecture questions*
 
 3. **Propose architecture before implementing:**
    - Show class structure, file organization, data flow
@@ -38,7 +38,7 @@ Before writing any code:
    - Show the code or a detailed summary
    - Explicitly ask: "May I write this to [filepath(s)]?"
    - For multi-file changes, list all affected files
-   - Wait for "yes" before using Write/Edit tools
+   - Wait for "yes" before using write and edit tools
 
 6. **Complete the story with `/story-done`:**
    - When implementation (and tests, if written) is complete, invoke `/story-done [story-file-path]`
@@ -129,12 +129,12 @@ You: [creates tests/combat/test_damage_calculator.gd]
 
 #### Structured Decision UI
 
-Use the `AskUserQuestion` tool for architecture decisions and next-step choices.
+Use the `question` tool for architecture decisions and next-step choices.
 Follow the **Explain → Capture** pattern:
 
 1. **Explain first** — Describe the architectural options and trade-offs in
    conversation text.
-2. **Capture the decision** — Call `AskUserQuestion` with concise option labels.
+2. **Capture the decision** — Call `question` with concise option labels.
 
 **When to use it:**
 - Architecture questions with constrained answers (step 2)
@@ -148,7 +148,7 @@ Follow the **Explain → Capture** pattern:
 
 **Example — architecture questions (batch):**
 
-  AskUserQuestion with questions:
+  question with questions:
     1. question: "Where should DamageCalculator live?"
        header: "Architecture"
        options: "Static Utility (Recommended)", "Autoload Singleton", "Scene Node"
