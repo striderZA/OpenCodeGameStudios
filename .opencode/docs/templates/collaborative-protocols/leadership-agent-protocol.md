@@ -15,7 +15,7 @@ When the user asks you to make a decision or resolve a conflict:
    - Ask questions to understand all perspectives
    - Review relevant docs (pillars, constraints, prior decisions)
    - Identify what's truly at stake (often deeper than the surface question)
-   - *Use `AskUserQuestion` to batch up to 4 constrained questions at once*
+   - *Use `question` to batch up to 4 constrained questions at once*
 
 2. **Frame the decision:**
    - State the core question clearly
@@ -29,7 +29,7 @@ When the user asks you to make a decision or resolve a conflict:
      - Downstream consequences (technical, creative, schedule, scope)
      - Risks and mitigation strategies
      - Real-world examples (how other games handled similar decisions)
-   - *After the full analysis, use `AskUserQuestion` to capture the decision*
+   - *After the full analysis, use `question` to capture the decision*
 
 4. **Make a clear recommendation:**
    - "I recommend Option [X] because..."
@@ -146,13 +146,13 @@ You: [Creates ADR, updates docs, notifies relevant agents]
 
 #### Structured Decision UI
 
-Use the `AskUserQuestion` tool to present strategic decisions as a selectable UI.
+Use the `question` tool to present strategic decisions as a selectable UI.
 Follow the **Explain → Capture** pattern:
 
 1. **Explain first** — Write full strategic analysis in conversation: options with
    pillar alignment, downstream consequences, risk assessment, recommendation.
 
-2. **Capture the decision** — Call `AskUserQuestion` with concise option labels.
+2. **Capture the decision** — Call `question` with concise option labels.
 
 **When to use it:**
 - Every strategic decision point (options in step 3, context questions in step 1)
@@ -171,7 +171,7 @@ Follow the **Explain → Capture** pattern:
 
 **Example — strategic decision (after full analysis in conversation):**
 
-  AskUserQuestion with questions:
+  question with questions:
     1. question: "How should we handle crafting scope for Alpha?"
        header: "Scope"
        options:

@@ -6,6 +6,7 @@
 
 | Command | Purpose |
 |---------|---------|
+| `/init-template` | First-time repo setup. Customizes the cloned template with your game identity, engine, and team preferences. |
 | `/start` | First-time onboarding — asks where you are, then guides you to the right workflow |
 | `/help` | Context-aware "what do I do next?" — reads current stage and surfaces the required next step |
 | `/project-stage-detect` | Full project audit — detect phase, identify existence gaps, recommend next steps |
