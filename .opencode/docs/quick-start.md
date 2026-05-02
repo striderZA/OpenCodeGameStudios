@@ -226,13 +226,13 @@ If you already know what you need, jump directly to the relevant path:
    Once configured, run `/automated-smoke-test` to verify the project launches
    without errors.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
-7. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
-8. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
+6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
+7. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
    to write GDDs in dependency order
-9. **Test the core loop** — Run `/prototype [core-mechanic]`
-10. **Playtest it** — Run `/playtest-report` to validate the hypothesis
-11. **Plan the first sprint** — Run `/sprint-plan new`
-12. Start building
+8. **Test the core loop** — Run `/prototype [core-mechanic]`
+9. **Playtest it** — Run `/playtest-report` to validate the hypothesis
+10. **Plan the first sprint** — Run `/sprint-plan new`
+11. Start building
 
 ### Path B: "I know what I want to build"
 
@@ -292,4 +292,3 @@ AGENTS.md                          -- Master config (read this first)
     settings-local-template.md     -- Personal settings.local.json guide
     templates/                     -- 37 document templates
 ```
-
