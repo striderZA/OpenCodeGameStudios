@@ -39,6 +39,47 @@ git cherry-pick <commit-sha>
 
 Commit SHAs for each version are listed in the version sections below.
 
+## v0.3.0 — Godot MCP Integration
+
+**New skill count:** 72 → 73 (added `automated-smoke-test`)
+
+### What changed
+- **New skill**: `automated-smoke-test` — runs the Godot project via godot-mcp, captures debug output, and checks for errors/crashes
+- **setup-engine skill**: Added optional godot-mcp configuration section (section 7.3)
+- **Agent files**: 5 agents (gameplay-programmer, godot-gdscript-specialist, godot-specialist, ui-programmer, qa-tester) updated with godot-mcp capability references
+- **.gitattributes**: Added with `* text=auto eol=lf` for consistent line endings
+- **Docs**: setup-requirements.md, quick-start.md, skills-reference.md updated
+
+### For your local clone
+A new `.gitattributes` was added. Existing clones should re-normalize:
+```shell
+git rm --cached -r . && git reset --hard
+```
+
+### New dependency (optional)
+The `automated-smoke-test` skill requires [godot-mcp](https://github.com/Coding-Solo/godot-mcp):
+```shell
+npx @coding-solo/godot-mcp
+```
+Configure via `opencode.json` MCP settings (see `setup-engine` skill section 7.3).
+
+### Safe to overwrite
+- `.opencode/skills/automated-smoke-test/SKILL.md`
+- `.gitattributes`
+
+### Merge carefully
+- `.opencode/skills/setup-engine/SKILL.md` — has new section 7.3
+- `.opencode/agents/gameplay-programmer.md` — MCP capability line added
+- `.opencode/agents/godot-gdscript-specialist.md` — MCP capability line added
+- `.opencode/agents/godot-specialist.md` — MCP capability line added  
+- `.opencode/agents/ui-programmer.md` — MCP capability line added
+- `.opencode/agents/qa-tester.md` — MCP capability line added
+- `.opencode/docs/setup-requirements.md` — godot-mcp dependency section added
+- `.opencode/docs/quick-start.md` — setup step added, steps renumbered
+- `.opencode/docs/skills-reference.md` — automated-smoke-test entry added
+
+---
+
 ### Strategy C — Manual file copy
 
 Best when: you didn't use git to set up the template (just downloaded a zip).
