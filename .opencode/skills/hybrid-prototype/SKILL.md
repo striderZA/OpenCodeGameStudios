@@ -134,6 +134,7 @@ If **ITERATE / PIVOT / KILL**: no further action needed.
 - If productionizing, rewrite from scratch — do not refactor prototype code
 - Timebox strictly: if it's not working after 3 days, kill or pivot
 - Keep the question narrow — one prototype, one question
+- **Workflow isolation**: This skill explicitly bypasses `production/review-mode.txt`. Any stale review-mode state from a previous full OCGS session is ignored — the hybrid fast lane always runs without formal gates.
 
 ---
 
