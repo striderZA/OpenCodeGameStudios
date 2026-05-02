@@ -80,6 +80,8 @@ Build, polish, and ship the game with full quality gates.
 | 3 | `sound-designer` | Audio direction |
 | 3 | `writer` | Narrative, lore, dialogue |
 
+> **Note**: The `producer` role is merged into `technical-director`. Cross-domain coordination falls to `technical-director` (sprint planning, milestone reviews, scope management). Gate checks and release coordination are shared with `creative-director`. Design conflicts escalate to `creative-director`.
+
 ### Merged / Deferred Roles
 The following roles from the full 49-agent roster are either merged into the 10 above, or deferred until late production:
 

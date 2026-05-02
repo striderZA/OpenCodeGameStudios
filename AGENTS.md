@@ -102,7 +102,7 @@ Or jump directly to:
 
 ## Available Commands
 
-Type `/` in OpenCode to see all 72 commands. Key categories:
+Type `/` in OpenCode to see all available commands. Key categories:
 
 - **Onboarding**: `/start`, `/help`, `/project-stage-detect`, `/setup-engine`
 - **Design**: `/brainstorm`, `/map-systems`, `/design-system`, `/quick-design`
