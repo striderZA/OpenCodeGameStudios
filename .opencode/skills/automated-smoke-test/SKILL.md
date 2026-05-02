@@ -55,7 +55,7 @@ within 30 seconds. If no response within the timeout, treat as a failure:
 - Report: "Project failed to respond within 30 seconds — the project may be hung
   or the engine may have frozen during launch."
 - Verdict: **FAIL**
-- Skip to Phase 6 (do not attempt stop)
+- Skip to Phase 7 (Report) — the project is unresponsive, stop would also hang
 
 If `run_project` returns an error or the project fails to start:
 - Report: "Project failed to start with error: [error message]"
@@ -93,7 +93,8 @@ Do not use a fixed sleep. Instead, poll `get_debug_output` in a loop:
    - Skip to Phase 6
 
 Once polling ends (duration elapsed or early-stop triggered), use the last
-successful output for analysis.
+successful output for analysis. If all polls failed (3 consecutive errors),
+there is no output to analyze — skip directly to the FAIL verdict.
 
 If the final output is empty or trivially short, note: "Output appears minimal
 — the project may not have rendered any frames."

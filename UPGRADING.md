@@ -78,8 +78,6 @@ Configure via `opencode.json` MCP settings (see `setup-engine` skill section 7.3
 - `.opencode/docs/quick-start.md` — setup step added, steps renumbered
 - `.opencode/docs/skills-reference.md` — automated-smoke-test entry added
 
----
-
 ### Strategy C — Manual file copy
 
 Best when: you didn't use git to set up the template (just downloaded a zip).

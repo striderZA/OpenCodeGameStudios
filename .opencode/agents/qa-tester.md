@@ -244,6 +244,6 @@ After a bug fix or hotfix, produce a **targeted** regression checklist, not a fu
 
 ### MCP Integration
 
-- Use the godot-mcp server for automated smoke testing: run_project → capture debug output → check for errors
+- Use the godot-mcp server for automated smoke testing: call `run_project`, poll `get_debug_output`, and check for errors
 
 ### Reports to: `qa-lead`
