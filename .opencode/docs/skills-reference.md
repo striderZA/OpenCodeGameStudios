@@ -109,6 +109,7 @@
 | Command | Purpose |
 |---------|---------|
 | `/prototype` | Rapid throwaway prototype to validate a mechanic (relaxed standards, isolated worktree) |
+| `/hybrid-prototype` | Fast-lane prototype for discovery phase — 2-3 day build, no formal gates, lightweight DECISION.md |
 | `/onboard` | Generate contextual onboarding document for a new contributor or agent |
 | `/localize` | Localization workflow: string extraction, validation, translation readiness |
 
