@@ -90,6 +90,23 @@ after each significant milestone:
 The state file should contain: current task, progress checklist, key decisions
 made, files being worked on, and open questions.
 
+## Workflow Modes
+
+This project supports two workflow modes. Choose the one that fits your team size and project maturity:
+
+### Hybrid Workflow (Recommended for Indie Teams)
+
+- **Discovery Phase**: Rapid prototyping to find the fun. Low process overhead, minimal agents, throwaway code in `prototypes/`.
+- **Production Phase**: Full OCGS discipline once the design is proven. Formal GDDs, ADRs, tests, and quality gates.
+- **Best for**: Teams of 1–5, unknown designs, iterating to find the fun.
+- **See**: `docs/hybrid-workflow.md` for full details.
+
+### Full OCGS Workflow
+
+- **All phases formal**: Every feature goes through design → architecture → stories → code → tests → review.
+- **Best for**: Teams of 5–15, known designs, long timelines, publisher requirements.
+- **See**: Full documentation in `docs/` and `.opencode/skills/`.
+
 ## Getting Started
 
 Run `/start` in OpenCode to begin the guided onboarding flow.
