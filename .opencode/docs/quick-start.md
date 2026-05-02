@@ -218,21 +218,21 @@ If you already know what you need, jump directly to the relevant path:
      performance budgets, and engine-specific defaults
    - If the engine version is newer than the LLM's training data, it fetches
      current docs from the web so agents suggest correct APIs
-3. **Enhance with godot-mcp (Godot only)** — Install the optional MCP server
+4. **Enhance with godot-mcp (Godot only)** — Install the optional MCP server
    for automated editor control and smoke testing:
    ```bash
    npx @coding-solo/godot-mcp
    ```
    Once configured, run `/automated-smoke-test` to verify the project launches
    without errors.
-4. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
-5. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
-6. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
+5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
+7. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
+8. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
    to write GDDs in dependency order
-7. **Test the core loop** — Run `/prototype [core-mechanic]`
-8. **Playtest it** — Run `/playtest-report` to validate the hypothesis
-9. **Plan the first sprint** — Run `/sprint-plan new`
-10. Start building
+9. **Test the core loop** — Run `/prototype [core-mechanic]`
+10. **Playtest it** — Run `/playtest-report` to validate the hypothesis
+11. **Plan the first sprint** — Run `/sprint-plan new`
+12. Start building
 
 ### Path B: "I know what I want to build"
 

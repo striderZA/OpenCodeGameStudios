@@ -8,9 +8,17 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, question, Task
 
 When this skill is invoked:
 
-## 1. Welcome and Prompt
+## Phase 1: Parse Arguments
 
-Welcome the user to their new project. Use `question` to gather:
+Check if CLI arguments were passed (from `argument-hint`):
+
+- `--name "My Game"` → sets game name (skips the name question below)
+- `--engine godot|unity|unreal` → sets engine (skips engine question)
+- `--reset-git` → automatically offers git reset (skips the prompt)
+
+If `--name` and `--engine` are both provided, skip the interactive prompt entirely and proceed to Phase 2 using the provided values.
+
+Otherwise, use `question` to gather missing details:
 
 ### Tab 1: Project Identity
 - **What is your game's name?** (e.g., "My Game")
@@ -24,7 +32,7 @@ Welcome the user to their new project. Use `question` to gather:
 - **Team size** (solo / small 2-5 / medium 6-15 / large 16+)
 - **Preferred model tier** (default / workhorse / lightweight) — refer to the README's Model Mapping section for options
 
-## 2. Replace README.md
+## Phase 2: Replace README.md
 
 Write a fresh README.md to the project root. Use a template structure like:
 
@@ -61,33 +69,30 @@ Type `/start` for onboarding, or browse all skills with `/`.
 
 Replace `[Game Name]`, `[One-line description]`, and `[Engine]` with the user's answers from Phase 1.
 
-## 3. Update AGENTS.md
+## Phase 3: Update AGENTS.md
 
 Read AGENTS.md and update:
 - Replace the Model Mapping section at the top with the user's engine and model preference
 - Set the engine to the user's choice
 - Remove or update any project-specific settings
 
-## 4. Update opencode.json
+## Phase 4: Update opencode.json
 
 Read opencode.json and clean it up:
 - Remove any internal-only plugin paths
 - Set project name appropriately
-- Keep the ccgs-hooks.ts plugin reference
+- Keep the ccgs-hooks.ts plugin reference only if the file actually exists: `if [ -f .opencode/plugins/ccgs-hooks.ts ]; then ...`
 
-## 5. Remove Internal Files
+## Phase 5: Remove Internal Files
 
-Delete these files/directories that are only relevant to the OCGS project itself, not to new game projects:
-- `UPGRADING.md` (user doesn't need upgrade history of the template)
-- `CONTRIBUTING.md` (project-specific contribution guide)
-- `SECURITY.md` (project-specific security policy)
-- `CODE_OF_CONDUCT.md` (replace with a reference to the GitHub default)
-- Clear `design/` directory (remove any existing GDDs, entity registries)
-- Keep `design/` directory structure but empty it
-- Clear `src/` contents (keep `.gitkeep`)
-- Clear `production/` contents (session logs, sprint plans from our dev)
+Remove these files/directories with existence guards (`rm -f` or `[ -f ] && rm`):
 
-## 6. Optional Git Reset
+- `rm -f UPGRADING.md CONTRIBUTING.md SECURITY.md CODE_OF_CONDUCT.md`
+- Clear `design/` directory contents: `rm -rf design/*` but keep the directory
+- Clear `src/` contents: `rm -rf src/*` then `touch src/.gitkeep`
+- Clear `production/` contents: `rm -rf production/*`
+
+## Phase 6: Optional Git Reset
 
 If the user selected `--reset-git` or agrees when prompted:
 - Offer to reset git history to a single commit
@@ -97,7 +102,7 @@ If the user selected `--reset-git` or agrees when prompted:
 - Delete all old tags (optional)
 - Force push if needed (warn about consequences)
 
-## 7. Summary
+## Phase 7: Summary
 
 Print a completion summary:
 
