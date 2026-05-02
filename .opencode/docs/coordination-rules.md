@@ -36,7 +36,7 @@ high-stakes output; otherwise leave unset (Sonnet).
 This project uses two distinct multi-agent patterns:
 
 ### Subagents (current, always active)
-Spawned via `Task` within a single Claude Code session. Used by all `team-*` skills
+Spawned via `Task` within a single OpenCode session. Used by all `team-*` skills
 and orchestration skills. Subagents share the session's permission context, run
 sequentially or in parallel within the session, and return results to the parent.
 
@@ -46,7 +46,7 @@ than waiting. Example: `/review-all-gdds` Phase 1 (consistency) and Phase 2
 (design theory) are independent — spawn both at the same time.
 
 ### Agent Teams (experimental — opt-in)
-Multiple independent Claude Code *sessions* running simultaneously, coordinated
+Multiple independent OpenCode *sessions* running simultaneously, coordinated
 via a shared task list. Each session has its own context window and token budget.
 Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable.
 
