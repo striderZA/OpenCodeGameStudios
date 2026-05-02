@@ -10,7 +10,7 @@ isolation: worktree
 
 ## Overview
 
-This skill implements the **Discovery Phase fast lane** from `docs/hybrid-workflow.md`. It is intentionally lightweight: no formal GDD, no architecture, no epic breakdown. Just build it, play it, decide.
+This skill implements the **Discovery Phase fast lane** as described in `.opencode/docs/hybrid-workflow.md`. It is intentionally lightweight: no formal GDD, no architecture, no epic breakdown. Just build it, play it, decide.
 
 **Time budget**: 1-3 days.
 **Agents involved**: `creative-director`, `game-designer`, `prototyper`, `godot-specialist` (or engine equivalent).
@@ -134,6 +134,7 @@ If **ITERATE / PIVOT / KILL**: no further action needed.
 - If productionizing, rewrite from scratch — do not refactor prototype code
 - Timebox strictly: if it's not working after 3 days, kill or pivot
 - Keep the question narrow — one prototype, one question
+- **Workflow isolation**: This skill explicitly bypasses `production/review-mode.txt`. Any stale review-mode state from a previous full OCGS session is ignored — the hybrid fast lane always runs without formal gates.
 
 ---
 

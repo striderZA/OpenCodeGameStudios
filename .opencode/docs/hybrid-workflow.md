@@ -112,7 +112,7 @@ The following roles from the full 49-agent roster are either merged into the 10 
 
 ---
 
-## The `/hybrid-prototype` Fast Lane
+## The `/prototype` Fast Lane
 
 A new skill/command that shortcuts the path to a playable prototype:
 
@@ -176,4 +176,4 @@ If a project starts with the hybrid workflow and later needs the full OCGS frame
 
 ## Notes
 
-This workflow is a **first-class citizen** of the OCGS framework, not a hack. All existing OCGS skills, gates, and documentation remain valid and are simply deferred to the Production phase. The `/hybrid-prototype` skill is designed to integrate cleanly with the existing command structure.
+This workflow is a **first-class citizen** of the OCGS framework, not a hack. All existing OCGS skills, gates, and documentation remain valid and are simply deferred to the Production phase. The `/prototype` skill is designed to integrate cleanly with the existing command structure.
