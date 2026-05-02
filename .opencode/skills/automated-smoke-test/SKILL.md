@@ -38,9 +38,9 @@ Call `get_project_info` via godot-mcp. Record:
 - **Main scene** — the configured main scene path
 - **Render mode** — e.g. Forward+, Mobile, GL Compatible
 
-If `get_project_info` fails, try again once after a short delay. If it fails
-again: "Could not read project info. Is the godot-mcp server running against
-the correct project?" Then stop.
+If `get_project_info` fails, retry up to 3 times with a 2-second delay between
+attempts. If all retries fail: "Could not read project info after 3 attempts. Is
+the godot-mcp server running against the correct project?" Then stop.
 
 ---
 
@@ -50,7 +50,12 @@ Parse the optional argument for duration. If no argument is provided, default
 to 10 seconds. The argument is in seconds: `/automated-smoke-test 15` means
 capture output for 15 seconds.
 
-Call `run_project` via godot-mcp. Confirm the project has started.
+Call `run_project` via godot-mcp. The project must respond (start or error)
+within 30 seconds. If no response within the timeout, treat as a failure:
+- Report: "Project failed to respond within 30 seconds — the project may be hung
+  or the engine may have frozen during launch."
+- Verdict: **FAIL**
+- Skip to Phase 6 (do not attempt stop)
 
 If `run_project` returns an error or the project fails to start:
 - Report: "Project failed to start with error: [error message]"
@@ -61,16 +66,39 @@ If `run_project` returns an error or the project fails to start:
 
 ## Phase 4: Capture Debug Output
 
-Wait the configured duration (default: 10 seconds, configurable via argument).
-After the duration elapses, call `get_debug_output`.
+> **Duration scaling:** The capture duration should reflect project complexity.
+> A minimal 2D project may produce output in 5 seconds; a large 3D project with
+> many scenes may need 30+ seconds. Default to 10 seconds but consider the
+> project's scope (from Phase 2's project info) and scale up for complex titles.
+> For headless CI runs, prefer longer durations to account for slower hardware.
 
+<<<<<<< HEAD
 If `get_debug_output` returns an error:
 - Report: "Could not capture debug output: [error message]"
 - Verdict: **FAIL**
 - Skip to Phase 6 (stop project), then continue to Phase 7 for the report
+=======
+Do not use a fixed sleep. Instead, poll `get_debug_output` in a loop:
+>>>>>>> fix/smoke-quality
 
-If output is empty or trivially short, note: "Output appears minimal — the
-project may not have rendered any frames."
+1. Every 2 seconds, call `get_debug_output`.
+2. If the output contains any ERROR, crash, or assertion pattern (see Phase 5),
+   stop polling early — the test has already found failures.
+3. If no errors appear, continue polling until the configured duration elapses
+   (default: 10 seconds, configurable via argument).
+4. If `get_debug_output` returns an error on any poll tick:
+   - Report: "Could not capture debug output on poll attempt [N]: [error message]"
+   - Continue polling (do not abort) unless 3 consecutive polls fail.
+   - After 3 consecutive failures: "Debug output capture failed after 3
+     consecutive poll errors."
+   - Verdict: **FAIL**
+   - Skip to Phase 6
+
+Once polling ends (duration elapsed or early-stop triggered), use the last
+successful output for analysis.
+
+If the final output is empty or trivially short, note: "Output appears minimal
+— the project may not have rendered any frames."
 
 ---
 
@@ -144,15 +172,24 @@ Otherwise: "No warnings detected."]
 
 ---
 
-### Verdict: [PASS | FAIL]
+### Verdict: [PASS | FAIL | SILENT-FAIL]
 
 **FAIL** if ANY of:
 - Project failed to start
 - Runtime errors or crashes detected
 - Assertion failures found
+- Debug output could not be captured after retries
+
+**SILENT-FAIL** if:
+- Project launched successfully AND no errors/crashes detected BUT
+  debug output was empty or trivially short (zero or near-zero lines).
+  This means the project may have started but produced no frames or
+  lifecycle output — a configuration problem or silent hang. The user
+  should verify manually.
 
 **PASS** if ALL of:
 - Project launched successfully
+- Debug output contains substantive content (not SILENT-FAIL threshold)
 - No runtime errors or crashes
 - No assertion failures
 - Warnings are acceptable (advisory only — do not cause FAIL)
