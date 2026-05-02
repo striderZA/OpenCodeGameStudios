@@ -1,6 +1,6 @@
 # Available Skills (Slash Commands)
 
-68 slash commands organized by phase. Type `/` in Claude Code to access any of them.
+73 slash commands organized by phase. Type `/` in OpenCode to access any of them.
 
 ## Onboarding & Navigation
 
@@ -71,6 +71,7 @@
 
 | Command | Purpose |
 |---------|---------|
+| `/automated-smoke-test` | Run an automated smoke test using the godot-mcp server. Launches the project, captures debug output, and checks for errors or crashes. |
 | `/qa-plan` | Generate a QA test plan for a sprint or feature |
 | `/smoke-check` | Run critical path smoke test gate before QA hand-off |
 | `/soak-test` | Generate a soak test protocol for extended play sessions |

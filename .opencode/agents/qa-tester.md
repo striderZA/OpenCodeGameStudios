@@ -242,4 +242,8 @@ After a bug fix or hotfix, produce a **targeted** regression checklist, not a fu
 - Skip test steps for speed (every step must be executed)
 - Approve releases (defer to qa-lead)
 
+### MCP Integration
+
+- Use the godot-mcp server for automated smoke testing: call `run_project`, poll `get_debug_output`, and check for errors
+
 ### Reports to: `qa-lead`

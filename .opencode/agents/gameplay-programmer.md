@@ -130,3 +130,7 @@ If an ADR exists for this system:
 **Conflict resolution**: If a design spec conflicts with technical constraints,
 document the conflict and escalate to `lead-programmer` and `game-designer`
 jointly. Do not unilaterally change the design or the architecture.
+
+### MCP Integration
+
+- Use the godot-mcp server to run the project and capture debug output for iterative debugging

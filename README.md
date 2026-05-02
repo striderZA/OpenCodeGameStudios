@@ -8,7 +8,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Skills](https://img.shields.io/badge/skills-72-brightgreen)](.opencode/skills/)
+[![Skills](https://img.shields.io/badge/skills-73-brightgreen)](.opencode/skills/)
 [![Hooks](https://img.shields.io/badge/hooks-12-orange)](.opencode/plugins/)
 [![Tests](https://img.shields.io/badge/tests-129-success)](.opencode/plugins/tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
@@ -43,7 +43,7 @@ are some workarounds for Claude Code to access other models through local proxie
 this is not the intended use of Claude Code and such setups are fragile at best. 
 
 This port adapts the complete [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
-framework — its 49 agents, 72 skills, 12 hooks, and all rules — to run natively
+framework — its 49 agents, 73 skills, 12 hooks, and all rules — to run natively
 on OpenCode, giving game teams the same structured AI-assisted workflow without
 the artificial limits.
 
@@ -60,7 +60,7 @@ the artificial limits.
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
 | 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 72 skills (`.opencode/skills/`) | ✅ |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 73 skills (`.opencode/skills/`) | ✅ +1 |
 | 🔗 **Hooks** | 12 bash hooks (`.claude/hooks/`) | 1 TS plugin (`.opencode/plugins/`) | ✅ **129 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
@@ -73,7 +73,7 @@ the artificial limits.
 opencode
 ```
 
-Type `/` to browse all 72 skills, or `/start` for onboarding.
+Type `/` to browse all 73 skills, or `/start` for onboarding.
 
 ---
 
@@ -193,7 +193,7 @@ node utils/assign-models.js --config my-models.json
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .opencode/
-│   ├── skills/              ⌨️ 72 skills 
+│   ├── skills/              ⌨️ 73 skills 
 │   ├── agents/                🤖 49 agent definitions
 │   ├── plugins/
 │   │   ├── ccgs-hooks.ts     🔗 TS plugin (all 12 hooks)
