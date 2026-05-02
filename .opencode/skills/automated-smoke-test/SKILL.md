@@ -55,7 +55,7 @@ Call `run_project` via godot-mcp. Confirm the project has started.
 If `run_project` returns an error or the project fails to start:
 - Report: "Project failed to start with error: [error message]"
 - Verdict: **FAIL**
-- Skip to Phase 6 (do not attempt stop)
+- Skip to Phase 7 (Report) — project was never launched, no stop needed
 
 ---
 
@@ -67,7 +67,7 @@ After the duration elapses, call `get_debug_output`.
 If `get_debug_output` returns an error:
 - Report: "Could not capture debug output: [error message]"
 - Verdict: **FAIL**
-- Skip to Phase 6
+- Skip to Phase 6 (stop project), then continue to Phase 7 for the report
 
 If output is empty or trivially short, note: "Output appears minimal — the
 project may not have rendered any frames."
@@ -95,7 +95,15 @@ Count the occurrences of each pattern. Record the actual matching lines (up to
 
 ---
 
-## Phase 6: Report Results
+## Phase 6: Stop the Project
+
+Call `stop_project` via godot-mcp to clean up. If it fails, note:
+"Could not stop the project cleanly — you may need to close the Godot
+editor or kill the process manually."
+
+---
+
+## Phase 7: Report Results
 
 Format the report:
 
@@ -151,11 +159,3 @@ Otherwise: "No warnings detected."]
 ```
 
 Present the report to the user. Do not write it to a file unless asked.
-
----
-
-## Phase 7: Stop the Project
-
-Call `stop_project` via godot-mcp to clean up. If it fails, note:
-"Could not stop the project cleanly — you may need to close the Godot
-editor or kill the process manually."
