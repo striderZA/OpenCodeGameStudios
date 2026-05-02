@@ -78,3 +78,23 @@ Claude Code works with any editor, but the template is optimized for:
 - **VS Code** with the Claude Code extension
 - **Cursor** (Claude Code compatible)
 - Terminal-based Claude Code CLI
+
+## Optional Engine Dependencies
+
+### Godot-MCP (Optional — Godot Only)
+
+The [godot-mcp](https://github.com/Coding-Solo/godot-mcp) server provides runtime tools for AI-driven testing and debugging of Godot projects. It enables agents to launch the editor, run projects, and capture debug output automatically.
+
+**Installation:**
+```bash
+npx @coding-solo/godot-mcp
+```
+
+**Configuration:**
+The MCP server is configured via `opencode.json` or editor MCP settings. See `/setup-engine` for full setup guidance.
+
+**Tools provided:**
+- `launch_editor`, `run_project`, `stop_project` — runtime control
+- `get_debug_output` — live debug feedback
+- `create_scene`, `add_node`, `save_scene` — scene manipulation
+- `get_godot_version`, `get_project_info`, `list_projects` — project introspection
