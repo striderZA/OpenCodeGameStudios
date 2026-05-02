@@ -4,7 +4,7 @@ All 12 bash hooks from CCGS are ported to a single TypeScript plugin
 at **`.opencode/plugins/ccgs-hooks.ts`**. Hooks fire automatically
 via OpenCode's plugin event system:
 
-| # | Bash Hook | 🔌 OpenCode Event | 🧪 Tests |
+| # | Original Hook | 🔌 OpenCode Event | 🧪 Tests |
 |---|-----------|-------------------|:--------:|
 | 1 | `session-start.sh` | `session.created` | **18** |
 | 2 | `session-stop.sh` | `session.idle` / `server.instance.disposed` | **10** |
@@ -33,5 +33,4 @@ For example, to run the commit validation tests:
 node .opencode/plugins/tests/test-validate-commit.mjs
 ```
 
-Hook reference documentation: `.opencode/docs/hooks-reference/`
-Hook input schema documentation: `.opencode/docs/hooks-reference/hook-input-schemas.md`
+For a complete list of test suites, see the [README](/README.md#-hooks-plugin) Hooks Plugin section.
