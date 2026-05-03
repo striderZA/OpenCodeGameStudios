@@ -75,6 +75,10 @@ opencode
 
 Type `/` to browse all 73 skills, or `/start` for onboarding.
 
+### 🎮 Demo Game
+
+See [**OCGS-Pong**](https://github.com/striderZA/OCGS-Pong) — a complete Pong game built entirely with this toolchain. Demonstrates the full workflow from concept through implementation using OCGS agents and skills.
+
 ---
 
 ## 🔌 Recommended Plugins
