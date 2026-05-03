@@ -42,3 +42,21 @@ visual quality, performance, and cross-platform compatibility.
 - Document all keywords/variants and their purpose
 - Use feature stripping where possible to reduce build size
 - Log and monitor total variant count per shader
+
+## Anti-Patterns
+
+- Full precision (`highp`) everywhere on mobile (use `mediump`/`lowp` where possible)
+- Dynamic branching on per-pixel data (unpredictable GPU performance)
+- Not using mipmaps on textures sampled at varying distances (aliasing + cache thrashing)
+- Overdraw from transparent objects without depth pre-pass
+- Post-processing that samples screen texture multiple times (use multi-pass approach)
+- Not setting `render_priority` on transparent materials (incorrect sort order)
+- Texture reads inside loops (exponential GPU cost)
+
+## Cross-References
+
+- Agent: `godot-shader-specialist` — Godot shader authoring
+- Agent: `technical-artist` — shader workflow and pipeline
+- Agent: `performance-analyst` — GPU performance profiling
+- Agent: `art-director` — visual direction constraints
+- Rule: `engine-code.md` — rendering pipeline dependency
