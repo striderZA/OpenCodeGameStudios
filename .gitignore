@@ -21,3 +21,4 @@ desktop.ini
 *.swp
 *.swo
 *~
+tests/agents/validation-report.md
