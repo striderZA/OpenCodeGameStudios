@@ -8,8 +8,9 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Skills](https://img.shields.io/badge/skills-73-brightgreen)](.opencode/skills/)
-[![Hooks](https://img.shields.io/badge/hooks-12-orange)](.opencode/plugins/)
+[![Skills](https://img.shields.io/badge/skills-75-brightgreen)](.opencode/skills/)
+[![Commands](https://img.shields.io/badge/commands-50-blue)](.opencode/commands/)
+[![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
 [![Tests](https://img.shields.io/badge/tests-129-success)](.opencode/plugins/tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
 
@@ -60,8 +61,9 @@ the artificial limits.
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
 | 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 73 skills (`.opencode/skills/`) | ✅ +1 |
-| 🔗 **Hooks** | 12 bash hooks (`.claude/hooks/`) | 1 TS plugin (`.opencode/plugins/`) | ✅ **129 tests** |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 75 skills (`.opencode/skills/`) | ✅ +3 |
+| ⌨️ **Commands** | — | 50 commands (`.opencode/commands/`) | ✅ New |
+| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **129 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
 
@@ -73,7 +75,7 @@ the artificial limits.
 opencode
 ```
 
-Type `/` to browse all 73 skills, or `/start` for onboarding.
+Type `/` to browse all 75 skills and 50 commands, or `/start` for onboarding.
 
 ---
 
@@ -193,15 +195,26 @@ node utils/assign-models.js --config my-models.json
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .opencode/
-│   ├── skills/              ⌨️ 73 skills 
+│   ├── commands/              ⌨️ 50 slash commands (routes to skills)
 │   ├── agents/                🤖 49 agent definitions
+│   ├── skills/                🛠️ 75 skill workflows
 │   ├── plugins/
-│   │   ├── ccgs-hooks.ts     🔗 TS plugin (all 12 hooks)
+│   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
+│   │   ├── drift-detector.ts  🔍 Template drift detection
+│   │   ├── changelog-generator.ts 📝 Changelog generation
 │   │   └── tests/             🧪 11 test suites (129 tests)
-│   └── rules/                 📏 Coding standards
-├── .claude/docs/              📖 CCGS documentation
+│   └── rules/                 📏 11 coding standards
 ├── design/                    🎨 Game design documents
-├── docs/                      📐 Technical documentation
+├── docs/
+│   ├── CONTRIBUTING.md        📖 Framework contribution guide
+│   ├── authoring-agents.md    🤖 Agent authoring guide
+│   ├── authoring-skills.md    🛠️ Skill authoring guide
+│   ├── architecture/          🏗️ ADRs
+│   └── engine-reference/      📚 Engine API reference
+├── tests/
+│   ├── agents/                🔍 Agent framework validation
+│   ├── [game-specific tests]
+│   └── [spawned by test-setup]
 ├── production/                📊 Sprint plans, session logs
 ├── utils/                     🔧 Developer utilities
 │   └── assign-models.js       🎯 Batch-model assignment tool
@@ -210,10 +223,21 @@ node utils/assign-models.js --config my-models.json
 
 ---
 
-## 🔗 Hooks Plugin
+## 🔌 Plugin Architecture
 
-All 12 bash hooks from CCGS ported to a single TypeScript plugin
-at **`.opencode/plugins/ccgs-hooks.ts`**:
+The OCGS plugin system is documented in `.opencode/plugins/README.md`.
+Three TypeScript plugins implement the original 12 CCGS bash hooks plus
+extensions:
+
+| Plugin | Purpose |
+|--------|---------|
+| **`ccgs-hooks.ts`** | Session lifecycle, commit validation, asset checks, agent logging, gap detection |
+| **`drift-detector.ts`** | Detects agent/skill/command template drift on session start and file writes |
+| **`changelog-generator.ts`** | Generates CHANGELOG.md from conventional commits since last tag |
+
+### Hooks Mapping
+
+All 12 bash hooks from CCGS ported to `ccgs-hooks.ts`:
 
 | # | Bash Hook | 🔌 OpenCode Event | 🧪 Tests |
 |---|-----------|-------------------|:--------:|
@@ -231,6 +255,11 @@ at **`.opencode/plugins/ccgs-hooks.ts`**:
 | 12 | `notify.sh` | Utility (`showNotification`) | — |
 
 > 🧪 Run a test suite: `node .opencode/plugins/tests/test-<name>.mjs`
+
+### Contributing to the Framework
+
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guides on adding agents,
+skills, commands, rules, and plugins.
 
 ---
 

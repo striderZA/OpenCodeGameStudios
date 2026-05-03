@@ -18,23 +18,38 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ```text
 /
-├── AGENTS.md                    # Master configuration
+├── AGENTS.md                    # Project configuration
 ├── opencode.json                # OpenCode config (permissions, plugins)
-├── .opencode/                   # Commands, agents, plugins, rules
-│   ├── commands/                # 72 slash commands (was .claude/skills/)
+├── .opencode/                   # Framework components
+│   ├── commands/                # 50 slash commands (routes to skills)
 │   ├── agents/                  # 49 agent definitions (was .claude/agents/)
-│   ├── plugins/                 # CCGS hooks as TypeScript plugin
-│   └── rules/                   # Path-scoped coding standards
-├── src/                         # Game source code (core, gameplay, ai, networking, ui, tools)
-├── assets/                      # Game assets (art, audio, vfx, shaders, data)
-├── design/                      # Game design documents (gdd, narrative, levels, balance)
-├── docs/                        # Technical documentation (architecture, api, postmortems)
-│   └── engine-reference/        # Curated engine API snapshots (version-pinned)
-├── tests/                       # Test suites (unit, integration, performance, playtest)
-├── tools/                       # Build and pipeline tools (ci, build, asset-pipeline)
-├── prototypes/                  # Throwaway prototypes (isolated from src/)
-├── production/                  # Sprint plans, milestones, release tracking, session logs
-└── README.md                    # Project overview
+│   ├── skills/                  # 75 skills (was .claude/skills/)
+│   ├── plugins/                 # TypeScript plugins
+│   │   ├── ccgs-hooks.ts        # Session lifecycle, validation, logging
+│   │   ├── drift-detector.ts    # Template compliance detection
+│   │   ├── changelog-generator.ts
+│   │   └── tests/               # 11 plugin test suites
+│   └── rules/                   # 11 path-scoped coding standards
+├── docs/
+│   ├── architecture/            # Architecture Decision Records (ADRs)
+│   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
+│   ├── authoring-agents.md      # Agent creation guide
+│   ├── authoring-skills.md      # Skill creation guide
+│   ├── hybrid-workflow.md       # Hybrid workflow reference
+│   └── CONTRIBUTING.md          # Framework contribution guide
+├── tests/
+│   ├── agents/                  # Agent framework validation
+│   │   ├── validate.mjs         # Structural compliance checker
+│   │   ├── validate-gdscript.mjs # GDScript snippet linter
+│   │   └── validation-report.md # Latest audit results
+│   ├── [game-specific tests]
+│   └── [spawned by test-setup]
+├── src/                         # Game source code
+├── assets/                      # Game assets
+├── design/                      # Game design documents
+├── tools/                       # Build and pipeline tools
+├── prototypes/                  # Throwaway prototypes
+└── production/                  # Sprint plans, milestones, session logs
 ```
 
 ## Coordination Rules
@@ -119,16 +134,21 @@ Or jump directly to:
 
 ## Available Commands
 
-Type `/` in OpenCode to see all available commands. Key categories:
+Type `/` in OpenCode to see all available commands. All 50 commands route to
+corresponding skills in `.opencode/skills/`.
 
-- **Onboarding**: `/start`, `/help`, `/project-stage-detect`, `/setup-engine`
-- **Design**: `/brainstorm`, `/map-systems`, `/design-system`, `/quick-design`
-- **Architecture**: `/create-architecture`, `/architecture-decision`, `/architecture-review`
-- **Stories**: `/create-epics`, `/create-stories`, `/dev-story`, `/sprint-plan`
-- **Reviews**: `/design-review`, `/code-review`, `/balance-check`, `/gate-check`
-- **QA**: `/qa-plan`, `/smoke-check`, `/soak-test`, `/regression-suite`
-- **Prototyping**: `/prototype`, `/hybrid-prototype`
-- **Team**: `/team-combat`, `/team-narrative`, `/team-ui`, `/team-release`
+| Category | Commands |
+|----------|----------|
+| **Onboarding** | `/start`, `/help`, `/project-stage-detect`, `/setup-engine`, `/init-template` |
+| **Design** | `/brainstorm`, `/map-systems`, `/design-system`, `/quick-design`, `/design-review`, `/review-all-gdds` |
+| **Architecture** | `/create-architecture`, `/architecture-decision`, `/architecture-review`, `/create-control-manifest` |
+| **Stories** | `/create-epics`, `/create-stories`, `/story-readiness`, `/dev-story`, `/story-done`, `/code-review` |
+| **QA** | `/qa-plan`, `/smoke-check`, `/soak-test`, `/regression-suite`, `/test-setup`, `/test-helpers`, `/test-evidence-review`, `/test-flakiness` |
+| **Prototyping** | `/prototype`, `/reverse-document` |
+| **Team** | `/team-combat`, `/team-narrative`, `/team-ui`, `/team-level`, `/team-audio`, `/team-polish`, `/team-qa`, `/team-release` |
+| **Release** | `/sprint-plan`, `/sprint-status`, `/milestone-review`, `/release-checklist`, `/launch-checklist`, `/retrospective` |
+| **Ops** | `/hotfix`, `/day-one-patch`, `/bug-report`, `/bug-triage`, `/security-audit` |
+| **Other** | `/balance-check`, `/consistency-check`, `/content-audit`, `/asset-audit`, `/perf-profile`, `/scope-check`, `/gate-check`, `/changelog`, `/patch-notes`, `/localize`, `/onboard`, `/tech-debt`, `/propagate-design-change`, `/estimate`, `/art-bible`, `/asset-spec`, `/playtest-report`, `/automated-smoke-test` |
 
 ## Studio Hierarchy
 
@@ -154,13 +174,31 @@ Tier 3 — Specialists (Subagents)
 
 ## Engine Specialists
 
-- **Godot 4**: `godot-specialist` + `godot-gdscript-specialist`, `godot-shader-specialist`, `godot-gdextension-specialist`
+- **Godot 4**: `godot-specialist` + `godot-gdscript-specialist`, `godot-csharp-specialist`, `godot-shader-specialist`, `godot-gdextension-specialist`
 - **Unity**: `unity-specialist` + `unity-dots-specialist`, `unity-shader-specialist`, `unity-addressables-specialist`, `unity-ui-specialist`
 - **Unreal Engine 5**: `unreal-specialist` + `ue-blueprint-specialist`, `ue-gas-specialist`, `ue-replication-specialist`, `ue-umg-specialist`
+
+## Quality Gates
+
+Before merging to `development`, the CI must pass:
+
+- **Agent validation** (`.github/workflows/agent-validation.yml`):
+  - All agent files have required frontmatter and sections
+  - All skill files have valid cross-references to existing agents
+  - All command files reference valid skill directories
+- **Plugin tests** (`node .opencode/plugins/tests/test-*.mjs`):
+  - 11 test suites, 129+ tests covering all hooks
 
 ## Notes
 
 This is a port of [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)
-to OpenCode. The 72 skills are now in `.opencode/commands/`, the 49 agents are in
-`.opencode/agents/`, and the 12 hooks are implemented as a TypeScript plugin in
-`.opencode/plugins/ccgs-hooks.ts`.
+to OpenCode. The 75 skills are in `.opencode/skills/`, the 49 agents are in
+`.opencode/agents/`, and the 12 original bash hooks are implemented as a
+TypeScript plugin in `.opencode/plugins/ccgs-hooks.ts`.
+
+Additional plugins (`drift-detector.ts`, `changelog-generator.ts`) extend the
+framework beyond the original port. See `.opencode/plugins/README.md` for the
+plugin architecture guide.
+
+To contribute to the framework itself — adding agents, skills, commands, rules,
+or plugins — see `docs/CONTRIBUTING.md`.
