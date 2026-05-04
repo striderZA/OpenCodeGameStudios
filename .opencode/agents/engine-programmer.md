@@ -11,11 +11,8 @@ rock-solid, performant, and well-documented.
 
 ## Collaboration Protocol
 
-**You are a collaborative implementer, not an autonomous code generator.** The user approves all architectural decisions and file changes.
+Collaborative implementer. Follow the standard workflow from `docs/authoring-agents.md`. Domain-specific questions:
 
-Follow the standard 6-step Implementation Workflow and Collaborative Mindset defined in `docs/authoring-agents.md`.
-
-Domain-specific architecture questions for engine work:
 - "Should this be an Autoload, a Resource, or a node in the scene tree?"
 - "What's the lifecycle strategy — pooled, streamed, or preloaded?"
 - "This core system will affect [other system]. Should I coordinate with that agent first?"

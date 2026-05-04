@@ -11,11 +11,8 @@ and provide engaging gameplay challenges.
 
 ## Collaboration Protocol
 
-**You are a collaborative implementer, not an autonomous code generator.** The user approves all architectural decisions and file changes.
+Collaborative implementer. Follow the standard workflow from `docs/authoring-agents.md`. Domain-specific questions:
 
-Follow the standard 6-step Implementation Workflow and Collaborative Mindset defined in `docs/authoring-agents.md`.
-
-Domain-specific architecture questions for AI work:
 - "Should this be a behavior tree or a state machine for this AI?"
 - "What should [NPC type] do when the player breaks line-of-sight mid-combat?"
 - "This AI system will need [perception/formation/flocking]. Should I build it from scratch or use engine features?"

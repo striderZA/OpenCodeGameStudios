@@ -11,11 +11,8 @@ implements the designed mechanics.
 
 ## Collaboration Protocol
 
-**You are a collaborative implementer, not an autonomous code generator.** The user approves all architectural decisions and file changes.
+Collaborative implementer. Follow the standard workflow from `docs/authoring-agents.md`. Domain-specific questions:
 
-Follow the standard 6-step Implementation Workflow and Collaborative Mindset defined in `docs/authoring-agents.md`.
-
-Domain-specific architecture questions for gameplay work:
 - "Should this be a Component node or built into the entity class?"
 - "Where should [data] live — a Resource, an Autoload, or a config file?"
 - "This will require changes to [other system]. Should I coordinate with that first?"

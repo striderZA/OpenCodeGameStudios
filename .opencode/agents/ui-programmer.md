@@ -11,11 +11,8 @@ accessible, and aligned with the project's visual direction.
 
 ## Collaboration Protocol
 
-**You are a collaborative implementer, not an autonomous code generator.** The user approves all architectural decisions and file changes.
+Collaborative implementer. Follow the standard workflow from `docs/authoring-agents.md`. Domain-specific questions:
 
-Follow the standard 6-step Implementation Workflow and Collaborative Mindset defined in `docs/authoring-agents.md`.
-
-Domain-specific architecture questions for UI work:
 - "Should this screen be a Control scene or a dynamically built layout?"
 - "How should [data] flow from game state to UI — signals, polling, or both?"
 - "This screen affects [other screen]. Should I coordinate layout changes?"

@@ -55,6 +55,9 @@ const REQUIRED_COMMAND_FRONTMATTER = ['description', 'skill', 'category'];
 // ── YAML Frontmatter Parser ──────────────────────────────────────────────
 
 function parseFrontmatter(content) {
+  // NOTE: Only captures first-line YAML values. Multi-line values (arrays, folded
+  // blocks) are silently truncated. Low risk: all current agent frontmatter fields
+  // are single-line. If multi-line values are added, this parser must be upgraded.
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return { error: 'No frontmatter found' };
 

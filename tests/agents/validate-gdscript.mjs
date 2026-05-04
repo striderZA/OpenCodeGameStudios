@@ -103,7 +103,7 @@ function validateAgentFiles() {
 }
 
 function main() {
-  const isStrict = process.argv.includes('--strict');
+  const isAdvisory = process.argv.includes('--advisory');
   console.log('🔍 Validating GDScript snippets in agent files...\n');
 
   const { results, totalSnippets, totalIssues } = validateAgentFiles();
@@ -130,15 +130,14 @@ function main() {
     console.log();
   }
 
-  console.log(`ℹ️  ${totalIssues} GDScript snippet issues found.`);
-  console.log('   These are advisory by default — many are intentional anti-pattern examples.');
-  console.log(`   Use --strict to exit non-zero on issues.`);
+  console.log(`❌ ${totalIssues} GDScript snippet issues found.`);
+  console.log('   Most are intentional anti-pattern examples shown in code blocks.');
+  console.log(`   Use --advisory to exit cleanly when reviewing known-issue files.`);
 
-  if (isStrict) {
-    console.log('\n❌ Strict mode: issues found.');
-    process.exit(1);
+  if (isAdvisory) {
+    process.exit(0);
   }
-  process.exit(0);
+  process.exit(1);
 }
 
 main();
