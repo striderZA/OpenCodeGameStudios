@@ -35,3 +35,22 @@ func _physics_process(delta: float) -> void:
     var nearby: Array[Node3D] = []  # VIOLATION: allocates every frame
     nearby = get_tree().get_nodes_in_group("enemies")  # VIOLATION: tree query every frame
 ```
+
+## Anti-Patterns
+
+- Calling `free()` instead of `queue_free()` in signal callbacks (use-after-free crashes)
+- Storing scene-specific node references in Autoloads (invalid after scene change)
+- Synchronous resource loading in `_ready()` for large assets (blocks main thread)
+- Accessing `get_tree()` in non-node classes without null checking
+- Not disconnecting signals before `queue_free()` (error spam from dead nodes)
+- Mixing engine and gameplay dependencies (engine code must not import gameplay)
+- Calling Godot API from threads other than the main thread (undefined behavior)
+
+## Cross-References
+
+- Agent: `engine-programmer` — owns engine code
+- Agent: `godot-specialist` — Godot-specific engine patterns
+- Agent: `performance-analyst` — profiles engine performance
+- Agent: `technical-director` — approves engine architecture
+- Rule: `network-code.md` — transport layer dependency
+- Rule: `test-standards.md` — engine-level test patterns

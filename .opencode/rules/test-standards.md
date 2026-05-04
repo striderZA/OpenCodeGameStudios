@@ -40,3 +40,22 @@ func test1() -> void:  # VIOLATION: no descriptive name
     h.take_damage(25)  # VIOLATION: no arrange step, no clear assert
     assert_true(h.current_health < 100)  # VIOLATION: imprecise assertion
 ```
+
+## Anti-Patterns
+
+- Tests with no descriptive name (`test1`, `test_foo`, `my_test`)
+- Tests that depend on other tests running first (order dependency)
+- Shared mutable test data (one test changes state another test depends on)
+- Assertions that are too vague (`assert_true(x < 100)` — assert the exact value)
+- Tests that don't clean up integration test artifacts (files, DB records)
+- Performance tests without thresholds (passes by default, never fails)
+- Forgetting to write a regression test when fixing a bug
+
+## Cross-References
+
+- Agent: `qa-lead` — owns test strategy
+- Agent: `qa-tester` — writes test cases
+- Skill: `test-setup` — scaffold test framework
+- Skill: `test-helpers` — generates engine-specific test utilities
+- Skill: `test-evidence-review` — reviews test quality
+- Rule: `gameplay-code.md` — gameplay testability requirements

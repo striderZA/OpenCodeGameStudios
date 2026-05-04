@@ -44,3 +44,19 @@ paths:
 ```
 
 Violations: uppercase filename, uppercase key, no `[system]_[name]` pattern, missing required fields.
+
+## Anti-Patterns
+
+- JSON without a schema or type definition (every file must have a documented schema)
+- Orphaned entries that nothing references (data drift over time)
+- Mixing naming conventions (camelCase + snake_case + PascalCase in the same file)
+- Breaking schema changes without versioning the file
+- Missing defaults for optional fields (code crashes when field is absent)
+- Numeric values with no documentation explaining what they mean
+
+## Cross-References
+
+- Agent: `game-designer` — provides data structure requirements
+- Agent: `systems-designer` — defines formula constants
+- Agent: `tools-programmer` — data validation and pipeline tools
+- Skill: `asset-audit` — audits asset naming and format compliance

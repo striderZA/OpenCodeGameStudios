@@ -38,3 +38,20 @@ If a prototype validates a concept and the feature moves to production:
 ## Cleanup
 Concluded prototypes should be archived or deleted after findings are captured.
 Never let prototype code grow into production code through incremental "cleanup."
+
+## Anti-Patterns
+
+- Prototype code that "just needs a little cleanup" to become production — always rewrite from scratch
+- Prototypes that grow beyond their timebox (set a hard deadline before starting)
+- No README.md for a prototype (findings are lost when memory fades)
+- Prototype code that accidentally ships (ensure build pipelines exclude `prototypes/`)
+- Prototype code referenced by production code (breaks the isolation boundary)
+- Spending time on polish during a prototype (if it needs polish, it needs a production pass)
+
+## Cross-References
+
+- Agent: `prototyper` — runs prototype workflow
+- Agent: `creative-director` — approves proceed/pivot/kill decisions
+- Skill: `prototype` — rapid prototyping workflow
+- Skill: `hybrid-prototype` — discovery-phase prototyping
+- Skill: `reverse-document` — captures findings after a successful prototype
