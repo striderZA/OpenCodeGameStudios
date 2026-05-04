@@ -222,15 +222,8 @@ export const ChangelogGenerator: Plugin = async ({ project, client, directory, w
       if (event.type === "session.idle" || event.type === "server.instance.disposed") {
         try {
           const { internal, player } = generateChangelogs(projectRoot, "unreleased")
-
-          // Don't auto-write, just log the available changelog
-          const lastTag = getLastTag(projectRoot)
-          const entries = parseConventionalCommits(projectRoot, lastTag)
-          if (entries.length > 0) {
-            logger.info(
-              `Changelog available: ${entries.length} unreleased commits since ${lastTag}. ` +
-              `Run the changelog-generator to write CHANGELOG.md.`
-            )
+          if (!internal.includes("No changes")) {
+            logger.info("Changelog generated with unreleased changes — run changelog-generator to write CHANGELOG.md.")
           }
         } catch (err) {
           logger.error("Failed to generate changelog preview", { error: String(err) })

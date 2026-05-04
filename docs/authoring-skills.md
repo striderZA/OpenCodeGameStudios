@@ -182,6 +182,8 @@ If [file/dependency] is missing:
 - Do not silently invent missing content
 ```
 
+#Always produce a partial report rather than crashing.
+
 ### Error Recovery Pattern
 
 ```markdown

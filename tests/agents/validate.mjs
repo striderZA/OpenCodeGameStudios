@@ -58,16 +58,15 @@ function parseFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return { error: 'No frontmatter found' };
 
-  const lines = match[1].split('\n');
+  const lines = match[1].split(/\r?\n/);
   const data = {};
-  let currentKey = null;
 
   for (const line of lines) {
     const kvMatch = line.match(/^(\w[\w-]*):\s*(.*)/);
     if (kvMatch) {
-      currentKey = kvMatch[1];
-      const value = kvMatch[2].trim();
-      data[currentKey] = value ? value.replace(/^["']|["']$/g, '') : '';
+      const key = kvMatch[1];
+      let value = (kvMatch[2] || '').trim().replace(/^["']|["']$/g, '');
+      data[key] = value;
     }
   }
 
@@ -202,10 +201,9 @@ function validateSkills() {
       }
 
       // Check for subagent_type references in content
-      const subagentRefs = content.match(/subagent_type:\s*(`?)([\w-]+)(`?)/g) || [];
+      const subagentRefs = content.match(/subagent_type:\s*`?([a-z][\w-]+)`?/g) || [];
       for (const ref of subagentRefs) {
-        let agent = ref.replace('subagent_type:', '').trim().replace(/`/g, '');
-        // Skip bracketed references like [primary engine specialist]
+        const agent = ref.replace('subagent_type:', '').trim().replace(/`/g, '');
         if (agent.startsWith('[')) continue;
         if (!agentNames.includes(agent)) {
           issues.push(`Content references unknown agent '${agent}' via subagent_type`);
@@ -399,14 +397,15 @@ function generateReport(sections) {
   for (const section of sections) {
     const { label, result } = section;
     if (result.error) {
-      report += `| ${label} | — | — | — (ERROR) |\n`;
+      report += `| ${label} | 0 | 1 (ERROR) | — |\n`;
+      totalFailed++;
     } else {
       report += `| ${label} | ${result.summary.passed} | ${result.summary.failed} | ${result.summary.total} |\n`;
     }
   }
   report += `| **Total** | **${totalPassed}** | **${totalFailed}** | **${totalTests}** |\n`;
   report += `\n**Verdict**: ${totalFailed === 0 ? '✅ PASS' : '❌ FAIL'}\n`;
-  report += `\n**Coverage**: ${((totalPassed / totalTests) * 100).toFixed(1)}%\n`;
+  report += `\n**Coverage**: ${totalTests > 0 ? ((totalPassed / totalTests) * 100).toFixed(1) : '0.0'}%\n`;
 
   return { report, passed: totalFailed === 0 };
 }
