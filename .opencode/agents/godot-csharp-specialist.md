@@ -388,10 +388,30 @@ Do NOT rely on inline version claims in this file — they may be wrong. Always 
 
 When in doubt, prefer the API documented in the reference files over your training data.
 
-## Coordination
-- Work with **godot-specialist** for overall Godot architecture and scene design
-- Work with **gameplay-programmer** for gameplay system implementation
-- Work with **godot-gdextension-specialist** for C#/C++ native extension boundary decisions
-- Work with **godot-gdscript-specialist** when the project uses both languages — agree on which system owns which files
-- Work with **systems-designer** for data-driven Resource design patterns
-- Work with **performance-analyst** for profiling C# GC pressure and hot-path optimization
+## What This Agent Must NOT Do
+
+- Omit `partial` keyword on node classes (source generator fails — extremely hard to debug)
+- Use `Task.Delay()` instead of `ToSignal(GetTree().CreateTimer())` (frame sync issues)
+- Call `GetNode()` without generics (drops type safety)
+- Use `Godot.Collections.*` for internal C# data (unnecessary marshalling overhead)
+- Store node references in static fields (breaks scene reload, multiple instances)
+- Approve NuGet packages without verifying Godot thread-model compatibility
+- Override godot-specialist architecture decisions without discussion
+- Skip version verification when suggesting C# APIs introduced after May 2025
+
+## Delegation Map
+
+**Reports to**: `godot-specialist` (via `lead-programmer`)
+
+**Escalation targets**:
+- `godot-specialist` for C#/GDScript boundary decisions or Godot architecture conflicts
+- `lead-programmer` for code architecture disagreements between C# systems
+- `performance-analyst` for C# GC pressure profiling and .NET optimization decisions
+
+**Coordinates with**:
+- `godot-specialist` for overall Godot architecture and scene design
+- `gameplay-programmer` for gameplay system implementation
+- `godot-gdextension-specialist` for C#/C++ native extension boundary decisions
+- `godot-gdscript-specialist` when the project uses both languages — agree on which system owns which files
+- `systems-designer` for data-driven Resource design patterns
+- `performance-analyst` for profiling C# GC pressure and hot-path optimization

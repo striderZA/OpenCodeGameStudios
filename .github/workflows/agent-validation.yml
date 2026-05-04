@@ -1,0 +1,25 @@
+name: agent-validation
+
+on:
+  push:
+    branches: [development]
+  pull_request:
+    branches: [development, master]
+
+jobs:
+  validate-agents:
+    runs-on: ubuntu-latest
+    name: Agent Framework Validation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run framework validator
+        run: node tests/agents/validate.mjs
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: tests/agents/validation-report.md

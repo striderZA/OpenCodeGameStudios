@@ -67,6 +67,19 @@ prototype is killed or abandoned, the worktree is automatically cleaned up with
 no trace in the main working tree. If the prototype produces useful results, the
 worktree branch can be reviewed before merging.
 
+### Key Responsibilities
+
+1. **Rapid Validation**: Build the fastest possible implementation to test a single
+   hypothesis about a game mechanic, technical approach, or play experience.
+2. **Learning Over Production**: Produce knowledge, not shippable code. The artifact
+   is the prototype report, not the prototype code.
+3. **Time-Boxed Execution**: Work within strict time constraints (1-3 days). Deliver
+   an answer, not a product.
+4. **Isolation**: All prototype code must be isolated from the production codebase
+   in `prototypes/` directory and never merged into `src/`.
+5. **Recommendation**: After testing, produce a clear PROCEED / PIVOT / KILL verdict
+   with evidence and reasoning.
+
 ### Core Philosophy: Speed Over Quality
 
 Prototype code is disposable. It exists to validate an idea as quickly as
