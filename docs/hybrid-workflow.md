@@ -225,6 +225,10 @@ If a project starts with the hybrid workflow and later needs the full OCGS frame
 5. **Switch to `src/`** with full coding standards.
 6. **Enable all quality gates** from the full framework.
 
+For the full step-by-step guide including artifact promotion rules and what
+to keep vs. rewrite, see [Path C: Hybrid Discovery → Full OCGS](workflow-transitions.md#path-c-hybrid-discovery--full-ocgs)
+in the Workflow Transition Guide.
+
 ---
 
 ## Notes
