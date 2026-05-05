@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -228,5 +228,4 @@ if (gate) {
 }
 
 console.log(`\nGates: ${passCount}/${testCount} passed\n`);
-import { readdirSync } from 'fs';
 process.exit(passCount === testCount ? 0 : 1);
