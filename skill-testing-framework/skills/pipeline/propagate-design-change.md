@@ -135,19 +135,19 @@ director review is required at the analysis stage.
 
 **Fixture:**
 - A GDD has been revised with downstream references
-- `production/session-state/review-mode.txt` exists with `full`
+- `production/review-mode.txt` exists with `full`
 
 **Input:** `/propagate-design-change design/gdd/[system].md`
 
 **Expected behavior:**
 1. Skill reads the GDD and traces downstream references
-2. Skill does NOT read `production/session-state/review-mode.txt`
+2. Skill does NOT read `production/review-mode.txt`
 3. No director gate agents are spawned at any point
 4. Impact report is produced and per-artifact approval proceeds normally
 
 **Assertions:**
 - [ ] No director gate agents are spawned (no CD-, TD-, PR-, AD- prefixed gates)
-- [ ] Skill does NOT read `production/session-state/review-mode.txt`
+- [ ] Skill does NOT read `production/review-mode.txt`
 - [ ] Output contains no "Gate: [GATE-ID]" or gate-skipped entries
 - [ ] Review mode has no effect on this skill's behavior
 

@@ -270,5 +270,59 @@ console.log('\n=== Cross-Cutting Invariants ===\n');
   }
 }
 
+{ // I10: skill-testing-framework catalog.yaml covers all skills in .opencode/skills/
+  const catalogPath = join(ROOT, 'skill-testing-framework', 'catalog.yaml');
+  if (existsSync(catalogPath)) {
+    const yaml = readFileSync(catalogPath, 'utf-8');
+    const cataloged = new Set([...yaml.matchAll(/^  - name: ([a-z][\w-]+)/gm)].map(m => m[1]));
+    const skillDirs = readdirSync(SKILLS_DIR).filter(d => {
+      const p = join(SKILLS_DIR, d);
+      return statSync(p).isDirectory() && existsSync(join(p, 'SKILL.md'));
+    });
+    const missing = skillDirs.filter(s => !cataloged.has(s));
+    run('I10: All skills in .opencode/skills/ are cataloged in skill-testing-framework/catalog.yaml', () => {
+      if (missing.length > 0) {
+        throw new Error(`Skills not in catalog.yaml: ${missing.join(', ')}`);
+      }
+    });
+  } else {
+    run('I10: skill-testing-framework/catalog.yaml exists', () => {
+      throw new Error('catalog.yaml not found');
+    });
+  }
+}
+
+{ // I11: No stale .claude/ paths remain in skill-testing-framework spec files
+  const frameworkDir = join(ROOT, 'skill-testing-framework');
+  if (existsSync(frameworkDir)) {
+    const mdFiles = [];
+    function walk(dir) {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        const fp = join(dir, e.name);
+        if (e.isDirectory()) walk(fp);
+        else if (e.name.endsWith('.md')) mdFiles.push(fp);
+      }
+    }
+    walk(frameworkDir);
+    const stale = [];
+    for (const fp of mdFiles) {
+      const content = readFileSync(fp, 'utf-8');
+      const claudeRefs = content.match(/\.claude\/[\w./-]+/g);
+      const sessionStateRefs = content.match(/production\/session-state\/review-mode\.txt/g);
+      if (claudeRefs) stale.push(...claudeRefs.map(r => `${fp.replace(ROOT, '')}: ${r}`));
+      if (sessionStateRefs) stale.push(...sessionStateRefs.map(r => `${fp.replace(ROOT, '')}: ${r}`));
+    }
+    run('I11: No stale .claude/ or session-state/ paths in spec files', () => {
+      if (stale.length > 0) {
+        throw new Error(`${stale.length} stale refs:\n  ${stale.join('\n  ')}`);
+      }
+    });
+  } else {
+    run('I11: skill-testing-framework directory exists', () => {
+      throw new Error('skill-testing-framework/ not found');
+    });
+  }
+}
+
 console.log(`\nInvariants: ${passCount}/${testCount} passed\n`);
 process.exit(passCount === testCount ? 0 : 1);

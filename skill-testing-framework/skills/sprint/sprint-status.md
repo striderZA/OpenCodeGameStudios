@@ -129,7 +129,7 @@ None. `/sprint-status` is a read-only reporting skill; no gates are invoked.
 
 **Fixture:**
 - `production/sprints/sprint-004.md` exists with 4 stories (2 Complete, 2 In Progress)
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/sprint-status`
 
