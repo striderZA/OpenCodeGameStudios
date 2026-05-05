@@ -134,7 +134,183 @@ Cover:
 
 Write the approved section to file immediately.
 
+### Section 4b: Palette Export
+
+After the color system is approved, write machine-readable palette files that tools and AI generators can ingest.
+
+**Agent delegation**: Spawn `art-director` via Task with the approved Color System section. Ask: "Extract the exact palette as a JSON color map. For every named color, provide: hex code, sRGB values (0-255), semantic role name, usage context (world, UI, semantic), and any colorblind-safe backup (icon/shape/sound cue). Include the full primary palette, semantic color vocabulary, and any per-biome/area palette variants."
+
+Write the approved palette data to **two files**:
+
+**`design/art/palette.json`** — Ask "May I export the palette as JSON?"
+
+```json
+{
+  "name": "[Game Title] — Color Palette",
+  "generated": "[date]",
+  "art-bible-source": "design/art/art-bible.md",
+  "primary": [
+    {
+      "name": "Example Blue",
+      "hex": "#4A90D9",
+      "rgb": [74, 144, 217],
+      "role": "Primary hero color — used for player character and friendly elements",
+      "context": "world"
+    }
+  ],
+  "semantic": [
+    {
+      "name": "Danger Red",
+      "hex": "#D94A4A",
+      "rgb": [217, 74, 74],
+      "meaning": "Enemy health, warnings, death state",
+      "colorblind-backup": "icon (skull symbol)",
+      "context": "ui"
+    }
+  ],
+  "variants": [
+    {
+      "name": "Forest Biome — Cool Shift",
+      "palette": ["#2E5E3E", "#4A8B5E", "#6BA37A"],
+      "rule": "Subtract 15% saturation from primary palette, add 10% blue channel"
+    }
+  ]
+}
+```
+
+**`design/art/palette.css`** — Ask "May I export the palette as CSS custom properties?"
+
+```css
+:root {
+  /* Primary Palette */
+  --color-primary: #4A90D9;
+  --color-secondary: #6BA37A;
+  --color-accent: #E8C84A;
+
+  /* Semantic Colors */
+  --color-danger: #D94A4A;
+  --color-safe: #4AD94A;
+  --color-rare: #D9A84A;
+
+  /* UI Palette */
+  --color-ui-bg: #1A1A2E;
+  --color-ui-text: #E0E0E0;
+  --color-ui-highlight: #4A90D9;
+}
+```
+
+Both files together mean: palette.json → 3D tools, palette.css → web/UI prototyping, and both → AI prompts ("use --color-primary as the dominant hue").
+
 ---
+
+## Phase 2.5: Production Reference Outputs
+
+These sections produce spec files that bridge visual identity → actual asset production. Each is written to `design/art/` and feeds directly into `/asset-spec` generation.
+
+### Section 4c: Typography Spec
+
+**Goal**: A complete typography system that covers both in-game UI and any marketing/branding materials.
+
+**Agent delegation**: Spawn `art-director` via Task with the Visual Identity Statement and mood targets. Ask: "Design the typography system for this game. Consider: font family recommendations (primary + fallback + monospace), what each font communicates about the game's world, weight hierarchy (headline, body, caption — exact weights), line height ratios, tracking/letter-spacing for UI use, and any custom typographic effects that define the game's text treatment (glow, stroke, distortion). If the game has a specific cultural or period setting, recommend fonts that serve that setting."
+
+Cover:
+- **Primary display font** — used for titles, key UI headers, marketing. Name specific font families with fallback chains.
+- **Body text font** — used for dialogue, item descriptions, menus. Must be readable at small sizes.
+- **Monospace / data font** — used for damage numbers, timers, stats, code-like UI.
+- **Size scale** — base size, scale ratio, and named tiers (caption / body / lead / subhead / headline / display)
+- **Weight usage** — which weights map to which contexts (e.g., Bold for headers only, Regular for body)
+- **Special treatments** — any glow, outline, distortion, or animation applied to text elements
+- **Accessibility** — minimum size, contrast ratio against expected backgrounds
+
+Write the approved section to `design/art/art-bible.md` Section 4c. Then ask: "May I export typography as JSON to `design/art/typography.json`?"
+
+```json
+{
+  "name": "[Game Title] — Typography",
+  "generated": "[date]",
+  "art-bible-source": "design/art/art-bible.md",
+  "fonts": {
+    "display": {
+      "family": "Cinzel Decorative",
+      "fallback": ["Georgia", "serif"],
+      "weights": [400, 700, 900],
+      "usage": "Titles, chapter headers, key UI"
+    },
+    "body": {
+      "family": "Lora",
+      "fallback": ["Palatino", "serif"],
+      "weights": [400, 600],
+      "usage": "Dialogue, descriptions, menus"
+    }
+  },
+  "scale": {
+    "base": "16px",
+    "ratio": 1.25,
+    "tiers": {
+      "caption": "0.75rem",
+      "body": "1rem",
+      "lead": "1.25rem",
+      "subhead": "1.5rem",
+      "headline": "2rem",
+      "display": "3rem"
+    }
+  },
+  "accessibility": {
+    "minimum-size": "14px",
+    "minimum-contrast": "4.5:1"
+  }
+}
+```
+
+### Section 4d: Visual Anchor Prompt
+
+**Goal**: A single AI-generation-ready prompt that captures the entire visual identity. Use this as a seed prompt for all subsequent asset generation in `/asset-spec`.
+
+**Agent delegation**: Spawn `art-director` via Task with the complete sections 1-4c (Visual Identity through Typography). Ask: "Write a single comprehensive visual anchor prompt for this game's art style. Structure it for use with AI image generation (Midjourney, Stable Diffusion, DALL-E). The prompt must be modular — use `--style` or `[style fragment]` markers so individual asset prompts can interpolate their subject into the style. Include: art style keywords, color palette anchor (reference the palette.json color names), lighting direction, composition philosophy, camera distance defaults, and strong negative prompts for what this style is NOT. The goal is: pasting this anchor + an asset description into any image generator produces output consistent with the art bible."
+
+Write the anchor to `design/art/style-anchor-prompt.md`:
+
+```markdown
+# Visual Anchor Prompt — [Game Title]
+
+> Generated: [date]
+> Art Bible: design/art/art-bible.md
+
+## Style Anchor
+
+Use this as a prefix for all asset generations:
+
+```
+[style: hand-painted watercolor with bold ink outlines, flat shading,
+lighting: soft warm directional from upper-left, no harsh shadows,
+colors: --color-primary dominant hue, --color-secondary for environment,
+--color-accent for points of interest,
+composition: centered subject, negative space breathing room,
+detail level: painterly — suggestive not photorealistic,
+camera: medium distance, eye-level,
+negative: no photorealistic textures, no bloom, no lens flare,
+no gritty/dark fantasy tone, no cel-shading outlines, no anime eyes]
+```
+
+## Usage
+
+For any asset spec, insert the asset description between the style anchor
+and camera/detail instructions:
+
+```
+[style anchor as above]
+subject: a weathered iron golem standing guard, moss covering its left shoulder,
+one eye glowing with --color-accent
+[camera/detail instructions]
+```
+
+## Per-Biome Variants
+
+| Biome | Palette Shift | Lighting Adjust |
+|-------|--------------|-----------------|
+| [Forest] | Use --color-secondary variants | Soft dappled light, warm tint |
+| [Cave] | Desaturate 30%, add 15% blue | Single hard light source from above |
+```
 
 ## Phase 3: Production Guides (Sections 5–8)
 
@@ -184,7 +360,70 @@ Write the approved section to file.
 
 ---
 
-## Phase 5: Art Director Sign-Off
+## Phase 4.5: Reference Image Collection
+
+**Goal**: Find and catalog actual reference images that embody the art bible's visual direction. This turns abstract references ("like Hollow Knight's lighting") into concrete URLs that `/asset-spec` can embed in AI generation prompts.
+
+After the reference direction section is written, gather visual references:
+
+### Step 1: Generate Search Queries
+
+For each reference source named in Section 9, generate 2-3 specific image search queries that target the exact visual element being referenced. Example: instead of "Hollow Knight concept art", use "Hollow Knight Greenpath background lighting warm greens atmospheric".
+
+Use `question` to present the query list:
+- Prompt: "I'll search for reference images matching these queries. Each targets a specific visual element from the reference direction."
+- Show the query list as conversation text
+- Options: `[A] Proceed — search for all of these` / `[B] Add or remove queries` / `[C] Skip — I'll provide images myself`
+
+### Step 2: Fetch and Catalog
+
+For each approved query, use `webfetch` to search for reference images. Target platforms: ArtStation, Pinterest, DeviantArt, or general image search.
+
+The goal is to find:
+- Concept art showing the overall style
+- Specific technique examples (lighting, color palette usage, shape language)
+- "What to avoid" counter-examples
+
+For each successful fetch, extract the page URL and note what visual element it demonstrates. Present findings:
+
+> Found [N] reference pages:
+> - [URL] — "Greenpath lighting — warm greens, soft dappled light" — matches §2 Mood targets
+> - [URL] — "Character silhouette — horned knight" — matches §3 Shape Language
+> - [URL] — "UI mockup — ornate border with gold accents" — matches §7 UI Direction
+
+### Step 3: Write Reference Catalog
+
+Ask: "May I write the reference catalog to `design/art/reference-catalog.md`?"
+
+```markdown
+# Reference Image Catalog — [Game Title]
+
+> Generated: [date]
+> Art Bible: design/art/art-bible.md
+
+## References by Art Bible Section
+
+### §2 Mood & Atmosphere — Lighting References
+| Image URL | Source | Element | Matches |
+|-----------|--------|---------|---------|
+| [url] | ArtStation | Warm green atmospheric lighting in cave | §2 Exploration mood |
+| [url] | Pinterest | Golden hour forest — warm directional light | §2 Combat energy |
+
+### §3 Shape Language — Silhouette References
+...
+
+### §9 Reference Direction — Full Scene References
+...
+
+## AI Generation Seed URLs
+
+Include these as image reference URLs (`--sref` or `--iw`) when generating:
+- [URL 1] — overall style anchor
+- [URL 2] — color palette exemplar
+- [URL 3] — lighting benchmark
+```
+
+---
 
 **Review mode check** — apply before spawning AD-ART-BIBLE:
 - `solo` → skip. Note: "AD-ART-BIBLE skipped — Solo mode." Proceed to Phase 6.
