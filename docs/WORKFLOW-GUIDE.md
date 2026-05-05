@@ -65,7 +65,8 @@ This guided onboarding asks where you are and routes you to the right phase:
   then `/adopt` for brownfield migration
 - **Path E** -- Multiple ideas to explore: routes to `/explore` for rapid
   pre-workflow prototyping, then `/gate-check workflow-selection` to choose
-  Hybrid vs. Full OCGS based on results
+  Hybrid vs. Full OCGS based on results. See [Workflow Transitions Guide](workflow-transitions.md)
+  for artifact promotion rules when moving from exploration into either workflow.
 
 ### Step 3: Verify Hooks Are Working
 
