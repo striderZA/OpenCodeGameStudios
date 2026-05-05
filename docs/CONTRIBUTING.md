@@ -22,8 +22,8 @@ The OCGS framework has 5 component types:
 | Component | Location | Purpose |
 |-----------|----------|---------|
 | **Agents** | `.opencode/agents/` | Agent definitions (49 files) |
-| **Skills** | `.opencode/skills/` | Skill workflows (75 directories) |
-| **Commands** | `.opencode/commands/` | Slash commands (50 files) |
+| **Skills** | `.opencode/skills/` | Skill workflows (76 directories) |
+| **Commands** | `.opencode/commands/` | Slash commands (51 files) |
 | **Rules** | `.opencode/rules/` | Coding standards (11 files) |
 | **Plugins** | `.opencode/plugins/` | TypeScript hooks |
 

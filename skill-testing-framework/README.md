@@ -1,4 +1,4 @@
-# CCGS Skill Testing Framework
+# OCGS Skill Testing Framework
 
 Quality assurance infrastructure for the **Claude Code Game Studios** framework.
 Tests the skills and agents themselves — not any game built with them.

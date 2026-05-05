@@ -139,7 +139,7 @@ const COMMAND_REF_RE = /`\/([a-z][\w-]+)`/g;
   }
 }
 
-{ // P8: Workflow transition docs exist for defined transitions
+{ // P9: Workflow transition docs exist for defined transitions
   const transitionDocs = [
     'docs/workflow-transitions.md',
     'docs/hybrid-workflow.md',
