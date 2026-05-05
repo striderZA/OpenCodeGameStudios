@@ -40,7 +40,7 @@ with verdict COMPLETE / BLOCKED and handoffs to `/ux-review`, `/code-review`,
 - `design/player-journey.md` exists
 - `design/ux/interaction-patterns.md` exists with relevant patterns
 - `design/accessibility-requirements.md` exists with committed tier (e.g., Enhanced)
-- Engine UI specialist configured in `.claude/docs/technical-preferences.md`
+- Engine UI specialist configured in `.opencode/docs/technical-preferences.md`
 
 **Input:** `/team-ui inventory screen`
 

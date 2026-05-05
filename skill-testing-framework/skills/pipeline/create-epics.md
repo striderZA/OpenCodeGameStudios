@@ -48,7 +48,7 @@ In `solo` mode: PR-EPIC is skipped. Output notes: "PR-EPIC skipped — solo mode
 - Both systems have approved GDDs in `design/gdd/`
 - `docs/architecture/architecture.md` exists with matching modules
 - At least one Accepted ADR exists for each system
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Input:** `/create-epics`
 
@@ -97,7 +97,7 @@ In `solo` mode: PR-EPIC is skipped. Output notes: "PR-EPIC skipped — solo mode
 
 **Fixture:**
 - 2 approved GDDs exist
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Full mode expected behavior:**
 1. Skill drafts both epics
@@ -112,7 +112,7 @@ In `solo` mode: PR-EPIC is skipped. Output notes: "PR-EPIC skipped — solo mode
 
 **Fixture (lean mode):**
 - Same GDDs
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Lean mode expected behavior:**
 1. Epics are drafted
@@ -149,7 +149,7 @@ In `solo` mode: PR-EPIC is skipped. Output notes: "PR-EPIC skipped — solo mode
 
 **Fixture:**
 - 2 approved GDDs exist
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - PR-EPIC gate returns CONCERNS (e.g., scope of one epic is too large)
 
 **Input:** `/create-epics`

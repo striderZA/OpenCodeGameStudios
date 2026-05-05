@@ -48,7 +48,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 - `docs/architecture/architecture.md` exists with all 8 required sections populated
 - All sections reference the correct engine version from `docs/engine-reference/`
 - No contradictions with existing Accepted ADRs in `docs/architecture/`
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/architecture-review docs/architecture/architecture.md`
 
@@ -75,7 +75,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 **Fixture:**
 - `docs/architecture/architecture.md` exists but is missing at least 2 required sections
   (e.g., no data model section, no error handling section)
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/architecture-review docs/architecture/architecture.md`
 
@@ -142,7 +142,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 
 **Fixture (full mode):**
 - `docs/architecture/architecture.md` exists with all 8 sections
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Full mode expected behavior:**
 1. TD-ARCHITECTURE gate spawns
@@ -156,7 +156,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 
 **Fixture (solo mode):**
 - Same architecture doc
-- `production/session-state/review-mode.txt` contains `solo`
+- `production/review-mode.txt` contains `solo`
 
 **Solo mode expected behavior:**
 1. Skill reads the architecture doc

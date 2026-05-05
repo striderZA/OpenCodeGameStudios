@@ -134,20 +134,20 @@ Full GDD review is not needed for sub-4-hour single-system features.
 
 **Fixture:**
 - Feature is within scope for quick-design
-- `production/session-state/review-mode.txt` exists with `full`
+- `production/review-mode.txt` exists with `full`
 
 **Input:** `/quick-design [feature-name]`
 
 **Expected behavior:**
 1. Skill asks scoping questions and determines scope is within threshold
-2. Skill does NOT read `production/session-state/review-mode.txt`
+2. Skill does NOT read `production/review-mode.txt`
 3. Skill does NOT spawn any director gate agent
 4. Spec is drafted, "May I write" asked, file written after approval
 5. Output explicitly notes: "No director gate review — quick-design is for sub-4h features"
 
 **Assertions:**
 - [ ] No director gate agents are spawned (no CD-, TD-, PR-, AD- prefixed gates)
-- [ ] Skill does NOT read `production/session-state/review-mode.txt`
+- [ ] Skill does NOT read `production/review-mode.txt`
 - [ ] Output contains a note explaining why no gate review is needed
 - [ ] Review mode has no effect on this skill's behavior
 - [ ] Full GDD review path (`/design-system`) is mentioned as the alternative for larger features

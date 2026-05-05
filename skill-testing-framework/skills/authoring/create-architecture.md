@@ -50,7 +50,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 **Fixture:**
 - No existing `docs/architecture/architecture.md`
 - `docs/architecture/` contains Accepted ADRs for reference
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/create-architecture`
 
@@ -76,7 +76,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 
 **Fixture:**
 - Architecture doc is fully drafted (all sections)
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - TD-ARCHITECTURE gate returns MAJOR REVISION: "[specific structural issue]"
 
 **Input:** `/create-architecture`
@@ -100,7 +100,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 
 **Fixture:**
 - No existing architecture doc
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Input:** `/create-architecture`
 
@@ -146,7 +146,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 **Fixture:**
 - Architecture doc is being authored
 - One section references or depends on an ADR that has `Status: Proposed`
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/create-architecture`
 

@@ -51,7 +51,7 @@ In `solo` mode: both gates are skipped. ADR is written with Status: Proposed.
 **Fixture:**
 - `docs/architecture/` exists with no existing ADR for rendering
 - `docs/engine-reference/[engine]/VERSION.md` exists
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/architecture-decision rendering-approach`
 
@@ -79,7 +79,7 @@ In `solo` mode: both gates are skipped. ADR is written with Status: Proposed.
 
 **Fixture:**
 - ADR draft is complete (all sections filled)
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - TD-ADR gate returns CONCERNS: "The decision does not address [specific concern]"
 
 **Input:** `/architecture-decision [topic]`
@@ -102,7 +102,7 @@ In `solo` mode: both gates are skipped. ADR is written with Status: Proposed.
 ### Case 3: Lean Mode — Both gates skipped; ADR written as Proposed
 
 **Fixture:**
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 - ADR draft is authored for a new technical decision
 
 **Input:** `/architecture-decision [topic]`

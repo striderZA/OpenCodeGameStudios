@@ -52,7 +52,7 @@ In `solo` mode: QL-STORY-READY is skipped with equivalent notes.
 - All governing ADRs have `Status: Accepted`
 - `docs/architecture/control-manifest.md` exists
 - `docs/architecture/tr-registry.yaml` has TR-IDs for all 3 requirements
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Input:** `/create-stories [epic-name]`
 
@@ -147,7 +147,7 @@ In `solo` mode: QL-STORY-READY is skipped with equivalent notes.
 **Fixture:**
 - EPIC.md exists with 2 requirements
 - Both governing ADRs are Accepted
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - QL-STORY-READY check finds one story has ambiguous acceptance criteria
 
 **Input:** `/create-stories [epic-name]`

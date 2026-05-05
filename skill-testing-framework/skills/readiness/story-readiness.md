@@ -138,7 +138,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 
 **Fixture:**
 - Story file exists and is READY (all 4 dimensions pass, ADR Accepted, criteria present)
-- `production/session-state/review-mode.txt` exists
+- `production/review-mode.txt` exists
 
 **Case 5a — full mode:**
 - `review-mode.txt` contains `full`

@@ -138,7 +138,7 @@ review; delegating to a director gate would create a circular dependency.
 
 **Fixture:**
 - `design/gdd/` contains ≥2 consistent system GDDs
-- `production/session-state/review-mode.txt` exists with content `full`
+- `production/review-mode.txt` exists with content `full`
 
 **Input:** `/review-all-gdds`
 
@@ -151,7 +151,7 @@ review; delegating to a director gate would create a circular dependency.
 
 **Assertions:**
 - [ ] No director gate agents are spawned at any point
-- [ ] Skill does NOT read `production/session-state/review-mode.txt`
+- [ ] Skill does NOT read `production/review-mode.txt`
 - [ ] Output does not contain any "Gate: [GATE-ID]" or "skipped" gate entries
 - [ ] The skill produces a verdict regardless of review mode
 - [ ] R4 metric: gate count for this skill = 0 in all modes
