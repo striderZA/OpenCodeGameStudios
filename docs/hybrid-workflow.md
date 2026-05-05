@@ -10,6 +10,10 @@ This document defines a pragmatic hybrid workflow that balances **creative agili
 
 **Not sure which workflow to use?** Run `/explore` to rapidly prototype 2-4 ideas with zero workflow commitment, then use `/gate-check workflow-selection` to choose the right workflow based on your results. See [Pre-Workflow Exploration](#pre-workflow-exploration) below.
 
+**See real-world examples**: The [Workflow Selection Case Studies](examples/workflow-selection-case-studies.md)
+document walks through three scenarios — solo dev, funded team, and scope
+recovery — showing how the workflow selection process works in practice.
+
 ---
 
 ## Two-Phase Model
@@ -142,12 +146,16 @@ A new skill/command that shortcuts the path to a playable prototype:
 
 ## When to Switch to Full OCGS
 
-Switch back to the **full 49-agent framework** if any of these become true:
+Switch to the **full 49-agent framework** if any of these become true:
 - Team grows beyond 5 people
 - Project timeline exceeds 6 months
 - Multiple features need parallel development
 - You need live ops, analytics, or multiplayer
 - Funding/publisher requires formal process
+
+For a detailed upgrade trigger reference with scoring and case studies,
+see [Upgrade Trigger Reference](examples/workflow-selection-case-studies.md#upgrade-trigger-reference)
+in the Workflow Selection Case Studies.
 
 ---
 
