@@ -1,6 +1,6 @@
 ---
 name: start
-description: "First-time onboarding — asks where you are, then guides you to the right workflow. No assumptions."
+description: "First-time onboarding — asks where you are, then guides you to the right workflow or to pre-workflow exploration. No assumptions."
 argument-hint: "[no arguments]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, question
@@ -8,7 +8,9 @@ allowed-tools: Read, Glob, Grep, Write, question
 
 # Guided Onboarding
 
-This skill writes one file: `production/review-mode.txt` (review mode config set in Phase 3b).
+This skill writes up to two files:
+- `production/stage.txt` — set to `exploration` when user picks Path E (pre-workflow exploration).
+- `production/review-mode.txt` — review mode config (set in Phase 3b, skipped for Path E).
 
 This skill is the entry point for new users. It does NOT assume you have a game idea, an engine preference, or any prior experience. It asks first, then routes you to the right workflow.
 
@@ -40,6 +42,7 @@ This is the first thing the user sees. Use `question` with these exact options s
   - `B) Vague idea` — I have a rough theme, feeling, or genre in mind (e.g., "something with space" or "a cozy farming game") but nothing concrete.
   - `C) Clear concept` — I know the core idea — genre, basic mechanics, maybe a pitch sentence — but haven't formalized it into documents yet.
   - `D) Existing work` — I already have design docs, prototypes, code, or significant planning done. I want to organize or continue the work.
+  - `E) Multiple ideas` — I have 2-4 rough game ideas and want to prototype them quickly before committing to a specific workflow.
 
 Wait for the user's selection. Do not proceed until they respond.
 
@@ -161,11 +164,35 @@ The user needs creative exploration before anything else.
    - `/architecture-review` — bootstrap the TR requirement registry
    - `/gate-check` — validate readiness for next phase
 
+#### If E: Multiple ideas to explore
+
+The user wants to explore several rough ideas before committing to a workflow.
+
+1. Acknowledge that prototyping before committing is a good approach
+2. Briefly explain what `/explore` does (pre-workflow rapid prototyping — build throwaway prototypes in `prototypes/explore/`, produces lightweight `REPORT.md` per idea, no workflow commitment, 1-2 days per idea)
+3. Recommend running `/explore [idea-name]` for their first idea, then more for subsequent ideas
+4. Show the recommended path:
+
+   **Pre-workflow exploration:**
+   - `/explore idea-a` — build a prototype for the first idea (1-2 days)
+   - `/explore idea-b` — build a prototype for the second idea (1-2 days)
+   - `/explore idea-c` — (optional) build a prototype for the third idea
+   - Review reports in `prototypes/explore/*/REPORT.md`
+   - `/gate-check workflow-selection` — compare results and choose Hybrid or Full OCGS
+
+5. **Do NOT** ask about engine preferences, review modes, or any workflow-specific setup. The user is in pre-workflow exploration.
+
+6. Write `production/stage.txt` with value `exploration` so that `/help` and other skills know the project is in the exploration phase. Create the `production/` directory if it does not exist.
+
+   This is the only file Path E writes. No `production/review-mode.txt` is created.
+
 ---
 
 ## Phase 3b: Set Review Mode
 
-Check if `production/review-mode.txt` already exists.
+**If the user chose Path E (exploration)**: Skip this phase entirely. No review mode is needed for pre-workflow exploration. Proceed directly to Phase 4.
+
+**For all other paths**: Check if `production/review-mode.txt` already exists.
 
 **If it exists**: Read it and show the current mode — "Review mode is set to `[current]`." — then proceed to Phase 4. Do not ask again.
 
@@ -212,6 +239,8 @@ Verdict: **COMPLETE** — user oriented and handed off to next step.
 - **User picks D but project is empty**: Gently redirect — "It looks like the project is a fresh template with no artifacts yet. Would Path A or B be a better fit?"
 - **User picks A but project has code**: Mention what you found — "I noticed there's already code in `src/`. Did you mean to pick D (existing work)?"
 - **User is returning (engine configured, concept exists)**: Skip onboarding entirely — "It looks like you're already set up! Your engine is [X] and you have a game concept at `design/gdd/game-concept.md`. Review mode: `[read from production/review-mode.txt, or 'lean (default)' if missing]`. Want to pick up where you left off? Try `/sprint-plan` or just tell me what you'd like to work on."
+- **User is returning with exploration stage** (`production/stage.txt` reads `exploration`): Skip full onboarding — "It looks like you're exploring game ideas! You have [N] explore prototypes in `prototypes/explore/`. Want to run `/explore [another-idea]`, or are you ready to run `/gate-check workflow-selection` to choose a workflow?"
+- **User picks E but has existing project artifacts**: Detect if `production/stage.txt` already has a non-exploration value. If so, warn: "It looks like you already have a project in the [phase] phase. Did you mean to continue that work (Path D) instead?"
 - **User doesn't fit any option**: Let them describe their situation in their own words and adapt.
 
 ---
