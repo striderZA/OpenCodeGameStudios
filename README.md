@@ -4,7 +4,7 @@
   <img src="assets/banner.png" alt="OpenCode Game Studios Banner" width="100%">
 </p>
 
-> ⚡ Port of [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) to [OpenCode](https://opencode.ai)
+> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework with workflow selection, phase gates, pre-workflow prototyping, and hybrid discovery-to-production pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
@@ -36,21 +36,31 @@
 
 ## 💡 Motivation
 
-Claude Code's strict session and usage limits make it impractical for large-scale,
-long-running game development — sessions expire, context is frequently wiped, and
-high usage quickly hits rate caps. **OpenCode** removes those constraints,
-allowing sustained development over the full lifecycle of a game project. While there
-are some workarounds for Claude Code to access other models through local proxies, 
-this is not the intended use of Claude Code and such setups are fragile at best. 
+Game development is a multi-disciplinary process — design, writing, architecture,
+programming, art, audio, QA, release — that's hard to coordinate with AI assistants
+in ad-hoc chat sessions. **OpenCode Game Studios** provides a structured framework
+for the full game lifecycle:
 
-This port adapts the complete [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
-framework — its 49 agents, 73 skills, 12 hooks, and all rules — to run natively
-on OpenCode, giving game teams the same structured AI-assisted workflow without
-the artificial limits.
+- **Pre-workflow exploration** — Rapidly prototype 2-4 ideas with zero commitment
+  before choosing a development workflow
+- **Design-first pipeline** — Brainstorm → systems map → section-by-section GDDs →
+  cross-GDD review, before any code is written
+- **Phase gates** — Formal checkpoints between phases with PASS/CONCERNS/FAIL
+  verdicts that prevent advancing with gaps
+- **Workflow selection** — Choose Hybrid (lightweight discovery then production)
+  or Full OCGS (process-heavy from day one), depending on team size and project
+  maturity
+- **49 coordinated agents** — From creative director to engine specialists, each
+  with defined responsibilities, delegation maps, and strict domain boundaries
+- **51 slash commands** — Route through the right skill every time, from
+  `/brainstorm` to `/launch-checklist`
+
+This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
+and runs on [OpenCode](https://opencode.ai).
 
 ---
 
-> ⚠️ **Early Prototype** — This is an active work-in-progress port. Things will
+> ⚠️ **Active Development** — This is a living framework. Things will
 > break, change, and improve. Report bugs at
 > [github.com/striderZA/OpenCodeGameStudios/issues](https://github.com/striderZA/OpenCodeGameStudios/issues).
 
@@ -199,14 +209,14 @@ node utils/assign-models.js --config my-models.json
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .opencode/
-│   ├── commands/              ⌨️ 50 slash commands (routes to skills)
+│   ├── commands/              ⌨️ 51 slash commands (routes to skills)
 │   ├── agents/                🤖 49 agent definitions
-│   ├── skills/                🛠️ 75 skill workflows
+│   ├── skills/                🛠️ 76 skill workflows
 │   ├── plugins/
 │   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
-│   │   └── tests/             🧪 11 test suites (129 tests)
+│   │   └── tests/             🧪 11 test suites (140 tests)
 │   └── rules/                 📏 11 coding standards
 ├── design/                    🎨 Game design documents
 ├── docs/
