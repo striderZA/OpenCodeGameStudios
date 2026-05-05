@@ -63,6 +63,9 @@ This guided onboarding asks where you are and routes you to the right phase:
 - **Path D1** -- Existing project, few artifacts: normal flow
 - **Path D2** -- Existing project, GDDs/ADRs exist: runs `/project-stage-detect`
   then `/adopt` for brownfield migration
+- **Path E** -- Multiple ideas to explore: routes to `/explore` for rapid
+  pre-workflow prototyping, then `/gate-check workflow-selection` to choose
+  Hybrid vs. Full OCGS based on results
 
 ### Step 3: Verify Hooks Are Working
 
@@ -122,6 +125,8 @@ docs/                 # Technical documentation
   postmortems/        # Post-mortems
 tests/                # Test suites
 prototypes/           # Throwaway prototypes
+  explore/            # Pre-workflow exploration prototypes (/explore)
+  archive/            # Archived prototypes after workflow selection
 production/           # Sprint plans, milestones, releases
   sprints/
   milestones/
@@ -1462,7 +1467,7 @@ conflicts go to `producer`.
 | `/story-done` | 8-phase story completion review | 5 |
 | `/estimate` | Effort estimation with risk assessment | 4-5 |
 
-#### Reviews and Analysis (10)
+#### Reviews and Analysis (11)
 
 | Command | Purpose | Phase |
 |---------|---------|-------|
@@ -1475,6 +1480,7 @@ conflicts go to `producer`.
 | `/perf-profile` | Performance profiling workflow | 6 |
 | `/tech-debt` | Tech debt scanning and prioritization | 6 |
 | `/gate-check` | Formal phase gate with PASS/CONCERNS/FAIL | All transitions |
+| `/gate-check workflow-selection` | Choose Hybrid vs. Full after exploration | Pre-workflow |
 | `/reverse-document` | Generate design docs from existing code | Any |
 
 #### QA and Testing (9)
@@ -1512,11 +1518,13 @@ conflicts go to `producer`.
 | `/patch-notes` | Player-facing patch notes | 7 |
 | `/hotfix` | Emergency fix workflow | 7+ |
 
-#### Creative (2)
+#### Creative (4)
 
 | Command | Purpose | Phase |
 |---------|---------|-------|
+| `/explore` | Pre-workflow rapid prototyping — no workflow commitment | Pre-workflow |
 | `/prototype` | Throwaway prototype in isolated worktree | 4 |
+| `/hybrid-prototype` | Fast-lane prototype for hybrid discovery phase | Discovery |
 | `/localize` | String extraction and validation | 6-7 |
 
 #### Team Orchestration (9)
@@ -1549,7 +1557,20 @@ conflicts go to `producer`.
 7. /design-system per system (guided GDD authoring)
 ```
 
-### Workflow 2: "I have designs and want to start coding"
+### Workflow 2: "I have multiple ideas and want to explore before committing"
+
+```
+1. /start (pick Path E — multiple ideas to explore)
+2. /explore idea-a (rapid prototype, 1-2 days)
+3. /explore idea-b (rapid prototype, 1-2 days)
+4. /explore idea-c (optional, 1-2 days)
+5. Review reports in prototypes/explore/*/REPORT.md
+6. /gate-check workflow-selection (choose Hybrid vs. Full OCGS)
+7. If Hybrid: run /hybrid-prototype on the winning idea
+8. If Full: run /brainstorm [winning idea] to formalize, then /setup-engine
+```
+
+### Workflow 3: "I have designs and want to start coding"
 
 ```
 1. /design-review on each GDD (make sure they're solid)
@@ -1564,7 +1585,7 @@ conflicts go to `producer`.
 10. /story-readiness -> implement -> /story-done (story lifecycle)
 ```
 
-### Workflow 3: "I need to add a complex feature mid-production"
+### Workflow 4: "I need to add a complex feature mid-production"
 
 ```
 1. /design-system or /quick-design (depending on scope)
@@ -1576,7 +1597,7 @@ conflicts go to `producer`.
 7. /balance-check if it affects game balance
 ```
 
-### Workflow 4: "Something broke in production"
+### Workflow 5: "Something broke in production"
 
 ```
 1. /hotfix "description of the issue"
@@ -1587,7 +1608,7 @@ conflicts go to `producer`.
 6. Deploy and backport
 ```
 
-### Workflow 5: "I have an existing project and want to use this system"
+### Workflow 6: "I have an existing project and want to use this system"
 
 ```
 1. /start (choose Path D -- existing work)
@@ -1598,7 +1619,7 @@ conflicts go to `producer`.
 6. /gate-check at appropriate transition
 ```
 
-### Workflow 6: "Starting a new sprint"
+### Workflow 7: "Starting a new sprint"
 
 ```
 1. /retrospective (review last sprint)
@@ -1610,7 +1631,7 @@ conflicts go to `producer`.
 7. /sprint-status for quick progress checks
 ```
 
-### Workflow 7: "Shipping the game"
+### Workflow 8: "Shipping the game"
 
 ```
 1. /gate-check polish (verify Polish phase is complete)
