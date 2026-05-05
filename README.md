@@ -8,10 +8,10 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Skills](https://img.shields.io/badge/skills-75-brightgreen)](.opencode/skills/)
-[![Commands](https://img.shields.io/badge/commands-50-blue)](.opencode/commands/)
+[![Skills](https://img.shields.io/badge/skills-76-brightgreen)](.opencode/skills/)
+[![Commands](https://img.shields.io/badge/commands-51-blue)](.opencode/commands/)
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
-[![Tests](https://img.shields.io/badge/tests-129-success)](.opencode/plugins/tests/)
+[![Tests](https://img.shields.io/badge/tests-183-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
 
 ---
@@ -61,9 +61,9 @@ the artificial limits.
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
 | 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 75 skills (`.opencode/skills/`) | ✅ +3 |
-| ⌨️ **Commands** | — | 50 commands (`.opencode/commands/`) | ✅ New |
-| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **129 tests** |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 76 skills (`.opencode/skills/`) | ✅ +4 |
+| ⌨️ **Commands** | — | 51 commands (`.opencode/commands/`) | ✅ New |
+| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **183 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
 
@@ -75,7 +75,7 @@ the artificial limits.
 opencode
 ```
 
-Type `/` to browse all 75 skills and 50 commands, or `/start` for onboarding.
+Type `/` to browse all 76 skills and 51 commands, or `/start` for onboarding.
 
 ### 🎮 Demo Game
 
@@ -217,6 +217,7 @@ node utils/assign-models.js --config my-models.json
 │   └── engine-reference/      📚 Engine API reference
 ├── tests/
 │   ├── agents/                🔍 Agent framework validation
+│   ├── workflow/              🔄 Workflow integrity (refs, paths, gates, invariants)
 │   ├── [game-specific tests]
 │   └── [spawned by test-setup]
 ├── production/                📊 Sprint plans, session logs
@@ -258,7 +259,8 @@ All 12 bash hooks from CCGS ported to `ccgs-hooks.ts`:
 | 11 | `post-compact.sh` | `experimental.compaction.autocontinue` | **5** |
 | 12 | `notify.sh` | Utility (`showNotification`) | — |
 
-> 🧪 Run a test suite: `node .opencode/plugins/tests/test-<name>.mjs`
+> 🧪 Run plugin test suite: `node .opencode/plugins/tests/test-<name>.mjs`
+> 🧪 Run workflow integrity suite: `node tests/workflow/run-all.mjs`
 
 ### Contributing to the Framework
 
