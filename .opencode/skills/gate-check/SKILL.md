@@ -1,7 +1,7 @@
 ---
 name: gate-check
 description: "Validate readiness to advance between development phases. Produces a PASS/CONCERNS/FAIL verdict with specific blockers and required artifacts. Use when user says 'are we ready to move to X', 'can we advance to production', 'check if we can start the next phase', 'pass the gate'."
-argument-hint: "[target-phase: systems-design | technical-setup | pre-production | production | polish | release] [--review full|lean|solo]"
+argument-hint: "[target-phase: workflow-selection | systems-design | technical-setup | pre-production | production | polish | release] [--review full|lean|solo]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash, Write, Task, question
 model: opencode-go/kimi-k2.6
@@ -19,6 +19,7 @@ This skill is prescriptive ("are we ready to advance?" with a formal verdict).
 
 The project progresses through these stages:
 
+0. **Exploration** — Pre-workflow: rapid prototyping multiple ideas (/explore)
 1. **Concept** — Brainstorming, game concept document
 2. **Systems Design** — Mapping systems, writing GDDs
 3. **Technical Setup** — Engine config, architecture decisions
@@ -27,8 +28,9 @@ The project progresses through these stages:
 6. **Polish** — Performance, playtesting, bug fixing
 7. **Release** — Launch prep, certification
 
-**When a gate passes**, write the new stage name to `production/stage.txt`
-(single line, e.g. `Production`). This updates the status line immediately.
+**Special gate: `workflow-selection`** — Only valid from the Exploration stage.
+When it passes, it sets both `production/workflow-mode.txt` (hybrid or full) and 
+`production/stage.txt` (Concept). See the Workflow Selection gate below.
 
 ---
 
@@ -44,6 +46,7 @@ Also resolve the review mode (once, store for all gate spawns this run):
 Note: in `solo` mode, director spawns (CD-PHASE-GATE, TD-PHASE-GATE, PR-PHASE-GATE, AD-PHASE-GATE) are skipped — gate-check becomes artifact-existence checks only. In `lean` mode, all four directors still run (phase gates are the purpose of lean mode).
 
 - **With argument**: `/gate-check production` — validate readiness for that specific phase
+  `/gate-check workflow-selection` — run workflow selection (only valid from exploration stage)
 - **No argument**: Auto-detect current stage using the same heuristics as
   `/project-stage-detect`, then **confirm with the user before running**:
 
@@ -51,13 +54,137 @@ Note: in `solo` mode, director spawns (CD-PHASE-GATE, TD-PHASE-GATE, PR-PHASE-GA
   - Prompt: "Detected stage: **[current stage]**. Running gate for [Current] → [Next] transition. Is this correct?"
   - Options:
     - `[A] Yes — run this gate`
-    - `[B] No — pick a different gate` (if selected, show a second widget listing all gate options: Concept → Systems Design, Systems Design → Technical Setup, Technical Setup → Pre-Production, Pre-Production → Production, Production → Polish, Polish → Release)
-  
-  Do not skip this confirmation step when no argument is provided.
+    - `[B] No — pick a different gate` (if selected, show a second widget listing all gate options: Workflow Selection, Concept → Systems Design, Systems Design → Technical Setup, Technical Setup → Pre-Production, Pre-Production → Production, Production → Polish, Polish → Release)
+
+  **Special case — exploration stage**: If auto-detect returns `exploration`, the only valid
+  gate is `workflow-selection`. Skip the confirmation widget and proceed directly to the
+  Workflow Selection gate.
 
 ---
 
 ## 2. Phase Gate Definitions
+
+### Gate: Workflow Selection (Exploration → Hybrid or Full)
+
+This is a **pre-workflow gate**. It does not validate artifacts — it helps the user
+decide which development workflow fits their project after prototyping ideas with
+`/explore`. Unlike all other gates, this gate writes TWO files on PASS:
+`production/workflow-mode.txt` and `production/stage.txt`.
+
+**Run this when:** `production/stage.txt` reads `exploration`, or explicitly with
+`/gate-check workflow-selection`.
+
+**Required Artifacts:**
+- [ ] At least 1 prototype report in `prototypes/explore/*/REPORT.md` (or in
+      `prototypes/*/REPORT.md` from earlier prototyping)
+- [ ] Reports have a clear verdict (PROMISING / NEEDS_WORK / NOT_VIABLE / TIMEOUT)
+
+### Decision Interview
+
+Skip artifact scanning — this gate is human-driven. Use `question` to ask
+each question. Present one at a time, tally the score, then recommend. Record
+the user's answers but do not write them to a file — the output is the
+recommendation.
+
+**Question 1 — Team size:**
+- **Prompt**: "How many people are working on this project?"
+- **Options**:
+  - `Solo` — Just me (score: 0)
+  - `Small team` — 2-5 people (score: 1)
+  - `Medium team` — 6-10 people (score: 2)
+  - `Large team` — 10+ people (score: 3)
+
+**Question 2 — Timeline:**
+- **Prompt**: "What's your target timeline to a shippable game?"
+- **Options**:
+  - `Short` — Under 3 months (score: 0)
+  - `Medium` — 3-6 months (score: 1)
+  - `Long` — 6-12 months (score: 2)
+  - `Extended` — 12+ months (score: 3)
+
+**Question 3 — Design clarity:**
+- **Prompt**: "How well-defined is your game design at this point?"
+- **Options**:
+  - `Rough concept` — A theme and a mechanic, but no details (score: 0)
+  - `Some systems` — Core loop and 2-3 major systems sketched (score: 1)
+  - `Mostly designed` — Core systems, economy, and progression mapped (score: 2)
+  - `Fully documented` — Full GDDs ready to build from (score: 3)
+
+**Question 4 — External requirements:**
+- **Prompt**: "Do you have publisher, investor, or platform requirements?"
+- **Options**:
+  - `None` — Self-funded, no external obligations (score: 0)
+  - `Informal` — A publisher is interested but no contract yet (score: 1)
+  - `Contractual` — Signed deal with milestone deliverables (score: 2)
+  - `Multi-platform` — Strict cert requirements across platforms (score: 3)
+
+**Question 5 — Team experience:**
+- **Prompt**: "What's your team's experience level with shipping games?"
+- **Options**:
+  - `First game` — No shipped titles (score: 0)
+  - `Small games` — Shipped jam games or small commercial titles (score: 1)
+  - `Experienced` — Shipped 1-3 commercial titles (score: 2)
+  - `Veteran` — Shipped 3+ commercial titles (score: 3)
+
+### Scoring
+
+After all 5 questions, calculate the total score (0-15):
+
+- **Score 0-5**: Recommend **Hybrid workflow** — lightweight discovery phase,
+  then production with reduced agent roster. Best for small teams, unknown
+  designs, and short timelines.
+- **Score 6-10**: Recommend **Hybrid with upgrade path** — start with Hybrid,
+  but be ready to upgrade to Full OCGS as scope grows. Set workflow-mode to
+  `hybrid` but note the upgrade triggers.
+- **Score 11-15**: Recommend **Full OCGS workflow** — formal GDDs, ADRs,
+  full quality gates, and the complete agent roster. Best for larger teams,
+  funded projects, and long timelines.
+
+Present the recommendation:
+
+```
+## Workflow Selection Result
+
+**Score**: [N]/15
+
+**Recommended workflow**: [Hybrid / Hybrid with upgrade path / Full OCGS]
+
+**Reasoning**:
+- Team size ([answer]) → weight toward [workflow]
+- Timeline ([answer]) → weight toward [workflow]
+- Design clarity ([answer]) → weight toward [workflow]
+- External requirements ([answer]) → weight toward [workflow]
+- Team experience ([answer]) → weight toward [workflow]
+
+### Next Step
+- **If Hybrid**: Begin your concept document with `/brainstorm` or jump straight
+  into `/hybrid-prototype` with your winning idea.
+- **If Full OCGS**: Run `/brainstorm [winning-idea]` to formalize your concept,
+  then `/setup-engine` to configure the engine.
+```
+
+### User Confirmation
+
+Use `question` to confirm:
+
+- **Prompt**: "**Recommended: [Hybrid / Full OCGS]**. Does this match your intuition?"
+- **Options**:
+  - `Yes — proceed with [recommended workflow]`
+  - `No — I prefer the [other workflow] instead`
+  - `Not sure yet — I want to explore more ideas first`
+
+### Apply the Decision
+
+When the user confirms (Yes or No), write both files:
+
+1. **`production/workflow-mode.txt`** — write `hybrid` or `full` (single line)
+2. **`production/stage.txt`** — write `Concept` (single line)
+
+Always ask before writing: "May I update `production/workflow-mode.txt` to
+`[workflow]` and `production/stage.txt` to `Concept`?"
+
+If "Not sure yet", do not write anything. Advise: "Run `/explore [next-idea]`
+to prototype more ideas, then return here."
 
 ### Gate: Concept → Systems Design
 
@@ -295,7 +422,14 @@ For items that can't be automatically verified, **ask the user**:
 
 ## 4b. Director Panel Assessment
 
-Before generating the final verdict, spawn all four directors as **parallel subagents** via Task using the parallel gate protocol from `.opencode/docs/director-gates.md`. Issue all four Task calls simultaneously — do not wait for one before starting the next.
+**Skip for Workflow Selection gate**: This gate is pre-workflow — no directors
+are assigned yet. Proceed directly to the verdict output with only the artifact
+and decision interview results.
+
+**For all other gates**: Before generating the final verdict, spawn all four
+directors as **parallel subagents** via Task using the parallel gate protocol
+from `.opencode/docs/director-gates.md`. Issue all four Task calls
+simultaneously — do not wait for one before starting the next.
 
 **Spawn in parallel:**
 
@@ -368,7 +502,12 @@ Art Director:       [READY / CONCERNS / NOT READY]
 
 ## 5a. Chain-of-Verification
 
-After drafting the verdict in Phase 5, challenge it before finalising.
+**Skip for Workflow Selection gate**: The decision interview is human-driven
+and scored transparently. No artifact quality checks need verification — the
+score and recommendation are self-evident. Proceed directly to the verdict.
+
+**For all other gates**: After drafting the verdict in Phase 5, challenge it
+before finalising.
 
 **Step 1 — Generate 5 challenge questions** designed to disprove the verdict:
 
@@ -410,15 +549,20 @@ Do NOT reference the draft verdict text — re-check specific files or ask the u
 
 When the verdict is **PASS** and the user confirms they want to advance:
 
-1. Write the new stage name to `production/stage.txt` (single line, no trailing newline)
-2. This immediately updates the status line for all future sessions
+- **For Workflow Selection gate**: Write TWO files.
+  `production/workflow-mode.txt` with the selected workflow (`hybrid` or `full`),
+  and `production/stage.txt` with `Concept`.
+  ```bash
+  echo -n "[hybrid|full]" > production/workflow-mode.txt
+  echo -n "Concept" > production/stage.txt
+  ```
 
-Example: if passing the "Pre-Production → Production" gate:
-```bash
-echo -n "Production" > production/stage.txt
-```
+- **For all other gates**: Write the new stage name to `production/stage.txt`
+  (single line, no trailing newline).
 
-**Always ask before writing**: "Gate passed. May I update `production/stage.txt` to 'Production'?"
+Always ask before writing — specify both files for workflow-selection:
+- "Gate passed. May I update `production/stage.txt` to 'Production'?"
+- "Gate passed. May I set `production/workflow-mode.txt` to 'hybrid' and `production/stage.txt` to 'Concept'?"
 
 ---
 
@@ -427,6 +571,18 @@ echo -n "Production" > production/stage.txt
 After the verdict is presented and any stage.txt update is complete, close with a structured next-step prompt using `question`.
 
 **Tailor the options to the gate that just ran:**
+
+For **workflow-selection PASS**:
+```
+Gate passed. What would you like to do next?
+
+[If hybrid] [A] Run /brainstorm [winning-idea] — formalize your concept
+             [B] Run /hybrid-prototype [winning-idea] — jump straight into prototyping
+             [C] Stop here for this session
+[If full]   [A] Run /brainstorm [winning-idea] — formalize your concept
+             [B] Run /setup-engine — choose and configure your engine
+             [C] Stop here for this session
+```
 
 For **systems-design PASS**:
 ```
@@ -454,6 +610,10 @@ For all other gates, offer the two most logical next steps for that phase plus "
 
 Based on the verdict, suggest specific next steps:
 
+- **No explore prototypes yet?** → `/explore [idea-name]` to prototype ideas before workflow selection
+- **Workflow not yet selected?** → `/gate-check workflow-selection` to choose Hybrid or Full OCGS
+- **Selected Hybrid but no concept?** → `/brainstorm [winning-idea]` to formalize, then `/hybrid-prototype` to build
+- **Selected Full OCGS but no engine?** → `/setup-engine [engine-name]` to configure the engine
 - **No art bible?** → `/art-bible` to create the visual identity specification
 - **Art bible exists but no asset specs?** → `/asset-spec system:[name]` to generate per-asset visual specs and generation prompts from approved GDDs
 - **No game concept?** → `/brainstorm` to create one
