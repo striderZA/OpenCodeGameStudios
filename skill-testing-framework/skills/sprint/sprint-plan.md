@@ -39,7 +39,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 **Fixture:**
 - `production/milestones/milestone-02.md` exists with capacity `10 story points`
 - Backlog contains 5 unstarted stories across 2 epics, mixed priorities
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - Next sprint number is `003` (sprints 001 and 002 already exist)
 
 **Input:** `/sprint-plan`

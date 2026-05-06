@@ -127,7 +127,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 ### Case 5: Director Gate — lean vs full vs solo mode
 
 **Fixture:**
-- `production/session-state/review-mode.txt` exists (or equivalent state file)
+- `production/review-mode.txt` exists (or equivalent state file)
 - All required artifacts for the target gate are present
 - `design/gdd/game-concept.md` exists
 

@@ -4,14 +4,14 @@
   <img src="assets/banner.png" alt="OpenCode Game Studios Banner" width="100%">
 </p>
 
-> ⚡ Port of [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) to [OpenCode](https://opencode.ai)
+> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework with workflow selection, phase gates, pre-workflow prototyping, and hybrid discovery-to-production pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Skills](https://img.shields.io/badge/skills-75-brightgreen)](.opencode/skills/)
-[![Commands](https://img.shields.io/badge/commands-50-blue)](.opencode/commands/)
+[![Skills](https://img.shields.io/badge/skills-76-brightgreen)](.opencode/skills/)
+[![Commands](https://img.shields.io/badge/commands-51-blue)](.opencode/commands/)
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
-[![Tests](https://img.shields.io/badge/tests-129-success)](.opencode/plugins/tests/)
+[![Tests](https://img.shields.io/badge/tests-183-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
 
 ---
@@ -36,21 +36,31 @@
 
 ## 💡 Motivation
 
-Claude Code's strict session and usage limits make it impractical for large-scale,
-long-running game development — sessions expire, context is frequently wiped, and
-high usage quickly hits rate caps. **OpenCode** removes those constraints,
-allowing sustained development over the full lifecycle of a game project. While there
-are some workarounds for Claude Code to access other models through local proxies, 
-this is not the intended use of Claude Code and such setups are fragile at best. 
+Game development is a multi-disciplinary process — design, writing, architecture,
+programming, art, audio, QA, release — that's hard to coordinate with AI assistants
+in ad-hoc chat sessions. **OpenCode Game Studios** provides a structured framework
+for the full game lifecycle:
 
-This port adapts the complete [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
-framework — its 49 agents, 73 skills, 12 hooks, and all rules — to run natively
-on OpenCode, giving game teams the same structured AI-assisted workflow without
-the artificial limits.
+- **Pre-workflow exploration** — Rapidly prototype 2-4 ideas with zero commitment
+  before choosing a development workflow
+- **Design-first pipeline** — Brainstorm → systems map → section-by-section GDDs →
+  cross-GDD review, before any code is written
+- **Phase gates** — Formal checkpoints between phases with PASS/CONCERNS/FAIL
+  verdicts that prevent advancing with gaps
+- **Workflow selection** — Choose Hybrid (lightweight discovery then production)
+  or Full OCGS (process-heavy from day one), depending on team size and project
+  maturity
+- **49 coordinated agents** — From creative director to engine specialists, each
+  with defined responsibilities, delegation maps, and strict domain boundaries
+- **51 slash commands** — Route through the right skill every time, from
+  `/brainstorm` to `/launch-checklist`
+
+This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
+and runs on [OpenCode](https://opencode.ai).
 
 ---
 
-> ⚠️ **Early Prototype** — This is an active work-in-progress port. Things will
+> ⚠️ **Active Development** — This is a living framework. Things will
 > break, change, and improve. Report bugs at
 > [github.com/striderZA/OpenCodeGameStudios/issues](https://github.com/striderZA/OpenCodeGameStudios/issues).
 
@@ -61,9 +71,9 @@ the artificial limits.
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
 | 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 75 skills (`.opencode/skills/`) | ✅ +3 |
-| ⌨️ **Commands** | — | 50 commands (`.opencode/commands/`) | ✅ New |
-| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **129 tests** |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 76 skills (`.opencode/skills/`) | ✅ +4 |
+| ⌨️ **Commands** | — | 51 commands (`.opencode/commands/`) | ✅ New |
+| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **183 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
 
@@ -75,7 +85,7 @@ the artificial limits.
 opencode
 ```
 
-Type `/` to browse all 75 skills and 50 commands, or `/start` for onboarding.
+Type `/` to browse all 76 skills and 51 commands, or `/start` for onboarding.
 
 ### 🎮 Demo Game
 
@@ -199,14 +209,14 @@ node utils/assign-models.js --config my-models.json
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .opencode/
-│   ├── commands/              ⌨️ 50 slash commands (routes to skills)
+│   ├── commands/              ⌨️ 51 slash commands (routes to skills)
 │   ├── agents/                🤖 49 agent definitions
-│   ├── skills/                🛠️ 75 skill workflows
+│   ├── skills/                🛠️ 76 skill workflows
 │   ├── plugins/
 │   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
-│   │   └── tests/             🧪 11 test suites (129 tests)
+│   │   └── tests/             🧪 11 test suites (140 tests)
 │   └── rules/                 📏 11 coding standards
 ├── design/                    🎨 Game design documents
 ├── docs/
@@ -217,6 +227,7 @@ node utils/assign-models.js --config my-models.json
 │   └── engine-reference/      📚 Engine API reference
 ├── tests/
 │   ├── agents/                🔍 Agent framework validation
+│   ├── workflow/              🔄 Workflow integrity (refs, paths, gates, invariants)
 │   ├── [game-specific tests]
 │   └── [spawned by test-setup]
 ├── production/                📊 Sprint plans, session logs
@@ -258,7 +269,8 @@ All 12 bash hooks from CCGS ported to `ccgs-hooks.ts`:
 | 11 | `post-compact.sh` | `experimental.compaction.autocontinue` | **5** |
 | 12 | `notify.sh` | Utility (`showNotification`) | — |
 
-> 🧪 Run a test suite: `node .opencode/plugins/tests/test-<name>.mjs`
+> 🧪 Run plugin test suite: `node .opencode/plugins/tests/test-<name>.mjs`
+> 🧪 Run workflow integrity suite: `node tests/workflow/run-all.mjs`
 
 ### Contributing to the Framework
 

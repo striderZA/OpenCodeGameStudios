@@ -49,7 +49,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 
 **Fixture:**
 - No existing `design/gdd/game-concept.md`
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/brainstorm`
 
@@ -77,7 +77,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 
 **Fixture:**
 - Concept draft is complete
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - CD-PILLARS gate returns REJECT: "The concept has no identifiable creative pillar"
 
 **Input:** `/brainstorm`
@@ -101,7 +101,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 
 **Fixture:**
 - No existing game concept
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Input:** `/brainstorm`
 
@@ -124,7 +124,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 
 **Fixture:**
 - No existing game concept
-- `production/session-state/review-mode.txt` contains `solo`
+- `production/review-mode.txt` contains `solo`
 
 **Input:** `/brainstorm`
 
@@ -147,7 +147,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 
 **Fixture:**
 - Concept draft is complete
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - PR-SCOPE gate returns CONCERNS: "The concept scope would require 18+ months for a solo developer"
 
 **Input:** `/brainstorm`

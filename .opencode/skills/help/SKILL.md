@@ -63,6 +63,7 @@ Check in this order:
    - "Production" → `production`
    - "Polish" → `polish`
    - "Release" → `release`
+   - "exploration" → `exploration` (pre-workflow, not in catalog)
 
 2. **If stage.txt is missing**, infer phase from artifacts (most-advanced match wins):
    - `src/` has 10+ source files → `production`
@@ -70,7 +71,35 @@ Check in this order:
    - `docs/architecture/adr-*.md` exists → `technical-setup`
    - `design/gdd/systems-index.md` exists → `systems-design`
    - `design/gdd/game-concept.md` exists → `concept`
+   - `prototypes/explore/*/REPORT.md` exists → `exploration` (pre-workflow, no concept yet)
+   - `prototypes/explore/` directory exists (any files) → `exploration`
    - Nothing → `concept` (fresh project)
+
+3. **If phase is `exploration`**: Return early with exploration-specific guidance.
+   This phase is not in the catalog — skip Steps 4-8 and go directly to reporting.
+
+   Read `prototypes/explore/` to find existing reports. Count how many ideas
+   have been prototyped and list their verdicts.
+
+   ```
+   ## Where You Are: Pre-Workflow Exploration
+
+   You are prototyping game ideas before committing to a development workflow.
+   No workflow is selected yet — no GDDs, no architecture, no sprint plans.
+
+   **Exploration prototypes found: [N]**
+   [List each with verdict from REPORT.md]
+
+   ### → Next up
+   **[Explore another idea]** — Run `/explore [description]` to prototype a new idea.
+   **[Or: Select a workflow]** — When you're done exploring, run
+   `/gate-check workflow-selection` to compare your prototypes and choose
+   between Hybrid (lean, iterative) and Full OCGS (formal, structured).
+
+   ### ~ Also available
+   - `/gate-check workflow-selection` — compare prototypes and choose workflow
+   - `/explore [idea]` — prototype another idea
+   ```
 
 ---
 

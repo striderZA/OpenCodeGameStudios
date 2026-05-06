@@ -17,7 +17,7 @@ delegates vs. handles directly. Include which gates it triggers (if any).]
 
 ## Static Assertions
 
-- [ ] Agent file exists at `.claude/agents/[name].md`
+- [ ] Agent file exists at `.opencode/agents/[name].md`
 - [ ] Frontmatter has `name`, `description`, `model`, `tools` fields
 - [ ] Domain clearly stated
 - [ ] Escalation path documented

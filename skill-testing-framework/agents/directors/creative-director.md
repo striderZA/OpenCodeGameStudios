@@ -10,7 +10,7 @@
 
 ## Static Assertions (Structural)
 
-Verified by reading the agent's `.claude/agents/creative-director.md` frontmatter:
+Verified by reading the agent's `.opencode/agents/creative-director.md` frontmatter:
 
 - [ ] `description:` field is present and domain-specific (references creative vision, pillars, GDD alignment — not generic)
 - [ ] `allowed-tools:` list is read-heavy; should not include Bash unless justified by a creative workflow need

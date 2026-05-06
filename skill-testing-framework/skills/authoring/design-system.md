@@ -51,7 +51,7 @@ In `solo` mode: CD-GDD-ALIGN is skipped. Output notes:
 
 **Fixture:**
 - No existing GDD for the target system in `design/gdd/`
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Input:** `/design-system [system-name]`
 
@@ -100,7 +100,7 @@ In `solo` mode: CD-GDD-ALIGN is skipped. Output notes:
 
 **Fixture:**
 - New GDD being authored
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 - CD-GDD-ALIGN gate returns MAJOR REVISION on the Player Fantasy section
 
 **Input:** `/design-system [system-name]`
@@ -126,7 +126,7 @@ In `solo` mode: CD-GDD-ALIGN is skipped. Output notes:
 
 **Fixture:**
 - New GDD being authored
-- `production/session-state/review-mode.txt` contains `solo`
+- `production/review-mode.txt` contains `solo`
 
 **Input:** `/design-system [system-name]`
 

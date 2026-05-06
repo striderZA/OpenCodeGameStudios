@@ -22,8 +22,8 @@ The OCGS framework has 5 component types:
 | Component | Location | Purpose |
 |-----------|----------|---------|
 | **Agents** | `.opencode/agents/` | Agent definitions (49 files) |
-| **Skills** | `.opencode/skills/` | Skill workflows (75 directories) |
-| **Commands** | `.opencode/commands/` | Slash commands (50 files) |
+| **Skills** | `.opencode/skills/` | Skill workflows (76 directories) |
+| **Commands** | `.opencode/commands/` | Slash commands (51 files) |
 | **Rules** | `.opencode/rules/` | Coding standards (11 files) |
 | **Plugins** | `.opencode/plugins/` | TypeScript hooks |
 
@@ -261,10 +261,12 @@ gap (e.g., Tier 2 engine specialists), add it to the known exceptions list.
 
 ### For Skill Changes
 
-Verify the skill parses correctly and phases are executable:
+Verify the skill parses correctly, phases are executable, and cross-references are valid:
 
 ```bash
-node tests/agents/validate.mjs  # Checks cross-references
+node tests/agents/validate.mjs        # Structural compliance
+node tests/workflow/references.mjs    # Cross-reference integrity
+node tests/workflow/paths.mjs         # Workflow path validation
 ```
 
 ### For Plugin Changes
@@ -272,8 +274,24 @@ node tests/agents/validate.mjs  # Checks cross-references
 Verify all existing plugin tests still pass:
 
 ```bash
-node .opencode/plugins/tests/test-*.mjs
+node .opencode/plugins/tests/test-<name>.mjs
 ```
+
+### For Workflow Changes
+
+When modifying workflow definitions, phase gates, or skill/command references, run the full workflow integrity suite:
+
+```bash
+node tests/workflow/run-all.mjs
+```
+
+This validates:
+- All `/command` references in skills map to real command files
+- All `subagent_type` agent references map to real agent files
+- Workflow paths (start → gate → phase) form valid chains
+- Stage names are consistent across gate-check, start, and project-stage-detect
+- Gate-check artifact references correspond to real project paths
+- No orphan skills or missing frontmatter fields
 
 ### For Game Code
 
@@ -292,7 +310,7 @@ All framework changes go through pull requests to `development`:
 2. **One issue per branch**: Each branch addresses exactly one issue
 3. **Commit convention**: Conventional Commits (`feat:`, `fix:`, `docs:`, etc.)
 4. **Close issue reference**: Include `Closes #N` in the commit message
-5. **CI must pass**: Agent validation and plugin tests
+5. **CI must pass**: Agent validation, workflow integrity, and plugin tests
 6. **Merge to `development`**: Fast-forward merge, push, close issue
 7. **Release**: `development` merges to `master` at milestone completion
 

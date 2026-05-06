@@ -6,7 +6,13 @@ This document defines a pragmatic hybrid workflow that balances **creative agili
 
 **When to use this workflow**: Small teams, unknown designs, short timelines (weeks to a few months), prototypes that may be pivoted or killed.
 
-**When to use the full OCGS workflow**: Large teams (5–15+), known designs, long timelines (6+ months), funded projects with publisher requirements.
+**When to use the full OCGS workflow**: Large teams (5-15+), known designs, long timelines (6+ months), funded projects with publisher requirements.
+
+**Not sure which workflow to use?** Run `/explore` to rapidly prototype 2-4 ideas with zero workflow commitment, then use `/gate-check workflow-selection` to choose the right workflow based on your results. See [Pre-Workflow Exploration](#pre-workflow-exploration) below.
+
+**See real-world examples**: The [Workflow Selection Case Studies](examples/workflow-selection-case-studies.md)
+document walks through three scenarios — solo dev, funded team, and scope
+recovery — showing how the workflow selection process works in practice.
 
 ---
 
@@ -140,12 +146,16 @@ A new skill/command that shortcuts the path to a playable prototype:
 
 ## When to Switch to Full OCGS
 
-Switch back to the **full 49-agent framework** if any of these become true:
+Switch to the **full 49-agent framework** if any of these become true:
 - Team grows beyond 5 people
 - Project timeline exceeds 6 months
 - Multiple features need parallel development
 - You need live ops, analytics, or multiplayer
 - Funding/publisher requires formal process
+
+For a detailed upgrade trigger reference with scoring and case studies,
+see [Upgrade Trigger Reference](examples/workflow-selection-case-studies.md#upgrade-trigger-reference)
+in the Workflow Selection Case Studies.
 
 ---
 
@@ -161,6 +171,57 @@ Switch back to the **full 49-agent framework** if any of these become true:
 
 ---
 
+## Pre-Workflow Exploration
+
+Before committing to Hybrid or Full OCGS, you can explore multiple ideas rapidly with **zero workflow commitment**.
+
+### The `/explore` Skill
+
+```
+/explore "a farming sim where crops grow in real time"
+/explore "a roguelike where weapons break permanently"
+/explore "a narrative puzzle game with time loops"
+```
+
+**What `/explore` does:**
+- Builds a throwaway prototype in `prototypes/explore/[idea-name]/`
+- Time-boxed to 1-2 days per idea
+- Produces a lightweight `REPORT.md` with a verdict: **PROMISING / NEEDS_WORK / NOT_VIABLE / TIMEOUT**
+- Does NOT create `production/stage.txt`, `production/review-mode.txt`, or any workflow artifacts
+- Does NOT require choosing Hybrid vs. Full upfront
+
+**When to use it:**
+- You have 2-4 rough ideas and want to compare them before committing
+- You are not sure if your concept is fun, feasible, or correctly scoped
+- You want to avoid formal process overhead until you know what you're making
+
+**Exploration workflow:**
+
+```
+/explore idea-a          → prototypes/explore/idea-a/REPORT.md
+/explore idea-b          → prototypes/explore/idea-b/REPORT.md
+/explore idea-c          → prototypes/explore/idea-c/REPORT.md
+
+/gate-check workflow-selection
+    → Compare prototypes
+    → Choose Hybrid or Full
+    → Set workflow mode and stage
+```
+
+### How `/explore` Differs from Other Prototype Skills
+
+| Aspect | `/explore` | `/hybrid-prototype` | `/prototype` (Full OCGS) |
+|--------|-----------|---------------------|--------------------------|
+| **Workflow stage** | Pre-workflow | Hybrid Discovery | Full OCGS Pre-Production |
+| **Workflow commitment** | None | Hybrid | Full OCGS |
+| **Creates stage.txt?** | No | Yes | Yes |
+| **Time budget** | 1-2 days | 1-3 days | 1-3 days |
+| **Report** | Lightweight REPORT.md | DECISION.md | Formal REPORT.md |
+| **Next step** | Workflow selection | Begin GDD/architecture | Begin GDD/architecture |
+| **Agents** | `prototyper` only | 4 core roles | All tiers |
+
+---
+
 ## Migration Path
 
 If a project starts with the hybrid workflow and later needs the full OCGS framework:
@@ -171,6 +232,10 @@ If a project starts with the hybrid workflow and later needs the full OCGS frame
 4. **Recruit additional agents** from the full roster as needed.
 5. **Switch to `src/`** with full coding standards.
 6. **Enable all quality gates** from the full framework.
+
+For the full step-by-step guide including artifact promotion rules and what
+to keep vs. rewrite, see [Path C: Hybrid Discovery → Full OCGS](workflow-transitions.md#path-c-hybrid-discovery--full-ocgs)
+in the Workflow Transition Guide.
 
 ---
 

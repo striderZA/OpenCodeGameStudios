@@ -43,7 +43,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 
 **Fixture:**
 - No existing `design/art-bible.md`
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - `design/gdd/game-concept.md` exists with visual tone described
 
 **Input:** `/art-bible`
@@ -69,7 +69,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 
 **Fixture:**
 - Art bible draft complete
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - AD-ART-BIBLE gate returns CONCERNS: "Color palette clashes with the dark
   atmospheric tone described in the game concept"
 
@@ -95,7 +95,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 
 **Fixture:**
 - No existing art bible
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Input:** `/art-bible`
 
@@ -144,7 +144,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 
 **Fixture:**
 - No existing art bible
-- `production/session-state/review-mode.txt` contains `solo`
+- `production/review-mode.txt` contains `solo`
 
 **Input:** `/art-bible`
 

@@ -10,7 +10,7 @@
 
 ## Static Assertions (Structural)
 
-Verified by reading the agent's `.claude/agents/systems-designer.md` frontmatter:
+Verified by reading the agent's `.opencode/agents/systems-designer.md` frontmatter:
 
 - [ ] `description:` field is present and domain-specific (references formulas, progression curves, balance math, economy — not generic)
 - [ ] `allowed-tools:` list is read-focused; may include Bash for formula evaluation scripts if the project uses them; no write access outside `design/balance/` without delegation

@@ -53,8 +53,8 @@ In `solo` mode: LP-CODE-REVIEW is skipped with equivalent notes.
   - A test evidence path
 - Referenced ADR has `Status: Accepted`
 - `docs/architecture/control-manifest.md` exists
-- `.claude/docs/technical-preferences.md` has engine and language configured
-- `production/session-state/review-mode.txt` contains `full`
+- `.opencode/docs/technical-preferences.md` has engine and language configured
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/dev-story production/epics/[layer]/story-[name].md`
 
@@ -154,7 +154,7 @@ In `solo` mode: LP-CODE-REVIEW is skipped with equivalent notes.
 
 **Fixture (full mode):**
 - Story is implemented and all criteria appear met
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - LP-CODE-REVIEW gate returns NEEDS CHANGES with specific feedback
 
 **Full mode expected behavior:**
@@ -169,7 +169,7 @@ In `solo` mode: LP-CODE-REVIEW is skipped with equivalent notes.
 - [ ] Story status stays In Progress until issues are resolved and gate passes
 
 **Fixture (lean mode):**
-- Same story, `production/session-state/review-mode.txt` contains `lean`
+- Same story, `production/review-mode.txt` contains `lean`
 
 **Lean mode expected behavior:**
 1. Implementation completes

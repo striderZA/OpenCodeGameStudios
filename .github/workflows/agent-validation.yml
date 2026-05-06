@@ -23,3 +23,14 @@ jobs:
         with:
           name: validation-report
           path: tests/agents/validation-report.md
+
+  validate-workflow:
+    runs-on: ubuntu-latest
+    name: Workflow Integrity
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run workflow integrity tests
+        run: node tests/workflow/run-all.mjs
