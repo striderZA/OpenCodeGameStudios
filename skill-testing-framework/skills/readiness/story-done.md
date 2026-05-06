@@ -149,7 +149,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 **Fixture:**
 - Story file at `production/epics/core/story-light-pickup.md`
 - All acceptance criteria verified, no GDD deviations
-- `production/session-state/review-mode.txt` exists
+- `production/review-mode.txt` exists
 
 **Case 5a — full mode:**
 - `review-mode.txt` contains `full`

@@ -137,19 +137,19 @@ required as part of the scan itself.
 
 **Fixture:**
 - `design/gdd/` contains ≥2 GDDs
-- `production/session-state/review-mode.txt` exists with `full`
+- `production/review-mode.txt` exists with `full`
 
 **Input:** `/consistency-check`
 
 **Expected behavior:**
 1. Skill reads all GDDs and runs the consistency scan
-2. Skill does NOT read `production/session-state/review-mode.txt`
+2. Skill does NOT read `production/review-mode.txt`
 3. No director gate agents are spawned at any point
 4. Findings table and verdict are produced normally
 
 **Assertions:**
 - [ ] No director gate agents are spawned (no CD-, TD-, PR-, AD- prefixed gates)
-- [ ] Skill does NOT read `production/session-state/review-mode.txt`
+- [ ] Skill does NOT read `production/review-mode.txt`
 - [ ] Output contains no "Gate: [GATE-ID]" or gate-skipped entries
 - [ ] Review mode has no effect on this skill's behavior
 

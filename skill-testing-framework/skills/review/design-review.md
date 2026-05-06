@@ -131,7 +131,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 
 **Fixture:**
 - `design/gdd/light-manipulation.md` exists with all 8 sections
-- `production/session-state/review-mode.txt` exists with `full` (most permissive mode)
+- `production/review-mode.txt` exists with `full` (most permissive mode)
 
 **Input:** `/design-review design/gdd/light-manipulation.md` (with full review mode active)
 

@@ -51,7 +51,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 - `design/gdd/game-concept.md` exists with Core Mechanics and MVP Definition sections
 - `design/gdd/game-pillars.md` exists with ≥1 pillar defined
 - No `design/systems-index.md` exists yet
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 
 **Input:** `/map-systems`
 
@@ -101,7 +101,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 
 **Fixture:**
 - Game concept exists
-- `production/session-state/review-mode.txt` contains `full`
+- `production/review-mode.txt` contains `full`
 - CD-SYSTEMS gate returns CONCERNS: "The [core-system] is implied by the concept but not identified"
 
 **Input:** `/map-systems`
@@ -148,7 +148,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 
 **Fixture (lean mode):**
 - Game concept exists
-- `production/session-state/review-mode.txt` contains `lean`
+- `production/review-mode.txt` contains `lean`
 
 **Lean mode expected behavior:**
 1. Systems are decomposed and drafted
@@ -162,7 +162,7 @@ In `solo` mode: both gates are skipped with equivalent notes.
 - [ ] systems-index.md is written after user approval
 
 **Fixture (solo mode):**
-- Same game concept, `production/session-state/review-mode.txt` contains `solo`
+- Same game concept, `production/review-mode.txt` contains `solo`
 
 **Solo mode expected behavior:**
 1. Same decomposition workflow

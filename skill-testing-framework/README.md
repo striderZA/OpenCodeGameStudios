@@ -1,11 +1,11 @@
-# CCGS Skill Testing Framework
+# OCGS Skill Testing Framework
 
 Quality assurance infrastructure for the **Claude Code Game Studios** framework.
 Tests the skills and agents themselves — not any game built with them.
 
 > **This folder is self-contained and optional.**
 > Game developers using CCGS don't need it. To remove it entirely:
-> `rm -rf "CCGS Skill Testing Framework"` — nothing in `.claude/` depends on it.
+> `rm -rf "CCGS Skill Testing Framework"` — nothing in `.opencode/` depends on it.
 
 ---
 
