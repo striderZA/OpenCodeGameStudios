@@ -8,6 +8,25 @@
       "agent": "prototyper"
     }
   },
+  "mcp": {
+    "aseprite": {
+      "type": "local",
+      "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"],
+      "enabled": true,
+      "environment": {
+        "ASEPRITE_PATH": "{env:ASEPRITE_PATH}"
+      }
+    },
+    "godot": {
+      "type": "local",
+      "command": ["npx", "@coding-solo/godot-mcp"],
+      "enabled": false,
+      "environment": {
+        "GODOT_PATH": "{env:GODOT_PATH}",
+        "DEBUG": "{env:DEBUG}"
+      }
+    }
+  },
   "permission": {
     "bash": {
       "git status*": "allow",

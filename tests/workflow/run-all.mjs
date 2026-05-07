@@ -14,19 +14,35 @@ const suites = [
   { name: 'invariants', file: join(__dirname, 'invariants.mjs') },
 ];
 
+const SUITE_TIMEOUT = 30000;
+
 async function runSuite(suite) {
   return new Promise((resolve) => {
     const child = fork(suite.file, [], { cwd: ROOT, stdio: ['pipe', 'pipe', 'pipe', 'ipc'] });
     let output = '';
+    let settled = false;
+
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      child.kill();
+      resolve({ name: suite.name, output: output + '\nError: Suite timed out after 30s', code: 1 });
+    }, SUITE_TIMEOUT);
 
     child.stdout.on('data', (data) => { output += data.toString(); });
     child.stderr.on('data', (data) => { output += data.toString(); });
 
     child.on('close', (code) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
       resolve({ name: suite.name, output, code });
     });
 
     child.on('error', (err) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
       resolve({ name: suite.name, output: `Error: ${err.message}`, code: 1 });
     });
   });
