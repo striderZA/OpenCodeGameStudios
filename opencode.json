@@ -8,6 +8,25 @@
       "agent": "prototyper"
     }
   },
+  "mcp": {
+    "aseprite": {
+      "type": "local",
+      "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "--no-sync", "-m", "aseprite_mcp"],
+      "enabled": true,
+      "environment": {
+        "ASEPRITE_PATH": "E:\\Jaco\\Projects\\Godot\\aseprite\\build\\bin\\aseprite.exe"
+      }
+    },
+    "godot": {
+      "type": "local",
+      "command": ["npx", "@coding-solo/godot-mcp"],
+      "enabled": false,
+      "env": {
+        "GODOT_PATH": "E:\\Jaco\\Projects\\Godot\\engine\\godot.exe",
+        "DEBUG": "true"
+      }
+    }
+  },
   "permission": {
     "bash": {
       "git status*": "allow",
