@@ -1,0 +1,3 @@
+[submodule "tools/aseprite-mcp"]
+	path = tools/aseprite-mcp
+	url = https://github.com/striderZA/aseprite-mcp.git
