@@ -19,7 +19,7 @@ jobs:
         run: node tests/agents/validate.mjs
       - name: Upload validation report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: validation-report
           path: tests/agents/validation-report.md
