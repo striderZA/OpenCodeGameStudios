@@ -21,7 +21,7 @@
       "type": "local",
       "command": ["npx", "@coding-solo/godot-mcp"],
       "enabled": false,
-      "env": {
+      "environment": {
         "GODOT_PATH": "{env:GODOT_PATH}",
         "DEBUG": "{env:DEBUG}"
       }
