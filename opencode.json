@@ -11,10 +11,10 @@
   "mcp": {
     "aseprite": {
       "type": "local",
-      "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "--no-sync", "-m", "aseprite_mcp"],
+      "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"],
       "enabled": true,
       "environment": {
-        "ASEPRITE_PATH": "E:\\Jaco\\Projects\\Godot\\aseprite\\build\\bin\\aseprite.exe"
+        "ASEPRITE_PATH": "{env:ASEPRITE_PATH}"
       }
     },
     "godot": {
@@ -22,8 +22,8 @@
       "command": ["npx", "@coding-solo/godot-mcp"],
       "enabled": false,
       "env": {
-        "GODOT_PATH": "E:\\Jaco\\Projects\\Godot\\engine\\godot.exe",
-        "DEBUG": "true"
+        "GODOT_PATH": "{env:GODOT_PATH}",
+        "DEBUG": "{env:DEBUG}"
       }
     }
   },
