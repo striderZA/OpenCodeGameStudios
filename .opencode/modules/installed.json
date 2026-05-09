@@ -1,0 +1,116 @@
+{
+  "architecture": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.731Z",
+    "files": []
+  },
+  "art": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.732Z",
+    "files": []
+  },
+  "audio": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.733Z",
+    "files": []
+  },
+  "core": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.733Z",
+    "files": []
+  },
+  "data": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.733Z",
+    "files": []
+  },
+  "design": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.733Z",
+    "files": []
+  },
+  "engine-godot": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.733Z",
+    "files": []
+  },
+  "engine-unity": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.734Z",
+    "files": []
+  },
+  "engine-unreal": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.734Z",
+    "files": []
+  },
+  "level-design": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.734Z",
+    "files": []
+  },
+  "live-ops": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.734Z",
+    "files": []
+  },
+  "localization": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.734Z",
+    "files": []
+  },
+  "narrative": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.734Z",
+    "files": []
+  },
+  "programming": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.735Z",
+    "files": []
+  },
+  "prototyping": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.735Z",
+    "files": []
+  },
+  "qa": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.735Z",
+    "files": []
+  },
+  "release": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.735Z",
+    "files": []
+  },
+  "stories": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.735Z",
+    "files": []
+  },
+  "ui": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-09T21:17:55.735Z",
+    "files": []
+  }
+}
