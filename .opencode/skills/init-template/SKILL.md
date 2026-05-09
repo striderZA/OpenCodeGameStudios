@@ -32,6 +32,40 @@ Otherwise, use `question` to gather missing details:
 - **Team size** (solo / small 2-5 / medium 6-15 / large 16+)
 - **Preferred model tier** (default / workhorse / lightweight) — refer to the README's Model Mapping section for options
 
+### Modular Installation
+
+After setting project identity, install the desired framework modules:
+
+```bash
+node .opencode/modules/install.mjs add core
+node .opencode/modules/install.mjs add engine-godot
+node .opencode/modules/install.mjs add art design ui qa release prototyping
+```
+
+Available modules (run `node .opencode/modules/install.mjs list` to see all):
+
+| Module | Description |
+|--------|-------------|
+| `core` | Framework skeleton (required) |
+| `art` | Aseprite MCP, art generation, art bible |
+| `design` | Game mechanics, systems design, combat |
+| `architecture` | Technical planning, ADRs |
+| `stories` | Epics, stories, dev workflow, code review |
+| `programming` | Gameplay, AI, engine, network agents + rules |
+| `ui` | UX design, UI programming, accessibility |
+| `audio` | Audio direction, sound design |
+| `narrative` | Story, world-building, dialogue |
+| `level-design` | Level layout, encounter design |
+| `qa` | Testing strategy, bug tracking, profiling |
+| `release` | Release management, sprints, changelogs |
+| `prototyping` | Rapid prototyping, exploration |
+| `live-ops` | Post-launch content, community |
+| `localization` | i18n, translation pipeline |
+| `engine-godot` | Godot 4 specialists |
+| `engine-unity` | Unity specialists |
+| `engine-unreal` | Unreal Engine 5 specialists |
+| `data` | Data file conventions |
+
 ## Phase 2: Replace README.md
 
 Write a fresh README.md to the project root. Use a template structure like:
