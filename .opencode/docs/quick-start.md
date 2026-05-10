@@ -270,6 +270,21 @@ If you have design docs, prototypes, or code already:
 4. **Validate phase readiness** — Run `/gate-check` to see where you stand
 5. **Plan the next sprint** — Run `/sprint-plan new`
 
+### 6. Use Modules (Optional)
+
+The framework is partitioned into **theme modules**. Only install what you need:
+
+```bash
+node .opencode/modules/install.mjs add core          # Required: directors, /start, /help
+node .opencode/modules/install.mjs add engine-godot  # Engine specialists (or engine-unity/engine-unreal)
+node .opencode/modules/install.mjs add art           # Aseprite MCP, art bible, asset specs
+node .opencode/modules/install.mjs add design        # Game mechanics, systems, combat
+node .opencode/modules/install.mjs add test          # QA pipeline, test setup, profiling
+node .opencode/modules/install.mjs list              # See all available + installed
+```
+
+Available modules: art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, engine-godot, engine-unity, engine-unreal, data.
+
 ## File Structure Reference
 
 ```
@@ -280,6 +295,12 @@ AGENTS.md                          -- Master config (read this first)
   skills/                          -- Skill definitions (YAML frontmatter)
   plugins/                         -- TypeScript hooks plugin (ccgs-hooks.ts)
   rules/                           -- Path-specific rule files
+  modules/                         -- Theme modules (install.mjs CLI + module sources)
+    install.mjs                    -- Module CLI: add/remove/list
+    installed.json                 -- Installed module manifest
+    art/                           -- Art module source files
+    design/                        -- Design module source files
+    ...
   docs/
     quick-start.md                 -- This file
     technical-preferences.md       -- Project-specific standards (populated by /setup-engine)

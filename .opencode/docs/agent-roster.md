@@ -1,9 +1,11 @@
 # Agent Roster
 
 The following agents are available. Each has a dedicated definition file in
-`.opencode/agents/`. Use the agent best suited to the task at hand. When a task
-spans multiple domains, the coordinating agent (usually `producer` or the
-domain lead) should delegate to specialists.
+`.opencode/agents/`. Agents are organized into **theme modules** under
+`.opencode/modules/<name>/agents/` — install only the modules you need via
+`node .opencode/modules/install.mjs add <name>`. Use the agent best suited
+to the task at hand. When a task spans multiple domains, the coordinating
+agent (usually `producer` or the domain lead) should delegate to specialists.
 
 ## Tier 1 -- Leadership Agents (Opus)
 | Agent | Domain | When to Use |
