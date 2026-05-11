@@ -128,7 +128,7 @@ function cmdAdd(args) {
         return;
       }
 
-      if (installed[name] && installed[name].status === 'installed') {
+      if (installed[name] && installed[name].status === 'installed' && !force) {
         log('SKIP', `Module '${name}' is already installed`);
         summary.skipped++;
         return;
@@ -245,6 +245,7 @@ function walkAndCopy(srcDir, destDir, fileList, force = false) {
             copyFileSync(srcPath, destPath);
             log('UPDATE', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
           }
+          fileList.push(toForward(relative(join(ROOT, '.opencode'), destPath)));
         } else {
           log('SKIP', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
         }
