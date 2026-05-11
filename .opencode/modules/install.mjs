@@ -110,7 +110,9 @@ function cmdInfo(name) {
 const INSTALL_SUBDIRS = ['agents', 'skills', 'commands', 'rules', 'plugins', 'docs'];
 const SKIP_DIRS = new Set(['mcp']);
 
-function cmdAdd(names) {
+function cmdAdd(args) {
+  const force = args.includes('--force');
+  const names = args.filter(a => a !== '--force');
   const installed = readInstalled();
   const summary = { added: 0, skipped: 0, mcpAdded: 0, mcpSkipped: 0, errors: 0 };
   const processedNames = [];
@@ -161,7 +163,7 @@ function cmdAdd(names) {
           continue;
         }
 
-        walkAndCopy(entryPath, join(ROOT, '.opencode', entry), addedFiles);
+        walkAndCopy(entryPath, join(ROOT, '.opencode', entry), addedFiles, force);
       }
 
       // Handle MCP fragments
@@ -224,7 +226,7 @@ function cmdAdd(names) {
   console.log(`  MCP merged: ${summary.mcpAdded}, MCP skipped: ${summary.mcpSkipped}`);
 }
 
-function walkAndCopy(srcDir, destDir, fileList) {
+function walkAndCopy(srcDir, destDir, fileList, force = false) {
   const entries = readdirSync(srcDir);
   for (const entry of entries) {
     const srcPath = join(srcDir, entry);
@@ -233,10 +235,19 @@ function walkAndCopy(srcDir, destDir, fileList) {
 
     if (stat.isDirectory()) {
       if (!existsSync(destPath)) mkdirSync(destPath, { recursive: true });
-      walkAndCopy(srcPath, destPath, fileList);
+      walkAndCopy(srcPath, destPath, fileList, force);
     } else {
       if (existsSync(destPath)) {
-        log('SKIP', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
+        if (force) {
+          if (filesMatch(srcPath, destPath)) {
+            log('SAME', `${toForward(relative(MODULES_DIR, srcPath))}`);
+          } else {
+            copyFileSync(srcPath, destPath);
+            log('UPDATE', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
+          }
+        } else {
+          log('SKIP', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
+        }
       } else {
         copyFileSync(srcPath, destPath);
         log('ADD', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
@@ -244,6 +255,10 @@ function walkAndCopy(srcDir, destDir, fileList) {
       }
     }
   }
+}
+
+function filesMatch(a, b) {
+  return Buffer.compare(readFileSync(a), readFileSync(b)) === 0;
 }
 
 // ── remove command ─────────────────────────────────────────────────────────
