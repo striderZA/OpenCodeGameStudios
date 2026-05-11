@@ -1,7 +1,7 @@
 name: narrative
 version: "0.6.0"
 description: "Story architecture, world-building, character design, dialogue."
-depends: []
+depends: [core]
 provides:
   agents: [narrative-director, writer, world-builder]
   skills: [team-narrative]

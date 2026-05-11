@@ -1,7 +1,7 @@
 name: localization
 version: "0.6.0"
 description: "i18n architecture, string extraction, translation pipeline, locale testing."
-depends: []
+depends: [core]
 provides:
   agents: [localization-lead]
   skills: [localize]

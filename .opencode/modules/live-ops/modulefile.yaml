@@ -1,7 +1,7 @@
 name: live-ops
 version: "0.6.0"
 description: "Post-launch content strategy, seasonal events, community management."
-depends: []
+depends: [core]
 provides:
   agents: [live-ops-designer, community-manager]
   skills: [team-live-ops]

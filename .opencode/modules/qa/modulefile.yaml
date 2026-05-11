@@ -1,7 +1,7 @@
 name: qa
 version: "0.6.0"
 description: "QA strategy, testing, bug tracking, performance profiling, security, skill validation."
-depends: []
+depends: [core]
 provides:
   agents: [qa-lead, qa-tester, performance-analyst, security-engineer]
   skills: [team-qa, qa-plan, smoke-check, soak-test, regression-suite, test-setup,
