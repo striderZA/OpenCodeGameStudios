@@ -1,7 +1,7 @@
 name: data
 version: "0.6.0"
 description: "Data file conventions and validation rules."
-depends: []
+depends: [core]
 provides:
   agents: []
   skills: []

@@ -1,7 +1,7 @@
 name: design
 version: "0.6.0"
 description: "Game mechanics, systems design, economy, balance, playtesting analysis."
-depends: []
+depends: [core]
 provides:
   agents: [game-designer, systems-designer, economy-designer]
   skills: [design-system, design-review, review-all-gdds, quick-design, balance-check,

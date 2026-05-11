@@ -1,7 +1,7 @@
 name: engine-unity
 version: "0.6.0"
 description: "Unity engine specialists — DOTS/ECS, shaders, Addressables, UI."
-depends: []
+depends: [core]
 provides:
   agents: [unity-specialist, unity-dots-specialist, unity-shader-specialist,
            unity-addressables-specialist, unity-ui-specialist]
