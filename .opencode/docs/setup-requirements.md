@@ -12,12 +12,13 @@ you'll lose validation features.
 | ---- | ---- | ---- |
 | **Git** | Version control, branch management | [git-scm.com](https://git-scm.com/) |
 | **OpenCode** | AI agent CLI | `npm install -g opencode` |
+| **Node.js 18+** | Module CLI + hooks | Runtime for `install.mjs` and the CCGS TypeScript hooks plugin | [nodejs.org](https://nodejs.org/) |
 
 ## Recommended
 
 | Tool | Used By | Purpose | Install |
 | ---- | ---- | ---- | ---- |
-| **Node.js 18+** | Hooks plugin | Runtime for the CCGS TypeScript hooks plugin | [nodejs.org](https://nodejs.org/) |
+| *(none beyond required)* | | |
 
 ### Installing Node.js
 
@@ -61,11 +62,13 @@ node --version         # Should show Node.js 18+
 npx opencode --version # Should show OpenCode version
 ```
 
-## What Happens Without Optional Tools
+## What Happens Without Required Tools
 
 | Missing Tool | Effect |
 | ---- | ---- |
-| **Node.js** | The hooks plugin (`ccgs-hooks.ts`) cannot execute. All hook events silently pass through. Commits, pushes, and all other operations still work. |
+| **Git** | No version control — all / commands, hooks, and template tooling assume a git repository. |
+| **OpenCode** | The framework cannot run — agents, skills, and commands are all OpenCode-native. |
+| **Node.js** | The module CLI (`install.mjs`) and hooks plugin cannot execute. Without Node.js, module installation and commit/push validation are unavailable. |
 
 ## Recommended IDE
 

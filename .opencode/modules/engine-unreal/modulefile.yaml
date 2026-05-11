@@ -1,0 +1,12 @@
+name: engine-unreal
+version: "0.6.0"
+description: "Unreal Engine 5 specialists — Blueprint, GAS, replication, UMG."
+depends: [core]
+provides:
+  agents: [unreal-specialist, ue-blueprint-specialist, ue-gas-specialist,
+           ue-replication-specialist, ue-umg-specialist]
+  skills: []
+  commands: []
+  rules: []
+plugged-into:
+  engines: [unreal]

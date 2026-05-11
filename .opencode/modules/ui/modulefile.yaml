@@ -1,0 +1,11 @@
+name: ui
+version: "0.6.0"
+description: "UX design, UI programming, accessibility, HUD and menu systems."
+depends: [core]
+provides:
+  agents: [ux-designer, ui-programmer, accessibility-specialist]
+  skills: [team-ui, ux-design, ux-review]
+  commands: [team-ui]
+  rules: [ui-code]
+plugged-into:
+  engines: []

@@ -1,0 +1,11 @@
+name: narrative
+version: "0.6.0"
+description: "Story architecture, world-building, character design, dialogue."
+depends: [core]
+provides:
+  agents: [narrative-director, writer, world-builder]
+  skills: [team-narrative]
+  commands: [team-narrative]
+  rules: [narrative]
+plugged-into:
+  engines: []

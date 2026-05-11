@@ -9,7 +9,7 @@
 - No `docs/architecture/` directory
 - No `production/` directory
 - No `design/gdd/systems-index.md`
-- CLAUDE.md exists (engine configured: Godot 4.6)
+- AGENTS.md exists (engine configured: Godot 4.6)
 
 **Session Duration:** ~30 minutes
 **Turns:** 8
@@ -31,7 +31,7 @@
 >
 > | Artifact Category | Found | Notes |
 > |------------------|-------|-------|
-> | Engine configuration | ✅ | Godot 4.6 in CLAUDE.md |
+> | Engine configuration | ✅ | Godot 4.6 in AGENTS.md |
 > | Source code | ✅ | ~4000 lines in `src/gameplay/` |
 > | Design docs | ⚠️ | 3 files in `design/`, not in GDD format |
 > | Architecture docs | ❌ | `docs/architecture/` missing |

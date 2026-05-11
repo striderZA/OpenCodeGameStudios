@@ -1,0 +1,11 @@
+name: programming
+version: "0.6.0"
+description: "Gameplay, AI, engine, networking, and tools programming. Agents and rules only."
+depends: [core]
+provides:
+  agents: [gameplay-programmer, ai-programmer, engine-programmer, network-programmer, tools-programmer]
+  skills: []
+  commands: []
+  rules: [gameplay-code, ai-code, engine-code, network-code, shader-code]
+plugged-into:
+  engines: []
