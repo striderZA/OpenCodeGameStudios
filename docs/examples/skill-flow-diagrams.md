@@ -11,7 +11,7 @@ These show what runs before and after each skill, and what artifacts flow betwee
 PHASE 1: CONCEPT
   /start ──────────────────────────────────────────────────────► routes to A/B/C/D
   /brainstorm ──────────────────────────────────────────────────► design/gdd/game-concept.md
-  /setup-engine ────────────────────────────────────────────────► CLAUDE.md + technical-preferences.md
+  /setup-engine ────────────────────────────────────────────────► AGENTS.md + technical-preferences.md
   /design-review [game-concept.md] ────────────────────────────► concept validated
   /gate-check ─────────────────────────────────────────────────► PASS → advance to systems-design
         │

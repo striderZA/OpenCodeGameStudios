@@ -185,7 +185,7 @@ In `solo` mode: CD-GDD-ALIGN is skipped. Output notes:
 ## Coverage Notes
 
 - The 8 required sections are validated against the project's design document
-  standards defined in `CLAUDE.md` — not re-enumerated here.
+  standards defined in `AGENTS.md` — not re-enumerated here.
 - The skill's internal section-ordering logic (which section to author first) is
   not independently tested — the order follows the standard GDD template.
 - Pillar alignment checking within CD-GDD-ALIGN is evaluated holistically by

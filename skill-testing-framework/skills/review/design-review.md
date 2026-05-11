@@ -39,7 +39,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 
 **Expected behavior:**
 1. Skill reads the target document in full
-2. Skill reads CLAUDE.md for project context and standards
+2. Skill reads AGENTS.md for project context and standards
 3. Skill evaluates all 8 required sections (present/absent check)
 4. Skill checks internal consistency (formulas match described behavior)
 5. Skill checks implementability (rules are precise enough to code)

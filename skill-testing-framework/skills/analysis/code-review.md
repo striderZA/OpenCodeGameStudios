@@ -3,7 +3,7 @@
 ## Skill Summary
 
 `/code-review` performs an architectural code review of source files in `src/`,
-checking coding standards from `CLAUDE.md` (doc comments on public APIs,
+checking coding standards from `AGENTS.md` (doc comments on public APIs,
 dependency injection over singletons, data-driven values, testability). Findings
 are advisory. No director gates are invoked. No code edits are made. Verdicts:
 APPROVED, CONCERNS, or NEEDS CHANGES.
