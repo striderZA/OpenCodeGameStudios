@@ -3,10 +3,6 @@ name: agent-validation
 on:
   push:
     branches: [development]
-    paths:
-      - '.opencode/modules/**'
-      - 'tests/modules/**'
-      - '.github/workflows/agent-validation.yml'
   pull_request:
     branches: [development, master]
 
