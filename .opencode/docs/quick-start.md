@@ -279,7 +279,7 @@ node .opencode/modules/install.mjs add core          # Required: directors, /sta
 node .opencode/modules/install.mjs add engine-godot  # Engine specialists (or engine-unity/engine-unreal)
 node .opencode/modules/install.mjs add art           # Aseprite MCP, art bible, asset specs
 node .opencode/modules/install.mjs add design        # Game mechanics, systems, combat
-node .opencode/modules/install.mjs add test          # QA pipeline, test setup, profiling
+node .opencode/modules/install.mjs add qa           # QA pipeline, test setup, profiling
 node .opencode/modules/install.mjs list              # See all available + installed
 ```
 
