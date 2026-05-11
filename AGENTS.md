@@ -52,6 +52,18 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 └── production/                  # Sprint plans, milestones, session logs
 ```
 
+## Modular Framework
+
+The framework is partitioned into installable theme modules.
+
+**Core** (always installed): creative-director, technical-director, producer, /start, /help, /brainstorm, /setup-engine, validation suite.
+
+**Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal.
+
+**Install:** `node .opencode/modules/install.mjs add <name>`
+**Remove:** `node .opencode/modules/install.mjs remove <name>`
+**List:** `node .opencode/modules/install.mjs list`
+
 ## Coordination Rules
 
 1. **Vertical Delegation**: Leadership agents delegate to department leads, who

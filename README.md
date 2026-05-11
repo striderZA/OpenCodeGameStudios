@@ -93,6 +93,53 @@ See [**OCGS-Pong**](https://github.com/striderZA/OCGS-Pong) — a complete Pong 
 
 ---
 
+## 🧩 Modular Framework
+
+The framework is partitioned into **19 pluggable theme modules**. Only install what you need for your project:
+
+| Module | Description |
+|--------|-------------|
+| `core` | Framework skeleton — directors, onboarding, `/start`, `/help` (required) |
+| `art` | Aseprite MCP, art bible, asset specs, art generation |
+| `design` | Game mechanics, systems design, combat, balance, playtesting |
+| `architecture` | Technical planning, ADRs, architecture review |
+| `stories` | Epics, stories, dev workflow, code review |
+| `programming` | Gameplay, AI, engine, network agents + coding rules |
+| `ui` | UX design, UI programming, accessibility |
+| `audio` | Audio direction, sound design |
+| `narrative` | Story, world-building, dialogue |
+| `level-design` | Level layout, encounter design |
+| `qa` | Testing strategy, bug tracking, profiling, skill testing |
+| `release` | Release management, sprints, changelogs, hotfixes |
+| `prototyping` | Rapid prototyping, concept exploration |
+| `live-ops` | Post-launch content, community management |
+| `localization` | i18n, translation pipeline |
+| `engine-godot` | Godot 4 specialists (GDScript, C#, shaders, GDExtension) |
+| `engine-unity` | Unity specialists (DOTS, shaders, Addressables, UI) |
+| `engine-unreal` | Unreal Engine 5 specialists (GAS, Blueprint, replication, UMG) |
+| `data` | Data file conventions and validation |
+
+```bash
+# Install modules
+node .opencode/modules/install.mjs add core
+node .opencode/modules/install.mjs add engine-godot art design qa
+
+# List all available and installed modules
+node .opencode/modules/install.mjs list
+
+# See module details
+node .opencode/modules/install.mjs info core
+
+# Remove a module (preserves user-modified files)
+node .opencode/modules/install.mjs remove art
+```
+
+Module sources live in `.opencode/modules/<name>/` and are copied into the
+framework directories on install. User-modified files are detected during
+removal and left in place.
+
+---
+
 ## 🔌 Recommended Plugins
 
 These plugins enhance the OpenCode experience and are recommended for
@@ -217,7 +264,13 @@ node utils/assign-models.js --config my-models.json
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
 │   │   └── tests/             🧪 11 test suites (140 tests)
-│   └── rules/                 📏 11 coding standards
+│   ├── rules/                 📏 11 coding standards
+│   └── modules/               🧩 19 pluggable theme modules
+│       ├── install.mjs        CLI: add/remove/list modules
+│       ├── installed.json     Module manifest
+│       ├── core/              Core module (always installed)
+│       ├── art/               Art module (aseprite MCP, art bible)
+│       └── ...                19 modules total
 ├── design/                    🎨 Game design documents
 ├── docs/
 │   ├── CONTRIBUTING.md        📖 Framework contribution guide
