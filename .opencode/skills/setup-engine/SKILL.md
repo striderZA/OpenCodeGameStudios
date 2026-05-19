@@ -36,7 +36,7 @@ If no engine is specified, run an interactive engine selection process:
 
 **Question 1 — Prior experience** (ask this first, always, via `question`):
 - Prompt: "Have you worked in any of these engines before?"
-- Options: `Godot` / `Unity` / `Unreal Engine 5` / `Multiple — I'll explain` / `None of them`
+- Options: `Godot` / `Unity` / `Unreal Engine 5` / `SFML 3 (C++ library)` / `Raylib (C/C++ library)` / `Multiple — I'll explain` / `None of them`
 - If they pick a specific engine → recommend that engine. Prior experience outweighs all other factors. Confirm with them and skip the matrix.
 - If "None" or "Multiple" → continue to the questions below.
 
@@ -46,11 +46,11 @@ If no engine is specified, run an interactive engine selection process:
 - Prompt: "What platforms are you targeting for this game?"
 - Options: `PC (Steam / Epic)` / `Mobile (iOS / Android)` / `Console` / `Web / Browser` / `Multiple platforms`
 - Platform rules that feed directly into the recommendation:
-  - Mobile → Unity strongly preferred; Unreal is a poor fit; Godot is viable for simple mobile
-  - Console → Unity or Unreal; Godot console support requires third-party publishers or significant extra work
-  - Web → Godot exports cleanly to web; Unity WebGL is functional; Unreal has poor web support
-  - PC only → all engines viable; other factors decide
-  - Multiple → Unity is the most portable across PC/mobile/console
+  - Mobile → Unity strongly preferred; Unreal is a poor fit; Godot is viable for simple mobile; SFML3 and Raylib require native compilation per platform (Android NDK, Emscripten for web) — significant extra effort
+  - Console → Unity or Unreal; Godot and C++ library approaches require third-party publishers or significant porting work
+  - Web → Godot exports cleanly to web; Unity WebGL is functional; Unreal has poor web support; Raylib has Emscripten support; SFML3 has no built-in web target
+  - PC only → all engines viable including SFML3 and Raylib (their native home); other factors decide
+  - Multiple → Unity is the most portable across PC/mobile/console; SFML3/Raylib require per-platform build configuration
 
 1. **What kind of game?** (2D, 3D, or both?)
 2. **Primary input method?** (keyboard/mouse, gamepad, touch, or mixed?)
@@ -82,17 +82,31 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 - Licensing reality: 5% royalty only applies AFTER $1M gross revenue per title. For a first game or any game that doesn't reach $1M, it costs nothing. This threshold is high enough that most indie developers will never pay it.
 - Best fit: AAA-quality 3D; large open-world games; photorealistic visuals; developers with C++ experience or willing to use Blueprint; games targeting high-end PC/console where visual fidelity is a core selling point
 
+**SFML 3**
+- Genuine strengths: Full control over rendering pipeline (raw OpenGL 3.3+); lightweight and fast; C++17 modern idioms; modules are well-separated (Graphics, Audio, Network, Window, System); excellent for learning graphics programming; no runtime fees or licensing; tiny binary size
+- Real limitations: No visual editor — everything is code; no built-in physics, UI system, or scene graph; no asset pipeline; desktop-only (no mobile/web support); minimal community compared to Godot/Unity; you must build your own tooling; steeper initial setup time
+- Licensing reality: zlib/libpng license — completely free with no restrictions whatsoever
+- Best fit: Solo developers who enjoy low-level tinkering; 2D games with custom rendering; educational/learning projects; games that need a tiny footprint; developers who prefer C++ and full pipeline control
+
+**Raylib**
+- Genuine strengths: Extremely simple API — designed for learning and rapid prototyping; supports many platforms (Windows, macOS, Linux, Web via Emscripten, Android, Raspberry Pi); raygui for immediate-mode UI; raymath for math helpers; active community; consistent cross-platform API surface; very small compiled binary
+- Real limitations: No visual editor — everything is code; no built-in physics or scene graph; C API limits abstraction (no RAII, no namespaces in C) — C++ wrappers exist but are community-maintained; less suitable for large/complex games without significant scaffolding; limited 3D rendering compared to engines with deferred rendering
+- Licensing reality: zlib/libpng license — completely free with no restrictions whatsoever
+- Best fit: Learning/teaching game development; rapid prototyping; tiny indie games; game jams; developers who want the simplest possible graphics API; multi-platform 2D games with low performance requirements
+
 **Genre-specific guidance** (factor this into the recommendation):
-- 2D any style → Godot strongly preferred
-- 3D stylized / atmospheric / contained world → Godot viable, Unity solid alternative
+- 2D any style → Godot strongly preferred; Raylib viable for simple 2D; SFML3 excellent for custom-rendered 2D
+- 3D stylized / atmospheric / contained world → Godot viable, Unity solid alternative; Raylib viable for simple 3D; SFML3 limited 3D (no built-in model loader)
 - 3D open world (large, seamless) → Unity or Unreal; Godot is not production-proven for this
 - 3D photorealistic / AAA-quality → Unreal
-- Mobile-first → Unity strongly preferred
-- Console-first → Unity or Unreal; Godot console support requires extra work
+- Mobile-first → Unity strongly preferred; Raylib has Android/iOS support but significant extra work
+- Console-first → Unity or Unreal; C++ libraries require extensive porting
+- Web → Godot; Raylib via Emscripten works for simple games
 - Horror / narrative / walking sim → any engine; match to art style and team experience
 - Action RPG / Soulslike → Unity or Unreal for 3D; community support and assets matter here
-- Platformer 2D → Godot
-- Strategy / top-down / RTS → Godot or Unity depending on 2D vs 3D
+- Platformer 2D → Godot; SFML3 and Raylib both excellent for 2D with full control
+- Strategy / top-down / RTS → Godot or Unity depending on 2D vs 3D; SFML3 excellent for 2D strategy
+- Game jam / prototype → Raylib for speed; Godot if you want an editor
 
 **Recommendation format:**
 1. Show a comparison table with the user's specific factors as rows
@@ -167,6 +181,152 @@ Update the Technology Stack section, replacing the `[CHOOSE]` placeholders with 
 - **Asset Pipeline**: Unreal Content Pipeline
 ```
 
+**For SFML 3:**
+```markdown
+- **Engine**: SFML 3 (Simple and Fast Multimedia Library)
+- **Language**: C++17
+- **Build System**: CMake
+- **Asset Pipeline**: Custom (file-based loading via sf::Texture::loadFromFile, sf::SoundBuffer, etc.)
+```
+
+**For Raylib:**
+```markdown
+- **Engine**: Raylib
+- **Language**: C (primary) or C++ (via raylib-cpp headers)
+- **Build System**: CMake
+- **Asset Pipeline**: Custom (file-based loading via LoadTexture, LoadSound, etc.)
+```
+
+---
+
+## 4.5. Scaffold Build System (SFML 3 / Raylib Only)
+
+If SFML 3 or Raylib was chosen, ask the user about scaffolding the build system:
+
+> "I can create a skeleton CMakeLists.txt and a minimal src/main.cpp to get you started.
+> May I scaffold these files?"
+
+Wait for confirmation before proceeding.
+
+### For SFML 3
+
+Create `CMakeLists.txt` in the project root:
+
+```cmake
+cmake_minimum_required(VERSION 3.20)
+project(GameProject)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(SFML 3 REQUIRED COMPONENTS graphics window audio network system)
+
+add_executable(${PROJECT_NAME}
+    src/main.cpp
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    sfml-graphics
+    sfml-window
+    sfml-audio
+    sfml-network
+    sfml-system
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE src)
+```
+
+Create `src/main.cpp`:
+
+```cpp
+#include <SFML/Graphics.hpp>
+
+int main() {
+    auto window = sf::RenderWindow(sf::VideoMode({800, 600}), "Game");
+    window.setFramerateLimit(60);
+
+    while (window.isOpen()) {
+        while (const auto event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>())
+                window.close();
+        }
+
+        window.clear(sf::Color::Black);
+
+        // Game logic and rendering here
+
+        window.display();
+    }
+
+    return 0;
+}
+```
+
+### For Raylib
+
+Create `CMakeLists.txt` in the project root:
+
+```cmake
+cmake_minimum_required(VERSION 3.20)
+project(GameProject)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Try system-installed raylib first, fall back to FetchContent
+find_package(raylib QUIET)
+if(NOT raylib_FOUND)
+    include(FetchContent)
+    FetchContent_Declare(raylib
+        GIT_REPOSITORY https://github.com/raysan5/raylib.git
+        GIT_TAG 5.5
+    )
+    FetchContent_MakeAvailable(raylib)
+endif()
+
+add_executable(${PROJECT_NAME}
+    src/main.cpp
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
+
+target_include_directories(${PROJECT_NAME} PRIVATE src)
+```
+
+Create `src/main.cpp`:
+
+```cpp
+#include "raylib.h"
+
+int main() {
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+
+    InitWindow(screenWidth, screenHeight, "Game");
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        // Game logic and drawing here
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}
+```
+
+Also ensure `src/` and `assets/` directories exist (create them if missing).
+
+Add a `.gitignore` entry for the build directory if one does not exist:
+
+```
+build/
+```
+
 ---
 
 ## 5. Populate Technical Preferences
@@ -176,6 +336,20 @@ engine-appropriate defaults. Read the existing template first, then fill in:
 
 ### Engine & Language Section
 - Fill from the engine choice made in step 4
+
+### Language Selection (SFML 3 and Raylib only)
+
+If SFML 3 or Raylib was chosen, ask the user about C vs C++:
+
+> "SFML 3 / Raylib supports C and C++. Which will this project primarily use?
+>
+>   **A) C++** — RAII patterns, classes, STL, stronger type safety. Recommended for larger projects.
+>   **B) C (Raylib only)** — Plain C API, simpler compilation, C11 standard. Best for small projects or learning.
+>
+> Which will this project primarily use?"
+
+For SFML 3: only C++ is practical (SFML is a C++ library).
+For Raylib: both C and C++ are viable. Record the choice.
 
 ### Naming Conventions (engine defaults)
 
@@ -195,6 +369,32 @@ engine-appropriate defaults. Read the existing template first, then fill in:
 - Functions: PascalCase (e.g., `TakeDamage()`)
 - Booleans: `b` prefix (e.g., `bIsAlive`)
 - Files: Match class without prefix (e.g., `PlayerController.h`)
+
+**For SFML 3 (C++):**
+- Classes: PascalCase (e.g., `PlayerController`, `ResourceManager`)
+- Variables: snake_case (e.g., `move_speed`, `current_health`)
+- Functions: PascalCase or snake_case — project preference, be consistent
+- SFML API methods: camelCase (e.g., `loadFromFile`, `setPosition`)
+- Namespaces: snake_case (e.g., `game::core`, `game::audio`)
+- Files: PascalCase for classes, snake_case for modules (e.g., `PlayerController.cpp`, `audio_manager.cpp`)
+- Headers: `.hpp` or `.h` — project preference, be consistent
+- Constants: UPPER_SNAKE_CASE (e.g., `MAX_PLAYER_SPEED`)
+- Member variables: `m_` prefix (e.g., `m_health`, `m_position`) — standard C++ practice
+
+**For Raylib (C):**
+- Functions: PascalCase matching raylib API style (e.g., `InitGame`, `UpdatePlayer`)
+- Variables: snake_case (e.g., `player_speed`, `current_score`)
+- Types: PascalCase (e.g., `Player`, `GameState`)
+- Macros: UPPER_SNAKE_CASE (e.g., `MAX_BULLETS`, `SCREEN_WIDTH`)
+- Files: snake_case (e.g., `player.cpp`, `game_state.h`)
+- Headers: `.h` for C, `.hpp` for C++ wrappers
+- Enums: UPPER_SNAKE_CASE with prefix (e.g., `GAME_STATE_MENU`, `GAME_STATE_PLAYING`)
+
+**For Raylib (C++):**
+- Classes: PascalCase (e.g., `Player`, `ResourceManager`)
+- Variables: snake_case (e.g., `player_speed`)
+- Functions: PascalCase matching raylib API style (e.g., `UpdatePlayer`, `DrawGame`)
+- Files: PascalCase or snake_case — project preference, be consistent
 
 ### Input & Platform Section
 
@@ -291,6 +491,46 @@ Also populate the `## Engine Specialists` section in `technical-preferences.md` 
 | General architecture review | unreal-specialist |
 ```
 
+**For SFML 3:**
+```markdown
+## Engine Specialists
+- **Primary**: sfml-specialist
+- **Language/Code Specialist**: sfml-specialist (C++ — single specialist covers all code)
+- **Shader Specialist**: sfml-specialist (sf::Shader, GLSL integration)
+- **UI Specialist**: sfml-specialist (no dedicated UI specialist — build UI with sf::Drawable or integrate Dear ImGui)
+- **Additional Specialists**: None
+- **Routing Notes**: Invoke primary for all SFML-related code, build system, and architecture decisions. The single specialist covers graphics, audio, network, window, and system modules.
+
+### File Extension Routing
+
+| File Extension / Type | Specialist to Spawn |
+|-----------------------|---------------------|
+| Game code (.cpp, .hpp, .h files) | sfml-specialist |
+| Shader files (.glsl, .vert, .frag) | sfml-specialist |
+| CMake build files (CMakeLists.txt) | sfml-specialist |
+| General architecture review | sfml-specialist |
+```
+
+**For Raylib:**
+```markdown
+## Engine Specialists
+- **Primary**: raylib-specialist
+- **Language/Code Specialist**: raylib-specialist (C/C++ — single specialist covers all code)
+- **Shader Specialist**: raylib-specialist (LoadShader, GLSL integration, rlgl raw OpenGL)
+- **UI Specialist**: raylib-specialist (raygui header — immediate-mode GUI)
+- **Additional Specialists**: None
+- **Routing Notes**: Invoke primary for all raylib-related code, build system, and architecture decisions. The single specialist covers core, rlgl, raudio, raymath, and extras.
+
+### File Extension Routing
+
+| File Extension / Type | Specialist to Spawn |
+|-----------------------|---------------------|
+| Game code (.c, .cpp, .h, .hpp files) | raylib-specialist |
+| Shader files (.glsl, .vs, .fs) | raylib-specialist |
+| CMake build files (CMakeLists.txt) | raylib-specialist |
+| General architecture review | raylib-specialist |
+```
+
 ### Collaborative Step
 Present the filled-in preferences to the user. For Godot, include the chosen language and note where the full naming conventions and routing tables live:
 > "Here are the default technical preferences for [engine] ([language if Godot]). The naming conventions and specialist routing are in Appendix A of this skill — I'll apply the [GDScript/C#/Both] variant. Want to customize any of these, or shall I save the defaults?"
@@ -310,6 +550,8 @@ Check whether the engine version is likely beyond the LLM's training data.
 - Godot: training data likely covers up to ~4.3
 - Unity: training data likely covers up to ~2023.x / early 6000.x
 - Unreal: training data likely covers up to ~5.3 / early 5.4
+- SFML 3: training data likely covers up to ~3.0.x (SFML 3.0 released early 2025)
+- Raylib: training data likely covers up to ~5.5
 
 Compare the user's chosen version against these baselines:
 
@@ -438,6 +680,65 @@ Optionally set `GODOT_PATH` if the Godot binary is not in PATH:
   "GODOT_PATH": "/path/to/godot",
   "DEBUG": "true"
 }
+```
+
+### 7.4. Build & Run Setup (SFML 3 / Raylib — No MCP Available)
+
+SFML 3 and Raylib do not have MCP servers. Instead, configure a build-and-run workflow:
+
+**Recommended CMake structure:**
+```
+project-root/
+├── CMakeLists.txt          # cmake_minimum_required, project(), add_executable, target_link_libraries
+├── src/                    # Game source code
+├── assets/                 # Textures, sounds, fonts, shaders
+└── build/                  # Build output (gitignored)
+```
+
+**Minimal CMakeLists.txt for SFML 3:**
+```cmake
+cmake_minimum_required(VERSION 3.20)
+project(my_game)
+
+set(CMAKE_CXX_STANDARD 17)
+find_package(SFML 3 REQUIRED COMPONENTS graphics window audio network system)
+
+add_executable(my_game src/main.cpp)
+target_link_libraries(my_game PRIVATE sfml-graphics sfml-window sfml-audio sfml-network sfml-system)
+```
+
+**Minimal CMakeLists.txt for Raylib:**
+```cmake
+cmake_minimum_required(VERSION 3.20)
+project(my_game)
+
+set(CMAKE_C_STANDARD 11)      # For C projects
+set(CMAKE_CXX_STANDARD 17)    # For C++ projects
+
+# Option A: find_package
+find_package(raylib REQUIRED)
+
+# Option B: FetchContent (vendors raylib automatically)
+include(FetchContent)
+FetchContent_Declare(raylib GIT_REPOSITORY https://github.com/raysan5/raylib.git GIT_TAG 5.5)
+FetchContent_MakeAvailable(raylib)
+
+add_executable(my_game src/main.cpp)
+target_link_libraries(my_game PRIVATE raylib)
+```
+
+**Build & run commands:**
+```bash
+cmake -B build -S .
+cmake --build build
+./build/my_game           # Linux/macOS
+.\build\Release\my_game.exe  # Windows
+```
+
+**For web targets (Raylib only):**
+```bash
+cmake -B build-web -S . -DPLATFORM=Web -DCMAKE_TOOLCHAIN_FILE=/path/to/emscripten/cmake/Modules/Platform/Emscripten.cmake
+cmake --build build-web
 ```
 
 ---
@@ -605,7 +906,7 @@ After setup is complete, output:
 Engine Setup Complete
 =====================
 Engine:          [name] [version]
-Language:        [GDScript | C# | GDScript + C# | C# | C++ + Blueprint]
+Language:        [GDScript | C# | GDScript + C# | C# | C++ + Blueprint | C++17 | C (primary) or C++ | C11]
 Knowledge Risk:  [LOW/MEDIUM/HIGH]
 Reference Docs:  [created/skipped]
 CLAUDE.md:       [updated]

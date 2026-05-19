@@ -328,5 +328,23 @@
       ".opencode/skills/ux-design/SKILL.md",
       ".opencode/skills/ux-review/SKILL.md"
     ]
+  },
+  "engine-sfml3": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-18T20:17:04.870Z",
+    "files": [
+      "agents/sfml-specialist.md"
+    ],
+    "mcp": []
+  },
+  "engine-raylib": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-05-18T20:17:04.874Z",
+    "files": [
+      "agents/raylib-specialist.md"
+    ],
+    "mcp": []
   }
 }
