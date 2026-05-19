@@ -138,7 +138,7 @@ This project supports two workflow modes. Choose the one that fits your team siz
 Run `/start` in OpenCode to begin the guided onboarding flow.
 Or jump directly to:
 - `/brainstorm` — explore game ideas from scratch
-- `/setup-engine godot 4.6` — configure your engine (also: `unity`, `unreal`, `sfml3`, `raylib`)
+- `/setup-engine godot 4.6` — configure your engine (also: unity, unreal, sfml3, raylib)
 - `/project-stage-detect` — analyze an existing project
 - `/prototype` — rapid prototype a concept
 - `/hybrid-prototype` — fast-lane prototype for discovery phase
