@@ -78,6 +78,33 @@ Configure via `opencode.json` MCP settings (see `setup-engine` skill section 7.3
 - `.opencode/docs/quick-start.md` — setup step added, steps renumbered
 - `.opencode/docs/skills-reference.md` — automated-smoke-test entry added
 
+## v0.4.0 — Unity MCP Integration
+
+**New MCP server:** unity-mcp (CoplayDev), for interactive AI-assisted dev with Unity Editor.
+
+### What changed
+- **New MCP integration**: `unity` — Adds optional support for the [CoplayDev unity-mcp](https://github.com/CoplayDev/unity-mcp) server, giving OCGS agents in Unity projects access to ~50+ tools for scene, script, and asset management. Requires Unity Editor running. Configure via `setup-engine` §7.4.
+- **setup-engine skill**: Added section 7.4 covering unity-mcp prerequisites (Unity 2021.3+, Python 3.10+, `uv`), install steps, and the Editor-running constraint.
+- **Module version**: `engine-unity` bumped from 0.6.0 → 0.7.0; description updated to mention the unity-mcp integration.
+- **Agent files**: 5 unity specialists (`unity-specialist`, `unity-dots-specialist`, `unity-shader-specialist`, `unity-addressables-specialist`, `unity-ui-specialist`) updated with new `## MCP Integration` sections referencing domain-specific unity-mcp tools.
+- **opencode.json**: New `mcp.unity` block (HTTP, `http://localhost:8080/mcp`, disabled by default) — mirrors the `mcp.godot` pattern.
+
+### New dependency (optional)
+The unity-mcp integration requires the CoplayDev unity-mcp package installed in your Unity project (via Unity Package Manager git URL). The integration itself is opt-in: users set `mcp.unity.enabled: true` in `opencode.json` after installing.
+
+### Safe to overwrite
+- `.opencode/modules/engine-unity/modulefile.yaml`
+
+### Merge carefully
+- `opencode.json` — new `mcp.unity` block; if you've customized this file, merge the new block into your existing `mcp` object
+- `.opencode/skills/setup-engine/SKILL.md` — has new section 7.4 (and §7.4 SFML3/Raylib renumbered to §7.5 in the root monolith; core copy has just §7.4 with no §7.5 because SFML3/Raylib are optional modules)
+- `.opencode/modules/core/skills/setup-engine/SKILL.md` — has new section 7.4 (mirror of the root change, no renumbering)
+- `.opencode/modules/engine-unity/agents/unity-specialist.md` — new `## MCP Integration` section
+- `.opencode/modules/engine-unity/agents/unity-dots-specialist.md` — new `## MCP Integration` section
+- `.opencode/modules/engine-unity/agents/unity-shader-specialist.md` — new `## MCP Integration` section
+- `.opencode/modules/engine-unity/agents/unity-addressables-specialist.md` — new `## MCP Integration` section
+- `.opencode/modules/engine-unity/agents/unity-ui-specialist.md` — new `## MCP Integration` section
+
 ### Strategy C — Manual file copy
 
 Best when: you didn't use git to set up the template (just downloaded a zip).
