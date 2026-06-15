@@ -225,6 +225,16 @@ If you already know what you need, jump directly to the relevant path:
    ```
    Once configured, run `/automated-smoke-test` to verify the project launches
    without errors.
+
+4b. **Enhance with unity-mcp (Unity only)** — Install the CoplayDev unity-mcp
+    package in your Unity project for interactive AI-assisted dev:
+    ```
+    # In Unity: Window → Package Manager → + → Add package from git URL
+    # Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
+    ```
+    Then add the `mcp.unity` block to your `opencode.json` and set
+    `enabled: true` once Unity Editor is running. See `/setup-engine` §7.4
+    for full details.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
 6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
 7. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
