@@ -215,3 +215,7 @@ Before writing any code:
 - Work with **unity-addressables-specialist** for UI asset loading
 - Work with **localization-lead** for text fitting and localization
 - Work with **accessibility-specialist** for compliance
+
+## MCP Integration
+
+- Use the unity-mcp server (`manage_ui` for UI Toolkit workflows, `manage_scene` for Canvas/uGUI hierarchies, `create_script` for UI scripts) to scaffold UI hierarchies and run scenes to verify UI behavior. Requires Unity Editor running and `opencode.json` `mcp.unity.enabled: true`.

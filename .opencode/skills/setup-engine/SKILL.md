@@ -682,7 +682,62 @@ Optionally set `GODOT_PATH` if the Godot binary is not in PATH:
 }
 ```
 
-### 7.4. Build & Run Setup (SFML 3 / Raylib — No MCP Available)
+### 7.4. Configure unity-mcp (Optional — Unity Only)
+
+> **What it is:** A bridge between AI agents and Unity Editor via MCP, exposing ~50+ tools for scene, script, and asset management. Maintained by CoplayDev, MIT licensed. See [github.com/CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp).
+
+#### Prerequisites (must be installed first)
+
+- **Unity 2021.3 LTS or newer** — [Download Unity](https://unity.com/download)
+- **Python 3.10+** with `uv` — install `uv` via `pip install uv` (or `winget install astral-sh.uv` on Windows)
+- **MCP for Unity package** installed in your Unity project (see below)
+
+#### Install steps
+
+In your Unity project, open **Window → Package Manager**, click the **`+`** button, choose **Add package from git URL...**, and paste:
+
+```
+https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
+```
+
+> Use `#beta` instead of `#main` for the latest beta features. `#main` is recommended for stability and currently tracks the v9.7.0 release.
+
+After the package imports, MCP for Unity opens a **setup wizard** automatically:
+
+1. Confirm Python and `uv` are installed — the wizard guides you through both if missing.
+2. Click **Done**. Once dependencies are green, a list of detected MCP clients appears.
+3. Pick the clients you want to configure and click **Configure Selected**.
+
+> **Note:** The wizard's per-client list (Claude Desktop, Cursor, Claude Code, VS Code, Windsurf, Cline, etc.) does not explicitly mention OpenCode. The wizard MAY auto-configure OpenCode's `opencode.json` (verify by checking the file after); if it does not, use the manual config below.
+
+#### Manual opencode.json config (reliable fallback)
+
+Add this block to the `mcp` object in your project's `opencode.json`:
+
+```json
+"unity": {
+  "type": "local",
+  "url": "http://localhost:8080/mcp",
+  "enabled": false
+}
+```
+
+`enabled: false` is the default. Flip to `true` once Unity Editor is running and you want OCGS agents to use unity-mcp tools.
+
+> ⚠ **Unity Editor must be running** before OCGS agents can use unity-mcp tools. If the Editor is closed, MCP calls will fail with a connection error. Open your project in Unity, then continue.
+
+#### Verify
+
+In a session where `enabled: true`, call any unity-mcp tool (e.g. `list_scenes`) via OCGS. Expect a list of scenes from your open Unity project.
+
+#### Troubleshooting
+
+- **Bridge not connecting** — Open **Window → MCP for Unity** and check the status panel. Restart Unity if needed.
+- **Server not starting** — Verify `uv --version` works in your terminal. Check the MCP for Unity log for errors.
+- **Client not connecting** — Confirm the HTTP server is running on `localhost:8080` and the URL in your client config matches.
+- **Port 8080 conflict** — Open Unity's MCP for Unity window and change the port; update the `url` in `opencode.json` to match.
+
+### 7.5. Build & Run Setup (SFML 3 / Raylib — No MCP Available)
 
 SFML 3 and Raylib do not have MCP servers. Instead, configure a build-and-run workflow:
 
