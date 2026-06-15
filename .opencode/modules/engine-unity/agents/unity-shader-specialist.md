@@ -176,3 +176,7 @@ Before writing any code:
 - Work with **performance-analyst** for GPU performance profiling
 - Work with **unity-dots-specialist** for Entities Graphics rendering
 - Work with **unity-ui-specialist** for UI shader effects
+
+## MCP Integration
+
+- Use the unity-mcp server (`manage_material`, `manage_asset` for shader files, `read_console`) to apply material/shader changes and watch for shader compile errors in the Unity console. Requires Unity Editor running and `opencode.json` `mcp.unity.enabled: true`.
