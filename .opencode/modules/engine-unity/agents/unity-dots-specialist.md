@@ -146,3 +146,7 @@ Before writing any code:
 - Work with **performance-analyst** for profiling DOTS performance
 - Work with **engine-programmer** for low-level optimization
 - Work with **unity-shader-specialist** for Entities Graphics rendering
+
+## MCP Integration
+
+- Use the unity-mcp server (`create_script`, `script_apply_edits`, `validate_script`, `manage_scene` with action `load`) to verify ECS code compiles and runs in-editor. Requires Unity Editor running and `opencode.json` `mcp.unity.enabled: true`.

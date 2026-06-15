@@ -25,6 +25,11 @@
         "GODOT_PATH": "{env:GODOT_PATH}",
         "DEBUG": "{env:DEBUG}"
       }
+    },
+    "unity": {
+      "type": "local",
+      "url": "http://localhost:8080/mcp",
+      "enabled": false
     }
   },
   "permission": {
