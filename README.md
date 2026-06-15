@@ -115,7 +115,7 @@ The framework is partitioned into **19 pluggable theme modules**. Only install w
 | `live-ops` | Post-launch content, community management |
 | `localization` | i18n, translation pipeline |
 | `engine-godot` | Godot 4 specialists (GDScript, C#, shaders, GDExtension) |
-| `engine-unity` | Unity specialists (DOTS, shaders, Addressables, UI) |
+| `engine-unity` | Unity specialists (DOTS, shaders, Addressables, UI) + unity-mcp |
 | `engine-unreal` | Unreal Engine 5 specialists (GAS, Blueprint, replication, UMG) |
 | `data` | Data file conventions and validation |
 
