@@ -7,9 +7,9 @@
 > ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework with workflow selection, phase gates, pre-workflow prototyping, and hybrid discovery-to-production pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Skills](https://img.shields.io/badge/skills-76-brightgreen)](.opencode/skills/)
-[![Commands](https://img.shields.io/badge/commands-51-blue)](.opencode/commands/)
+[![Agents](https://img.shields.io/badge/agents-56-blueviolet)](.opencode/agents/)
+[![Skills](https://img.shields.io/badge/skills-77-brightgreen)](.opencode/skills/)
+[![Commands](https://img.shields.io/badge/commands-54-blue)](.opencode/commands/)
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
 [![Tests](https://img.shields.io/badge/tests-183-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
@@ -50,9 +50,9 @@ for the full game lifecycle:
 - **Workflow selection** — Choose Hybrid (lightweight discovery then production)
   or Full OCGS (process-heavy from day one), depending on team size and project
   maturity
-- **49 coordinated agents** — From creative director to engine specialists, each
+- **56 coordinated agents** — From creative director to engine specialists, each
   with defined responsibilities, delegation maps, and strict domain boundaries
-- **51 slash commands** — Route through the right skill every time, from
+- **54 slash commands** — Route through the right skill every time, from
   `/brainstorm` to `/launch-checklist`
 
 This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
@@ -70,9 +70,9 @@ and runs on [OpenCode](https://opencode.ai).
 
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 76 skills (`.opencode/skills/`) | ✅ +4 |
-| ⌨️ **Commands** | — | 51 commands (`.opencode/commands/`) | ✅ New |
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 56 agents (`.opencode/agents/`) | ✅ +7 |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.opencode/skills/`) | ✅ +5 |
+| ⌨️ **Commands** | — | 54 commands (`.opencode/commands/`) | ✅ New |
 | 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **183 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
@@ -85,7 +85,7 @@ and runs on [OpenCode](https://opencode.ai).
 opencode
 ```
 
-Type `/` to browse all 76 skills and 51 commands, or `/start` for onboarding.
+Type `/` to browse all 77 skills and 54 commands, or `/start` for onboarding.
 
 ### 🎮 Demo Game
 
@@ -95,7 +95,7 @@ See [**OCGS-Pong**](https://github.com/striderZA/OCGS-Pong) — a complete Pong 
 
 ## 🧩 Modular Framework
 
-The framework is partitioned into **19 pluggable theme modules**. Only install what you need for your project:
+The framework is partitioned into **22 pluggable theme modules**. Only install what you need for your project:
 
 | Module | Description |
 |--------|-------------|
@@ -117,6 +117,7 @@ The framework is partitioned into **19 pluggable theme modules**. Only install w
 | `engine-godot` | Godot 4 specialists (GDScript, C#, shaders, GDExtension) |
 | `engine-unity` | Unity specialists (DOTS, shaders, Addressables, UI) + unity-mcp |
 | `engine-unreal` | Unreal Engine 5 specialists (GAS, Blueprint, replication, UMG) |
+| `engine-babylonjs` | Babylon.js specialists (3D rendering, Havok physics, Colyseus networking, GUI, performance) |
 | `data` | Data file conventions and validation |
 
 ```bash
@@ -256,21 +257,21 @@ node utils/assign-models.js --config my-models.json
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .opencode/
-│   ├── commands/              ⌨️ 51 slash commands (routes to skills)
-│   ├── agents/                🤖 49 agent definitions
-│   ├── skills/                🛠️ 76 skill workflows
+│   ├── commands/              ⌨️ 54 slash commands (routes to skills)
+│   ├── agents/                🤖 56 agent definitions
+│   ├── skills/                🛠️ 77 skill workflows
 │   ├── plugins/
 │   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
 │   │   └── tests/             🧪 11 test suites (140 tests)
 │   ├── rules/                 📏 11 coding standards
-│   └── modules/               🧩 19 pluggable theme modules
+│   └── modules/               🧩 22 pluggable theme modules
 │       ├── install.mjs        CLI: add/remove/list modules
 │       ├── installed.json     Module manifest
 │       ├── core/              Core module (always installed)
 │       ├── art/               Art module (aseprite MCP, art bible)
-│       └── ...                19 modules total
+│       └── ...                22 modules total
 ├── design/                    🎨 Game design documents
 ├── docs/
 │   ├── CONTRIBUTING.md        📖 Framework contribution guide
@@ -340,7 +341,7 @@ skills, commands, rules, and plugins.
 ├── 🎵  audio-director      ├── 🧪  qa-lead
 ├── 📖  narrative-director  ├── 📦  release-manager
 ├── 🎮  game-designer       └── 🌍  localization-lead
-└── ... (49 agents total)
+└── ... (56 agents total)
 ```
 
 ---

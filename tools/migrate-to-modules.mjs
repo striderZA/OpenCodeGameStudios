@@ -43,6 +43,9 @@ const AGENT_MAP = {
   "unreal-specialist": "engine-unreal", "ue-blueprint-specialist": "engine-unreal",
   "ue-gas-specialist": "engine-unreal", "ue-replication-specialist": "engine-unreal",
   "ue-umg-specialist": "engine-unreal",
+  "babylonjs-specialist": "engine-babylonjs", "babylonjs-physics-specialist": "engine-babylonjs",
+  "babylonjs-network-specialist": "engine-babylonjs", "babylonjs-gui-specialist": "engine-babylonjs",
+  "babylonjs-perf-specialist": "engine-babylonjs",
 };
 
 const SKILL_MAP = {

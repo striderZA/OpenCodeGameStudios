@@ -49,7 +49,7 @@ point this skill runs.
 **Expected behavior:**
 1. Skill detects no existing configuration and begins fresh onboarding
 2. Skill asks for project name
-3. Skill presents 3 engine options: Godot 4, Unity, Unreal Engine 5
+3. Skill presents engine options: Godot 4, Unity, Unreal Engine 5, Babylon.js (SFML 3 and Raylib also available for C++ projects)
 4. User selects an engine
 5. Skill asks "May I write the initial directory structure?"
 6. Skill creates all directories defined in `directory-structure.md`
@@ -58,7 +58,7 @@ point this skill runs.
 
 **Assertions:**
 - [ ] Project name is captured before any file is written
-- [ ] Exactly 3 engine options are presented
+- [ ] Engine options include Godot 4, Unity, Unreal Engine 5, and Babylon.js
 - [ ] "May I write" is asked for each config file individually
 - [ ] No file is written without explicit user approval
 - [ ] Handoff to `/setup-engine` occurs at the end with the chosen engine argument

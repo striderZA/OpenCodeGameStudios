@@ -6,8 +6,8 @@
 configured engine. It creates the `tests/` directory structure defined in
 `coding-standards.md` (unit/, integration/, performance/, playtest/) and
 generates the appropriate test runner configuration for the detected engine:
-GdUnit4 config for Godot, Unity Test Runner asmdef for Unity, or Unreal headless
-runner for Unreal Engine.
+GdUnit4 config for Godot, Unity Test Runner asmdef for Unity, Unreal headless
+runner for Unreal Engine, or Vitest/Jest for Babylon.js (TypeScript).
 
 Each file or directory created is gated behind a "May I write" ask. If the test
 framework already exists, the skill verifies the configuration rather than

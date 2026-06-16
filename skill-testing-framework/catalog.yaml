@@ -1087,6 +1087,51 @@ agents:
     last_spec_result: ""
     category: engine
 
+  # Engine Specialists — Babylon.js
+  - name: babylonjs-specialist
+    spec: CCGS Skill Testing Framework/agents/engine/babylonjs/babylonjs-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  - name: babylonjs-physics-specialist
+    spec: CCGS Skill Testing Framework/agents/engine/babylonjs/babylonjs-physics-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  - name: babylonjs-network-specialist
+    spec: CCGS Skill Testing Framework/agents/engine/babylonjs/babylonjs-network-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  - name: babylonjs-gui-specialist
+    spec: CCGS Skill Testing Framework/agents/engine/babylonjs/babylonjs-gui-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  - name: babylonjs-perf-specialist
+    spec: CCGS Skill Testing Framework/agents/engine/babylonjs/babylonjs-perf-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  # Engine Specialists — SFML 3
+  - name: sfml-specialist
+    spec: CCGS Skill Testing Framework/agents/engine/sfml/sfml-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  # Engine Specialists — Raylib
+  - name: raylib-specialist
+    spec: CCGS Skill Testing Framework/agents/engine/raylib/raylib-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
   # Operations
   - name: devops-engineer
     spec: CCGS Skill Testing Framework/agents/operations/devops-engineer.md

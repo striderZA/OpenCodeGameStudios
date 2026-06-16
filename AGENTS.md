@@ -1,17 +1,17 @@
 # OpenCode Game Studios
 
-Indie game development managed through 49 coordinated OpenCode agents.
+Indie game development managed through 56 coordinated OpenCode agents.
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
 
-- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5 / SFML 3 / Raylib]
+- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5 / SFML 3 / Raylib / Babylon.js]
 - **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint / C / C++17]
 - **Build System**: [SPECIFY after choosing engine]
 - **Asset Pipeline**: [SPECIFY after choosing engine]
 
 > **Note**: Engine-specialist agents exist for Godot, Unity, Unreal, SFML 3,
-> and Raylib. Use the set matching your engine.
+> Raylib, and Babylon.js. Use the set matching your engine.
 
 ## Project Structure
 
@@ -21,7 +21,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── opencode.json                # OpenCode config (permissions, plugins)
 ├── .opencode/                   # Framework components
 │   ├── commands/                # 50 slash commands (routes to skills)
-│   ├── agents/                  # 51 agent definitions (was .claude/agents/)
+│   ├── agents/                  # 56 agent definitions (was .claude/agents/)
 │   ├── skills/                  # 77 skills (was .claude/skills/)
 │   ├── plugins/                 # TypeScript plugins
 │   │   ├── ccgs-hooks.ts        # Session lifecycle, validation, logging
@@ -57,7 +57,7 @@ The framework is partitioned into installable theme modules.
 
 **Core** (always installed): creative-director, technical-director, producer, /start, /help, /brainstorm, /setup-engine, validation suite.
 
-**Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib.
+**Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib, engine-babylonjs.
 
 **Install:** `node .opencode/modules/install.mjs add <name>`
 **Remove:** `node .opencode/modules/install.mjs remove <name>`
@@ -138,7 +138,7 @@ This project supports two workflow modes. Choose the one that fits your team siz
 Run `/start` in OpenCode to begin the guided onboarding flow.
 Or jump directly to:
 - `/brainstorm` — explore game ideas from scratch
-- `/setup-engine godot 4.6` — configure your engine (also: unity, unreal, sfml3, raylib)
+- `/setup-engine godot 4.6` — configure your engine (also: unity, unreal, sfml3, raylib, babylonjs)
 - `/project-stage-detect` — analyze an existing project
 - `/prototype` — rapid prototype a concept
 - `/hybrid-prototype` — fast-lane prototype for discovery phase
@@ -190,6 +190,7 @@ Tier 3 — Specialists (Subagents)
 - **Unreal Engine 5**: `unreal-specialist` + `ue-blueprint-specialist`, `ue-gas-specialist`, `ue-replication-specialist`, `ue-umg-specialist`
 - **SFML 3**: `sfml-specialist` (single agent — covers Graphics, Audio, Network, Window, System)
 - **Raylib**: `raylib-specialist` (single agent — covers core, rlgl, raudio, raymath, raygui)
+- **Babylon.js**: `babylonjs-specialist` + `babylonjs-physics-specialist`, `babylonjs-network-specialist`, `babylonjs-gui-specialist`, `babylonjs-perf-specialist`
 
 ## Quality Gates
 
@@ -205,7 +206,7 @@ Before merging to `development`, the CI must pass:
 ## Notes
 
 This is a port of [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)
-to OpenCode. The 77 skills are in `.opencode/skills/`, the 51 agents are in
+to OpenCode. The 77 skills are in `.opencode/skills/`, the 56 agents are in
 `.opencode/agents/`, and the 12 original bash hooks are implemented as a
 TypeScript plugin in `.opencode/plugins/ccgs-hooks.ts`.
 
