@@ -22,7 +22,7 @@ No gate IDs assigned.
 ### Case 1: In-domain request — appropriate output
 **Input:** "Create a dissolve effect shader for enemy death sequences."
 **Expected behavior:**
-- Produces shader code or a Shader Graph node spec appropriate to the configured engine (Godot shading language / Unity Shader Graph / Unreal Material Blueprint)
+- Produces shader code or a Shader Graph node spec appropriate to the configured engine (Godot shading language / Unity Shader Graph / Unreal Material Blueprint / Babylon.js ShaderMaterial or NodeMaterial)
 - Defines a `dissolve_amount` uniform (0.0–1.0) as the animation driver
 - Uses a noise texture sample to determine the dissolve threshold
 - Notes edge-lighting technique as an optional enhancement

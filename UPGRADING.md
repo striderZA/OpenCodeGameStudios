@@ -105,6 +105,34 @@ The unity-mcp integration requires the CoplayDev unity-mcp package installed in 
 - `.opencode/modules/engine-unity/agents/unity-addressables-specialist.md` — new `## MCP Integration` section
 - `.opencode/modules/engine-unity/agents/unity-ui-specialist.md` — new `## MCP Integration` section
 
+## v0.7.0 — Babylon.js MCP Integration
+
+**New MCP servers:** `babylonjs-nme`, `babylonjs-gui` — first-party @babylonjs/mcp-servers.
+
+### What changed
+- **Module version**: `engine-babylonjs` bumped 0.6.0 → 0.7.0; description updated to mention MCP integration
+- **opencode.json**: Added `babylonjs-nme` and `babylonjs-gui` MCP entries (disabled by default) — following the same pattern as godot-mcp and unity-mcp
+- **scaffolding.md**: Added MCP Servers section listing all 7 available @babylonjs/mcp-servers with link to official docs
+- **Agent files**: 5 babylonjs specialists updated with `## MCP Integration` sections
+- **Docs**: scaffolding.md updated; setup-engine SKILL.md already references scaffolding.md
+
+### New dependency (optional)
+The MCP servers are built into the `@babylonjs/mcp-servers` npm package — no extra install.
+Enable them in `opencode.json` by setting `babylonjs-nme.enabled: true` or `babylonjs-gui.enabled: true`.
+
+### Safe to overwrite
+- `.opencode/modules/engine-babylonjs/modulefile.yaml`
+- `.opencode/modules/engine-babylonjs/agents/*.md`
+- `.opencode/agents/babylonjs-specialist.md`
+- `.opencode/agents/babylonjs-physics-specialist.md`
+- `.opencode/agents/babylonjs-network-specialist.md`
+- `.opencode/agents/babylonjs-gui-specialist.md`
+- `.opencode/agents/babylonjs-perf-specialist.md`
+- `docs/engine-reference/babylonjs/scaffolding.md`
+
+### Merge carefully
+- `opencode.json` — new `babylonjs-nme` and `babylonjs-gui` blocks in `mcp` object
+
 ### Strategy C — Manual file copy
 
 Best when: you didn't use git to set up the template (just downloaded a zip).

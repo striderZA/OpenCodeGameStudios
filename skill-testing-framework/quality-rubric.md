@@ -219,7 +219,8 @@ qa-tester, writer, world-builder
 godot-shader-specialist, godot-gdextension-specialist, unity-specialist, unity-ui-specialist,
 unity-shader-specialist, unity-dots-specialist, unity-addressables-specialist,
 unreal-specialist, ue-blueprint-specialist, ue-gas-specialist, ue-umg-specialist,
-ue-replication-specialist
+ue-replication-specialist, sfml-specialist, raylib-specialist, babylonjs-specialist, babylonjs-physics-specialist,
+babylonjs-network-specialist, babylonjs-gui-specialist, babylonjs-perf-specialist
 
 | Metric | PASS criteria |
 |---|---|

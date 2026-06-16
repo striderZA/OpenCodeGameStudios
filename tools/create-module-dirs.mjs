@@ -25,6 +25,9 @@ const MODULES = [
   { name: "engine-godot" },
   { name: "engine-unity" },
   { name: "engine-unreal" },
+  { name: "engine-sfml3" },
+  { name: "engine-raylib" },
+  { name: "engine-babylonjs" },
   { name: "data" },
 ];
 

@@ -116,7 +116,35 @@ None. `/setup-engine` is a technical configuration skill. No director gates appl
 
 ---
 
-### Case 4: Engine Already Configured — Offers to reconfigure specific sections
+### Case 4: Babylon.js + TypeScript — Web engine configuration
+
+**Fixture:**
+- `technical-preferences.md` contains only placeholders
+- Engine argument provided: `babylonjs`
+
+**Input:** `/setup-engine babylonjs`
+
+**Expected behavior:**
+1. Skill sets engine to Babylon.js 9.x, language to TypeScript
+2. Naming conventions are TypeScript-appropriate (PascalCase for classes, camelCase for variables, `I`-prefix for interfaces)
+3. Specialist assignments reference babylonjs-specialist, babylonjs-physics-specialist, babylonjs-network-specialist, babylonjs-gui-specialist, babylonjs-perf-specialist
+4. Routing table: `.ts/.tsx` → typescript-specialist, `.scene` (scene configuration) → babylonjs-specialist
+5. Performance budgets reflect browser/web constraints (lower draw calls, GPU memory awareness)
+6. Build tool configured: Vite 5.x with TypeScript
+7. Skill asks "May I write to `technical-preferences.md`?" and writes on approval
+
+**Assertions:**
+- [ ] Engine field is set to Babylon.js 9.x (not Godot/Unity/Unreal)
+- [ ] Language field is set to TypeScript
+- [ ] Naming conventions reflect TypeScript conventions (PascalCase, camelCase, I-prefix interfaces)
+- [ ] Routing table includes `.ts` and `.tsx` entries
+- [ ] All 5 babylonjs specialists are assigned (not placeholders)
+- [ ] Build tool field reflects Vite
+- [ ] Verdict is COMPLETE
+
+---
+
+### Case 5: Engine Already Configured — Offers to reconfigure specific sections
 
 **Fixture:**
 - `technical-preferences.md` has engine set to Godot 4 with all fields populated
@@ -141,7 +169,7 @@ None. `/setup-engine` is a technical configuration skill. No director gates appl
 
 ---
 
-### Case 5: Director Gate Check — No gate; setup-engine is a utility skill
+### Case 6: Director Gate Check — No gate; setup-engine is a utility skill
 
 **Fixture:**
 - Fresh project with no engine configured

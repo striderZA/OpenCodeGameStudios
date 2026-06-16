@@ -240,7 +240,9 @@ Or with a specific engine:
 **Why this matters:** Once you set the engine, the system knows which
 engine-specialist agents to use. If you pick Godot, agents like
 `godot-specialist`, `godot-gdscript-specialist`, and `godot-shader-specialist`
-become your go-to experts.
+become your go-to experts. If you pick Babylon.js, agents like
+`babylonjs-specialist`, `babylonjs-physics-specialist`, and
+`babylonjs-gui-specialist` become your go-to experts.
 
 ### Step 1.4: Decompose Your Concept Into Systems
 
@@ -1391,6 +1393,7 @@ Reads existing code and generates GDD-format design documentation from it.
 | Unreal Blueprints | `ue-blueprint-specialist` | 3 |
 | Unreal replication | `ue-replication-specialist` | 3 |
 | Unreal UMG/CommonUI | `ue-umg-specialist` | 3 |
+| Babylon.js specialists | `babylonjs-specialist` + `babylonjs-physics-specialist`, `babylonjs-network-specialist`, `babylonjs-gui-specialist`, `babylonjs-perf-specialist` | 3 |
 
 ### Agent Hierarchy
 

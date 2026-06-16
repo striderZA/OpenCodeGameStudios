@@ -201,6 +201,31 @@ Test class naming: F[SystemName]Test
 Test category naming: "MyGame.[System].[Feature]"
 ```
 
+#### Babylon.js (`Engine: Babylon.js`)
+
+Create `tests/unit/README.md`:
+```markdown
+# Unit Tests
+Pure logic tests using Vitest.
+Test framework: vitest (recommended).
+Run via: npx vitest run
+```
+
+Create `tests/integration/README.md`:
+```markdown
+# Integration Tests
+Browser-based or headless tests using Vitest + happy-dom or Playwright.
+Can test full scene rendering and user interactions.
+```
+
+Note in the README: **Installing and Configuring Vitest**
+```
+npm install -D vitest happy-dom @playwright/test
+# Add to package.json:
+#   "test": "vitest run",
+#   "test:watch": "vitest"
+```
+
 ---
 
 ## Phase 4: Create CI/CD Workflow
@@ -339,6 +364,47 @@ jobs:
 
 Note: UE CI requires a self-hosted runner with Unreal Editor installed.
 Set the `UE_EDITOR_PATH` environment variable on the runner.
+### Babylon.js
+
+Create `.github/workflows/tests.yml`:
+
+```yaml
+name: Automated Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Vitest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npx vitest run
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+```
 
 ---
 

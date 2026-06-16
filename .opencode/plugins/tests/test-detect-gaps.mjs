@@ -210,7 +210,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
   const root = makeTempProject()
   fs.mkdirSync(path.join(root, "design", "gdd"), { recursive: true })
   fs.writeFileSync(path.join(root, "AGENTS.md"),
-    "# Project\n## Tech Stack\n- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5]\n", "utf8")
+    "# Project\n## Tech Stack\n- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5 / Babylon.js]\n", "utf8")
   const output = handleDetectGaps(root)
   run("S2: Unconfigured AGENTS.md → fresh project", () => {
     assert.ok(output.includes("NEW PROJECT"), "[CHOOSE:] engine means not configured")

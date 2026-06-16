@@ -22,7 +22,7 @@ No gate IDs assigned.
 ### Case 1: In-domain request — appropriate output
 **Input:** "Create a custom editor tool for placing enemy patrol waypoints in the level."
 **Expected behavior:**
-- Produces an editor extension spec and code scaffold for the configured engine (e.g., Godot EditorPlugin, Unity Editor window, Unreal Detail Customization)
+- Produces an editor extension spec and code scaffold for the configured engine (e.g., Godot EditorPlugin, Unity Editor window, Unreal Detail Customization, TypeScript tooling for Babylon.js)
 - Tool allows designer to click-place waypoints in the scene/viewport
 - Waypoints are serialized as engine-native resource (not hardcoded) so level-designer can edit without code
 - Includes undo/redo support per editor plugin best practices

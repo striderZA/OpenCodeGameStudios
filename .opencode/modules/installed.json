@@ -346,5 +346,22 @@
       "agents/raylib-specialist.md"
     ],
     "mcp": []
+  },
+  "engine-babylonjs": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-06-15T02:15:56.556Z",
+    "files": [
+      "agents/babylonjs-gui-specialist.md",
+      "agents/babylonjs-network-specialist.md",
+      "agents/babylonjs-perf-specialist.md",
+      "agents/babylonjs-physics-specialist.md",
+      "agents/babylonjs-specialist.md"
+    ],
+    "mcp": [
+      "babylonjs-nme",
+      "babylonjs-gui",
+      "babylonjs-flowgraph"
+    ]
   }
 }

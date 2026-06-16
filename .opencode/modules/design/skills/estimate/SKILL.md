@@ -10,7 +10,7 @@ allowed-tools: Read, Glob, Grep
 
 Read the task description from the argument. If the description is too vague to estimate meaningfully, ask for clarification before proceeding.
 
-Read CLAUDE.md for project context: tech stack, coding standards, architectural patterns, and any estimation guidelines.
+Read AGENTS.md (or CLAUDE.md for Claude Code projects) for project context: tech stack, coding standards, architectural patterns, and any estimation guidelines.
 
 Read relevant design documents from `design/gdd/` if the task relates to a documented feature or system.
 

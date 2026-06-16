@@ -105,6 +105,13 @@ ls -t Saved/Logs/ 2>/dev/null | grep -i "test\|automation" | head -5
 If no matching log found: "UE automation tests must be run via the Session
 Frontend or CI pipeline. Please confirm test status manually."
 
+**Babylon.js:**
+```bash
+npx vitest run 2>&1
+```
+If test framework not found: "Vitest not detected. Install via `npm install -D vitest`,
+then re-run `/smoke-check`."
+
 **Unknown engine / not configured:**
 "Engine not configured in `.opencode/docs/technical-preferences.md`. Run
 `/setup-engine` to specify the engine, then re-run `/smoke-check`."

@@ -1,6 +1,6 @@
 ---
 name: setup-engine
-description: "Configure the project's game engine and version. Pins the engine in CLAUDE.md, detects knowledge gaps, and populates engine reference docs via webfetch when the version is beyond the LLM's training data."
+description: "Configure the project's game engine and version. Pins the engine in AGENTS.md (OpenCode) or CLAUDE.md (Claude Code), detects knowledge gaps, and populates engine reference docs via webfetch when the version is beyond the LLM's training data."
 argument-hint: "[engine] | [engine version] | refresh | upgrade [old-version] [new-version] | no args for guided selection"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, webfetch, WebFetch, Task, question
@@ -36,7 +36,7 @@ If no engine is specified, run an interactive engine selection process:
 
 **Question 1 — Prior experience** (ask this first, always, via `question`):
 - Prompt: "Have you worked in any of these engines before?"
-- Options: `Godot` / `Unity` / `Unreal Engine 5` / `Multiple — I'll explain` / `None of them`
+- Options: `Godot` / `Unity` / `Unreal Engine 5` / `Babylon.js (TypeScript/WebGL)` / `Multiple — I'll explain` / `None of them`
 - If they pick a specific engine → recommend that engine. Prior experience outweighs all other factors. Confirm with them and skip the matrix.
 - If "None" or "Multiple" → continue to the questions below.
 
@@ -46,16 +46,16 @@ If no engine is specified, run an interactive engine selection process:
 - Prompt: "What platforms are you targeting for this game?"
 - Options: `PC (Steam / Epic)` / `Mobile (iOS / Android)` / `Console` / `Web / Browser` / `Multiple platforms`
 - Platform rules that feed directly into the recommendation:
-  - Mobile → Unity strongly preferred; Unreal is a poor fit; Godot is viable for simple mobile
-  - Console → Unity or Unreal; Godot console support requires third-party publishers or significant extra work
-  - Web → Godot exports cleanly to web; Unity WebGL is functional; Unreal has poor web support
-  - PC only → all engines viable; other factors decide
-  - Multiple → Unity is the most portable across PC/mobile/console
+  - Mobile → Unity strongly preferred; Unreal is a poor fit; Godot is viable for simple mobile; Babylon.js mobile via WebView varies by device GPU
+  - Console → Unity or Unreal; Godot console support requires third-party publishers or significant extra work; Babylon.js console via browser-based console SDKs
+  - Web → Babylon.js is the native web engine (no export step — runs in any browser); Godot exports cleanly to web; Unity WebGL is functional; Unreal has poor web support
+  - PC only → all engines viable; other factors decide; Babylon.js via Electron/Tauri
+  - Multiple → Unity is the most portable across PC/mobile/console; Babylon.js excels for web-first cross-platform
 
 1. **What kind of game?** (2D, 3D, or both?)
 2. **Primary input method?** (keyboard/mouse, gamepad, touch, or mixed?)
 3. **Team size and experience?** (solo beginner, solo experienced, small team?)
-4. **Any strong language preferences?** (GDScript, C#, C++, visual scripting?)
+4. **Any strong language preferences?** (GDScript, C#, C++, TypeScript, visual scripting?)
 5. **Budget for engine licensing?** (free only, or commercial licenses OK?)
 
 ### Produce a recommendation
@@ -82,6 +82,12 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 - Licensing reality: 5% royalty only applies AFTER $1M gross revenue per title. For a first game or any game that doesn't reach $1M, it costs nothing. This threshold is high enough that most indie developers will never pay it.
 - Best fit: AAA-quality 3D; large open-world games; photorealistic visuals; developers with C++ experience or willing to use Blueprint; games targeting high-end PC/console where visual fidelity is a core selling point
 
+**Babylon.js**
+- Genuine strengths: Native web engine — runs in any browser without plugins; TypeScript-first with full type safety; modular architecture (physics, GUI, networking as optional imports); Havok Physics V2 built-in; excellent 3D scene pipeline (PBR, HDR, post-processing); strong developer tools (Playground, Sandbox, Inspector); free and open source (Apache 2.0)
+- Real limitations: Requires a web browser or Electron/Tauri wrapper for desktop; no visual editor (use the Playground for prototyping); smaller community than Godot/Unity; mobile performance varies by device GPU; C# bindings are less mature than TypeScript API
+- Licensing reality: Apache 2.0 — completely free with no restrictions whatsoever
+- Best fit: Web-first games; browser-based 3D experiences; TypeScript developers; multiplayer games with web socket architecture; projects where no-install, instant-play distribution matters
+
 **Genre-specific guidance** (factor this into the recommendation):
 - 2D any style → Godot strongly preferred
 - 3D stylized / atmospheric / contained world → Godot viable, Unity solid alternative
@@ -89,10 +95,11 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 - 3D photorealistic / AAA-quality → Unreal
 - Mobile-first → Unity strongly preferred
 - Console-first → Unity or Unreal; Godot console support requires extra work
-- Horror / narrative / walking sim → any engine; match to art style and team experience
-- Action RPG / Soulslike → Unity or Unreal for 3D; community support and assets matter here
-- Platformer 2D → Godot
-- Strategy / top-down / RTS → Godot or Unity depending on 2D vs 3D
+- Horror / narrative / walking sim → any engine; match to art style and team experience; Babylon.js strong for web-delivered narrative games
+- Action RPG / Soulslike → Unity or Unreal for 3D; community support and assets matter here; Babylon.js viable for web-based 3D action
+- Platformer 2D → Godot; Babylon.js via GUI-based 2D for web
+- Strategy / top-down / RTS → Godot or Unity depending on 2D vs 3D; Babylon.js strong for browser-based strategy
+- Racing / vehicle simulation → Unity or Babylon.js (Havok Physics V2 has excellent vehicle constraints); Unreal for photorealistic racing
 
 **Recommendation format:**
 1. Show a comparison table with the user's specific factors as rows
@@ -124,7 +131,7 @@ Once the engine is chosen:
 
 ---
 
-## 4. Update CLAUDE.md Technology Stack
+## 4. Update AGENTS.md Technology Stack
 
 ### Language Selection (Godot only)
 
@@ -138,12 +145,12 @@ If Godot was chosen, ask the user which language to use **before** showing the p
 >
 > Which will this project primarily use?"
 
-Record the choice. It determines the CLAUDE.md template, naming conventions, specialist routing, and which agent is spawned for code files throughout the project.
+Record the choice. It determines the AGENTS.md template, naming conventions, specialist routing, and which agent is spawned for code files throughout the project.
 
 ---
 
-Read `CLAUDE.md` and show the user the proposed Technology Stack changes.
-Ask: "May I write these engine settings to `CLAUDE.md`?"
+Read `AGENTS.md` (or `CLAUDE.md` for Claude Code projects) and show the user the proposed Technology Stack changes.
+Ask: "May I write these engine settings to `AGENTS.md`?"
 
 Wait for confirmation before making any edits.
 
@@ -167,11 +174,19 @@ Update the Technology Stack section, replacing the `[CHOOSE]` placeholders with 
 - **Asset Pipeline**: Unreal Content Pipeline
 ```
 
+**For Babylon.js:**
+```markdown
+- **Engine**: Babylon.js [version]
+- **Language**: TypeScript
+- **Build System**: Vite
+- **Asset Pipeline**: .glb/.glTF file loading via SceneLoader
+```
+
 ---
 
 ## 5. Populate Technical Preferences
 
-After updating CLAUDE.md, create or update `.opencode/docs/technical-preferences.md` with
+After updating AGENTS.md, create or update `.opencode/docs/technical-preferences.md` with
 engine-appropriate defaults. Read the existing template first, then fill in:
 
 ### Engine & Language Section
@@ -195,6 +210,17 @@ engine-appropriate defaults. Read the existing template first, then fill in:
 - Functions: PascalCase (e.g., `TakeDamage()`)
 - Booleans: `b` prefix (e.g., `bIsAlive`)
 - Files: Match class without prefix (e.g., `PlayerController.h`)
+
+**For Babylon.js (TypeScript):**
+- Classes: PascalCase (e.g., `PlayerController`, `SceneManager`)
+- Variables/functions: camelCase (e.g., `moveSpeed`, `takeDamage()`) — matching Babylon.js API style
+- Interfaces: PascalCase with `I` prefix (e.g., `IPlayerState`, `IVehicleConfig`)
+- Types: PascalCase (e.g., `PlayerState`, `GamePhase`)
+- Enums: PascalCase (e.g., `GameState`, `PlayerAction`)
+- Files: camelCase or kebab-case (e.g., `playerController.ts`, `scene-manager.ts`)
+- Constants: UPPER_SNAKE_CASE (e.g., `MAX_PLAYER_SPEED`)
+- Private members: `_` prefix (e.g., `_health`, `_updatePosition()`)
+- Test files: co-located `*.test.ts` or `*.spec.ts`
 
 ### Input & Platform Section
 
@@ -291,6 +317,28 @@ Also populate the `## Engine Specialists` section in `technical-preferences.md` 
 | General architecture review | unreal-specialist |
 ```
 
+**For Babylon.js:**
+```markdown
+## Engine Specialists
+- **Primary**: babylonjs-specialist
+- **Language/Code Specialist**: babylonjs-specialist (TypeScript — primary covers it)
+- **Shader Specialist**: babylonjs-perf-specialist (ShaderMaterial, Effect, node material, GLSL)
+- **UI Specialist**: babylonjs-gui-specialist (AdvancedDynamicTexture, controls, HUD, input handling)
+- **Additional Specialists**: babylonjs-physics-specialist (Havok Physics V2, vehicle physics, collisions), babylonjs-network-specialist (Colyseus SDK, WebSockets, room management, state sync)
+- **Routing Notes**: Invoke primary for scene setup, rendering pipeline, and general TypeScript code review. Invoke physics specialist for any Havok physics or vehicle simulation. Invoke network specialist for multiplayer sessions and state sync. Invoke GUI specialist for all UI/HUD implementation. Invoke performance specialist for draw call optimization, LOD, instancing, and frame budget management.
+
+### File Extension Routing
+
+| File Extension / Type | Specialist to Spawn |
+|-----------------------|---------------------|
+| Game code (.ts files) | babylonjs-specialist |
+| Shader files (.fx, custom shader code) | babylonjs-perf-specialist |
+| UI / screen files (.ts ADT setup) | babylonjs-gui-specialist |
+| Physics / vehicle files (.ts physics) | babylonjs-physics-specialist |
+| Network / multiplayer files (.ts network) | babylonjs-network-specialist |
+| General architecture review | babylonjs-specialist |
+```
+
 ### Collaborative Step
 Present the filled-in preferences to the user. For Godot, include the chosen language and note where the full naming conventions and routing tables live:
 > "Here are the default technical preferences for [engine] ([language if Godot]). The naming conventions and specialist routing are in Appendix A of this skill — I'll apply the [GDScript/C#/Both] variant. Want to customize any of these, or shall I save the defaults?"
@@ -310,6 +358,7 @@ Check whether the engine version is likely beyond the LLM's training data.
 - Godot: training data likely covers up to ~4.3
 - Unity: training data likely covers up to ~2023.x / early 6000.x
 - Unreal: training data likely covers up to ~5.3 / early 5.4
+- Babylon.js: training data likely covers up to ~7.x (Babylon.js 9.x introduces breaking changes — HIGH RISK for post-cutoff APIs)
 
 Compare the user's chosen version against these baselines:
 
@@ -497,9 +546,9 @@ In a session where `enabled: true`, call any unity-mcp tool (e.g. `list_scenes`)
 
 ---
 
-## 8. Update CLAUDE.md Import
+## 8. Update AGENTS.md Import
 
-Ask: "May I update the `@` import in `CLAUDE.md` to point to the new engine reference?"
+Ask: "May I update the `@` import in `AGENTS.md` to point to the new engine reference?"
 
 Wait for confirmation, then update the `@` import under "Engine Version Reference" to point to the
 correct engine:
@@ -663,7 +712,7 @@ Engine:          [name] [version]
 Language:        [GDScript | C# | GDScript + C# | C# | C++ + Blueprint]
 Knowledge Risk:  [LOW/MEDIUM/HIGH]
 Reference Docs:  [created/skipped]
-CLAUDE.md:       [updated]
+AGENTS.md:       [updated]
 Tech Prefs:      [created/updated]
 Agent Config:    [verified]
 
@@ -685,9 +734,9 @@ Verdict: **COMPLETE** — engine configured and reference docs populated.
 - NEVER guess an engine version — always verify via webfetch or user confirmation
 - NEVER overwrite existing reference docs without asking — append or update
 - If reference docs already exist for a different engine, ask before replacing
-- Always show the user what you're about to change before making CLAUDE.md edits
+- Always show the user what you're about to change before making AGENTS.md edits
 - If webfetch returns ambiguous results, show the user and let them decide
-- When the user chose **GDScript**: copy the GDScript CLAUDE.md template from Appendix A1 exactly. NEVER add "C++ via GDExtension" to the Language field. GDScript projects may use GDExtension, but it is not a primary project language. The `godot-gdextension-specialist` in the routing table is available for when native extensions are needed — it does not make C++ a project language.
+- When the user chose **GDScript**: copy the GDScript AGENTS.md template from Appendix A1 exactly. NEVER add "C++ via GDExtension" to the Language field. GDScript projects may use GDExtension, but it is not a primary project language. The `godot-gdextension-specialist` in the routing table is available for when native extensions are needed — it does not make C++ a project language.
 
 ---
 
@@ -697,7 +746,7 @@ All Godot-specific variants for language-dependent configuration. Referenced fro
 
 ---
 
-### A1. CLAUDE.md Technology Stack Templates
+### A1. AGENTS.md Technology Stack Templates
 
 **GDScript:**
 ```markdown

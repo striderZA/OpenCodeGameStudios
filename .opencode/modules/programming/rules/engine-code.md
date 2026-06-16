@@ -50,6 +50,7 @@ func _physics_process(delta: float) -> void:
 
 - Agent: `engine-programmer` — owns engine code
 - Agent: `godot-specialist` — Godot-specific engine patterns
+- Agent: `babylonjs-specialist` — Babylon.js-specific engine patterns
 - Agent: `performance-analyst` — profiles engine performance
 - Agent: `technical-director` — approves engine architecture
 - Rule: `network-code.md` — transport layer dependency

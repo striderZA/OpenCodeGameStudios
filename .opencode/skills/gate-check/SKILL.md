@@ -221,7 +221,7 @@ to prototype more ideas, then return here."
 ### Gate: Technical Setup → Pre-Production
 
 **Required Artifacts:**
-- [ ] Engine chosen (CLAUDE.md Technology Stack is not `[CHOOSE]`)
+- [ ] Engine chosen (AGENTS.md (or `CLAUDE.md` for Claude Code projects) Technology Stack is not `[CHOOSE]`)
 - [ ] Technical preferences configured (`.opencode/docs/technical-preferences.md` populated)
 - [ ] Art bible exists at `design/art/art-bible.md` with at least Sections 1–4 (Visual Identity Foundation)
 - [ ] At least 3 Architecture Decision Records in `docs/architecture/` covering

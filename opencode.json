@@ -1,6 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["./.opencode/plugins/ccgs-hooks.ts"],
+  "plugin": [
+    "./.opencode/plugins/ccgs-hooks.ts"
+  ],
   "command": {
     "hybrid-prototype": {
       "template": "Run the hybrid-prototype skill: load .opencode/skills/hybrid-prototype/SKILL.md and follow the fast-lane prototype workflow. Concept: $ARGUMENTS",
@@ -11,7 +13,14 @@
   "mcp": {
     "aseprite": {
       "type": "local",
-      "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"],
+      "command": [
+        "uv",
+        "--directory",
+        "tools/aseprite-mcp",
+        "run",
+        "-m",
+        "aseprite_mcp"
+      ],
       "enabled": true,
       "environment": {
         "ASEPRITE_PATH": "{env:ASEPRITE_PATH}"
@@ -19,7 +28,10 @@
     },
     "godot": {
       "type": "local",
-      "command": ["npx", "@coding-solo/godot-mcp"],
+      "command": [
+        "npx",
+        "@coding-solo/godot-mcp"
+      ],
       "enabled": false,
       "environment": {
         "GODOT_PATH": "{env:GODOT_PATH}",
@@ -29,6 +41,24 @@
     "unity": {
       "type": "local",
       "url": "http://localhost:8080/mcp",
+      "enabled": false
+    },
+    "babylonjs-nme": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@babylonjs/mcp-servers",
+        "nme"
+      ],
+      "enabled": false
+    },
+    "babylonjs-gui": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@babylonjs/mcp-servers",
+        "gui"
+      ],
       "enabled": false
     }
   },

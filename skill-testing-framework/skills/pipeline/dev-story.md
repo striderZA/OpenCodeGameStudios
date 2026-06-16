@@ -197,7 +197,7 @@ In `solo` mode: LP-CODE-REVIEW is skipped with equivalent notes.
 
 ## Coverage Notes
 
-- Engine routing logic (Godot vs Unity vs Unreal) is not tested per engine —
+- Engine routing logic (Godot vs Unity vs Unreal vs Babylon.js) is not tested per engine —
   the routing pattern is consistent; engine selection is a config fact.
 - Visual/Feel and UI story types (no automated test required) have different
   evidence requirements and are not covered in these cases.
