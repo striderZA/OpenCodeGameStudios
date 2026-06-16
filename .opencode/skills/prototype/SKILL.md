@@ -23,7 +23,7 @@ Read the concept description from the argument. Identify the core question this 
 
 ## Phase 2: Load Project Context
 
-Read `CLAUDE.md` for project context and the current tech stack. Understand what engine, language, and frameworks are in use so the prototype is built with compatible tooling.
+Read `AGENTS.md` (or `CLAUDE.md` for Claude Code projects) for project context and the current tech stack. Understand what engine, language, and frameworks are in use so the prototype is built with compatible tooling.
 
 ---
 

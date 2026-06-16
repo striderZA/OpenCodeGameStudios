@@ -82,6 +82,7 @@ void Update() {
 - Agent: `godot-specialist` — Godot-specific engine patterns
 - Agent: `sfml-specialist` — SFML 3-specific engine patterns
 - Agent: `raylib-specialist` — Raylib-specific engine patterns
+- Agent: `babylonjs-specialist` — Babylon.js-specific engine patterns
 - Agent: `performance-analyst` — profiles engine performance
 - Agent: `technical-director` — approves engine architecture
 - Rule: `network-code.md` — transport layer dependency

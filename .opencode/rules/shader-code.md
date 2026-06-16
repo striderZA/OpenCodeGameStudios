@@ -56,6 +56,7 @@ visual quality, performance, and cross-platform compatibility.
 ## Cross-References
 
 - Agent: `godot-shader-specialist` — Godot shader authoring
+- Agent: `babylonjs-perf-specialist` — Babylon.js ShaderMaterial/Effect, GLSL, node material
 - Agent: `technical-artist` — shader workflow and pipeline
 - Agent: `performance-analyst` — GPU performance profiling
 - Agent: `art-director` — visual direction constraints

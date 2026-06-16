@@ -1,6 +1,6 @@
 ---
 name: setup-engine
-description: "Configure the project's game engine and version. Pins the engine in CLAUDE.md, detects knowledge gaps, and populates engine reference docs via webfetch when the version is beyond the LLM's training data."
+description: "Configure the project's game engine and version. Pins the engine in AGENTS.md (OpenCode) or CLAUDE.md (Claude Code), detects knowledge gaps, and populates engine reference docs via webfetch when the version is beyond the LLM's training data."
 argument-hint: "[engine] | [engine version] | refresh | upgrade [old-version] [new-version] | no args for guided selection"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, webfetch, WebFetch, Task, question
@@ -36,7 +36,7 @@ If no engine is specified, run an interactive engine selection process:
 
 **Question 1 — Prior experience** (ask this first, always, via `question`):
 - Prompt: "Have you worked in any of these engines before?"
-- Options: `Godot` / `Unity` / `Unreal Engine 5` / `SFML 3 (C++ library)` / `Raylib (C/C++ library)` / `Multiple — I'll explain` / `None of them`
+- Options: `Godot` / `Unity` / `Unreal Engine 5` / `SFML 3 (C++ library)` / `Raylib (C/C++ library)` / `Babylon.js (TypeScript/WebGL)` / `Multiple — I'll explain` / `None of them`
 - If they pick a specific engine → recommend that engine. Prior experience outweighs all other factors. Confirm with them and skip the matrix.
 - If "None" or "Multiple" → continue to the questions below.
 
@@ -48,14 +48,14 @@ If no engine is specified, run an interactive engine selection process:
 - Platform rules that feed directly into the recommendation:
   - Mobile → Unity strongly preferred; Unreal is a poor fit; Godot is viable for simple mobile; SFML3 and Raylib require native compilation per platform (Android NDK, Emscripten for web) — significant extra effort
   - Console → Unity or Unreal; Godot and C++ library approaches require third-party publishers or significant porting work
-  - Web → Godot exports cleanly to web; Unity WebGL is functional; Unreal has poor web support; Raylib has Emscripten support; SFML3 has no built-in web target
-  - PC only → all engines viable including SFML3 and Raylib (their native home); other factors decide
-  - Multiple → Unity is the most portable across PC/mobile/console; SFML3/Raylib require per-platform build configuration
+  - Web → Babylon.js is the native web engine (no export step — runs in any browser); Godot exports cleanly to web; Unity WebGL is functional; Unreal has poor web support; Raylib has Emscripten support; SFML3 has no built-in web target
+  - PC only → all engines viable including SFML3, Raylib, and Babylon.js (via Electron/Tauri); other factors decide
+  - Multiple → Unity is the most portable across PC/mobile/console; SFML3/Raylib require per-platform build configuration; Babylon.js excels for web-first cross-platform with desktop wrappers
 
 1. **What kind of game?** (2D, 3D, or both?)
 2. **Primary input method?** (keyboard/mouse, gamepad, touch, or mixed?)
 3. **Team size and experience?** (solo beginner, solo experienced, small team?)
-4. **Any strong language preferences?** (GDScript, C#, C++, visual scripting?)
+4. **Any strong language preferences?** (GDScript, C#, C++, TypeScript, visual scripting?)
 5. **Budget for engine licensing?** (free only, or commercial licenses OK?)
 
 ### Produce a recommendation
@@ -94,6 +94,12 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 - Licensing reality: zlib/libpng license — completely free with no restrictions whatsoever
 - Best fit: Learning/teaching game development; rapid prototyping; tiny indie games; game jams; developers who want the simplest possible graphics API; multi-platform 2D games with low performance requirements
 
+**Babylon.js**
+- Genuine strengths: Native web engine — runs in any browser without plugins; TypeScript-first with full type safety; modular architecture (physics, GUI, networking as optional imports); Havok Physics V2 built-in; excellent 3D scene pipeline (PBR, HDR, post-processing); strong developer tools (Playground, Sandbox, Inspector); free and open source (Apache 2.0); works with any build tool (Vite, webpack, esbuild)
+- Real limitations: Requires a web browser or Electron/Tauri wrapper for desktop; no visual editor (use the Playground for prototyping); 3D scene graph but no built-in 2D system (2D is done through GUI or custom meshes); smaller community than Godot/Unity; mobile performance varies by device GPU
+- Licensing reality: Apache 2.0 — completely free with no restrictions whatsoever
+- Best fit: Web-first games; browser-based 3D experiences; games that benefit from tight web platform integration; TypeScript developers; multiplayer games with web socket architecture; projects where no-install, instant-play distribution matters
+
 **Genre-specific guidance** (factor this into the recommendation):
 - 2D any style → Godot strongly preferred; Raylib viable for simple 2D; SFML3 excellent for custom-rendered 2D
 - 3D stylized / atmospheric / contained world → Godot viable, Unity solid alternative; Raylib viable for simple 3D; SFML3 limited 3D (no built-in model loader)
@@ -101,12 +107,13 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 - 3D photorealistic / AAA-quality → Unreal
 - Mobile-first → Unity strongly preferred; Raylib has Android/iOS support but significant extra work
 - Console-first → Unity or Unreal; C++ libraries require extensive porting
-- Web → Godot; Raylib via Emscripten works for simple games
-- Horror / narrative / walking sim → any engine; match to art style and team experience
-- Action RPG / Soulslike → Unity or Unreal for 3D; community support and assets matter here
-- Platformer 2D → Godot; SFML3 and Raylib both excellent for 2D with full control
-- Strategy / top-down / RTS → Godot or Unity depending on 2D vs 3D; SFML3 excellent for 2D strategy
-- Game jam / prototype → Raylib for speed; Godot if you want an editor
+- Web → Babylon.js is the native web engine; Godot; Raylib via Emscripten works for simple games
+- Horror / narrative / walking sim → any engine; match to art style and team experience; Babylon.js strong for web-delivered narrative games
+- Action RPG / Soulslike → Unity or Unreal for 3D; community support and assets matter here; Babylon.js viable for web-based 3D action with good browser performance
+- Platformer 2D → Godot; SFML3 and Raylib both excellent for 2D with full control; Babylon.js via GUI-based 2D for web
+- Strategy / top-down / RTS → Godot or Unity depending on 2D vs 3D; SFML3 excellent for 2D strategy; Babylon.js strong for browser-based strategy games
+- Game jam / prototype → Raylib for speed; Godot if you want an editor; Babylon.js for browser-accessible web prototypes
+- Racing / vehicle simulation → Unity or Babylon.js (Havok Physics V2 has excellent vehicle constraints); Unreal for photorealistic racing
 
 **Recommendation format:**
 1. Show a comparison table with the user's specific factors as rows
@@ -138,7 +145,7 @@ Once the engine is chosen:
 
 ---
 
-## 4. Update CLAUDE.md Technology Stack
+## 4. Update AGENTS.md Technology Stack
 
 ### Language Selection (Godot only)
 
@@ -152,12 +159,12 @@ If Godot was chosen, ask the user which language to use **before** showing the p
 >
 > Which will this project primarily use?"
 
-Record the choice. It determines the CLAUDE.md template, naming conventions, specialist routing, and which agent is spawned for code files throughout the project.
+Record the choice. It determines the AGENTS.md template, naming conventions, specialist routing, and which agent is spawned for code files throughout the project.
 
 ---
 
-Read `CLAUDE.md` and show the user the proposed Technology Stack changes.
-Ask: "May I write these engine settings to `CLAUDE.md`?"
+Read `AGENTS.md` (or `CLAUDE.md` for Claude Code projects) and show the user the proposed Technology Stack changes.
+Ask: "May I write these engine settings to `AGENTS.md`?"
 
 Wait for confirmation before making any edits.
 
@@ -197,9 +204,17 @@ Update the Technology Stack section, replacing the `[CHOOSE]` placeholders with 
 - **Asset Pipeline**: Custom (file-based loading via LoadTexture, LoadSound, etc.)
 ```
 
+**For Babylon.js:**
+```markdown
+- **Engine**: Babylon.js [version]
+- **Language**: TypeScript
+- **Build System**: Vite
+- **Asset Pipeline**: .glb/.glTF file loading via SceneLoader (or assetManager)
+```
+
 ---
 
-## 4.5. Scaffold Build System (SFML 3 / Raylib Only)
+## 4.5. Scaffold Build System (SFML 3 / Raylib / Babylon.js)
 
 If SFML 3 or Raylib was chosen, ask the user about scaffolding the build system:
 
@@ -327,21 +342,56 @@ Add a `.gitignore` entry for the build directory if one does not exist:
 build/
 ```
 
+### For Babylon.js
+
+If Babylon.js was chosen, ask the user about scaffolding the project:
+
+> "I can scaffold a Vite + TypeScript project with Babylon.js, featuring WebGPU-first
+> rendering (fallback to WebGL2), Havok physics, GUI, and rendering pipeline.
+> May I scaffold these files?"
+
+Wait for confirmation before proceeding.
+
+Follow the scaffolding reference at `docs/engine-reference/babylonjs/scaffolding.md`.
+It describes every file to generate, why side-effect imports are needed, which
+dependency versions to pin, and how the pieces fit together.
+
+**Scaffolded structure** (from the reference):
+```
+<project-root>/
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── src/
+│   ├── app.ts
+│   ├── vite-env.d.ts
+│   ├── config/
+│   │   └── template-config.ts
+│   ├── css/
+│   │   └── main.css
+│   └── playground/
+│       ├── main-scene.ts
+│       └── gui.ts
+```
+
+Also ensure `src/` and `assets/` directories exist. Add a `.gitignore`:
+
 ---
 
 ## 5. Populate Technical Preferences
 
-After updating CLAUDE.md, create or update `.opencode/docs/technical-preferences.md` with
+After updating AGENTS.md, create or update `.opencode/docs/technical-preferences.md` with
 engine-appropriate defaults. Read the existing template first, then fill in:
 
 ### Engine & Language Section
 - Fill from the engine choice made in step 4
 
-### Language Selection (SFML 3 and Raylib only)
+### Language Selection (SFML 3, Raylib)
 
-If SFML 3 or Raylib was chosen, ask the user about C vs C++:
+If SFML 3 or Raylib was chosen, ask the user about language:
 
-> "SFML 3 / Raylib supports C and C++. Which will this project primarily use?
+> "SFML 3 / Raylib supports C++ (both) or C (Raylib only). Which will this project primarily use?
 >
 >   **A) C++** — RAII patterns, classes, STL, stronger type safety. Recommended for larger projects.
 >   **B) C (Raylib only)** — Plain C API, simpler compilation, C11 standard. Best for small projects or learning.
@@ -350,6 +400,10 @@ If SFML 3 or Raylib was chosen, ask the user about C vs C++:
 
 For SFML 3: only C++ is practical (SFML is a C++ library).
 For Raylib: both C and C++ are viable. Record the choice.
+
+### Language Selection (Babylon.js)
+
+Babylon.js uses TypeScript. No language selection is needed — TypeScript is the standard and recommended language. Record `TypeScript` as the language.
 
 ### Naming Conventions (engine defaults)
 
@@ -395,6 +449,18 @@ For Raylib: both C and C++ are viable. Record the choice.
 - Variables: snake_case (e.g., `player_speed`)
 - Functions: PascalCase matching raylib API style (e.g., `UpdatePlayer`, `DrawGame`)
 - Files: PascalCase or snake_case — project preference, be consistent
+
+**For Babylon.js (TypeScript):**
+- Classes: PascalCase (e.g., `PlayerController`, `SceneManager`)
+- Variables/functions: camelCase (e.g., `moveSpeed`, `takeDamage()`) — matching Babylon.js API style
+- Interfaces: PascalCase with `I` prefix (e.g., `IPlayerState`, `IVehicleConfig`)
+- Types: PascalCase (e.g., `PlayerState`, `GamePhase`)
+- Enums: PascalCase (e.g., `GameState`, `PlayerAction`)
+- Files: camelCase or kebab-case (e.g., `playerController.ts`, `scene-manager.ts`)
+- Constants: UPPER_SNAKE_CASE (e.g., `MAX_PLAYER_SPEED`, `GRAVITY`)
+- Private members: `_` prefix (e.g., `_health`, `_updatePosition()`)
+- React components (if using React): PascalCase (e.g., `HudOverlay.tsx`)
+- Test files: co-located `*.test.ts` or `*.spec.ts`
 
 ### Input & Platform Section
 
@@ -531,6 +597,30 @@ Also populate the `## Engine Specialists` section in `technical-preferences.md` 
 | General architecture review | raylib-specialist |
 ```
 
+**For Babylon.js:**
+```markdown
+## Engine Specialists
+- **Primary**: babylonjs-specialist
+- **Language/Code Specialist**: babylonjs-specialist (TypeScript — primary covers it)
+- **Shader Specialist**: babylonjs-perf-specialist (ShaderMaterial, Effect, node material, GLSL)
+- **UI Specialist**: babylonjs-gui-specialist (AdvancedDynamicTexture, controls, HUD, input handling)
+- **Additional Specialists**: babylonjs-physics-specialist (Havok Physics V2, vehicle physics, constraints, collisions), babylonjs-network-specialist (Colyseus SDK, WebSockets, room management, state sync)
+- **Routing Notes**: Invoke primary for scene setup, rendering pipeline, and general TypeScript code review. Invoke physics specialist for any Havok physics, vehicle simulation, or collision handling. Invoke network specialist for multiplayer sessions, room management, and state synchronization. Invoke GUI specialist for all UI/HUD/menu implementation. Invoke performance specialist for draw call optimization, LOD, instancing, shader tuning, and frame budget management.
+
+### File Extension Routing
+
+| File Extension / Type | Specialist to Spawn |
+|-----------------------|---------------------|
+| Game code (.ts files) | babylonjs-specialist |
+| Scene/level files (.ts scene setup) | babylonjs-specialist |
+| Shader files (.fx, custom shader code) | babylonjs-perf-specialist |
+| UI / screen files (.ts ADT setup) | babylonjs-gui-specialist |
+| Physics / vehicle files (.ts physics) | babylonjs-physics-specialist |
+| Network / multiplayer files (.ts network) | babylonjs-network-specialist |
+| Configuration / data (.json) | babylonjs-specialist |
+| General architecture review | babylonjs-specialist |
+```
+
 ### Collaborative Step
 Present the filled-in preferences to the user. For Godot, include the chosen language and note where the full naming conventions and routing tables live:
 > "Here are the default technical preferences for [engine] ([language if Godot]). The naming conventions and specialist routing are in Appendix A of this skill — I'll apply the [GDScript/C#/Both] variant. Want to customize any of these, or shall I save the defaults?"
@@ -552,6 +642,7 @@ Check whether the engine version is likely beyond the LLM's training data.
 - Unreal: training data likely covers up to ~5.3 / early 5.4
 - SFML 3: training data likely covers up to ~3.0.x (SFML 3.0 released early 2025)
 - Raylib: training data likely covers up to ~5.5
+- Babylon.js: training data likely covers up to ~7.x (Babylon.js 9.x introduces breaking changes — HIGH RISK for post-cutoff APIs)
 
 Compare the user's chosen version against these baselines:
 
@@ -798,9 +889,9 @@ cmake --build build-web
 
 ---
 
-## 8. Update CLAUDE.md Import
+## 8. Update AGENTS.md Import
 
-Ask: "May I update the `@` import in `CLAUDE.md` to point to the new engine reference?"
+Ask: "May I update the `@` import in `AGENTS.md` to point to the new engine reference?"
 
 Wait for confirmation, then update the `@` import under "Engine Version Reference" to point to the
 correct engine:
@@ -964,7 +1055,7 @@ Engine:          [name] [version]
 Language:        [GDScript | C# | GDScript + C# | C# | C++ + Blueprint | C++17 | C (primary) or C++ | C11]
 Knowledge Risk:  [LOW/MEDIUM/HIGH]
 Reference Docs:  [created/skipped]
-CLAUDE.md:       [updated]
+AGENTS.md:       [updated]
 Tech Prefs:      [created/updated]
 Agent Config:    [verified]
 
@@ -986,9 +1077,9 @@ Verdict: **COMPLETE** — engine configured and reference docs populated.
 - NEVER guess an engine version — always verify via webfetch or user confirmation
 - NEVER overwrite existing reference docs without asking — append or update
 - If reference docs already exist for a different engine, ask before replacing
-- Always show the user what you're about to change before making CLAUDE.md edits
+- Always show the user what you're about to change before making AGENTS.md edits
 - If webfetch returns ambiguous results, show the user and let them decide
-- When the user chose **GDScript**: copy the GDScript CLAUDE.md template from Appendix A1 exactly. NEVER add "C++ via GDExtension" to the Language field. GDScript projects may use GDExtension, but it is not a primary project language. The `godot-gdextension-specialist` in the routing table is available for when native extensions are needed — it does not make C++ a project language.
+- When the user chose **GDScript**: copy the GDScript AGENTS.md template from Appendix A1 exactly. NEVER add "C++ via GDExtension" to the Language field. GDScript projects may use GDExtension, but it is not a primary project language. The `godot-gdextension-specialist` in the routing table is available for when native extensions are needed — it does not make C++ a project language.
 
 ---
 
@@ -998,7 +1089,7 @@ All Godot-specific variants for language-dependent configuration. Referenced fro
 
 ---
 
-### A1. CLAUDE.md Technology Stack Templates
+### A1. AGENTS.md Technology Stack Templates
 
 **GDScript:**
 ```markdown
