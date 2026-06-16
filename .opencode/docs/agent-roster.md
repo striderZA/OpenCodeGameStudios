@@ -62,6 +62,7 @@ agent (usually `producer` or the domain lead) should delegate to specialists.
 | `unreal-specialist` | Unreal Engine 5 | Sonnet | Blueprint vs C++, GAS overview, UE subsystems, Unreal optimization |
 | `unity-specialist` | Unity | Sonnet | MonoBehaviour vs DOTS, Addressables, URP/HDRP, Unity optimization |
 | `godot-specialist` | Godot 4 | Sonnet | GDScript patterns, node/scene architecture, signals, Godot optimization |
+| `babylonjs-specialist` | Babylon.js | Sonnet | Scene graph, rendering pipeline, Havok physics, Colyseus networking, GUI |
 
 ### Unreal Engine Sub-Specialists
 
@@ -88,3 +89,12 @@ agent (usually `producer` or the domain lead) should delegate to specialists.
 | `godot-gdscript-specialist` | GDScript | Sonnet | Static typing, design patterns, signals, coroutines, GDScript performance |
 | `godot-shader-specialist` | Shaders/Rendering | Sonnet | Godot shading language, visual shaders, particles, post-processing |
 | `godot-gdextension-specialist` | GDExtension | Sonnet | C++/Rust bindings, native performance, custom nodes, build systems |
+
+### Babylon.js Sub-Specialists
+
+| Agent | Subsystem | Model | When to Use |
+| ---- | ---- | ---- | ---- |
+| `babylonjs-physics-specialist` | Havok Physics | Sonnet | Vehicle physics, collision, constraints, ragdolls |
+| `babylonjs-network-specialist` | Colyseus + WebSockets | Sonnet | Multiplayer sessions, state sync, room management, RPCs |
+| `babylonjs-gui-specialist` | AdvancedDynamicTexture | Sonnet | HUD, menus, controls, 2D/3D UI layout, input handling |
+| `babylonjs-perf-specialist` | Rendering + Optimization | Sonnet | Draw calls, instancing, LOD, shader optimization, memory |

@@ -1,7 +1,7 @@
 ---
 name: init-template
 description: "First-time repo setup for new projects. Transforms the cloned OCGS template into a clean, ready-to-use game project with your own identity."
-argument-hint: "[--reset-git] [--name \"My Game\"] [--engine godot|unity|unreal]"
+argument-hint: "[--reset-git] [--name \"My Game\"] [--engine godot|unity|unreal|babylonjs]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, question, Task
 ---
@@ -13,7 +13,7 @@ When this skill is invoked:
 Check if CLI arguments were passed (from `argument-hint`):
 
 - `--name "My Game"` → sets game name (skips the name question below)
-- `--engine godot|unity|unreal` → sets engine (skips engine question)
+- `--engine godot|unity|unreal|babylonjs` → sets engine (skips engine question)
 - `--reset-git` → automatically offers git reset (skips the prompt)
 
 If `--name` and `--engine` are both provided, skip the interactive prompt entirely and proceed to Phase 2 using the provided values.
@@ -25,7 +25,7 @@ Otherwise, use `question` to gather missing details:
 - **What is your game's one-line description?** (e.g., "A 2D platformer about a cat in space")
 
 ### Tab 2: Engine & Genre
-- **Which engine are you using?** (godot / unity / unreal)
+- **Which engine are you using?** (godot / unity / unreal / babylonjs)
 - **What genre best describes your game?** (e.g., platformer, RPG, puzzle, FPS, strategy)
 
 ### Tab 3: Team

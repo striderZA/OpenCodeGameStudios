@@ -107,6 +107,11 @@ Engine-specific monitoring guidance:
 - Record: Physical Memory Used (MB), Physical Memory Available
 - Alert threshold: Physical Memory Used growth > 50MB over the full soak
 
+**Babylon.js:**
+- Use browser DevTools Memory panel (Performance → Memory) or Chrome's `performance.memory`
+- Record: JS Heap Size (MB), Document count, GPU memory (via `gl.getParameter(gl.GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX)`)
+- Alert threshold: Heap growth > 30% from T+0 after the first 15 minutes
+
 ### Stability observation items (if focus = stability or all)
 
 At each checkpoint, note:
@@ -150,6 +155,7 @@ Before starting the soak:
   - **Godot**: Debugger → Monitors tab → Memory section visible
   - **Unity**: Memory Profiler window open
   - **Unreal**: `stat memory` ready in console
+  - **Babylon.js**: Chrome DevTools → Memory panel → Heap snapshot ready
 - [ ] Soak target confirmed: [session design intent from game concept]
 - [ ] Prior known issues to watch for: [from most recent playtest / qa-plan]
 

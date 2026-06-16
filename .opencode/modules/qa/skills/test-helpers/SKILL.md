@@ -298,6 +298,80 @@ namespace GameTestHelpers
 
 ---
 
+### Babylon.js (Vitest / TypeScript)
+
+**Base helper** (`tests/helpers/gameAssertions.ts`):
+
+```typescript
+/**
+ * Game-specific assertion utilities for [Project Name] tests.
+ * Extends Vitest's expect with domain-specific helpers.
+ *
+ * Usage:
+ *   import { assertInRange } from './helpers/gameAssertions';
+ *   assertInRange(entity.hp, 0, entity.maxHp, 'HP');
+ */
+
+import { expect } from 'vitest';
+
+/**
+ * Assert a value is within the inclusive range [min, max].
+ * Use for any formula output that has defined bounds in a GDD.
+ */
+export function assertInRange(
+  value: number,
+  min: number,
+  max: number,
+  label: string = 'value'
+): void {
+  expect(value, `${label} is outside expected range [${min}, ${max}]`).toBeGreaterThanOrEqual(min);
+  expect(value, `${label} is outside expected range [${min}, ${max}]`).toBeLessThanOrEqual(max);
+}
+
+/**
+ * Assert a vector component is within a tolerance of an expected value.
+ * Use for physics/movement values that may have floating-point error.
+ */
+export function assertApprox(
+  actual: number,
+  expected: number,
+  epsilon: number = 0.001,
+  label: string = 'value'
+): void {
+  expect(
+    Math.abs(actual - expected),
+    `${label} expected ${expected} ± ${epsilon}, got ${actual}`
+  ).toBeLessThanOrEqual(epsilon);
+}
+```
+
+**Scene helper** (`tests/helpers/sceneHelpers.ts`):
+
+```typescript
+import { Engine, Scene } from '@babylonjs/core';
+
+/**
+ * Create a minimal test scene for integration tests.
+ * Uses an offscreen canvas for headless rendering.
+ */
+export function createTestScene(): { engine: Engine; scene: Scene } {
+  const canvas = document.createElement('canvas');
+  const engine = new Engine(canvas, true, { preserveDrawingBuffer: true });
+  const scene = new Scene(engine);
+  return { engine, scene };
+}
+
+/**
+ * Clean up a test scene to prevent memory leaks between tests.
+ */
+export function disposeTestScene(engine: Engine, scene: Scene): void {
+  scene.dispose();
+  engine.dispose();
+}
+```
+
+---
+
 ## 5. Generate System-Specific Helpers
 
 For `[system-name]` or `all` modes, generate a helper per system:

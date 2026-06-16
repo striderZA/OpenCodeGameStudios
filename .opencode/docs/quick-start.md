@@ -6,7 +6,7 @@ This is a complete OpenCode agent architecture for game development. It
 organizes 48 specialized AI agents into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
-for Godot, Unity, and Unreal — each with dedicated sub-specialists for
+for Godot, Unity, Unreal, and Babylon.js — each with dedicated sub-specialists for
 major engine subsystems. All design agents and templates are grounded in
 established game design theory (MDA Framework, Self-Determination Theory,
 Flow State, Bartle Player Types). Use whichever engine set matches your project.
@@ -213,7 +213,7 @@ If you already know what you need, jump directly to the relevant path:
    - Produces a game concept document and recommends an engine
 2. **Initialize your project** — Run `/init-template` to customize the template with your game name, engine, and clean out example files.
 3. **Set up the engine** — Run `/setup-engine` (uses the brainstorm recommendation)
-   - Configures CLAUDE.md, detects knowledge gaps, populates reference docs
+   - Configures AGENTS.md (or `CLAUDE.md` for Claude Code projects), detects knowledge gaps, populates reference docs
    - Creates `.opencode/docs/technical-preferences.md` with naming conventions,
      performance budgets, and engine-specific defaults
    - If the engine version is newer than the LLM's training data, it fetches
@@ -286,14 +286,14 @@ The framework is partitioned into **theme modules**. Only install what you need:
 
 ```bash
 node .opencode/modules/install.mjs add core          # Required: directors, /start, /help
-node .opencode/modules/install.mjs add engine-godot  # Engine specialists (or engine-unity/engine-unreal)
+node .opencode/modules/install.mjs add engine-godot  # Engine specialists (or engine-unity/engine-unreal/engine-babylonjs)
 node .opencode/modules/install.mjs add art           # Aseprite MCP, art bible, asset specs
 node .opencode/modules/install.mjs add design        # Game mechanics, systems, combat
 node .opencode/modules/install.mjs add qa           # QA pipeline, test setup, profiling
 node .opencode/modules/install.mjs list              # See all available + installed
 ```
 
-Available modules: art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, engine-godot, engine-unity, engine-unreal, data.
+Available modules: art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib, engine-babylonjs, data.
 
 ## File Structure Reference
 

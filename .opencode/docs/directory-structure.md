@@ -2,7 +2,7 @@
 
 ```text
 /
-├── CLAUDE.md                    # Master configuration
+├── AGENTS.md or CLAUDE.md         # Master configuration
 ├── .opencode/                     # Agent definitions, skills, hooks, rules, docs, modules
 │   └── modules/                   # Theme modules (install.mjs + module dirs)
 │       ├── install.mjs            # CLI: add/remove/list modules
