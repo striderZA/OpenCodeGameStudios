@@ -1,0 +1,16 @@
+name: engine-babylonjs
+version: "0.7.0"
+description: "Babylon.js engine specialists — 3D rendering, physics (Havok), networking (Colyseus), GUI, and performance. Includes @babylonjs/mcp-servers integration (nme + gui) for interactive AI-assisted dev."
+depends: [core]
+provides:
+  agents:
+    - babylonjs-specialist
+    - babylonjs-physics-specialist
+    - babylonjs-network-specialist
+    - babylonjs-gui-specialist
+    - babylonjs-perf-specialist
+  skills: []
+  commands: []
+  rules: []
+plugged-into:
+  engines: [babylonjs]

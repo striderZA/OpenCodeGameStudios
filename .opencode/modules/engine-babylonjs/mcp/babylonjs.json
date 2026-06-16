@@ -1,0 +1,20 @@
+{
+  "babylonjs-nme": {
+    "type": "local",
+    "command": [
+      "npx",
+      "@babylonjs/mcp-servers",
+      "nme"
+    ],
+    "enabled": false
+  },
+  "babylonjs-gui": {
+    "type": "local",
+    "command": [
+      "npx",
+      "@babylonjs/mcp-servers",
+      "gui"
+    ],
+    "enabled": false
+  }
+}
