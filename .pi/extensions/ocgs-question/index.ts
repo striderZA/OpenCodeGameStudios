@@ -330,7 +330,7 @@ export default function (pi: ExtensionAPI) {
 				question: params.question,
 				header: params.header,
 				options: simpleOptions,
-				answer: answerText,
+				answer: result.answer,
 				wasCustom: result.wasCustom,
 			});
 
