@@ -1,0 +1,13 @@
+name: stories
+version: "0.6.0"
+description: "Epics, stories, dev implementation, code review, tech debt tracking, onboarding."
+depends: [core, design]
+provides:
+  agents: []
+  skills: [create-epics, create-stories, story-readiness, dev-story, story-done,
+           code-review, tech-debt, reverse-document, adopt, onboard]
+  commands: [create-epics, create-stories, story-readiness, dev-story, story-done,
+             code-review, reverse-document]
+  rules: []
+plugged-into:
+  engines: []

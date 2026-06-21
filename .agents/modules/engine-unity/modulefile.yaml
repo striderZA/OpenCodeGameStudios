@@ -1,0 +1,12 @@
+name: engine-unity
+version: "0.7.0"
+description: "Unity engine specialists — DOTS/ECS, shaders, Addressables, UI. Includes unity-mcp integration for interactive AI-assisted dev."
+depends: [core]
+provides:
+  agents: [unity-specialist, unity-dots-specialist, unity-shader-specialist,
+           unity-addressables-specialist, unity-ui-specialist]
+  skills: []
+  commands: []
+  rules: []
+plugged-into:
+  engines: [unity]

@@ -1,0 +1,11 @@
+name: level-design
+version: "0.6.0"
+description: "Level layout, encounter pacing, spatial puzzle design, environmental storytelling."
+depends: [core]
+provides:
+  agents: [level-designer]
+  skills: [team-level]
+  commands: [team-level]
+  rules: []
+plugged-into:
+  engines: []

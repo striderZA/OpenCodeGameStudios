@@ -1,0 +1,12 @@
+name: art
+version: "0.6.0"
+description: "Aseprite MCP, art generation, art bible, asset specs. Visual identity and production pipeline."
+depends: [core]
+provides:
+  agents: [art-director, technical-artist]
+  skills: [art-bible, art-generate, asset-audit, asset-spec]
+  commands: [art-generate]
+  rules: []
+  mcp: [aseprite]
+plugged-into:
+  engines: [godot]

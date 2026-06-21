@@ -1,0 +1,11 @@
+name: prototyping
+version: "0.6.0"
+description: "Rapid prototyping, hybrid prototype fast-lane, pre-workflow exploration."
+depends: [core]
+provides:
+  agents: [prototyper]
+  skills: [prototype, hybrid-prototype, explore]
+  commands: [prototype, explore]
+  rules: [prototype-code]
+plugged-into:
+  engines: []
