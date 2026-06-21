@@ -1,6 +1,6 @@
 # OpenCode Game Studios
 
-Indie game development managed through 49 coordinated OpenCode agents.
+Indie game development managed through 51 coordinated OpenCode agents.
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
@@ -38,6 +38,8 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 │   ├── architecture/            # Architecture Decision Records (ADRs)
 │   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
 │   ├── pi-compatibility.md      # Pi setup guide
+│   ├── pi-extensions.md         # Pi extension reference
+│   ├── pi-workflow.md           # Pi workflow differences
 │   ├── authoring-agents.md      # Agent creation guide
 │   ├── authoring-skills.md      # Skill creation guide
 │   ├── hybrid-workflow.md       # Hybrid workflow reference
@@ -181,7 +183,7 @@ See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup g
 
 ## Available Commands
 
-Type `/` in OpenCode to see all available commands. All 50 commands route to
+Type `/` in OpenCode to see all available commands. All 54 commands route to
 corresponding skills in `.agents/skills/`.
 
 | Category | Commands |
