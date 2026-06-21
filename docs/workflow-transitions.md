@@ -269,5 +269,5 @@ and throwaway code.
 
 - [`docs/hybrid-workflow.md`](hybrid-workflow.md) — Hybrid Discovery-Production workflow
 - [`docs/WORKFLOW-GUIDE.md`](WORKFLOW-GUIDE.md) — Full OCGS 7-phase workflow
-- `.opencode/skills/explore/SKILL.md` — Pre-workflow prototyping skill
-- `.opencode/skills/gate-check/SKILL.md` — Workflow Selection gate
+- `.agents/skills/explore/SKILL.md` — Pre-workflow prototyping skill
+- `.agents/skills/gate-check/SKILL.md` — Workflow Selection gate

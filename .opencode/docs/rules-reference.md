@@ -1,6 +1,6 @@
 # Path-Specific Rules
 
-Rules in `.opencode/rules/` are automatically enforced when editing files in matching paths:
+Rules in `.agents/rules/` are automatically enforced when editing files in matching paths:
 
 | Rule File | Path Pattern | Enforces |
 | ---- | ---- | ---- |

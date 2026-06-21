@@ -12,7 +12,7 @@ Read the art bible or asset standards from the relevant design docs:
 
 - `design/art/art-bible.md` — visual and naming standards
 - `design/gdd/asset-manifest.md` — expected asset list if it exists
-- `.opencode/rules/data-files.md` — data file standards
+- `.agents/rules/data-files.md` — data file standards
 - `AGENTS.md` — project naming conventions
 
 If no art bible exists, note: "No art bible found. Auditing against general game industry conventions." and proceed.

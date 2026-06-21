@@ -37,12 +37,12 @@ Otherwise, use `question` to gather missing details:
 After setting project identity, install the desired framework modules:
 
 ```bash
-node .opencode/modules/install.mjs add core
-node .opencode/modules/install.mjs add engine-godot
-node .opencode/modules/install.mjs add art design ui qa release prototyping
+node .agents/modules/install.mjs add core
+node .agents/modules/install.mjs add engine-godot
+node .agents/modules/install.mjs add art design ui qa release prototyping
 ```
 
-Available modules (run `node .opencode/modules/install.mjs list` to see all):
+Available modules (run `node .agents/modules/install.mjs list` to see all):
 
 | Module | Description |
 |--------|-------------|
