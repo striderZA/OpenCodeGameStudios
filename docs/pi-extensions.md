@@ -202,7 +202,7 @@ After every `write` or `edit` tool call targeting a `.agents/` path:
 
 Conventional-commit changelog generation with TUI modal.
 
-### /changelog command
+### `/generate-changelog` command
 
 ```typescript
 pi.registerCommand("changelog", {
@@ -219,7 +219,7 @@ pi.registerCommand("changelog", {
 
 ### Agent_end integration
 
-After each agent turn, checks for unreleased commits. If found and `CHANGELOG.md` doesn't exist yet, shows a persistent widget: `"## Unreleased Changes Detected\n...\nRun /changelog to generate."`
+After each agent turn, checks for unreleased commits. If found and `CHANGELOG.md` doesn't exist yet, shows a persistent widget: `"## Unreleased Changes Detected\n...\nRun /generate-changelog to generate."`
 
 ---
 

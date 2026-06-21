@@ -163,6 +163,9 @@ pi
 
 All OCGS skills, commands, and agents load automatically through the `.pi/extensions/` extensions.
 
+Pi-specific commands differ from OpenCode in a few cases:
+- Use `/generate-changelog` instead of `/changelog` (Pi has a built-in with that name)
+
 See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup guide,
 [docs/pi-extensions.md](docs/pi-extensions.md) for the extension reference, and
 [docs/pi-workflow.md](docs/pi-workflow.md) for workflow differences.

@@ -72,7 +72,7 @@ The `question` tool renders as a full-screen TUI picker with option descriptions
 
 ### 3. Changelog TUI Modal
 
-`/changelog` shows a preview modal with Accept/Edit/Cancel actions. OpenCode's version outputs plain text.
+`/generate-changelog` shows a preview modal with Accept/Edit/Cancel actions. OpenCode's `/changelog` version outputs plain text.
 
 ### 4. Real-Time Status Indicators
 
