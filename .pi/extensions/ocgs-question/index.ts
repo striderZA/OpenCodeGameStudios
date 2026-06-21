@@ -326,8 +326,6 @@ export default function (pi: ExtensionAPI) {
 				};
 			}
 
-			const answerText = result.wasCustom ? result.answer : result.answer;
-
 			logDecision({
 				question: params.question,
 				header: params.header,
