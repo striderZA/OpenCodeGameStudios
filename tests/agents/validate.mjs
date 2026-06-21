@@ -35,7 +35,7 @@ const AGENT_EXCEPTIONS = [
   'unity-ui-specialist.md',
 ];
 
-const REQUIRED_AGENT_FRONTMATTER = ['description', 'mode', 'model', 'maxTurns'];
+const REQUIRED_AGENT_FRONTMATTER = ['description', 'maxTurns'];
 const REQUIRED_AGENT_SECTIONS = [
   'Collaboration Protocol',
   'Key Responsibilities',
@@ -68,7 +68,7 @@ function parseFrontmatter(content) {
     const kvMatch = line.match(/^(\w[\w-]*):\s*(.*)/);
     if (kvMatch) {
       const key = kvMatch[1];
-      let value = (kvMatch[2] || '').trim().replace(/^["']|["']$/g, '');
+      const value = (kvMatch[2] || '').trim().replace(/^["']|["']$/g, '');
       data[key] = value;
     }
   }
@@ -102,9 +102,7 @@ function validateAgents() {
           issues.push(`Frontmatter: missing required field '${field}'`);
         }
       }
-      if (fm.data.mode && !['primary', 'subagent'].includes(fm.data.mode)) {
-        issues.push(`Frontmatter: invalid mode '${fm.data.mode}' (expected primary or subagent)`);
-      }
+      // mode field is optional (harness-specific, stripped from .agents/)
     }
 
     // Required sections check
