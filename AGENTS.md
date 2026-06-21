@@ -19,19 +19,25 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 /
 ├── AGENTS.md                    # Project configuration
 ├── opencode.json                # OpenCode config (permissions, plugins)
-├── .opencode/                   # Framework components
-│   ├── commands/                # 50 slash commands (routes to skills)
-│   ├── agents/                  # 51 agent definitions (was .claude/agents/)
-│   ├── skills/                  # 77 skills (was .claude/skills/)
-│   ├── plugins/                 # TypeScript plugins
-│   │   ├── ccgs-hooks.ts        # Session lifecycle, validation, logging
-│   │   ├── drift-detector.ts    # Template compliance detection
-│   │   ├── changelog-generator.ts
-│   │   └── tests/               # 11 plugin test suites
-│   └── rules/                   # 11 path-scoped coding standards
+├── pi.json                      # Pi settings (generated)
+├── .agents/                     # Canonical content (harness-agnostic)
+│   ├── agents/                  # 51 agent definitions
+│   ├── skills/                  # 77 skill workflows
+│   ├── commands/                # 54 slash commands
+│   ├── rules/                   # 11 path-scoped coding standards
+│   └── modules/                 # 17 installable modules
+├── .opencode/                   # OpenCode-specific
+│   ├── plugins/                 # TypeScript plugins (ccgs-hooks, drift-detector, changelog-generator)
+│   ├── agents/ → ../.agents/agents/   (symlink)
+│   ├── skills/ → ../.agents/skills/   (symlink)
+│   ├── commands/ → ../.agents/commands/ (symlink)
+│   └── rules/ → ../.agents/rules/     (symlink)
+├── .pi/                         # Pi-specific extensions & settings
+│   └── extensions/              # Pi extensions (ocgs-core, delegation, question, path-guard, etc.)
 ├── docs/
 │   ├── architecture/            # Architecture Decision Records (ADRs)
 │   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
+│   ├── pi-compatibility.md      # Pi setup guide
 │   ├── authoring-agents.md      # Agent creation guide
 │   ├── authoring-skills.md      # Skill creation guide
 │   ├── hybrid-workflow.md       # Hybrid workflow reference
@@ -41,12 +47,15 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 │   │   ├── validate.mjs         # Structural compliance checker
 │   │   ├── validate-gdscript.mjs # GDScript snippet linter
 │   │   └── validation-report.md # Latest audit results
-│   ├── [game-specific tests]
-│   └── [spawned by test-setup]
+│   ├── extensions/              # Pi extension unit tests
+│   ├── e2e/                     # E2E parity tests
+│   └── [game-specific tests]
 ├── src/                         # Game source code
 ├── assets/                      # Game assets
 ├── design/                      # Game design documents
 ├── tools/                       # Build and pipeline tools
+│   ├── migrate-to-agents.mjs    # Migration script (.opencode/ → .agents/)
+│   └── ...
 ├── prototypes/                  # Throwaway prototypes
 └── production/                  # Sprint plans, milestones, session logs
 ```
