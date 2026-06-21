@@ -89,7 +89,7 @@ Build, polish, and ship the game with full quality gates.
 > **Note**: The `producer` role is merged into `technical-director`. Cross-domain coordination falls to `technical-director` (sprint planning, milestone reviews, scope management). Gate checks and release coordination are shared with `creative-director`. Design conflicts escalate to `creative-director`.
 
 ### Merged / Deferred Roles
-The following roles from the full 49-agent roster are either merged into the 10 above, or deferred until late production:
+The following roles from the full 51-agent roster are either merged into the 10 above, or deferred until late production:
 
 - `engine-programmer`, `tools-programmer` → `lead-programmer`
 - `ai-programmer`, `network-programmer` → `gameplay-programmer` (until needed)
@@ -146,7 +146,7 @@ A new skill/command that shortcuts the path to a playable prototype:
 
 ## When to Switch to Full OCGS
 
-Switch to the **full 49-agent framework** if any of these become true:
+Switch to the **full 51-agent framework** if any of these become true:
 - Team grows beyond 5 people
 - Project timeline exceeds 6 months
 - Multiple features need parallel development
