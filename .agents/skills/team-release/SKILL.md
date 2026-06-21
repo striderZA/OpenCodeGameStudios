@@ -91,7 +91,7 @@ Delegate to **producer**:
 ### Phase 6: Deployment (if GO)
 Delegate to **release-manager** + **devops-engineer**:
 - Tag the release in version control
-- Generate the changelog using the changelog command (`/changelog` in OpenCode, `/generate-changelog` in Pi)
+- Generate the changelog using the `/changelog` command (or `generate-changelog` in Pi)
 - Deploy to staging for final smoke test
 - Deploy to production
 - Monitor for 48 hours post-release
