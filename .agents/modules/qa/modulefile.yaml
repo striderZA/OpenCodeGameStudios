@@ -1,0 +1,16 @@
+name: qa
+version: "0.6.0"
+description: "QA strategy, testing, bug tracking, performance profiling, security, skill validation."
+depends: [core]
+provides:
+  agents: [qa-lead, qa-tester, performance-analyst, security-engineer]
+  skills: [team-qa, qa-plan, smoke-check, soak-test, regression-suite, test-setup,
+           test-helpers, test-flakiness, test-evidence-review, automated-smoke-test,
+           bug-report, bug-triage, security-audit, perf-profile, team-polish,
+           skill-test, skill-improve]
+  commands: [team-qa, qa-plan, smoke-check, soak-test, regression-suite, test-setup,
+             test-helpers, test-flakiness, test-evidence-review, bug-report, bug-triage,
+             security-audit, team-polish]
+  rules: [test-standards]
+plugged-into:
+  engines: []
