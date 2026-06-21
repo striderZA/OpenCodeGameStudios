@@ -53,7 +53,7 @@ for the full game lifecycle:
 - **51 coordinated agents** — From creative director to engine specialists, each
   with defined responsibilities, delegation maps, and strict domain boundaries
 - **54 slash commands** — Route through the right skill every time, from
-  `/brainstorm` to `/launch-checklist`
+  `/concept-brainstorm` to `/launch-checklist`
 
 This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
 and runs on [OpenCode](https://opencode.ai).

@@ -10,7 +10,7 @@ These show what runs before and after each skill, and what artifacts flow betwee
 ```
 PHASE 1: CONCEPT
   /start ──────────────────────────────────────────────────────► routes to A/B/C/D
-  /brainstorm ──────────────────────────────────────────────────► design/gdd/game-concept.md
+  /concept-brainstorm ──────────────────────────────────────────────────► design/gdd/game-concept.md
   /setup-engine ────────────────────────────────────────────────► AGENTS.md + technical-preferences.md
   /design-review [game-concept.md] ────────────────────────────► concept validated
   /gate-check ─────────────────────────────────────────────────► PASS → advance to systems-design
@@ -370,7 +370,7 @@ For projects with existing work (use `/start` option D or run directly):
 
 | Where you are | Run this |
 |---------------|---------|
-| Brand new, no idea | `/start` → `/brainstorm` |
+| Brand new, no idea | `/start` → `/concept-brainstorm` |
 | Have a concept, no engine | `/setup-engine` |
 | Have concept + engine | `/map-systems` |
 | Mid-systems design | `/design-system [next system]` or `/map-systems next` |

@@ -330,7 +330,7 @@ export default function (pi: ExtensionAPI) {
 - [ ] **Step 3: Verify Pi discovers OCGS content**
 
 Run: `pi --list-skills 2>&1 | head -5`
-Expected: Lists OCGS skills (e.g., `brainstorm`, `test-setup`, etc.)
+Expected: Lists OCGS skills (e.g., `concept-brainstorm`, `test-setup`, etc.)
 
 Run: `pi --list-prompts 2>&1 | head -5` (or equivalent)
 Expected: Lists OCGS command prompts

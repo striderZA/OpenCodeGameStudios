@@ -4,7 +4,7 @@
 **Date:** 2026-06-21
 **Context:** OpenCode Game Studios (OCGS) was ported from Claude Code Game Studios (CCGS) by replacing the 12 CCGS bash hooks with a TypeScript plugin (`ccgs-hooks.ts`) and adding 51 agents, 77 skills, 54 commands, and 11 path-scoped rules. This design adds Pi as a supported harness without breaking OpenCode compatibility, and structures the framework so future harnesses (Claude Code, Cursor, Windsurf, etc.) can be added similarly.
 
-**Decisions captured (during brainstorm / design review):**
+**Decisions captured (during concept-brainstorm / design review):**
 - **Approach:** Dual-harness parity (works in *both* OpenCode and Pi; not a port that abandons OpenCode).
 - **Source of truth:** A new harness-agnostic `.agents/` directory. No codegen — each harness discovers `.agents/` content natively.
 - **Frontmatter:** Agent/skill/command files are harness-neutral. Model routing, tool permissions, and runtime config live in harness-specific directories.
@@ -59,7 +59,7 @@ OpenCodeGameDesign/
 │   │   ├── producer.md
 │   │   └── ...
 │   ├── skills/                  # 77 skill dirs with SKILL.md (already Agent Skills spec)
-│   │   ├── brainstorm/
+│   │   ├── concept-brainstorm/
 │   │   ├── test-setup/
 │   │   └── ...
 │   ├── commands/                # 54 command .md files, harness-neutral
@@ -566,7 +566,7 @@ The most important guarantee: after running an OCGS scenario in both harnesses, 
 - [ ] Release notes and migration guide for existing users
 
 **Success criteria:**
-- A new user can clone the repo, run `pi`, and complete `/start` → `/brainstorm` flow
+- A new user can clone the repo, run `pi`, and complete `/start` → `/concept-brainstorm` flow
 - Documentation covers both OpenCode and Pi flows
 - CI validates `.agents/` content structure
 
@@ -699,7 +699,7 @@ Resolution: determined during Phase 1 implementation based on OpenCode's current
 ### Final v1.0 acceptance (post-Phase 4)
 
 - [ ] All Phase 1-4 acceptance criteria are met
-- [ ] A new user can complete `/start` → `/brainstorm` flow in both OpenCode and Pi with no degraded experience
+- [ ] A new user can complete `/start` → `/concept-brainstorm` flow in both OpenCode and Pi with no degraded experience
 - [ ] The audit log file is byte-identical for the same scenario run in both harnesses
 - [ ] Documentation covers both flows and is navigable
 

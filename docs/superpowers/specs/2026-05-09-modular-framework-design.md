@@ -25,7 +25,7 @@ Alternatives considered:
   core/                        Always installed, never removable
     modulefile.yaml
     agents/                    creative-director, technical-director, producer
-    skills/                    start, help, brainstorm, setup-engine, init-template,
+    skills/                    start, help, concept-brainstorm, setup-engine, init-template,
                                map-systems, project-stage-detect, gate-check,
                                create-architecture, architecture-decision
     commands/                  (mirrors skills above)
@@ -177,7 +177,7 @@ Contents:
 | Category | Items |
 |----------|-------|
 | Directors | creative-director, technical-director, producer |
-| Onboarding | /start, /help, /brainstorm, /setup-engine, /init-template |
+| Onboarding | /start, /help, /concept-brainstorm, /setup-engine, /init-template |
 | Validation | ccgs-hooks.ts, drift-detector.ts, changelog-generator.ts |
 | Workflow foundation | /map-systems, /project-stage-detect, /gate-check, /create-architecture, /architecture-decision |
 | Cross-cutting docs | workflow-catalog.yaml, director-gates.md, coordination-rules.md, context-management.md |

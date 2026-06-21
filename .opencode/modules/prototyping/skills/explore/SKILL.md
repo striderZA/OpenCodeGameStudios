@@ -164,7 +164,7 @@ After the report is written, present the user's options:
 - Suggest `/design-system`, `/create-architecture`, or any production-phase skill
 - Create `production/stage.txt`
 - Set a review mode
-- Route to `/brainstorm` unless the user explicitly asks for ideation help
+- Route to `/concept-brainstorm` unless the user explicitly asks for ideation help
 
 ---
 

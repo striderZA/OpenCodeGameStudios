@@ -1,6 +1,6 @@
 ---
 name: art-bible
-description: "Guided, section-by-section Art Bible authoring. Creates the visual identity specification that gates all asset production. Run after /brainstorm is approved and before /map-systems or any GDD authoring begins."
+description: "Guided, section-by-section Art Bible authoring. Creates the visual identity specification that gates all asset production. Run after /concept-brainstorm is approved and before /map-systems or any GDD authoring begins."
 argument-hint: "[--review full|lean|solo]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Task, question
@@ -16,7 +16,7 @@ Resolve the review mode (once, store for all gate spawns this run):
 See `.opencode/docs/director-gates.md` for the full check pattern.
 
 Read `design/gdd/game-concept.md`. If it does not exist, fail with:
-> "No game concept found. Run `/brainstorm` first — the art bible is authored after the game concept is approved."
+> "No game concept found. Run `/concept-brainstorm` first — the art bible is authored after the game concept is approved."
 
 Extract from game-concept.md:
 - Game title (working title)

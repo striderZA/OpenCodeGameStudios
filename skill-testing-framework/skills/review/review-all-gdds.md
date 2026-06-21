@@ -123,13 +123,13 @@ review; delegating to a director gate would create a circular dependency.
 **Expected behavior:**
 1. Skill attempts to read files in `design/gdd/`
 2. No files found — skill outputs an error with guidance
-3. Skill recommends running `/brainstorm` and `/design-system` before re-running
+3. Skill recommends running `/concept-brainstorm` and `/design-system` before re-running
 4. Skill does NOT produce a verdict (CONSISTENT / MINOR ISSUES / MAJOR ISSUES)
 
 **Assertions:**
 - [ ] Skill outputs a clear error message when no GDDs are found
 - [ ] No verdict is produced when the directory is empty
-- [ ] Skill recommends the correct next action (`/brainstorm` or `/design-system`)
+- [ ] Skill recommends the correct next action (`/concept-brainstorm` or `/design-system`)
 - [ ] Skill does NOT crash or produce a partial report
 
 ---

@@ -1291,7 +1291,7 @@ We follow the "skill/agent adapter first" approach. Each phase lands a coherent 
 - ✅ Documentation: `docs/pi-compatibility.md`, updated `AGENTS.md`, new authoring guides
 
 **Success criteria:**
-- A user can run a full OCGS scenario (`/start`, `/brainstorm`, `/dev-story`, `/code-review`, `/story-done`) in Pi with no degraded experience compared to OpenCode.
+- A user can run a full OCGS scenario (`/start`, `/concept-brainstorm`, `/dev-story`, `/code-review`, `/story-done`) in Pi with no degraded experience compared to OpenCode.
 - Pi users get richer TUI feedback (custom modals, progress indicators) for the major workflows.
 - The framework is discoverable via `pi search` (or whatever Pi's package discovery is).
 - A sample game project demonstrates dual-harness use.
@@ -1383,7 +1383,7 @@ A user with no prior OCGS experience can:
 3. `node .opencode/modules/install.mjs add godot --with-pi` (installs the Godot module for both harnesses).
 4. `opencode` (uses OpenCode; works exactly as today).
 5. `pi` (uses Pi; gets the same agent prompts, same skills, same commands, with Pi-specific TUI enhancements).
-6. The same `/start`, `/brainstorm`, `/dev-story` flow works in both harnesses.
+6. The same `/start`, `/concept-brainstorm`, `/dev-story` flow works in both harnesses.
 7. The audit log file is byte-identical for the same scenario run in both harnesses.
 8. Documentation at `docs/pi-compatibility.md` walks a new user through both flows.
 
@@ -1506,7 +1506,7 @@ The following are explicitly **not** part of this design. They may be revisited 
 ### Final v1.0 acceptance (post-Phase 4)
 
 - [ ] All Phase 1-4 acceptance criteria are met.
-- [ ] A new user can complete the `/start` → `/brainstorm` → `/dev-story` → `/code-review` → `/story-done` flow in both OpenCode and Pi with no degraded experience.
+- [ ] A new user can complete the `/start` → `/concept-brainstorm` → `/dev-story` → `/code-review` → `/story-done` flow in both OpenCode and Pi with no degraded experience.
 - [ ] The audit log file is byte-identical for the same scenario run in both harnesses.
 - [ ] Documentation covers both flows and is navigable.
 - [ ] All parity tests pass on a sample game project.

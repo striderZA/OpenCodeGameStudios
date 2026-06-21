@@ -24,7 +24,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 - [ ] Has ≥2 phase headings
 - [ ] Contains verdict keyword: COMPLETE
 - [ ] Contains "May I write" collaborative protocol language before updating technical-preferences.md
-- [ ] Has a next-step handoff (e.g., `/brainstorm` or `/start` depending on flow)
+- [ ] Has a next-step handoff (e.g., `/concept-brainstorm` or `/start` depending on flow)
 
 ---
 

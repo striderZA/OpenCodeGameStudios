@@ -43,7 +43,7 @@ None. `/skill-test` is a meta-utility skill. No director gates apply.
 ### Case 1: Static Mode — Well-formed skill, all 7 checks pass, COMPLIANT
 
 **Fixture:**
-- `.opencode/skills/brainstorm/SKILL.md` exists and is well-formed:
+- `.opencode/skills/concept-brainstorm/SKILL.md` exists and is well-formed:
   - Has all required frontmatter fields
   - Has ≥2 phase headings
   - Has verdict keywords
@@ -52,10 +52,10 @@ None. `/skill-test` is a meta-utility skill. No director gates apply.
   - Documents director gates
   - Documents gate mode behavior (lean/solo skips)
 
-**Input:** `/skill-test static brainstorm`
+**Input:** `/skill-test static concept-brainstorm`
 
 **Expected behavior:**
-1. Skill reads `.opencode/skills/brainstorm/SKILL.md`
+1. Skill reads `.opencode/skills/concept-brainstorm/SKILL.md`
 2. Skill runs all 7 structural checks
 3. All 7 checks pass
 4. Skill outputs a PASS/FAIL table with all 7 checks marked PASS

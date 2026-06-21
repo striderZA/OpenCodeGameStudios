@@ -33,7 +33,7 @@ for systems decomposition.
 
 **Required:**
 - Read `design/gdd/game-concept.md` — **fail with a clear message if missing**:
-  > "No game concept found at `design/gdd/game-concept.md`. Run `/brainstorm` first
+  > "No game concept found at `design/gdd/game-concept.md`. Run `/concept-brainstorm` first
   > to create one, then come back to decompose it into systems."
 
 **Optional (read if they exist):**

@@ -123,15 +123,15 @@ None. `/skill-improve` is a meta-utility skill. No director gates apply.
 ### Case 4: Skill Already Perfect — No Improvements Needed
 
 **Fixture:**
-- `.opencode/skills/brainstorm/SKILL.md` has no static failures
+- `.opencode/skills/concept-brainstorm/SKILL.md` has no static failures
 - Category score is also 5/5 (if applicable)
 
-**Input:** `/skill-improve brainstorm`
+**Input:** `/skill-improve concept-brainstorm`
 
 **Expected behavior:**
-1. Skill runs `/skill-test static brainstorm` — 7/7 checks pass
+1. Skill runs `/skill-test static concept-brainstorm` — 7/7 checks pass
 2. If category applies: 5/5 criteria pass
-3. Skill outputs: "No improvements needed — brainstorm is fully compliant"
+3. Skill outputs: "No improvements needed — concept-brainstorm is fully compliant"
 4. Skill exits without proposing any changes
 5. No "May I write" is asked; no files are modified
 6. Verdict is NO CHANGE

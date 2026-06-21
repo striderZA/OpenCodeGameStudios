@@ -158,7 +158,7 @@ They have a PR-SPRINT or PR-MILESTONE gate at specific mode thresholds.
 
 ### `utility`
 
-**Skills**: start, help, brainstorm, onboard, adopt, hotfix, prototype, localize,
+**Skills**: start, help, concept-brainstorm, onboard, adopt, hotfix, prototype, localize,
 launch-checklist, release-checklist, smoke-check, soak-test, test-setup, test-helpers,
 regression-suite, qa-plan, bug-triage, bug-report, playtest-report, asset-spec,
 reverse-document, project-stage-detect, setup-engine, skill-test, skill-improve,
