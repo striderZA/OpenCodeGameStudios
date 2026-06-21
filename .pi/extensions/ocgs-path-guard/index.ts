@@ -1,5 +1,4 @@
 import type { ExtensionAPI, ToolCallEvent } from "@earendil-works/pi-coding-agent";
-import { minimatch } from "minimatch";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -12,6 +11,55 @@ interface Rule {
   paths: string[];
   body: string;
   source: string;
+}
+
+/**
+ * Minimal glob match for OCGS path-scoped rules.
+ * Handles the patterns used in .agents/rules/:
+ *   - 'src/ai/**'  -> matches any path under src/ai/
+ *   - '*.gd'       -> matches paths ending with .gd
+ *   - double-star wildcards match multi-directory paths
+ *   - Exact paths also work.
+ */
+function globMatch(filePath: string, pattern: string): boolean {
+  const p = filePath.replace(/\\/g, "/");
+  const g = pattern.replace(/\\/g, "/");
+
+  // Exact match
+  if (p === g) return true;
+
+  // Pattern has trailing /** — match prefix
+  if (g.endsWith("/**")) {
+    const prefix = g.slice(0, -3);
+    return p.startsWith(prefix);
+  }
+
+  // Pattern is /** — match everything
+  if (g === "**") return true;
+
+  // Pattern has ** in middle — match prefix + suffix
+  const parts = g.split("/**/");
+  if (parts.length === 2) {
+    const prefix = parts[0];
+    const suffix = parts[1];
+    if (suffix.includes("*")) {
+      const escapedSuffix = suffix.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*");
+      const escapedPrefix = prefix.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+      return new RegExp("^" + escapedPrefix + ".*" + escapedSuffix + "$").test(p);
+    }
+    return p.startsWith(prefix) && p.endsWith(suffix);
+  }
+
+  // Single * wildcard (no path separators)
+  if (g.includes("*") && !g.includes("**")) {
+    const regexStr = g.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^/]*");
+    return new RegExp("^" + regexStr + "$").test(p);
+  }
+
+  // Bare directory prefix — match path starting with it
+  if (!g.includes("*") && p.startsWith(g + "/")) return true;
+
+  return false;
 }
 
 function parseRuleFile(filePath: string): Rule | null {
@@ -51,11 +99,11 @@ function loadRules(): Rule[] {
   return rules;
 }
 
-function matchRules(rules: Rule[], paths: string[]): Rule[] {
+function matchRules(rules: Rule[], filePaths: string[]): Rule[] {
   const matched = new Map<string, Rule>();
-  for (const filePath of paths) {
+  for (const filePath of filePaths) {
     for (const rule of rules) {
-      if (rule.paths.some(glob => minimatch(filePath, glob))) {
+      if (rule.paths.some(glob => globMatch(filePath, glob))) {
         matched.set(rule.name, rule);
       }
     }
@@ -93,8 +141,8 @@ export default function (pi: ExtensionAPI) {
     if ((event.toolName === "read" || event.toolName === "edit" || event.toolName === "write") && event.input.path) {
       filePath = event.input.path as string;
     } else if (event.toolName === "bash" && typeof event.input.command === "string") {
-      const match = event.input.command.match(/(?:^|\s)(src|design|assets|tests|prototypes)\/[\w\-./]+/);
-      if (match) filePath = match[0].trim();
+      const match = event.input.command.match(/(?:^|\s)([a-z_][\w\-./]+)/);
+      if (match) filePath = match[1];
     }
 
     if (filePath) {
