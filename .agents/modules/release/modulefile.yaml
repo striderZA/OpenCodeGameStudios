@@ -1,0 +1,13 @@
+name: release
+version: "0.6.0"
+description: "Release management, CI/CD, sprint planning, changelogs, hotfixes, launch readiness."
+depends: [core]
+provides:
+  agents: [release-manager, devops-engineer, analytics-engineer]
+  skills: [team-release, release-checklist, launch-checklist, milestone-review,
+           sprint-plan, sprint-status, retrospective, changelog, patch-notes, hotfix, day-one-patch]
+  commands: [team-release, release-checklist, launch-checklist, milestone-review,
+             sprint-plan, sprint-status, retrospective, hotfix, day-one-patch]
+  rules: []
+plugged-into:
+  engines: []

@@ -1,0 +1,11 @@
+name: engine-sfml3
+version: "0.6.0"
+description: "SFML 3 (Simple and Fast Multimedia Library) engine specialist — C++ multimedia library for graphics, audio, networking, and windowing."
+depends: [core]
+provides:
+  agents: [sfml-specialist]
+  skills: []
+  commands: []
+  rules: []
+plugged-into:
+  engines: [sfml3]

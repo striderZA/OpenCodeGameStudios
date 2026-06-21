@@ -1,0 +1,11 @@
+name: architecture
+version: "0.6.0"
+description: "Technical architecture planning, ADRs, control manifest, cross-document traceability."
+depends: [core]
+provides:
+  agents: [lead-programmer]
+  skills: [architecture-review, create-control-manifest, propagate-design-change]
+  commands: [architecture-review, create-control-manifest]
+  rules: [design-docs]
+plugged-into:
+  engines: []

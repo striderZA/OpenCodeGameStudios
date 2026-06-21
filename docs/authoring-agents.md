@@ -1,6 +1,6 @@
 # Agent Authoring Guide
 
-Every OCGS agent is a markdown file in `.opencode/agents/` with structured
+Every OCGS agent is a markdown file in `.agents/agents/` with structured
 frontmatter and sections. This guide covers the template, conventions, and
 testing process.
 
@@ -9,10 +9,12 @@ testing process.
 ```markdown
 ---
 description: "The [Role Name] is the authority on [domain]."
-mode: subagent          # or "primary" for directors
-model: opencode-go/qwen3.6-plus
 maxTurns: 20            # sessions: 30, subagents: 20
 ---
+
+> **Note:** Agent frontmatter is harness-neutral. Model assignment, mode
+> (primary/subagent), and tool permissions are configured in the harness
+> (`.opencode/` for OpenCode, `.pi/` for Pi).
 
 You are the [Role Name] for a [Engine] game project. [2-3 sentence identity].
 

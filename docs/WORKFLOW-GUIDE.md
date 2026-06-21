@@ -3,8 +3,11 @@
 > **How to go from zero to a shipped game using the Agent Architecture.**
 >
 > This guide walks you through every phase of game development using the
-> 48-agent system, 68 slash commands, and 12 automated hooks. It assumes you
+> 51-agent system, 54 slash commands, and 3 TypeScript plugins. It assumes you
 > have OpenCode installed and are working from the project root.
+>
+> > **Pi users:** See [`docs/pi-workflow.md`](pi-workflow.md) for harness-specific differences and
+> > [`docs/pi-compatibility.md`](pi-compatibility.md) for setup.
 >
 > The pipeline has 7 phases. Each phase has a formal gate (`/gate-check`)
 > that must pass before you advance. The authoritative phase sequence is
@@ -1247,7 +1250,7 @@ The system has 12 hooks that run automatically:
 | `validate-commit.sh` | Before commit | Checks for design doc references, valid JSON, no hardcoded values |
 | `validate-push.sh` | Before push | Warns on pushes to main/develop |
 | `validate-assets.sh` | Before commit | Checks asset naming and size |
-| `validate-skill-change.sh` | Skill file written | Advises running `/skill-test` after `.opencode/skills/` changes |
+| `validate-skill-change.sh` | Skill file written | Advises running `/skill-test` after `.agents/skills/` changes |
 | `log-agent.sh` | Agent start | Logs agent invocations for audit trail |
 | `log-agent-stop.sh` | Agent stop | Completes agent audit trail (start + stop) |
 | `session-stop.sh` | Session end | Final session logging |
@@ -1416,7 +1419,7 @@ conflicts go to `producer`.
 
 ## Appendix B: Slash Command Quick-Reference
 
-### All 66 Commands by Category
+### All 54 Commands by Category
 
 #### Onboarding and Navigation (5)
 

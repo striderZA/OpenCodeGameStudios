@@ -1,0 +1,17 @@
+{
+  "aseprite": {
+    "type": "local",
+    "command": [
+      "uv",
+      "--directory",
+      "tools/aseprite-mcp",
+      "run",
+      "-m",
+      "aseprite_mcp"
+    ],
+    "enabled": true,
+    "environment": {
+      "ASEPRITE_PATH": "{env:ASEPRITE_PATH}"
+    }
+  }
+}

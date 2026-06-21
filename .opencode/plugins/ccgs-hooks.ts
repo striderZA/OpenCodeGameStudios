@@ -370,7 +370,7 @@ export function validateCommitFiles(projectRoot: string, stagedFiles: string[]):
   return { warnings, errors }
 }
 
-const SKILL_CHANGE_RE = /\.opencode\/(?:skills|commands)\/([^/]+)/
+const SKILL_CHANGE_RE = /\.(?:opencode|agents)\/(?:skills|commands)\/([^/]+)/
 
 export function detectSkillChange(filePath: string): string | null {
   const match = filePath.match(SKILL_CHANGE_RE)

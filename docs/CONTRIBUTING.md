@@ -21,11 +21,11 @@ The OCGS framework has 5 component types:
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| **Agents** | `.opencode/agents/` | Agent definitions (49 files) |
-| **Skills** | `.opencode/skills/` | Skill workflows (76 directories) |
-| **Commands** | `.opencode/commands/` | Slash commands (51 files) |
-| **Rules** | `.opencode/rules/` | Coding standards (11 files) |
-| **Plugins** | `.opencode/plugins/` | TypeScript hooks |
+| **Agents** | `.agents/agents/` | Agent definitions (51 files) |
+| **Skills** | `.agents/skills/` | Skill workflows (77 directories) |
+| **Commands** | `.agents/commands/` | Slash commands (54 files) |
+| **Rules** | `.agents/rules/` | Coding standards (11 files) |
+| **Plugins** | `.opencode/plugins/` | OpenCode TypeScript hooks |
 
 Components interact as follows:
 - A **command** routes to a **skill** via frontmatter `skill:` field
@@ -37,7 +37,7 @@ Components interact as follows:
 
 ### Before You Start
 
-Verify an agent for this role doesn't already exist. Check `.opencode/agents/`
+Verify an agent for this role doesn't already exist. Check `.agents/agents/`
 and the [Studio Hierarchy](../AGENTS.md#studio-hierarchy).
 
 ### Agent Template
@@ -203,7 +203,7 @@ Map system categories to agents in a routing table:
 
 ## Adding a Command
 
-Commands are thin routing files in `.opencode/commands/`. Each command maps
+Commands are thin routing files in `.agents/commands/`. Each command maps
 to an existing skill:
 
 ```markdown
@@ -222,12 +222,12 @@ Brief usage note.
 | Field | Description |
 |-------|-------------|
 | `description` | Shown in command menu |
-| `skill` | Must match a directory in `.opencode/skills/` |
+| `skill` | Must match a directory in `.agents/skills/` |
 | `category` | One of: onboarding, design, architecture, stories, qa, prototyping, team, release, ops |
 
 ## Modifying Rules
 
-Rules files in `.opencode/rules/` define path-scoped coding standards.
+Rules files in `.agents/rules/` define path-scoped coding standards.
 
 Each rule should include:
 - A clear list of rules (bullet points)
