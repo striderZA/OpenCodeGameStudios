@@ -205,7 +205,7 @@ Conventional-commit changelog generation with TUI modal.
 ### `/generate-changelog` command
 
 ```typescript
-pi.registerCommand("changelog", {
+pi.registerCommand("generate-changelog", {
   description: "Generate CHANGELOG.md from conventional commits",
 })
 ```
