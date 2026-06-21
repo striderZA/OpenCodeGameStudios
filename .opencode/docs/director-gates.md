@@ -36,8 +36,8 @@ argument. This overrides the global config for that run only.
 
 Examples:
 ```
-/brainstorm space horror           → uses global mode
-/brainstorm space horror --review full   → forces full mode this run
+/concept-brainstorm space horror           → uses global mode
+/concept-brainstorm space horror --review full   → forces full mode this run
 /architecture-decision --review solo     → skips all gates this run
 ```
 

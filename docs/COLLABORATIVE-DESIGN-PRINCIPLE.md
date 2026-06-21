@@ -215,15 +215,15 @@ Agent: [Writes code, runs through gameplay-code rule checks, fixes issues]
 
 ### 🎯 Brainstorming Tasks
 
-**Example:** `/brainstorm roguelike`
+**Example:** `/concept-brainstorm roguelike`
 
 ```
 ❌ WRONG:
-User: "/brainstorm roguelike"
+User: "/concept-brainstorm roguelike"
 Skill: [Generates 1 concept and writes it to design/concept.md]
 
 ✅ RIGHT:
-User: "/brainstorm roguelike"
+User: "/concept-brainstorm roguelike"
 Skill: "I'll help you brainstorm roguelike concepts using professional
        ideation frameworks. First:
 

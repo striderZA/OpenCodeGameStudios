@@ -50,7 +50,7 @@ Liam spent 2 weeks exploring 3 ideas:
 would burn half his timeline in process overhead.
 
 **Liam's path:**
-1. `/brainstorm "time-rewind platformer"` — formalize the concept (1 day)
+1. `/concept-brainstorm "time-rewind platformer"` — formalize the concept (1 day)
 2. `/hybrid-prototype "time-rewind platformer"` — build vertical slice (3 days)
 3. Playtest with 3 friends — fun validated
 4. `/gate-check` → enter Hybrid Production mode
@@ -104,7 +104,7 @@ requirements push toward Full, but the design isn't fully documented yet.
 Start Hybrid, formalize quickly, then upgrade.
 
 **The team's path:**
-1. `/brainstorm "co-op spaceship management"` — formalize concept (2 days)
+1. `/concept-brainstorm "co-op spaceship management"` — formalize concept (2 days)
 2. Write GDDs for core systems: ship management, crew roles, missions (2 weeks)
 3. Build vertical slice in 6 weeks via `/hybrid-prototype`
 4. Publisher signs off on vertical slice — milestone achieved
@@ -171,7 +171,7 @@ Priya runs `/gate-check workflow-selection` at month 3 (current state):
    - Move `src/` code to `prototypes/archive/mvp/`
    - Start fresh `src/` with proper structure
 3. **Formalize the design**:
-   - `/brainstorm "puzzle RPG with crafting"` — get pillars down
+   - `/concept-brainstorm "puzzle RPG with crafting"` — get pillars down
    - `/design-system puzzle-core` — write a proper GDD
    - `/design-system crafting` — optional, defer if not MVP
 4. **Upgrade to Full OCGS** (score 6 and growing team signal this):

@@ -20,7 +20,7 @@ any available command.
 
 | Command | Purpose |
 |---------|---------|
-| `/brainstorm` | Guided ideation using professional studio methods (MDA, SDT, Bartle, verb-first) |
+| `/concept-brainstorm` | Guided ideation using professional studio methods (MDA, SDT, Bartle, verb-first) |
 | `/map-systems` | Decompose game concept into systems, map dependencies, prioritize design order |
 | `/design-system` | Guided, section-by-section GDD authoring for a single game system |
 | `/quick-design` | Lightweight design spec for small changes — tuning, tweaks, minor additions |

@@ -77,7 +77,7 @@ None. `/onboard` is a read-only orientation skill. No director gates apply.
 **Expected behavior:**
 1. Skill reads all config files and detects unconfigured state
 2. Skill produces a minimal summary: "This project has not been configured yet"
-3. Output explains the onboarding workflow: `/start` → `/setup-engine` → `/brainstorm`
+3. Output explains the onboarding workflow: `/start` → `/setup-engine` → `/concept-brainstorm`
 4. Skill suggests running `/start` as the immediate next step
 5. Verdict is ONBOARDING COMPLETE (informational, not a failure)
 

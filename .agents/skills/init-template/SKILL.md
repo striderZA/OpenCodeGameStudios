@@ -152,6 +152,6 @@ Print a completion summary:
 
   What's next:
   - Run /setup-engine [engine] to configure your engine docs
-  - Run /brainstorm to start designing your game concept
+  - Run /concept-brainstorm to start designing your game concept
   - Run /start for guided onboarding
 ```

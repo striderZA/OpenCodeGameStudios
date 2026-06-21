@@ -1,8 +1,8 @@
-# Skill Test Spec: /brainstorm
+# Skill Test Spec: /concept-brainstorm
 
 ## Skill Summary
 
-`/brainstorm` facilitates guided game concept ideation. It presents 2-4 concept
+`/concept-brainstorm` facilitates guided game concept ideation. It presents 2-4 concept
 options with pros/cons, lets the user choose and refine a concept, and produces
 a structured `design/gdd/game-concept.md` document. The skill is collaborative —
 it asks questions before proposing options and iterates until the user approves
@@ -51,7 +51,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 - No existing `design/gdd/game-concept.md`
 - `production/review-mode.txt` contains `full`
 
-**Input:** `/brainstorm`
+**Input:** `/concept-brainstorm`
 
 **Expected behavior:**
 1. Skill asks the user questions about genre, scope, and target feeling
@@ -80,7 +80,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 - `production/review-mode.txt` contains `full`
 - CD-PILLARS gate returns REJECT: "The concept has no identifiable creative pillar"
 
-**Input:** `/brainstorm`
+**Input:** `/concept-brainstorm`
 
 **Expected behavior:**
 1. CD-PILLARS gate returns REJECT with specific feedback
@@ -103,7 +103,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 - No existing game concept
 - `production/review-mode.txt` contains `lean`
 
-**Input:** `/brainstorm`
+**Input:** `/concept-brainstorm`
 
 **Expected behavior:**
 1. Concept options are presented and user selects one
@@ -126,7 +126,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 - No existing game concept
 - `production/review-mode.txt` contains `solo`
 
-**Input:** `/brainstorm`
+**Input:** `/concept-brainstorm`
 
 **Expected behavior:**
 1. Concept options are presented and user selects one
@@ -150,7 +150,7 @@ In `solo` mode: all 4 gates are skipped. Output notes all 4 as: "[GATE-ID] skipp
 - `production/review-mode.txt` contains `full`
 - PR-SCOPE gate returns CONCERNS: "The concept scope would require 18+ months for a solo developer"
 
-**Input:** `/brainstorm`
+**Input:** `/concept-brainstorm`
 
 **Expected behavior:**
 1. PR-SCOPE gate returns CONCERNS with specific scope feedback

@@ -157,9 +157,9 @@ Present the recommendation:
 - Team experience ([answer]) → weight toward [workflow]
 
 ### Next Step
-- **If Hybrid**: Begin your concept document with `/brainstorm` or jump straight
+- **If Hybrid**: Begin your concept document with `/concept-brainstorm` or jump straight
   into `/hybrid-prototype` with your winning idea.
-- **If Full OCGS**: Run `/brainstorm [winning-idea]` to formalize your concept,
+- **If Full OCGS**: Run `/concept-brainstorm [winning-idea]` to formalize your concept,
   then `/setup-engine` to configure the engine.
 ```
 
@@ -576,10 +576,10 @@ For **workflow-selection PASS**:
 ```
 Gate passed. What would you like to do next?
 
-[If hybrid] [A] Run /brainstorm [winning-idea] — formalize your concept
+[If hybrid] [A] Run /concept-brainstorm [winning-idea] — formalize your concept
              [B] Run /hybrid-prototype [winning-idea] — jump straight into prototyping
              [C] Stop here for this session
-[If full]   [A] Run /brainstorm [winning-idea] — formalize your concept
+[If full]   [A] Run /concept-brainstorm [winning-idea] — formalize your concept
              [B] Run /setup-engine — choose and configure your engine
              [C] Stop here for this session
 ```
@@ -612,11 +612,11 @@ Based on the verdict, suggest specific next steps:
 
 - **No explore prototypes yet?** → `/explore [idea-name]` to prototype ideas before workflow selection
 - **Workflow not yet selected?** → `/gate-check workflow-selection` to choose Hybrid or Full OCGS
-- **Selected Hybrid but no concept?** → `/brainstorm [winning-idea]` to formalize, then `/hybrid-prototype` to build
+- **Selected Hybrid but no concept?** → `/concept-brainstorm [winning-idea]` to formalize, then `/hybrid-prototype` to build
 - **Selected Full OCGS but no engine?** → `/setup-engine [engine-name]` to configure the engine
 - **No art bible?** → `/art-bible` to create the visual identity specification
 - **Art bible exists but no asset specs?** → `/asset-spec system:[name]` to generate per-asset visual specs and generation prompts from approved GDDs
-- **No game concept?** → `/brainstorm` to create one
+- **No game concept?** → `/concept-brainstorm` to create one
 - **No systems index?** → `/map-systems` to decompose the concept into systems
 - **Missing design docs?** → `/reverse-document` or delegate to `game-designer`
 - **Small design change needed?** → `/quick-design` for changes under ~4 hours (bypasses full GDD pipeline)

@@ -26,9 +26,9 @@ If no engine is specified, run an interactive engine selection process:
 
 ### Check for existing game concept
 - Read `design/gdd/game-concept.md` if it exists — extract genre, scope, platform
-  targets, art style, team size, and any engine recommendation from `/brainstorm`
+  targets, art style, team size, and any engine recommendation from `/concept-brainstorm`
 - If no concept exists, inform the user:
-  > "No game concept found. Consider running `/brainstorm` first to discover what
+  > "No game concept found. Consider running `/concept-brainstorm` first to discover what
   > you want to build — it will also recommend an engine. Or tell me about your
   > game and I can help you pick."
 
@@ -669,10 +669,10 @@ Agent Config:    [verified]
 
 Next Steps:
 1. Review docs/engine-reference/<engine>/VERSION.md
-2. [If from /brainstorm] Run /map-systems to decompose your concept into individual systems
-3. [If from /brainstorm] Run /design-system to author per-system GDDs (guided, section-by-section)
-4. [If from /brainstorm] Run /prototype [core-mechanic] to test the core loop
-5. [If fresh start] Run /brainstorm to discover your game concept
+2. [If from /concept-brainstorm] Run /map-systems to decompose your concept into individual systems
+3. [If from /concept-brainstorm] Run /design-system to author per-system GDDs (guided, section-by-section)
+4. [If from /concept-brainstorm] Run /prototype [core-mechanic] to test the core loop
+5. [If fresh start] Run /concept-brainstorm to discover your game concept
 6. Create your first milestone: /sprint-plan new
 ```
 

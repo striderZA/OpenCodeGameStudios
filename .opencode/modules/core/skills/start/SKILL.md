@@ -55,11 +55,11 @@ Wait for the user's selection. Do not proceed until they respond.
 The user needs creative exploration before anything else.
 
 1. Acknowledge that starting from zero is completely fine
-2. Briefly explain what `/brainstorm` does (guided ideation using professional frameworks — MDA, player psychology, verb-first design). Mention that it has two modes: `/brainstorm open` for fully open exploration, or `/brainstorm [hint]` if they have even a vague theme (e.g., "space", "cozy", "horror").
-3. Recommend running `/brainstorm open` as the next step, but invite them to use a hint if something comes to mind
+2. Briefly explain what `/concept-brainstorm` does (guided ideation using professional frameworks — MDA, player psychology, verb-first design). Mention that it has two modes: `/concept-brainstorm open` for fully open exploration, or `/concept-brainstorm [hint]` if they have even a vague theme (e.g., "space", "cozy", "horror").
+3. Recommend running `/concept-brainstorm open` as the next step, but invite them to use a hint if something comes to mind
 4. Show the recommended path:
    **Concept phase:**
-   - `/brainstorm open` — discover your game concept
+   - `/concept-brainstorm open` — discover your game concept
    - `/setup-engine` — configure the engine (brainstorm will recommend one)
    - `/art-bible` — define visual identity (uses the Visual Identity Anchor brainstorm produces)
    - `/map-systems` — decompose the concept into systems
@@ -84,10 +84,10 @@ The user needs creative exploration before anything else.
 
 1. Ask them to share their vague idea — even a few words is enough
 2. Validate the idea as a starting point (don't judge or redirect)
-3. Recommend running `/brainstorm [their hint]` to develop it
+3. Recommend running `/concept-brainstorm [their hint]` to develop it
 4. Show the recommended path:
    **Concept phase:**
-   - `/brainstorm [hint]` — develop the idea into a full concept
+   - `/concept-brainstorm [hint]` — develop the idea into a full concept
    - `/setup-engine` — configure the engine
    - `/art-bible` — define visual identity (uses the Visual Identity Anchor brainstorm produces)
    - `/map-systems` — decompose the concept into systems
@@ -114,11 +114,11 @@ The user needs creative exploration before anything else.
 2. Acknowledge the concept, then use `question` to offer two paths:
    - **Prompt**: "How would you like to proceed?"
    - **Options**:
-     - `Formalize it first` — Run `/brainstorm [concept]` to structure it into a proper game concept document
+     - `Formalize it first` — Run `/concept-brainstorm [concept]` to structure it into a proper game concept document
      - `Jump straight in` — Go to `/setup-engine` now and write the GDD manually afterward
 3. Show the recommended path:
    **Concept phase:**
-   - `/brainstorm` or `/setup-engine` — (their pick from step 2)
+   - `/concept-brainstorm` or `/setup-engine` — (their pick from step 2)
    - `/art-bible` — define visual identity (after brainstorm if run, or after concept doc exists)
    - `/design-review` — validate the concept doc
    - `/map-systems` — decompose the concept into individual systems

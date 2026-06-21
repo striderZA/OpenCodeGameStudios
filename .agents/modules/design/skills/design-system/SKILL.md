@@ -73,7 +73,7 @@ primary advantage over ad-hoc design — it arrives informed.
 ### 2a: Required Reads
 
 - **Game concept**: Read `design/gdd/game-concept.md` — fail if missing:
-  > "No game concept found. Run `/brainstorm` first."
+  > "No game concept found. Run `/concept-brainstorm` first."
 - **Systems index**: Read `design/gdd/systems-index.md` — fail if missing:
   > "No systems index found. Run `/map-systems` first to map your systems."
 - **Target system**: Find the system in the index. If not listed, warn:

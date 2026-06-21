@@ -88,7 +88,7 @@ Collaborate with `creative-director` and `game-designer` (via Task or conversati
 | Verdict | Meaning | Next Step |
 |---------|---------|-----------|
 | **ITERATE** | Core is promising, but needs adjustment | Run `/hybrid-prototype [revised-concept]` |
-| **PIVOT** | The concept doesn't work, but a related one might | Run `/brainstorm` or `/hybrid-prototype [new-direction]` |
+| **PIVOT** | The concept doesn't work, but a related one might | Run `/concept-brainstorm` or `/hybrid-prototype [new-direction]` |
 | **PRODUCTIONIZE** | It's fun and proven — move to production | Begin GDD in `/design-system`, architecture in `/create-architecture` |
 | **KILL** | It's not fun and no clear fix | Stop. The prototype report is the deliverable. |
 

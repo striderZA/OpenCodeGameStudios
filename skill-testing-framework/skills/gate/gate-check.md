@@ -67,13 +67,13 @@ Verified automatically by `/skill-test static` — no fixture needed.
 2. Skill marks required artifact as missing (not present)
 3. Skill outputs FAIL verdict
 4. Skill lists blocker: "No game concept document found"
-5. Skill suggests remediation: run `/brainstorm` to create one
+5. Skill suggests remediation: run `/concept-brainstorm` to create one
 
 **Assertions:**
 - [ ] Verdict is FAIL (not PASS or CONCERNS) when required artifacts are missing
 - [ ] Output explicitly names `design/gdd/game-concept.md` as missing
 - [ ] Output includes a "Blockers" section with at least 1 item
-- [ ] Output recommends `/brainstorm` as the remediation action
+- [ ] Output recommends `/concept-brainstorm` as the remediation action
 - [ ] Skill does NOT write `production/stage.txt` when verdict is FAIL
 
 ---

@@ -86,12 +86,12 @@ In `solo` mode: both gates are skipped with equivalent notes.
 **Expected behavior:**
 1. Skill attempts to read `design/gdd/game-concept.md`
 2. File not found
-3. Skill outputs: "No game concept found. Run `/brainstorm` to create one, then return to `/map-systems`."
+3. Skill outputs: "No game concept found. Run `/concept-brainstorm` to create one, then return to `/map-systems`."
 4. Skill exits without creating systems-index.md
 
 **Assertions:**
 - [ ] Skill outputs a clear error naming the missing file path
-- [ ] Skill recommends `/brainstorm` as the next action
+- [ ] Skill recommends `/concept-brainstorm` as the next action
 - [ ] No systems-index.md is created
 - [ ] Verdict is BLOCKED
 
