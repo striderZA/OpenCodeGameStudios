@@ -1,9 +1,9 @@
 # Agent Roster
 
 The following agents are available. Each has a dedicated definition file in
-`.opencode/agents/`. Agents are organized into **theme modules** under
-`.opencode/modules/<name>/agents/` — install only the modules you need via
-`node .opencode/modules/install.mjs add <name>`. Use the agent best suited
+`.agents/agents/`. Agents are organized into **theme modules** under
+`.agents/modules/<name>/agents/` — install only the modules you need via
+`node .opencode/modules/install.mjs add <name>` (or `node tools/migrate-to-agents.mjs` after the initial migration). Use the agent best suited
 to the task at hand. When a task spans multiple domains, the coordinating
 agent (usually `producer` or the domain lead) should delegate to specialists.
 

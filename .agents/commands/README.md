@@ -1,13 +1,13 @@
 # Commands
 
 Slash commands available in OpenCode. Each command is a thin routing file that
-maps to the corresponding skill in `.opencode/skills/`.
+maps to the corresponding skill in `.agents/skills/`.
 
 ## Adding a Command
 
 1. Create `{command-name}.md` in this directory
 2. Frontmatter requires: `name`, `description`, `skill`, `category`
-3. The `skill` field must match a directory name in `.opencode/skills/`
+3. The `skill` field must match a directory name in `.agents/skills/`
 4. The body should describe what the command does and any arguments
 
 ## Categories

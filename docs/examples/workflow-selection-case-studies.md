@@ -218,4 +218,4 @@ to reassess:
 
 - `docs/hybrid-workflow.md` — Hybrid workflow overview and comparison
 - `docs/workflow-transitions.md` — How to transition between workflows
-- `.opencode/skills/gate-check/SKILL.md` — Workflow Selection gate implementation
+- `.agents/skills/gate-check/SKILL.md` — Workflow Selection gate implementation

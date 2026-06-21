@@ -140,7 +140,7 @@ This project supports two workflow modes. Choose the one that fits your team siz
 
 - **All phases formal**: Every feature goes through design → architecture → stories → code → tests → review.
 - **Best for**: Teams of 5–15, known designs, long timelines, publisher requirements.
-- **See**: Full documentation in `docs/` and `.opencode/skills/`.
+- **See**: Full documentation in `docs/` and `.agents/skills/`.
 
 ## Getting Started
 
@@ -155,7 +155,7 @@ Or jump directly to:
 ## Available Commands
 
 Type `/` in OpenCode to see all available commands. All 50 commands route to
-corresponding skills in `.opencode/skills/`.
+corresponding skills in `.agents/skills/`.
 
 | Category | Commands |
 |----------|----------|
@@ -214,8 +214,8 @@ Before merging to `development`, the CI must pass:
 ## Notes
 
 This is a port of [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)
-to OpenCode. The 77 skills are in `.opencode/skills/`, the 51 agents are in
-`.opencode/agents/`, and the 12 original bash hooks are implemented as a
+to OpenCode. The 77 skills are in `.agents/skills/`, the 51 agents are in
+`.agents/agents/`, and the 12 original bash hooks are implemented as a
 TypeScript plugin in `.opencode/plugins/ccgs-hooks.ts`.
 
 Additional plugins (`drift-detector.ts`, `changelog-generator.ts`) extend the

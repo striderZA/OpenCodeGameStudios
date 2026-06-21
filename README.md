@@ -7,9 +7,9 @@
 > ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework with workflow selection, phase gates, pre-workflow prototyping, and hybrid discovery-to-production pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Skills](https://img.shields.io/badge/skills-76-brightgreen)](.opencode/skills/)
-[![Commands](https://img.shields.io/badge/commands-51-blue)](.opencode/commands/)
+[![Agents](https://img.shields.io/badge/agents-51-blueviolet)](.agents/agents/)
+[![Skills](https://img.shields.io/badge/skills-77-brightgreen)](.agents/skills/)
+[![Commands](https://img.shields.io/badge/commands-54-blue)](.agents/commands/)
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
 [![Tests](https://img.shields.io/badge/tests-183-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
@@ -70,11 +70,11 @@ and runs on [OpenCode](https://opencode.ai).
 
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 76 skills (`.opencode/skills/`) | ✅ +4 |
-| ⌨️ **Commands** | — | 51 commands (`.opencode/commands/`) | ✅ New |
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 51 agents (`.agents/agents/`) | ✅ |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.agents/skills/`) | ✅ +5 |
+| ⌨️ **Commands** | — | 54 commands (`.agents/commands/`) | ✅ New |
 | 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **183 tests** |
-| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
+| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
 
 ---
@@ -134,7 +134,7 @@ node .opencode/modules/install.mjs info core
 node .opencode/modules/install.mjs remove art
 ```
 
-Module sources live in `.opencode/modules/<name>/` and are copied into the
+Module sources live in `.agents/modules/<name>/` and are copied into the
 framework directories on install. User-modified files are detected during
 removal and left in place.
 
@@ -167,10 +167,10 @@ Add them to your `opencode.json`:
 
 | CCGS (Claude Code) | OpenCode |
 |--------------------|----------|
-| `.claude/skills/*.md` → | `.opencode/skills/*.md` |
-| `.claude/agents/*.md` → | `.opencode/agents/*.md` |
+| `.claude/skills/*.md` → | `.agents/skills/*.md` |
+| `.claude/agents/*.md` → | `.agents/agents/*.md` |
 | `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` |
-| `.claude/rules/*.md` → | `.opencode/rules/*.md` |
+| `.claude/rules/*.md` → | `.agents/rules/*.md` |
 | `CLAUDE.md` → | `AGENTS.md` |
 | `.claude/settings.json` → | `opencode.json` |
 
