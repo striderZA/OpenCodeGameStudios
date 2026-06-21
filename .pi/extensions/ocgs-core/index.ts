@@ -3,28 +3,8 @@ import path from "node:path";
 import fs from "node:fs";
 
 export default function (pi: ExtensionAPI) {
-	// Load all OCGS extension modules
-	import("../ocgs-delegation/index.js")
-		.then((m) => m.default(pi))
-		.catch(() => {});
-	import("../ocgs-question/index.js")
-		.then((m) => m.default(pi))
-		.catch(() => {});
-	import("../ocgs-path-guard/index.js")
-		.then((m) => m.default(pi))
-		.catch(() => {});
-	import("../ocgs-audit/index.js").then((m) => m.default(pi)).catch(() => {});
-	import("../ocgs-drift-detector/index.js")
-		.then((m) => m.default(pi))
-		.catch(() => {});
-	import("../ocgs-changelog/index.js")
-		.then((m) => m.default(pi))
-		.catch(() => {});
-	import("../ocgs-validate/index.js")
-		.then((m) => m.default(pi))
-		.catch(() => {});
-
-	// Also discover .agents/ content
+	// OCGS extensions are auto-discovered by Pi from .pi/extensions/*/index.ts
+	// This barrel only handles .agents/ content discovery for Pi's resource system
 	pi.on("resources_discover", async (_event, _ctx) => {
 		if (!fs.existsSync(".agents")) return;
 
