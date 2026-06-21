@@ -1,0 +1,7 @@
+{
+  "name": "ocgs-path-guard",
+  "private": true,
+  "dependencies": {
+    "minimatch": "^10.0.0"
+  }
+}
