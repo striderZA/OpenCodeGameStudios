@@ -98,7 +98,7 @@ if (gate) {
   { // G3: Stage transition names match skills directory names
     const stageToSkill = {
       'exploration': 'explore',
-      'Concept': 'brainstorm',
+      'Concept': 'concept-brainstorm',
       'Systems Design': 'map-systems',
       'Technical Setup': 'setup-engine',
       'Pre-Production': 'prototype',
@@ -184,7 +184,7 @@ if (gate) {
       ? new Set(readdirSync(commandsDir).filter(f => f.endsWith('.md') && f !== 'README.md').map(f => f.replace('.md', '')))
       : new Set();
     const knownMissing = new Set([
-      'brainstorm', 'explore', 'gate-check', 'hybrid-prototype', 'art-bible', 'adopt',
+      'explore', 'gate-check', 'hybrid-prototype', 'art-bible', 'adopt',
     ]);
     const bad = unique.filter(r => !commandNames.has(r) && !knownMissing.has(r));
     run('G8: All /command references in hybrid-workflow.md exist', () => {
@@ -215,7 +215,7 @@ if (gate) {
         ? new Set(readdirSync(commandsDir).filter(f => f.endsWith('.md') && f !== 'README.md').map(f => f.replace('.md', '')))
         : new Set();
       const knownMissing = new Set([
-        'brainstorm', 'explore', 'gate-check', 'hybrid-prototype', 'perf-profile', 'adopt',
+        'explore', 'gate-check', 'hybrid-prototype', 'perf-profile', 'adopt',
       ]);
       const bad = unique.filter(r => !commandNames.has(r) && !knownMissing.has(r));
       run(`G9a: ${name} command references are valid`, () => {

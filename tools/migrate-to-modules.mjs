@@ -46,7 +46,7 @@ const AGENT_MAP = {
 };
 
 const SKILL_MAP = {
-  "start": "core", "help": "core", "brainstorm": "core", "setup-engine": "core",
+  "start": "core", "help": "core", "concept-brainstorm": "core", "setup-engine": "core",
   "init-template": "core", "map-systems": "core", "project-stage-detect": "core",
   "gate-check": "core", "create-architecture": "core", "architecture-decision": "core",
   "art-bible": "art", "art-generate": "art", "asset-audit": "art", "asset-spec": "art",
@@ -78,7 +78,7 @@ const SKILL_MAP = {
 };
 
 const COMMAND_MAP = {
-  "start": "core", "help": "core", "brainstorm": "core", "setup-engine": "core",
+  "start": "core", "help": "core", "concept-brainstorm": "core", "setup-engine": "core",
   "init-template": "core", "map-systems": "core", "project-stage-detect": "core",
   "create-architecture": "core", "architecture-decision": "core",
   "art-generate": "art",
