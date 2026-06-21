@@ -2,18 +2,24 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import path from "node:path";
 import fs from "node:fs";
 
-const AGENTS_DIR = path.resolve(process.cwd(), ".agents");
-
 export default function (pi: ExtensionAPI) {
-  pi.on("resources_discover", async (event, _ctx) => {
-    if (!fs.existsSync(AGENTS_DIR)) return;
+  // Load all OCGS extension modules
+  import("../ocgs-delegation/index.js").then(m => m.default(pi)).catch(() => {});
+  import("../ocgs-question/index.js").then(m => m.default(pi)).catch(() => {});
+  import("../ocgs-path-guard/index.js").then(m => m.default(pi)).catch(() => {});
+  import("../ocgs-audit/index.js").then(m => m.default(pi)).catch(() => {});
 
-    const skillPath = path.join(AGENTS_DIR, "skills");
-    const promptPath = path.join(AGENTS_DIR, "commands");
+  // Also discover .agents/ content
+  pi.on("resources_discover", async (_event, _ctx) => {
+    if (!fs.existsSync(".agents")) return;
 
     return {
-      skillPaths: fs.existsSync(skillPath) ? [skillPath] : [],
-      promptPaths: fs.existsSync(promptPath) ? [promptPath] : [],
+      skillPaths: fs.existsSync(path.join(".agents", "skills"))
+        ? [path.join(".agents", "skills")]
+        : [],
+      promptPaths: fs.existsSync(path.join(".agents", "commands"))
+        ? [path.join(".agents", "commands")]
+        : [],
     };
   });
 }
