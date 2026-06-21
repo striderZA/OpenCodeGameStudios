@@ -192,6 +192,7 @@ export default function (pi: ExtensionAPI) {
 		}
 
 		return {
+			...event,
 			systemPrompt:
 				event.systemPrompt +
 				"\n\n## Active OCGS Path-Scoped Rules\n\n" +

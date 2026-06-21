@@ -7,7 +7,7 @@ This guide covers the day-to-day workflow differences between using OCGS with Op
 | Aspect | OpenCode | Pi |
 |--------|----------|----|
 | **Session start** | `opencode` | `pi` |
-| **Skills** | Auto-discovered from `.opencode/skills/` (junction → `.agents/skills/`) | Registered via `ocgs-core` `resources_discover` handler |
+| **Skills** | Auto-discovered from `.opencode/skills/` (symlink → `.agents/skills/`) | Registered via `ocgs-core` `resources_discover` handler |
 | **Commands** | Slash commands via `.opencode/commands/` | Prompt templates + extension commands |
 | **Delegation** | Built-in `Task` tool + OCGS plugin | `ocgs-delegation` extension |
 | **Decision capture** | OCGS plugin (`question` tool) | `ocgs-question` extension with TUI |

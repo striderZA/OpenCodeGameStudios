@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Double-load conflict between Pi auto-discovery and ocgs-core barrel
 - Symlink setup so OpenCode correctly discovers `.agents/` content
-- `.gitignore` for untracked `.opencode/` junctions
+- `.gitignore` entries removed for `.opencode/` symlinks (now tracked as git symlinks)
 
 ### Added (docs)
 

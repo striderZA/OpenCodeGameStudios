@@ -23,11 +23,5 @@ desktop.ini
 *~
 tests/agents/validation-report.md
 
-# OpenCode access paths (junctions to .agents/ — content tracked there)
-.opencode/agents/
-.opencode/skills/
-.opencode/commands/
-.opencode/rules/
-
 # Submodule dependencies
 tools/aseprite-mcp/.venv/

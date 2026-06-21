@@ -27,10 +27,20 @@ function loadSystemPrompt(agentName: string): string {
 	return body.trim();
 }
 
-export default function (pi: ExtensionAPI) {
-	const agentNames = loadAgentNames();
+let _agentNames: string[] | null = null;
+function getAgentNames(): string[] {
+	if (_agentNames === null) {
+		_agentNames = loadAgentNames();
+	}
+	return _agentNames;
+}
 
-	const AgentNameSchema = StringEnum(agentNames as [string, ...string[]]);
+function getAgentNameSchema() {
+	return StringEnum(getAgentNames() as [string, ...string[]]);
+}
+
+export default function (pi: ExtensionAPI) {
+	const AgentNameSchema = getAgentNameSchema();
 
 	const TaskParams = Type.Object({
 		agent: Type.Optional(AgentNameSchema),
@@ -99,18 +109,26 @@ export default function (pi: ExtensionAPI) {
 		handler: async (args: string, ctx) => {
 			const parts = args.trim().split(/\s+/);
 			const agentName = parts[0];
-			const question = parts.slice(1).join(" ") || "Review the current work and provide concerns";
+			const question =
+				parts.slice(1).join(" ") ||
+				"Review the current work and provide concerns";
 
-			if (!agentName || !agentNames.includes(agentName)) {
-				ctx.ui.notify(`Unknown agent: ${agentName}. Valid: ${agentNames.join(", ")}`, "error");
+			const names = getAgentNames();
+			if (!agentName || !names.includes(agentName)) {
+				ctx.ui.notify(
+					`Unknown agent: ${agentName}. Valid: ${names.join(", ")}`,
+					"error",
+				);
 				return;
 			}
 
-			const systemPrompt = loadSystemPrompt(agentName) + "\n\nYou are being consulted. Provide your review, concerns, and recommendations. Then STOP. Do not delegate further or take actions.";
+			const systemPrompt =
+				loadSystemPrompt(agentName) +
+				"\n\nYou are being consulted. Provide your review, concerns, and recommendations. Then STOP. Do not delegate further or take actions.";
 
 			const subSession = ctx.sessionManager.inMemory({
 				systemPrompt,
-				tools: ["read", "grep", "find", "ls"],  // Read-only tools
+				tools: ["read", "grep", "find", "ls"], // Read-only tools
 			});
 
 			const result = await subSession.run(question);

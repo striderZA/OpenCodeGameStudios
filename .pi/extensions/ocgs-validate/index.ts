@@ -127,9 +127,10 @@ export default function (pi: ExtensionAPI) {
 	pi.on("tool_result", async (event, _ctx) => {
 		if (
 			(event.toolName === "write" || event.toolName === "edit") &&
-			event.input.path?.startsWith(".agents")
+			typeof event.input.path === "string" &&
+			event.input.path.startsWith(".agents")
 		) {
-			const issues = validateFile(event.input.path as string);
+			const issues = validateFile(event.input.path);
 			if (issues.length > 0) {
 				return {
 					content: [
