@@ -80,7 +80,7 @@ export default function (pi: ExtensionAPI) {
 	});
 
 	// /changelog command with TUI modal
-	pi.registerCommand("changelog", {
+	pi.registerCommand("generate-changelog", {
 		description: "Generate CHANGELOG.md from conventional commits",
 		handler: async (_args, ctx) => {
 			const unreleased = getUnreleasedCommits();

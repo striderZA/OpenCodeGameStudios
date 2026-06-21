@@ -23,7 +23,7 @@ Skills and agents are assigned to model tiers based on task complexity:
 | **Opus** | `opencode-go/kimi-k2.6` | Multi-document synthesis, high-stakes phase gate verdicts, cross-system holistic review |
 
 Skills with `model: haiku`: `/help`, `/sprint-status`, `/story-readiness`, `/scope-check`,
-`/project-stage-detect`, `/changelog`, `/patch-notes`, `/onboard`
+`/project-stage-detect`, `/generate-changelog`, `/patch-notes`, `/onboard`
 
 Skills with `model: opus`: `/review-all-gdds`, `/architecture-review`, `/gate-check`
 
