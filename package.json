@@ -1,0 +1,28 @@
+{
+  "name": "opencodegamedesign",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">   <img src=\"assets/banner.png\" alt=\"OpenCode Game Studios Banner\" width=\"100%\"> </p>",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/striderZA/OpenCodeGameStudios.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/striderZA/OpenCodeGameStudios/issues"
+  },
+  "homepage": "https://github.com/striderZA/OpenCodeGameStudios#readme",
+  "devDependencies": {
+    "minimatch": "^10.2.5"
+  }
+}

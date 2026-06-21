@@ -1,6 +1,6 @@
 # OpenCode Game Studios
 
-Indie game development managed through 49 coordinated OpenCode agents.
+Indie game development managed through 51 coordinated OpenCode agents.
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
@@ -19,19 +19,27 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 /
 ├── AGENTS.md                    # Project configuration
 ├── opencode.json                # OpenCode config (permissions, plugins)
-├── .opencode/                   # Framework components
-│   ├── commands/                # 50 slash commands (routes to skills)
-│   ├── agents/                  # 51 agent definitions (was .claude/agents/)
-│   ├── skills/                  # 77 skills (was .claude/skills/)
-│   ├── plugins/                 # TypeScript plugins
-│   │   ├── ccgs-hooks.ts        # Session lifecycle, validation, logging
-│   │   ├── drift-detector.ts    # Template compliance detection
-│   │   ├── changelog-generator.ts
-│   │   └── tests/               # 11 plugin test suites
-│   └── rules/                   # 11 path-scoped coding standards
+├── pi.json                      # Pi settings (generated)
+├── .agents/                     # Canonical content (harness-agnostic)
+│   ├── agents/                  # 51 agent definitions
+│   ├── skills/                  # 77 skill workflows
+│   ├── commands/                # 54 slash commands
+│   ├── rules/                   # 11 path-scoped coding standards
+│   └── modules/                 # 17 installable modules
+├── .opencode/                   # OpenCode-specific
+│   ├── plugins/                 # TypeScript plugins (ccgs-hooks, drift-detector, changelog-generator)
+│   ├── agents/ → ../.agents/agents/   (symlink)
+│   ├── skills/ → ../.agents/skills/   (symlink)
+│   ├── commands/ → ../.agents/commands/ (symlink)
+│   └── rules/ → ../.agents/rules/     (symlink)
+├── .pi/                         # Pi-specific extensions & settings
+│   └── extensions/              # Pi extensions (ocgs-core, delegation, question, path-guard, etc.)
 ├── docs/
 │   ├── architecture/            # Architecture Decision Records (ADRs)
 │   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
+│   ├── pi-compatibility.md      # Pi setup guide
+│   ├── pi-extensions.md         # Pi extension reference
+│   ├── pi-workflow.md           # Pi workflow differences
 │   ├── authoring-agents.md      # Agent creation guide
 │   ├── authoring-skills.md      # Skill creation guide
 │   ├── hybrid-workflow.md       # Hybrid workflow reference
@@ -41,12 +49,15 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 │   │   ├── validate.mjs         # Structural compliance checker
 │   │   ├── validate-gdscript.mjs # GDScript snippet linter
 │   │   └── validation-report.md # Latest audit results
-│   ├── [game-specific tests]
-│   └── [spawned by test-setup]
+│   ├── extensions/              # Pi extension unit tests
+│   ├── e2e/                     # E2E parity tests
+│   └── [game-specific tests]
 ├── src/                         # Game source code
 ├── assets/                      # Game assets
 ├── design/                      # Game design documents
 ├── tools/                       # Build and pipeline tools
+│   ├── migrate-to-agents.mjs    # Migration script (.opencode/ → .agents/)
+│   └── ...
 ├── prototypes/                  # Throwaway prototypes
 └── production/                  # Sprint plans, milestones, session logs
 ```
@@ -131,9 +142,11 @@ This project supports two workflow modes. Choose the one that fits your team siz
 
 - **All phases formal**: Every feature goes through design → architecture → stories → code → tests → review.
 - **Best for**: Teams of 5–15, known designs, long timelines, publisher requirements.
-- **See**: Full documentation in `docs/` and `.opencode/skills/`.
+- **See**: Full documentation in `docs/` and `.agents/skills/`.
 
 ## Getting Started
+
+### OpenCode
 
 Run `/start` in OpenCode to begin the guided onboarding flow.
 Or jump directly to:
@@ -143,10 +156,35 @@ Or jump directly to:
 - `/prototype` — rapid prototype a concept
 - `/hybrid-prototype` — fast-lane prototype for discovery phase
 
+### Pi
+
+Start Pi from the project root:
+```bash
+pi
+```
+
+All OCGS skills, commands, and agents load automatically through the `.pi/extensions/` extensions.
+
+Pi-specific commands differ from OpenCode in a few cases:
+- Use `/generate-changelog` instead of `/changelog` (Pi has a built-in with that name)
+
+See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup guide,
+[docs/pi-extensions.md](docs/pi-extensions.md) for the extension reference, and
+[docs/pi-workflow.md](docs/pi-workflow.md) for workflow differences.
+
+### Key commands in both harnesses
+
+| Command | OpenCode | Pi |
+|---------|----------|----|
+| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) |
+| Peer review | — | `/consult <agent>` (ocgs-delegation extension) |
+| Decision capture | question tool | question tool (ocgs-question with TUI) |
+| Skill invocation | `/command-name` | `/command-name` (via prompt templates) |
+
 ## Available Commands
 
-Type `/` in OpenCode to see all available commands. All 50 commands route to
-corresponding skills in `.opencode/skills/`.
+Type `/` in OpenCode to see all available commands. All 54 commands route to
+corresponding skills in `.agents/skills/`.
 
 | Category | Commands |
 |----------|----------|
@@ -205,8 +243,8 @@ Before merging to `development`, the CI must pass:
 ## Notes
 
 This is a port of [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)
-to OpenCode. The 77 skills are in `.opencode/skills/`, the 51 agents are in
-`.opencode/agents/`, and the 12 original bash hooks are implemented as a
+to OpenCode. The 77 skills are in `.agents/skills/`, the 51 agents are in
+`.agents/agents/`, and the 12 original bash hooks are implemented as a
 TypeScript plugin in `.opencode/plugins/ccgs-hooks.ts`.
 
 Additional plugins (`drift-detector.ts`, `changelog-generator.ts`) extend the
