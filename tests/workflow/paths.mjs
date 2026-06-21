@@ -63,7 +63,7 @@ const COMMAND_REF_RE = /`\/([a-z][\w-]+)`/g;
     const unique = [...new Set(refs)];
     const missingCommands = unique.filter(r => !hasCommand(r));
     const knownCommandless = new Set([
-      'brainstorm', 'explore', 'gate-check', 'art-bible', 'adopt', 'ux-design',
+      'explore', 'gate-check', 'art-bible', 'adopt', 'ux-design',
     ]);
     const bad = missingCommands.filter(r => !knownCommandless.has(r));
     run('P2: All commands referenced in start skill exist', () => {
@@ -74,7 +74,7 @@ const COMMAND_REF_RE = /`\/([a-z][\w-]+)`/g;
 
     const missingSkills = unique.filter(r => !hasSkill(r));
     run('P3: All commands referenced in start skill have skill implementations', () => {
-      const knownNoSkill = new Set(['brainstorm']);
+      const knownNoSkill = new Set(['concept-brainstorm']);
       const bad = missingSkills.filter(r => !knownNoSkill.has(r));
       if (bad.length > 0) {
         throw new Error(`No skill directory: ${bad.join(', ')}`);
@@ -164,7 +164,7 @@ const COMMAND_REF_RE = /`\/([a-z][\w-]+)`/g;
     const unique = [...new Set(refs)];
     const missing = unique.filter(r => !hasCommand(r));
     const knownCommandless = new Set([
-      'gate-check', 'brainstorm', 'hybrid-prototype',
+      'gate-check', 'hybrid-prototype',
     ]);
     const bad = missing.filter(r => !knownCommandless.has(r));
     run('P11: All commands referenced in explore skill exist', () => {
