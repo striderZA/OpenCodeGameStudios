@@ -4,13 +4,13 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.004Z",
     "files": [
-      ".opencode/agents/lead-programmer.md",
-      ".opencode/commands/architecture-review.md",
-      ".opencode/commands/create-control-manifest.md",
-      ".opencode/rules/design-docs.md",
-      ".opencode/skills/architecture-review/SKILL.md",
-      ".opencode/skills/create-control-manifest/SKILL.md",
-      ".opencode/skills/propagate-design-change/SKILL.md"
+      "agents/lead-programmer.md",
+      "commands/architecture-review.md",
+      "commands/create-control-manifest.md",
+      "rules/design-docs.md",
+      "skills/architecture-review/SKILL.md",
+      "skills/create-control-manifest/SKILL.md",
+      "skills/propagate-design-change/SKILL.md"
     ]
   },
   "art": {
@@ -18,13 +18,13 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.006Z",
     "files": [
-      ".opencode/agents/art-director.md",
-      ".opencode/agents/technical-artist.md",
-      ".opencode/commands/art-generate.md",
-      ".opencode/skills/art-bible/SKILL.md",
-      ".opencode/skills/art-generate/SKILL.md",
-      ".opencode/skills/asset-audit/SKILL.md",
-      ".opencode/skills/asset-spec/SKILL.md"
+      "agents/art-director.md",
+      "agents/technical-artist.md",
+      "commands/art-generate.md",
+      "skills/art-bible/SKILL.md",
+      "skills/art-generate/SKILL.md",
+      "skills/asset-audit/SKILL.md",
+      "skills/asset-spec/SKILL.md"
     ]
   },
   "audio": {
@@ -32,10 +32,10 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.007Z",
     "files": [
-      ".opencode/agents/audio-director.md",
-      ".opencode/agents/sound-designer.md",
-      ".opencode/commands/team-audio.md",
-      ".opencode/skills/team-audio/SKILL.md"
+      "agents/audio-director.md",
+      "agents/sound-designer.md",
+      "commands/team-audio.md",
+      "skills/team-audio/SKILL.md"
     ]
   },
   "core": {
@@ -43,35 +43,35 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.011Z",
     "files": [
-      ".opencode/agents/creative-director.md",
-      ".opencode/agents/producer.md",
-      ".opencode/agents/technical-director.md",
-      ".opencode/commands/architecture-decision.md",
-      ".opencode/commands/brainstorm.md",
-      ".opencode/commands/create-architecture.md",
-      ".opencode/commands/help.md",
-      ".opencode/commands/init-template.md",
-      ".opencode/commands/map-systems.md",
-      ".opencode/commands/project-stage-detect.md",
-      ".opencode/commands/setup-engine.md",
-      ".opencode/commands/start.md",
-      ".opencode/docs/context-management.md",
-      ".opencode/docs/coordination-rules.md",
-      ".opencode/docs/director-gates.md",
-      ".opencode/docs/workflow-catalog.yaml",
-      ".opencode/plugins/ccgs-hooks.ts",
-      ".opencode/plugins/changelog-generator.ts",
-      ".opencode/plugins/drift-detector.ts",
-      ".opencode/skills/architecture-decision/SKILL.md",
-      ".opencode/skills/brainstorm/SKILL.md",
-      ".opencode/skills/create-architecture/SKILL.md",
-      ".opencode/skills/gate-check/SKILL.md",
-      ".opencode/skills/help/SKILL.md",
-      ".opencode/skills/init-template/SKILL.md",
-      ".opencode/skills/map-systems/SKILL.md",
-      ".opencode/skills/project-stage-detect/SKILL.md",
-      ".opencode/skills/setup-engine/SKILL.md",
-      ".opencode/skills/start/SKILL.md"
+      "agents/creative-director.md",
+      "agents/producer.md",
+      "agents/technical-director.md",
+      "commands/architecture-decision.md",
+      "commands/brainstorm.md",
+      "commands/create-architecture.md",
+      "commands/help.md",
+      "commands/init-template.md",
+      "commands/map-systems.md",
+      "commands/project-stage-detect.md",
+      "commands/setup-engine.md",
+      "commands/start.md",
+      "docs/context-management.md",
+      "docs/coordination-rules.md",
+      "docs/director-gates.md",
+      "docs/workflow-catalog.yaml",
+      "plugins/ccgs-hooks.ts",
+      "plugins/changelog-generator.ts",
+      "plugins/drift-detector.ts",
+      "skills/architecture-decision/SKILL.md",
+      "skills/brainstorm/SKILL.md",
+      "skills/create-architecture/SKILL.md",
+      "skills/gate-check/SKILL.md",
+      "skills/help/SKILL.md",
+      "skills/init-template/SKILL.md",
+      "skills/map-systems/SKILL.md",
+      "skills/project-stage-detect/SKILL.md",
+      "skills/setup-engine/SKILL.md",
+      "skills/start/SKILL.md"
     ]
   },
   "data": {
@@ -79,7 +79,7 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.013Z",
     "files": [
-      ".opencode/rules/data-files.md"
+      "rules/data-files.md"
     ]
   },
   "design": {
@@ -114,11 +114,11 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.019Z",
     "files": [
-      ".opencode/agents/godot-csharp-specialist.md",
-      ".opencode/agents/godot-gdextension-specialist.md",
-      ".opencode/agents/godot-gdscript-specialist.md",
-      ".opencode/agents/godot-shader-specialist.md",
-      ".opencode/agents/godot-specialist.md"
+      "agents/godot-csharp-specialist.md",
+      "agents/godot-gdextension-specialist.md",
+      "agents/godot-gdscript-specialist.md",
+      "agents/godot-shader-specialist.md",
+      "agents/godot-specialist.md"
     ]
   },
   "engine-unity": {
@@ -126,11 +126,11 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.020Z",
     "files": [
-      ".opencode/agents/unity-addressables-specialist.md",
-      ".opencode/agents/unity-dots-specialist.md",
-      ".opencode/agents/unity-shader-specialist.md",
-      ".opencode/agents/unity-specialist.md",
-      ".opencode/agents/unity-ui-specialist.md"
+      "agents/unity-addressables-specialist.md",
+      "agents/unity-dots-specialist.md",
+      "agents/unity-shader-specialist.md",
+      "agents/unity-specialist.md",
+      "agents/unity-ui-specialist.md"
     ]
   },
   "engine-unreal": {
@@ -138,11 +138,11 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.021Z",
     "files": [
-      ".opencode/agents/ue-blueprint-specialist.md",
-      ".opencode/agents/ue-gas-specialist.md",
-      ".opencode/agents/ue-replication-specialist.md",
-      ".opencode/agents/ue-umg-specialist.md",
-      ".opencode/agents/unreal-specialist.md"
+      "agents/ue-blueprint-specialist.md",
+      "agents/ue-gas-specialist.md",
+      "agents/ue-replication-specialist.md",
+      "agents/ue-umg-specialist.md",
+      "agents/unreal-specialist.md"
     ]
   },
   "level-design": {
@@ -150,9 +150,9 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.022Z",
     "files": [
-      ".opencode/agents/level-designer.md",
-      ".opencode/commands/team-level.md",
-      ".opencode/skills/team-level/SKILL.md"
+      "agents/level-designer.md",
+      "commands/team-level.md",
+      "skills/team-level/SKILL.md"
     ]
   },
   "live-ops": {
@@ -160,9 +160,9 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.023Z",
     "files": [
-      ".opencode/agents/community-manager.md",
-      ".opencode/agents/live-ops-designer.md",
-      ".opencode/skills/team-live-ops/SKILL.md"
+      "agents/community-manager.md",
+      "agents/live-ops-designer.md",
+      "skills/team-live-ops/SKILL.md"
     ]
   },
   "localization": {
@@ -170,8 +170,8 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.023Z",
     "files": [
-      ".opencode/agents/localization-lead.md",
-      ".opencode/skills/localize/SKILL.md"
+      "agents/localization-lead.md",
+      "skills/localize/SKILL.md"
     ]
   },
   "narrative": {
@@ -179,12 +179,12 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.024Z",
     "files": [
-      ".opencode/agents/narrative-director.md",
-      ".opencode/agents/world-builder.md",
-      ".opencode/agents/writer.md",
-      ".opencode/commands/team-narrative.md",
-      ".opencode/rules/narrative.md",
-      ".opencode/skills/team-narrative/SKILL.md"
+      "agents/narrative-director.md",
+      "agents/world-builder.md",
+      "agents/writer.md",
+      "commands/team-narrative.md",
+      "rules/narrative.md",
+      "skills/team-narrative/SKILL.md"
     ]
   },
   "programming": {
@@ -192,16 +192,16 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.026Z",
     "files": [
-      ".opencode/agents/ai-programmer.md",
-      ".opencode/agents/engine-programmer.md",
-      ".opencode/agents/gameplay-programmer.md",
-      ".opencode/agents/network-programmer.md",
-      ".opencode/agents/tools-programmer.md",
-      ".opencode/rules/ai-code.md",
-      ".opencode/rules/engine-code.md",
-      ".opencode/rules/gameplay-code.md",
-      ".opencode/rules/network-code.md",
-      ".opencode/rules/shader-code.md"
+      "agents/ai-programmer.md",
+      "agents/engine-programmer.md",
+      "agents/gameplay-programmer.md",
+      "agents/network-programmer.md",
+      "agents/tools-programmer.md",
+      "rules/ai-code.md",
+      "rules/engine-code.md",
+      "rules/gameplay-code.md",
+      "rules/network-code.md",
+      "rules/shader-code.md"
     ]
   },
   "prototyping": {
@@ -209,13 +209,13 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.027Z",
     "files": [
-      ".opencode/agents/prototyper.md",
-      ".opencode/commands/explore.md",
-      ".opencode/commands/prototype.md",
-      ".opencode/rules/prototype-code.md",
-      ".opencode/skills/explore/SKILL.md",
-      ".opencode/skills/hybrid-prototype/SKILL.md",
-      ".opencode/skills/prototype/SKILL.md"
+      "agents/prototyper.md",
+      "commands/explore.md",
+      "commands/prototype.md",
+      "rules/prototype-code.md",
+      "skills/explore/SKILL.md",
+      "skills/hybrid-prototype/SKILL.md",
+      "skills/prototype/SKILL.md"
     ]
   },
   "qa": {
@@ -223,41 +223,41 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.033Z",
     "files": [
-      ".opencode/agents/performance-analyst.md",
-      ".opencode/agents/qa-lead.md",
-      ".opencode/agents/qa-tester.md",
-      ".opencode/agents/security-engineer.md",
-      ".opencode/commands/bug-report.md",
-      ".opencode/commands/bug-triage.md",
-      ".opencode/commands/qa-plan.md",
-      ".opencode/commands/regression-suite.md",
-      ".opencode/commands/security-audit.md",
-      ".opencode/commands/smoke-check.md",
-      ".opencode/commands/soak-test.md",
-      ".opencode/commands/team-polish.md",
-      ".opencode/commands/team-qa.md",
-      ".opencode/commands/test-evidence-review.md",
-      ".opencode/commands/test-flakiness.md",
-      ".opencode/commands/test-helpers.md",
-      ".opencode/commands/test-setup.md",
-      ".opencode/rules/test-standards.md",
-      ".opencode/skills/automated-smoke-test/SKILL.md",
-      ".opencode/skills/bug-report/SKILL.md",
-      ".opencode/skills/bug-triage/SKILL.md",
-      ".opencode/skills/perf-profile/SKILL.md",
-      ".opencode/skills/qa-plan/SKILL.md",
-      ".opencode/skills/regression-suite/SKILL.md",
-      ".opencode/skills/security-audit/SKILL.md",
-      ".opencode/skills/skill-improve/SKILL.md",
-      ".opencode/skills/skill-test/SKILL.md",
-      ".opencode/skills/smoke-check/SKILL.md",
-      ".opencode/skills/soak-test/SKILL.md",
-      ".opencode/skills/team-polish/SKILL.md",
-      ".opencode/skills/team-qa/SKILL.md",
-      ".opencode/skills/test-evidence-review/SKILL.md",
-      ".opencode/skills/test-flakiness/SKILL.md",
-      ".opencode/skills/test-helpers/SKILL.md",
-      ".opencode/skills/test-setup/SKILL.md"
+      "agents/performance-analyst.md",
+      "agents/qa-lead.md",
+      "agents/qa-tester.md",
+      "agents/security-engineer.md",
+      "commands/bug-report.md",
+      "commands/bug-triage.md",
+      "commands/qa-plan.md",
+      "commands/regression-suite.md",
+      "commands/security-audit.md",
+      "commands/smoke-check.md",
+      "commands/soak-test.md",
+      "commands/team-polish.md",
+      "commands/team-qa.md",
+      "commands/test-evidence-review.md",
+      "commands/test-flakiness.md",
+      "commands/test-helpers.md",
+      "commands/test-setup.md",
+      "rules/test-standards.md",
+      "skills/automated-smoke-test/SKILL.md",
+      "skills/bug-report/SKILL.md",
+      "skills/bug-triage/SKILL.md",
+      "skills/perf-profile/SKILL.md",
+      "skills/qa-plan/SKILL.md",
+      "skills/regression-suite/SKILL.md",
+      "skills/security-audit/SKILL.md",
+      "skills/skill-improve/SKILL.md",
+      "skills/skill-test/SKILL.md",
+      "skills/smoke-check/SKILL.md",
+      "skills/soak-test/SKILL.md",
+      "skills/team-polish/SKILL.md",
+      "skills/team-qa/SKILL.md",
+      "skills/test-evidence-review/SKILL.md",
+      "skills/test-flakiness/SKILL.md",
+      "skills/test-helpers/SKILL.md",
+      "skills/test-setup/SKILL.md"
     ]
   },
   "release": {
@@ -265,29 +265,29 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.038Z",
     "files": [
-      ".opencode/agents/analytics-engineer.md",
-      ".opencode/agents/devops-engineer.md",
-      ".opencode/agents/release-manager.md",
-      ".opencode/commands/day-one-patch.md",
-      ".opencode/commands/hotfix.md",
-      ".opencode/commands/launch-checklist.md",
-      ".opencode/commands/milestone-review.md",
-      ".opencode/commands/release-checklist.md",
-      ".opencode/commands/retrospective.md",
-      ".opencode/commands/sprint-plan.md",
-      ".opencode/commands/sprint-status.md",
-      ".opencode/commands/team-release.md",
-      ".opencode/skills/changelog/SKILL.md",
-      ".opencode/skills/day-one-patch/SKILL.md",
-      ".opencode/skills/hotfix/SKILL.md",
-      ".opencode/skills/launch-checklist/SKILL.md",
-      ".opencode/skills/milestone-review/SKILL.md",
-      ".opencode/skills/patch-notes/SKILL.md",
-      ".opencode/skills/release-checklist/SKILL.md",
-      ".opencode/skills/retrospective/SKILL.md",
-      ".opencode/skills/sprint-plan/SKILL.md",
-      ".opencode/skills/sprint-status/SKILL.md",
-      ".opencode/skills/team-release/SKILL.md"
+      "agents/analytics-engineer.md",
+      "agents/devops-engineer.md",
+      "agents/release-manager.md",
+      "commands/day-one-patch.md",
+      "commands/hotfix.md",
+      "commands/launch-checklist.md",
+      "commands/milestone-review.md",
+      "commands/release-checklist.md",
+      "commands/retrospective.md",
+      "commands/sprint-plan.md",
+      "commands/sprint-status.md",
+      "commands/team-release.md",
+      "skills/changelog/SKILL.md",
+      "skills/day-one-patch/SKILL.md",
+      "skills/hotfix/SKILL.md",
+      "skills/launch-checklist/SKILL.md",
+      "skills/milestone-review/SKILL.md",
+      "skills/patch-notes/SKILL.md",
+      "skills/release-checklist/SKILL.md",
+      "skills/retrospective/SKILL.md",
+      "skills/sprint-plan/SKILL.md",
+      "skills/sprint-status/SKILL.md",
+      "skills/team-release/SKILL.md"
     ]
   },
   "stories": {
@@ -295,23 +295,23 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.041Z",
     "files": [
-      ".opencode/commands/code-review.md",
-      ".opencode/commands/create-epics.md",
-      ".opencode/commands/create-stories.md",
-      ".opencode/commands/dev-story.md",
-      ".opencode/commands/reverse-document.md",
-      ".opencode/commands/story-done.md",
-      ".opencode/commands/story-readiness.md",
-      ".opencode/skills/adopt/SKILL.md",
-      ".opencode/skills/code-review/SKILL.md",
-      ".opencode/skills/create-epics/SKILL.md",
-      ".opencode/skills/create-stories/SKILL.md",
-      ".opencode/skills/dev-story/SKILL.md",
-      ".opencode/skills/onboard/SKILL.md",
-      ".opencode/skills/reverse-document/SKILL.md",
-      ".opencode/skills/story-done/SKILL.md",
-      ".opencode/skills/story-readiness/SKILL.md",
-      ".opencode/skills/tech-debt/SKILL.md"
+      "commands/code-review.md",
+      "commands/create-epics.md",
+      "commands/create-stories.md",
+      "commands/dev-story.md",
+      "commands/reverse-document.md",
+      "commands/story-done.md",
+      "commands/story-readiness.md",
+      "skills/adopt/SKILL.md",
+      "skills/code-review/SKILL.md",
+      "skills/create-epics/SKILL.md",
+      "skills/create-stories/SKILL.md",
+      "skills/dev-story/SKILL.md",
+      "skills/onboard/SKILL.md",
+      "skills/reverse-document/SKILL.md",
+      "skills/story-done/SKILL.md",
+      "skills/story-readiness/SKILL.md",
+      "skills/tech-debt/SKILL.md"
     ]
   },
   "ui": {
@@ -319,14 +319,14 @@
     "status": "installed",
     "timestamp": "2026-05-11T17:38:57.043Z",
     "files": [
-      ".opencode/agents/accessibility-specialist.md",
-      ".opencode/agents/ui-programmer.md",
-      ".opencode/agents/ux-designer.md",
-      ".opencode/commands/team-ui.md",
-      ".opencode/rules/ui-code.md",
-      ".opencode/skills/team-ui/SKILL.md",
-      ".opencode/skills/ux-design/SKILL.md",
-      ".opencode/skills/ux-review/SKILL.md"
+      "agents/accessibility-specialist.md",
+      "agents/ui-programmer.md",
+      "agents/ux-designer.md",
+      "commands/team-ui.md",
+      "rules/ui-code.md",
+      "skills/team-ui/SKILL.md",
+      "skills/ux-design/SKILL.md",
+      "skills/ux-review/SKILL.md"
     ]
   },
   "engine-sfml3": {
