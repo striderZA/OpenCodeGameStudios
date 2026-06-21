@@ -42,6 +42,14 @@ All OCGS skills, commands, and agents are available automatically through the `.
 - **`.pi/extensions/`** — Pi-specific extension implementations using `@earendil-works/pi-coding-agent` API.
 - **Cross-harness names** — `Task`, `question`, and `/consult` work identically in OpenCode and Pi. Agent prompts are written once.
 
+## Detailed Documentation
+
+| Guide | Description |
+|---|---|
+| [`docs/pi-extensions.md`](pi-extensions.md) | Full reference for every Pi extension — tools, commands, events, and schemas |
+| [`docs/pi-workflow.md`](pi-workflow.md) | Day-to-day workflow differences between OpenCode and Pi |
+| [`.pi/README.md`](../.pi/README.md) | Extension directory overview and dependency info |
+
 ## Delegation
 
 OCGS uses two delegation primitives:

@@ -144,6 +144,8 @@ This project supports two workflow modes. Choose the one that fits your team siz
 
 ## Getting Started
 
+### OpenCode
+
 Run `/start` in OpenCode to begin the guided onboarding flow.
 Or jump directly to:
 - `/brainstorm` — explore game ideas from scratch
@@ -151,6 +153,28 @@ Or jump directly to:
 - `/project-stage-detect` — analyze an existing project
 - `/prototype` — rapid prototype a concept
 - `/hybrid-prototype` — fast-lane prototype for discovery phase
+
+### Pi
+
+Start Pi from the project root:
+```bash
+pi
+```
+
+All OCGS skills, commands, and agents load automatically through the `.pi/extensions/` extensions.
+
+See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup guide,
+[docs/pi-extensions.md](docs/pi-extensions.md) for the extension reference, and
+[docs/pi-workflow.md](docs/pi-workflow.md) for workflow differences.
+
+### Key commands in both harnesses
+
+| Command | OpenCode | Pi |
+|---------|----------|----|
+| Delegation | `Task` tool (built-in) | `Task` tool (`ocgs-delegation`) |
+| Peer review | — | `/consult <agent>` (`ocgs-delegation`) |
+| Decision capture | `question` tool | `question` tool (`ocgs-question` with TUI) |
+| Skill invocation | `/command-name` | `/command-name` (via prompt templates) |
 
 ## Available Commands
 
