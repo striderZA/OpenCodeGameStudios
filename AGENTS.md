@@ -176,9 +176,9 @@ See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup g
 
 | Command | OpenCode | Pi |
 |---------|----------|----|
-| Delegation | `Task` tool (built-in) | `Task` tool (`ocgs-delegation`) |
-| Peer review | — | `/consult <agent>` (`ocgs-delegation`) |
-| Decision capture | `question` tool | `question` tool (`ocgs-question` with TUI) |
+| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) |
+| Peer review | — | `/consult <agent>` (ocgs-delegation extension) |
+| Decision capture | question tool | question tool (ocgs-question with TUI) |
 | Skill invocation | `/command-name` | `/command-name` (via prompt templates) |
 
 ## Available Commands
