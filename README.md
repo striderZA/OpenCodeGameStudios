@@ -50,9 +50,9 @@ for the full game lifecycle:
 - **Workflow selection** — Choose Hybrid (lightweight discovery then production)
   or Full OCGS (process-heavy from day one), depending on team size and project
   maturity
-- **49 coordinated agents** — From creative director to engine specialists, each
+- **51 coordinated agents** — From creative director to engine specialists, each
   with defined responsibilities, delegation maps, and strict domain boundaries
-- **51 slash commands** — Route through the right skill every time, from
+- **54 slash commands** — Route through the right skill every time, from
   `/brainstorm` to `/launch-checklist`
 
 This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
@@ -85,7 +85,7 @@ and runs on [OpenCode](https://opencode.ai).
 opencode
 ```
 
-Type `/` to browse all 76 skills and 51 commands, or `/start` for onboarding.
+Type `/` to browse all 77 skills and 54 commands, or `/start` for onboarding.
 
 ### 🎮 Demo Game
 
@@ -255,22 +255,27 @@ node utils/assign-models.js --config my-models.json
 /
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
-├── .opencode/
-│   ├── commands/              ⌨️ 51 slash commands (routes to skills)
-│   ├── agents/                🤖 49 agent definitions
-│   ├── skills/                🛠️ 76 skill workflows
+├── .agents/                   📦 Canonical content (harness-agnostic)
+│   ├── agents/                🤖 51 agent definitions
+│   ├── skills/                🛠️ 77 skill workflows
+│   ├── commands/              ⌨️ 54 slash commands
+│   ├── rules/                 📏 11 coding standards
+│   └── modules/               🧩 19 pluggable theme modules
+│       ├── ...                21 modules total
+├── .opencode/                 ⚙️ OpenCode-specific (plugins, config)
+│   ├── commands/ → .agents/commands/ (symlink)
+│   ├── agents/ → .agents/agents/     (symlink)
+│   ├── skills/ → .agents/skills/     (symlink)
+│   ├── rules/ → .agents/rules/       (symlink)
 │   ├── plugins/
 │   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
 │   │   └── tests/             🧪 11 test suites (140 tests)
-│   ├── rules/                 📏 11 coding standards
-│   └── modules/               🧩 19 pluggable theme modules
+│   └── modules/
 │       ├── install.mjs        CLI: add/remove/list modules
 │       ├── installed.json     Module manifest
-│       ├── core/              Core module (always installed)
-│       ├── art/               Art module (aseprite MCP, art bible)
-│       └── ...                19 modules total
+│       └── ...                21 module sources
 ├── design/                    🎨 Game design documents
 ├── docs/
 │   ├── CONTRIBUTING.md        📖 Framework contribution guide
