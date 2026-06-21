@@ -35,10 +35,17 @@ function validateFile(filePath: string): ValidationIssue[] {
     issues.push({ file: relPath, severity: "warning", message: "Empty body after frontmatter" });
   }
 
-  // Check no harness-specific fields
-  for (const field of ["model:", "mode:", "permission:", "tools:"]) {
-    if (frontmatter.includes(field)) {
-      issues.push({ file: relPath, severity: "warning", message: `Harness-specific field '${field.replace(":", "")}' should not be in .agents/` });
+  // Check for harness-specific fields only in agent files
+  // Skill files legitimately have model: per Agent Skills spec
+  if (relPath.includes("agents" + path.sep)) {
+    for (const field of ["model:", "mode:", "permission:", "tools:"]) {
+      if (frontmatter.includes(field)) {
+        issues.push({
+          file: relPath,
+          severity: "warning",
+          message: `Harness-specific field '${field.replace(":", "")}' should not be in .agents/agent files`,
+        });
+      }
     }
   }
 
@@ -66,9 +73,26 @@ export default function (pi: ExtensionAPI) {
     scanDir(path.join(AGENTS_DIR, "skills"));
     scanDir(path.join(AGENTS_DIR, "rules"));
 
-    if (allIssues.length > 0 && _ctx.hasUI) {
-      _ctx.ui.setStatus("ocgs-validate", `validation: ${allIssues.length} issues`);
-      _ctx.ui.notify(`OCGS validation: ${allIssues.filter(i => i.severity === "error").length} errors, ${allIssues.filter(i => i.severity === "warning").length} warnings`, "warn");
+    if (allIssues.length > 0) {
+      // Write detailed report so user can see all issues
+      const reportPath = path.join(process.cwd(), "production", "session-logs", "ocgs-validation-report.md");
+      try {
+        fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+        const report = [
+          `# OCGS Validation Report`,
+          `**Date:** ${new Date().toISOString().split("T")[0]}`,
+          `**Session startup:** ${event.reason}`,
+          `**Total issues:** ${allIssues.length} (${allIssues.filter(i => i.severity === "error").length} errors, ${allIssues.filter(i => i.severity === "warning").length} warnings)`,
+          "",
+          ...allIssues.map(i => `- [${i.severity.toUpperCase()}] ${i.file}: ${i.message}`),
+        ].join("\n");
+        fs.writeFileSync(reportPath, report);
+      } catch { /* report writing is best-effort */ }
+
+      if (_ctx.hasUI) {
+        _ctx.ui.setStatus("ocgs-validate", `validation: ${allIssues.length} issues`);
+        _ctx.ui.notify(`OCGS validation: ${allIssues.filter(i => i.severity === "error").length} errors, ${allIssues.filter(i => i.severity === "warning").length} warnings — see ${path.relative(process.cwd(), reportPath)}`, "warn");
+      }
     }
   });
 
