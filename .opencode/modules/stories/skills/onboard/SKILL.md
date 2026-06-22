@@ -11,7 +11,7 @@ model: opencode-go/deepseek-v4-flash
 
 Read AGENTS.md for project overview and standards.
 
-Read the relevant agent definition from `.opencode/agents/` if a specific role is specified.
+Read the relevant agent definition from `.agents/agents/` if a specific role is specified.
 
 ---
 

@@ -270,7 +270,7 @@ console.log('\n=== Cross-Cutting Invariants ===\n');
   }
 }
 
-{ // I10: skill-testing-framework catalog.yaml covers all skills in .opencode/skills/
+{ // I10: skill-testing-framework catalog.yaml covers all skills in .agents/skills/
   const catalogPath = join(ROOT, 'skill-testing-framework', 'catalog.yaml');
   if (existsSync(catalogPath)) {
     const yaml = readFileSync(catalogPath, 'utf-8');
@@ -280,7 +280,7 @@ console.log('\n=== Cross-Cutting Invariants ===\n');
       return statSync(p).isDirectory() && existsSync(join(p, 'SKILL.md'));
     });
     const missing = skillDirs.filter(s => !cataloged.has(s));
-    run('I10: All skills in .opencode/skills/ are cataloged in skill-testing-framework/catalog.yaml', () => {
+    run('I10: All skills in .agents/skills/ are cataloged in skill-testing-framework/catalog.yaml', () => {
       if (missing.length > 0) {
         throw new Error(`Skills not in catalog.yaml: ${missing.join(', ')}`);
       }
