@@ -11,6 +11,11 @@ opencode-config-verify.json
 production/session-logs/
 production/session-state/
 
+# Superpowers SDK design docs (not part of OCGS)
+.superpowers/
+docs/superpowers/
+framework/
+
 # Git worktrees
 .worktrees/
 
