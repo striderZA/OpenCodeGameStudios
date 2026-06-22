@@ -11,7 +11,8 @@ you'll lose validation features.
 | Tool | Purpose | Install |
 | ---- | ---- | ---- |
 | **Git** | Version control, branch management | [git-scm.com](https://git-scm.com/) |
-| **OpenCode** | AI agent CLI | `npm install -g opencode` |
+| **OpenCode** | AI agent CLI (via OpenCode) | `npm install -g opencode` |
+| **Pi** | AI agent CLI (via Pi) | `npm install -g @earendil-works/pi-coding-agent` |
 | **Node.js 18+** | Module CLI + hooks | Runtime for `install.mjs` and the CCGS TypeScript hooks plugin | [nodejs.org](https://nodejs.org/) |
 
 ## Recommended

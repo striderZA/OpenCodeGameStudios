@@ -4,7 +4,7 @@
   <img src="assets/banner.png" alt="OpenCode Game Studios Banner" width="100%">
 </p>
 
-> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework with workflow selection, phase gates, pre-workflow prototyping, and hybrid discovery-to-production pipelines.
+> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework supporting both [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent) coding agents.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-51-blueviolet)](.agents/agents/)
@@ -13,6 +13,7 @@
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
 [![Tests](https://img.shields.io/badge/tests-183-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
+[![Pi Compatible](https://img.shields.io/badge/Pi-compatible-4f46e5)](https://github.com/earendil-works/pi-coding-agent)
 
 ---
 
@@ -56,7 +57,7 @@ for the full game lifecycle:
   `/concept-brainstorm` to `/launch-checklist`
 
 This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
-and runs on [OpenCode](https://opencode.ai).
+and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent).
 
 ---
 
@@ -68,24 +69,31 @@ and runs on [OpenCode](https://opencode.ai).
 
 ## 📊 Port Status
 
-| Component | CCGS (Claude Code) | OpenCode | Status |
-|-----------|-------------------|----------|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 51 agents (`.agents/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.agents/skills/`) | ✅ +5 |
-| ⌨️ **Commands** | — | 54 commands (`.agents/commands/`) | ✅ New |
-| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **183 tests** |
-| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
-| ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
+| Component | CCGS (Claude Code) | OpenCode | Pi | Status |
+|-----------|-------------------|----------|-----|--------|
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 51 agents (`.agents/agents/`) | 51 agents (`.agents/agents/`) | ✅ |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.agents/skills/`) | 77 skills (`.agents/skills/`) | ✅ +5 |
+| ⌨️ **Commands** | — | 54 commands (`.agents/commands/`) | → prompt templates | ✅ New |
+| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 7 Pi extensions (`.pi/extensions/`) | ✅ **183 tests** |
+| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
+| ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | `AGENTS.md` + `pi.json` | ✅ |
 
 ---
 
 ## 🚀 Quick Start
 
+### OpenCode
 ```bash
 opencode
 ```
-
 Type `/` to browse all 77 skills and 54 commands, or `/start` for onboarding.
+
+### Pi
+```bash
+pi
+```
+All OCGS skills, commands, and agents load automatically through Pi extensions.
+See [docs/pi-compatibility.md](docs/pi-compatibility.md) for setup details.
 
 ### 🎮 Demo Game
 
@@ -150,8 +158,7 @@ all game development sessions:
 | [**dynamic-context-purging**](https://github.com/Opencode-DCP/opencode-dynamic-context-pruning)| Dynamic context pruning — automatically manages context window size, indexes content for search, and prevents context overflow during long sessions |
 | [**Superpowers**](https://github.com/obra/superpowers) | Enhanced skill library — provides structured workflows for brainstorming, test-driven development, writing plans, code review, and parallel agent dispatch |
 
-Add them to your `opencode.json`:
-
+**OpenCode:** Add to your `opencode.json`:
 ```json
 {
   "plugin": [
@@ -161,18 +168,21 @@ Add them to your `opencode.json`:
 }
 ```
 
+**Pi:** OCGS Pi extensions are bundled in `.pi/extensions/` and auto-discovered
+on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
+
 ---
 
 ## 🗺️ Key Mappings
 
-| CCGS (Claude Code) | OpenCode |
-|--------------------|----------|
-| `.claude/skills/*.md` → | `.agents/skills/*.md` |
-| `.claude/agents/*.md` → | `.agents/agents/*.md` |
-| `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` |
-| `.claude/rules/*.md` → | `.agents/rules/*.md` |
-| `CLAUDE.md` → | `AGENTS.md` |
-| `.claude/settings.json` → | `opencode.json` |
+| CCGS (Claude Code) | OpenCode | Pi |
+|--------------------|----------|-----|
+| `.claude/skills/*.md` → | `.agents/skills/*.md` | `.agents/skills/*.md` |
+| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` |
+| `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` | `.pi/extensions/` |
+| `.claude/rules/*.md` → | `.agents/rules/*.md` | `.agents/rules/*.md` |
+| `CLAUDE.md` → | `AGENTS.md` | `AGENTS.md` |
+| `.claude/settings.json` → | `opencode.json` | `pi.json` |
 
 ---
 
@@ -255,6 +265,7 @@ node utils/assign-models.js --config my-models.json
 /
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
+├── pi.json                    ⚙️ Pi config (MCP, settings)
 ├── .agents/                   📦 Canonical content (harness-agnostic)
 │   ├── agents/                🤖 51 agent definitions
 │   ├── skills/                🛠️ 77 skill workflows
@@ -277,10 +288,16 @@ node utils/assign-models.js --config my-models.json
 │       ├── installed.json     Module manifest
 │       └── ...                21 module sources
 ├── design/                    🎨 Game design documents
+├── .pi/                        ⚙️ Pi-specific extensions & settings
+│   └── extensions/            🧩 Pi extensions (ocgs-core, delegation, question, etc.)
 ├── docs/
 │   ├── CONTRIBUTING.md        📖 Framework contribution guide
 │   ├── authoring-agents.md    🤖 Agent authoring guide
 │   ├── authoring-skills.md    🛠️ Skill authoring guide
+│   ├── pi-compatibility.md    🔧 Pi setup guide
+│   ├── pi-extensions.md       🧩 Pi extension reference
+│   ├── pi-workflow.md         🔄 Pi workflow differences
+│   ├── framework/             🏛️ OCGS framework reference docs & templates
 │   ├── architecture/          🏗️ ADRs
 │   └── engine-reference/      📚 Engine API reference
 ├── tests/

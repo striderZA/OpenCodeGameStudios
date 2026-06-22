@@ -2,7 +2,12 @@
 
 ## What Is This?
 
-This is a complete OpenCode agent architecture for game development. It
+# Game Studio Agent Architecture -- Quick Start Guide
+
+## What Is This?
+
+This is a complete agent architecture for game development, supporting both
+[OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent). It
 organizes 48 specialized AI agents into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
@@ -232,7 +237,7 @@ If you already know what you need, jump directly to the relevant path:
     # In Unity: Window → Package Manager → + → Add package from git URL
     # Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
     ```
-    Then add the `mcp.unity` block to your `opencode.json` and set
+    Then add the `mcp.unity` block to your MCP config (`opencode.json` for OpenCode, `pi.json` for Pi) and set
     `enabled: true` once Unity Editor is running. See `/setup-engine` §7.4
     for full details.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
@@ -285,6 +290,24 @@ If you have design docs, prototypes, or code already:
 The framework is partitioned into **theme modules**. Only install what you need:
 
 ```bash
+## Installation
+
+### OpenCode
+```bash
+opencode
+```
+Type `/` to browse all skills and commands, or `/start` for onboarding.
+
+### Pi
+```bash
+pi
+```
+All OCGS skills, commands, and agents load automatically through Pi extensions.
+See `docs/pi-compatibility.md` for full setup.
+
+### Install Modules
+
+```bash
 node .opencode/modules/install.mjs add core          # Required: directors, /start, /help
 node .opencode/modules/install.mjs add engine-godot  # Engine specialists (or engine-unity/engine-unreal)
 node .opencode/modules/install.mjs add art           # Aseprite MCP, art bible, asset specs
@@ -299,8 +322,9 @@ Available modules: art, design, architecture, stories, programming, ui, audio, n
 
 ```
 AGENTS.md                          -- Master config (read this first)
-.opencode/
-  (opencode.json at root)          -- OpenCode settings and plugin configuration
+.opencode/  (opencode.json at root) -- OpenCode settings & plugin config
+.pi/           (pi.json at root)       -- Pi MCP & settings
+  extensions/                         -- 7 Pi extensions (auto-discovered)
   agents/                          -- Agent definitions (YAML frontmatter)
   skills/                          -- Skill definitions (YAML frontmatter)
   plugins/                         -- TypeScript hooks plugin (ccgs-hooks.ts)

@@ -4,6 +4,9 @@ This guide covers how to add, modify, and maintain the OCGS framework —
 agents, skills, commands, rules, and plugins. If you're building a game
 (rather than the framework), see `README.md` instead.
 
+The framework supports both [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent) coding agents.
+See `docs/pi-compatibility.md` for Pi-specific setup.
+
 ## Table of Contents
 
 1. [Framework Architecture](#framework-architecture)
