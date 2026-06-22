@@ -66,7 +66,7 @@ const OptionSchema = Type.Object({
 
 const QuestionParams = Type.Object({
 	question: Type.String({ description: "The question to ask the user" }),
-	options: Type.Array(OptionSchema, { minItems: 2, maxItems: 4 }),
+	options: Type.Array(OptionSchema, { minItems: 2, maxItems: 10 }),
 	header: Type.Optional(
 		Type.String({ description: "Optional short header (e.g. 'CD-PILLARS')" }),
 	),
