@@ -213,7 +213,7 @@ If you already know what you need, jump directly to the relevant path:
    - Produces a game concept document and recommends an engine
 2. **Initialize your project** — Run `/init-template` to customize the template with your game name, engine, and clean out example files.
 3. **Set up the engine** — Run `/setup-engine` (uses the brainstorm recommendation)
-   - Configures CLAUDE.md, detects knowledge gaps, populates reference docs
+   - Configures AGENTS.md, detects knowledge gaps, populates reference docs
    - Creates `docs/framework/technical-preferences.md` with naming conventions,
      performance budgets, and engine-specific defaults
    - If the engine version is newer than the LLM's training data, it fetches

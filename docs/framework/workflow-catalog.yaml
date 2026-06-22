@@ -15,7 +15,6 @@
 # but never hard-block advancement. The user always decides whether to proceed.
 
 phases:
-
   concept:
     label: "Concept"
     description: "Develop your game idea into a documented concept"
