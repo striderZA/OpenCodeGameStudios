@@ -69,8 +69,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `docs/pi-compatibility.md` — Pi setup guide
 - `docs/pi-extensions.md` — Pi extension reference
 - `docs/pi-workflow.md` — Pi workflow differences
-- `docs/superpowers/specs/2026-06-21-pi-agent-support-design.md` — Design spec
-
 ### Changed (docs)
 
 - All docs updated to reference `.agents/` paths instead of `.opencode/`
