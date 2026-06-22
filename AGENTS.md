@@ -1,18 +1,17 @@
 # OpenCode Game Studios
 
-Indie game development managed through 49 coordinated OpenCode agents.
+Indie game development managed through 51 coordinated OpenCode agents.
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
 
-- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5]
-- **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint]
-- **Version Control**: Git with trunk-based development
+- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5 / SFML 3 / Raylib]
+- **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint / C / C++17]
 - **Build System**: [SPECIFY after choosing engine]
 - **Asset Pipeline**: [SPECIFY after choosing engine]
 
-> **Note**: Engine-specialist agents exist for Godot, Unity, and Unreal with
-> dedicated sub-specialists. Use the set matching your engine.
+> **Note**: Engine-specialist agents exist for Godot, Unity, Unreal, SFML 3,
+> and Raylib. Use the set matching your engine.
 
 ## Project Structure
 
@@ -20,19 +19,27 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 /
 ├── AGENTS.md                    # Project configuration
 ├── opencode.json                # OpenCode config (permissions, plugins)
-├── .opencode/                   # Framework components
-│   ├── commands/                # 50 slash commands (routes to skills)
-│   ├── agents/                  # 49 agent definitions (was .claude/agents/)
-│   ├── skills/                  # 75 skills (was .claude/skills/)
-│   ├── plugins/                 # TypeScript plugins
-│   │   ├── ccgs-hooks.ts        # Session lifecycle, validation, logging
-│   │   ├── drift-detector.ts    # Template compliance detection
-│   │   ├── changelog-generator.ts
-│   │   └── tests/               # 11 plugin test suites
-│   └── rules/                   # 11 path-scoped coding standards
+├── pi.json                      # Pi settings (generated)
+├── .agents/                     # Canonical content (harness-agnostic)
+│   ├── agents/                  # 51 agent definitions
+│   ├── skills/                  # 77 skill workflows
+│   ├── commands/                # 54 slash commands
+│   ├── rules/                   # 11 path-scoped coding standards
+│   └── modules/                 # 17 installable modules
+├── .opencode/                   # OpenCode-specific
+│   ├── plugins/                 # TypeScript plugins (ccgs-hooks, drift-detector, changelog-generator)
+│   ├── agents/ → ../.agents/agents/   (symlink)
+│   ├── skills/ → ../.agents/skills/   (symlink)
+│   ├── commands/ → ../.agents/commands/ (symlink)
+│   └── rules/ → ../.agents/rules/     (symlink)
+├── .pi/                         # Pi-specific extensions & settings
+│   └── extensions/              # Pi extensions (ocgs-core, delegation, question, path-guard, etc.)
 ├── docs/
 │   ├── architecture/            # Architecture Decision Records (ADRs)
 │   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
+│   ├── pi-compatibility.md      # Pi setup guide
+│   ├── pi-extensions.md         # Pi extension reference
+│   ├── pi-workflow.md           # Pi workflow differences
 │   ├── authoring-agents.md      # Agent creation guide
 │   ├── authoring-skills.md      # Skill creation guide
 │   ├── hybrid-workflow.md       # Hybrid workflow reference
@@ -42,12 +49,15 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 │   │   ├── validate.mjs         # Structural compliance checker
 │   │   ├── validate-gdscript.mjs # GDScript snippet linter
 │   │   └── validation-report.md # Latest audit results
-│   ├── [game-specific tests]
-│   └── [spawned by test-setup]
+│   ├── extensions/              # Pi extension unit tests
+│   ├── e2e/                     # E2E parity tests
+│   └── [game-specific tests]
 ├── src/                         # Game source code
 ├── assets/                      # Game assets
 ├── design/                      # Game design documents
 ├── tools/                       # Build and pipeline tools
+│   ├── migrate-to-agents.mjs    # Migration script (.opencode/ → .agents/)
+│   └── ...
 ├── prototypes/                  # Throwaway prototypes
 └── production/                  # Sprint plans, milestones, session logs
 ```
@@ -56,9 +66,9 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 The framework is partitioned into installable theme modules.
 
-**Core** (always installed): creative-director, technical-director, producer, /start, /help, /brainstorm, /setup-engine, validation suite.
+**Core** (always installed): creative-director, technical-director, producer, /start, /help, /concept-brainstorm, /setup-engine, validation suite.
 
-**Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal.
+**Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib.
 
 **Install:** `node .opencode/modules/install.mjs add <name>`
 **Remove:** `node .opencode/modules/install.mjs remove <name>`
@@ -132,27 +142,54 @@ This project supports two workflow modes. Choose the one that fits your team siz
 
 - **All phases formal**: Every feature goes through design → architecture → stories → code → tests → review.
 - **Best for**: Teams of 5–15, known designs, long timelines, publisher requirements.
-- **See**: Full documentation in `docs/` and `.opencode/skills/`.
+- **See**: Full documentation in `docs/` and `.agents/skills/`.
 
 ## Getting Started
 
+### OpenCode
+
 Run `/start` in OpenCode to begin the guided onboarding flow.
 Or jump directly to:
-- `/brainstorm` — explore game ideas from scratch
-- `/setup-engine godot 4.6` — configure your engine
+- `/concept-brainstorm` — explore game ideas from scratch
+- `/setup-engine godot 4.6` — configure your engine (also: unity, unreal, sfml3, raylib)
 - `/project-stage-detect` — analyze an existing project
 - `/prototype` — rapid prototype a concept
 - `/hybrid-prototype` — fast-lane prototype for discovery phase
 
+### Pi
+
+Start Pi from the project root:
+```bash
+pi
+```
+
+All OCGS skills, commands, and agents load automatically through the `.pi/extensions/` extensions.
+
+Pi-specific commands differ from OpenCode in a few cases:
+- Use `/generate-changelog` instead of `/changelog` (Pi has a built-in with that name)
+
+See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup guide,
+[docs/pi-extensions.md](docs/pi-extensions.md) for the extension reference, and
+[docs/pi-workflow.md](docs/pi-workflow.md) for workflow differences.
+
+### Key commands in both harnesses
+
+| Command | OpenCode | Pi |
+|---------|----------|----|
+| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) |
+| Peer review | — | `/consult <agent>` (ocgs-delegation extension) |
+| Decision capture | question tool | question tool (ocgs-question with TUI) |
+| Skill invocation | `/command-name` | `/command-name` (via prompt templates) |
+
 ## Available Commands
 
-Type `/` in OpenCode to see all available commands. All 50 commands route to
-corresponding skills in `.opencode/skills/`.
+Type `/` in OpenCode to see all available commands. All 54 commands route to
+corresponding skills in `.agents/skills/`.
 
 | Category | Commands |
 |----------|----------|
 | **Onboarding** | `/start`, `/help`, `/project-stage-detect`, `/setup-engine`, `/init-template` |
-| **Design** | `/brainstorm`, `/map-systems`, `/design-system`, `/quick-design`, `/design-review`, `/review-all-gdds` |
+| **Design** | `/concept-brainstorm`, `/map-systems`, `/design-system`, `/quick-design`, `/design-review`, `/review-all-gdds` |
 | **Architecture** | `/create-architecture`, `/architecture-decision`, `/architecture-review`, `/create-control-manifest` |
 | **Stories** | `/create-epics`, `/create-stories`, `/story-readiness`, `/dev-story`, `/story-done`, `/code-review` |
 | **QA** | `/qa-plan`, `/smoke-check`, `/soak-test`, `/regression-suite`, `/test-setup`, `/test-helpers`, `/test-evidence-review`, `/test-flakiness` |
@@ -189,6 +226,8 @@ Tier 3 — Specialists (Subagents)
 - **Godot 4**: `godot-specialist` + `godot-gdscript-specialist`, `godot-csharp-specialist`, `godot-shader-specialist`, `godot-gdextension-specialist`
 - **Unity**: `unity-specialist` + `unity-dots-specialist`, `unity-shader-specialist`, `unity-addressables-specialist`, `unity-ui-specialist`
 - **Unreal Engine 5**: `unreal-specialist` + `ue-blueprint-specialist`, `ue-gas-specialist`, `ue-replication-specialist`, `ue-umg-specialist`
+- **SFML 3**: `sfml-specialist` (single agent — covers Graphics, Audio, Network, Window, System)
+- **Raylib**: `raylib-specialist` (single agent — covers core, rlgl, raudio, raymath, raygui)
 
 ## Quality Gates
 
@@ -204,8 +243,8 @@ Before merging to `development`, the CI must pass:
 ## Notes
 
 This is a port of [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)
-to OpenCode. The 75 skills are in `.opencode/skills/`, the 49 agents are in
-`.opencode/agents/`, and the 12 original bash hooks are implemented as a
+to OpenCode. The 77 skills are in `.agents/skills/`, the 51 agents are in
+`.agents/agents/`, and the 12 original bash hooks are implemented as a
 TypeScript plugin in `.opencode/plugins/ccgs-hooks.ts`.
 
 Additional plugins (`drift-detector.ts`, `changelog-generator.ts`) extend the

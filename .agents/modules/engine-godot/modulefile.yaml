@@ -1,0 +1,12 @@
+name: engine-godot
+version: "0.6.0"
+description: "Godot 4 engine specialists — GDScript, C#, shaders, GDExtension."
+depends: [core]
+provides:
+  agents: [godot-specialist, godot-gdscript-specialist, godot-csharp-specialist,
+           godot-shader-specialist, godot-gdextension-specialist]
+  skills: []
+  commands: []
+  rules: []
+plugged-into:
+  engines: [godot]

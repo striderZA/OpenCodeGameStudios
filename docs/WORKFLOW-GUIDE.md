@@ -3,8 +3,11 @@
 > **How to go from zero to a shipped game using the Agent Architecture.**
 >
 > This guide walks you through every phase of game development using the
-> 48-agent system, 68 slash commands, and 12 automated hooks. It assumes you
+> 51-agent system, 54 slash commands, and 3 TypeScript plugins. It assumes you
 > have OpenCode installed and are working from the project root.
+>
+> > **Pi users:** See [`docs/pi-workflow.md`](pi-workflow.md) for harness-specific differences and
+> > [`docs/pi-compatibility.md`](pi-compatibility.md) for setup.
 >
 > The pipeline has 7 phases. Each phase has a formal gate (`/gate-check`)
 > that must pass before you advance. The authoritative phase sequence is
@@ -57,8 +60,8 @@ If this is your first session:
 
 This guided onboarding asks where you are and routes you to the right phase:
 
-- **Path A** -- No idea yet: routes to `/brainstorm`
-- **Path B** -- Vague idea: routes to `/brainstorm` with seed
+- **Path A** -- No idea yet: routes to `/concept-brainstorm`
+- **Path B** -- Vague idea: routes to `/concept-brainstorm` with seed
 - **Path C** -- Clear concept: routes to `/setup-engine` and `/map-systems`
 - **Path D1** -- Existing project, few artifacts: normal flow
 - **Path D2** -- Existing project, GDDs/ADRs exist: runs `/project-stage-detect`
@@ -157,7 +160,7 @@ with defined pillars and a player journey. This is where you figure out
 ### Phase 1 Pipeline
 
 ```
-/brainstorm  -->  game-concept.md  -->  /design-review  -->  /setup-engine
+/concept-brainstorm  -->  game-concept.md  -->  /design-review  -->  /setup-engine
      |                                        |                    |
      v                                        v                    v
   10 concepts     Concept doc with       Validation          Engine pinned in
@@ -173,21 +176,21 @@ with defined pillars and a player journey. This is where you figure out
                                                              priority tiers)
 ```
 
-### Step 1.1: Brainstorm With /brainstorm
+### Step 1.1: Brainstorm With /concept-brainstorm
 
-This is your starting point. Run the brainstorm skill:
+This is your starting point. Run the concept-brainstorm skill:
 
 ```
-/brainstorm
+/concept-brainstorm
 ```
 
 Or with a genre hint:
 
 ```
-/brainstorm roguelike deckbuilder
+/concept-brainstorm roguelike deckbuilder
 ```
 
-**What happens:** The brainstorm skill guides you through a collaborative 6-phase
+**What happens:** The concept-brainstorm skill guides you through a collaborative 6-phase
 ideation process using professional studio techniques:
 
 1. Asks about your interests, themes, and constraints
@@ -1164,7 +1167,7 @@ By default they run at every checkpoint. You can control how much review you get
 **Override for a single run** without changing your global setting:
 
 ```
-/brainstorm space horror --review full
+/concept-brainstorm space horror --review full
 /architecture-decision --review solo
 ```
 
@@ -1247,7 +1250,7 @@ The system has 12 hooks that run automatically:
 | `validate-commit.sh` | Before commit | Checks for design doc references, valid JSON, no hardcoded values |
 | `validate-push.sh` | Before push | Warns on pushes to main/develop |
 | `validate-assets.sh` | Before commit | Checks asset naming and size |
-| `validate-skill-change.sh` | Skill file written | Advises running `/skill-test` after `.opencode/skills/` changes |
+| `validate-skill-change.sh` | Skill file written | Advises running `/skill-test` after `.agents/skills/` changes |
 | `log-agent.sh` | Agent start | Logs agent invocations for audit trail |
 | `log-agent-stop.sh` | Agent stop | Completes agent audit trail (start + stop) |
 | `session-stop.sh` | Session end | Final session logging |
@@ -1342,7 +1345,7 @@ Reads existing code and generates GDD-format design documentation from it.
 
 | I need to... | Agent | Tier |
 |-------------|-------|------|
-| Come up with a game idea | `/brainstorm` skill | -- |
+| Come up with a game idea | `/concept-brainstorm` skill | -- |
 | Design a game mechanic | `game-designer` | 2 |
 | Design specific formulas/numbers | `systems-designer` | 3 |
 | Design a game level | `level-designer` | 3 |
@@ -1416,7 +1419,7 @@ conflicts go to `producer`.
 
 ## Appendix B: Slash Command Quick-Reference
 
-### All 66 Commands by Category
+### All 54 Commands by Category
 
 #### Onboarding and Navigation (5)
 
@@ -1432,7 +1435,7 @@ conflicts go to `producer`.
 
 | Command | Purpose | Phase |
 |---------|---------|-------|
-| `/brainstorm` | Collaborative ideation with MDA analysis | 1 |
+| `/concept-brainstorm` | Collaborative ideation with MDA analysis | 1 |
 | `/map-systems` | Decompose concept into systems index | 1-2 |
 | `/design-system` | Guided section-by-section GDD authoring | 2 |
 | `/quick-design` | Lightweight spec for small changes | 2+ |
@@ -1550,7 +1553,7 @@ conflicts go to `producer`.
 
 ```
 1. /start (routes you based on where you are)
-2. /brainstorm (collaborative ideation, pick a concept)
+2. /concept-brainstorm (collaborative ideation, pick a concept)
 3. /setup-engine (pin engine and version)
 4. /design-review on concept doc (optional, recommended)
 5. /map-systems (decompose concept into systems with deps and priorities)
@@ -1568,7 +1571,7 @@ conflicts go to `producer`.
 5. Review reports in prototypes/explore/*/REPORT.md
 6. /gate-check workflow-selection (choose Hybrid vs. Full OCGS)
 7. If Hybrid: run /hybrid-prototype on the winning idea
-8. If Full: run /brainstorm [winning idea] to formalize, then /setup-engine
+8. If Full: run /concept-brainstorm [winning idea] to formalize, then /setup-engine
 ```
 
 ### Workflow 3: "I have designs and want to start coding"

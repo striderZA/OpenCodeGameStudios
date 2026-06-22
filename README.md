@@ -7,9 +7,9 @@
 > ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework with workflow selection, phase gates, pre-workflow prototyping, and hybrid discovery-to-production pipelines.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Agents](https://img.shields.io/badge/agents-49-blueviolet)](.opencode/agents/)
-[![Skills](https://img.shields.io/badge/skills-76-brightgreen)](.opencode/skills/)
-[![Commands](https://img.shields.io/badge/commands-51-blue)](.opencode/commands/)
+[![Agents](https://img.shields.io/badge/agents-51-blueviolet)](.agents/agents/)
+[![Skills](https://img.shields.io/badge/skills-77-brightgreen)](.agents/skills/)
+[![Commands](https://img.shields.io/badge/commands-54-blue)](.agents/commands/)
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
 [![Tests](https://img.shields.io/badge/tests-183-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
@@ -50,10 +50,10 @@ for the full game lifecycle:
 - **Workflow selection** — Choose Hybrid (lightweight discovery then production)
   or Full OCGS (process-heavy from day one), depending on team size and project
   maturity
-- **49 coordinated agents** — From creative director to engine specialists, each
+- **51 coordinated agents** — From creative director to engine specialists, each
   with defined responsibilities, delegation maps, and strict domain boundaries
-- **51 slash commands** — Route through the right skill every time, from
-  `/brainstorm` to `/launch-checklist`
+- **54 slash commands** — Route through the right skill every time, from
+  `/concept-brainstorm` to `/launch-checklist`
 
 This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
 and runs on [OpenCode](https://opencode.ai).
@@ -70,11 +70,11 @@ and runs on [OpenCode](https://opencode.ai).
 
 | Component | CCGS (Claude Code) | OpenCode | Status |
 |-----------|-------------------|----------|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 49 agents (`.opencode/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 76 skills (`.opencode/skills/`) | ✅ +4 |
-| ⌨️ **Commands** | — | 51 commands (`.opencode/commands/`) | ✅ New |
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 51 agents (`.agents/agents/`) | ✅ |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.agents/skills/`) | ✅ +5 |
+| ⌨️ **Commands** | — | 54 commands (`.agents/commands/`) | ✅ New |
 | 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | ✅ **183 tests** |
-| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.opencode/rules/`) | ✅ |
+| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | ✅ |
 
 ---
@@ -85,7 +85,7 @@ and runs on [OpenCode](https://opencode.ai).
 opencode
 ```
 
-Type `/` to browse all 76 skills and 51 commands, or `/start` for onboarding.
+Type `/` to browse all 77 skills and 54 commands, or `/start` for onboarding.
 
 ### 🎮 Demo Game
 
@@ -115,7 +115,7 @@ The framework is partitioned into **19 pluggable theme modules**. Only install w
 | `live-ops` | Post-launch content, community management |
 | `localization` | i18n, translation pipeline |
 | `engine-godot` | Godot 4 specialists (GDScript, C#, shaders, GDExtension) |
-| `engine-unity` | Unity specialists (DOTS, shaders, Addressables, UI) |
+| `engine-unity` | Unity specialists (DOTS, shaders, Addressables, UI) + unity-mcp |
 | `engine-unreal` | Unreal Engine 5 specialists (GAS, Blueprint, replication, UMG) |
 | `data` | Data file conventions and validation |
 
@@ -134,7 +134,7 @@ node .opencode/modules/install.mjs info core
 node .opencode/modules/install.mjs remove art
 ```
 
-Module sources live in `.opencode/modules/<name>/` and are copied into the
+Module sources live in `.agents/modules/<name>/` and are copied into the
 framework directories on install. User-modified files are detected during
 removal and left in place.
 
@@ -167,10 +167,10 @@ Add them to your `opencode.json`:
 
 | CCGS (Claude Code) | OpenCode |
 |--------------------|----------|
-| `.claude/skills/*.md` → | `.opencode/skills/*.md` |
-| `.claude/agents/*.md` → | `.opencode/agents/*.md` |
+| `.claude/skills/*.md` → | `.agents/skills/*.md` |
+| `.claude/agents/*.md` → | `.agents/agents/*.md` |
 | `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` |
-| `.claude/rules/*.md` → | `.opencode/rules/*.md` |
+| `.claude/rules/*.md` → | `.agents/rules/*.md` |
 | `CLAUDE.md` → | `AGENTS.md` |
 | `.claude/settings.json` → | `opencode.json` |
 
@@ -255,22 +255,27 @@ node utils/assign-models.js --config my-models.json
 /
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
-├── .opencode/
-│   ├── commands/              ⌨️ 51 slash commands (routes to skills)
-│   ├── agents/                🤖 49 agent definitions
-│   ├── skills/                🛠️ 76 skill workflows
+├── .agents/                   📦 Canonical content (harness-agnostic)
+│   ├── agents/                🤖 51 agent definitions
+│   ├── skills/                🛠️ 77 skill workflows
+│   ├── commands/              ⌨️ 54 slash commands
+│   ├── rules/                 📏 11 coding standards
+│   └── modules/               🧩 19 pluggable theme modules
+│       ├── ...                21 modules total
+├── .opencode/                 ⚙️ OpenCode-specific (plugins, config)
+│   ├── commands/ → .agents/commands/ (symlink)
+│   ├── agents/ → .agents/agents/     (symlink)
+│   ├── skills/ → .agents/skills/     (symlink)
+│   ├── rules/ → .agents/rules/       (symlink)
 │   ├── plugins/
 │   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
 │   │   └── tests/             🧪 11 test suites (140 tests)
-│   ├── rules/                 📏 11 coding standards
-│   └── modules/               🧩 19 pluggable theme modules
+│   └── modules/
 │       ├── install.mjs        CLI: add/remove/list modules
 │       ├── installed.json     Module manifest
-│       ├── core/              Core module (always installed)
-│       ├── art/               Art module (aseprite MCP, art bible)
-│       └── ...                19 modules total
+│       └── ...                21 module sources
 ├── design/                    🎨 Game design documents
 ├── docs/
 │   ├── CONTRIBUTING.md        📖 Framework contribution guide

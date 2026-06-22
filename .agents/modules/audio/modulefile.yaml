@@ -1,0 +1,11 @@
+name: audio
+version: "0.6.0"
+description: "Audio direction, sound design, music cue planning."
+depends: [core]
+provides:
+  agents: [audio-director, sound-designer]
+  skills: [team-audio]
+  commands: [team-audio]
+  rules: []
+plugged-into:
+  engines: []

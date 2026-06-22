@@ -104,13 +104,13 @@ with PROMISING verdicts.
    ```
 
 2. **Formalize the concept**
-   Run `/brainstorm [winning-idea]` to produce a formal game concept document
+   Run `/concept-brainstorm [winning-idea]` to produce a formal game concept document
    at `design/gdd/game-concept.md` with full MDA analysis, pillars, core loop,
    and player journey.
 
-   The explore findings feed directly into the brainstorm — the core question
+   The explore findings feed directly into the concept-brainstorm — the core question
    has already been answered, so the concept document can be more specific
-   than a typical brainstorm output.
+   than a typical concept-brainstorm output.
 
 3. **Set up the engine**
    Run `/setup-engine [engine]` to pin the engine version, generate technical
@@ -133,7 +133,7 @@ with PROMISING verdicts.
 |----------|--------|-------------|
 | `prototypes/explore/[idea]/REPORT.md` | Archive, cross-reference | `prototypes/archive/explore/[date]/[idea]/REPORT.md` |
 | `prototypes/explore/[idea]/code/` | Archive (never reuse) | `prototypes/archive/explore/[date]/[idea]/code/` |
-| Winning idea | Formalize | `design/gdd/game-concept.md` (via `/brainstorm`) |
+| Winning idea | Formalize | `design/gdd/game-concept.md` (via `/concept-brainstorm`) |
 | Prototype findings | Embed in GDDs | `design/gdd/[system].md` (Tuning Knobs, Edge Cases sections) |
 | Engine (none yet) | Set up | Via `/setup-engine` |
 
@@ -269,5 +269,5 @@ and throwaway code.
 
 - [`docs/hybrid-workflow.md`](hybrid-workflow.md) — Hybrid Discovery-Production workflow
 - [`docs/WORKFLOW-GUIDE.md`](WORKFLOW-GUIDE.md) — Full OCGS 7-phase workflow
-- `.opencode/skills/explore/SKILL.md` — Pre-workflow prototyping skill
-- `.opencode/skills/gate-check/SKILL.md` — Workflow Selection gate
+- `.agents/skills/explore/SKILL.md` — Pre-workflow prototyping skill
+- `.agents/skills/gate-check/SKILL.md` — Workflow Selection gate

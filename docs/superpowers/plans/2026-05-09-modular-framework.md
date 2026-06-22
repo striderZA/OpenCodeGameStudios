@@ -104,9 +104,9 @@ description: "Framework skeleton — directors, onboarding, validation, workflow
 depends: []
 provides:
   agents: [creative-director, technical-director, producer]
-  skills: [start, help, brainstorm, setup-engine, init-template, map-systems, project-stage-detect,
+  skills: [start, help, concept-brainstorm, setup-engine, init-template, map-systems, project-stage-detect,
            gate-check, create-architecture, architecture-decision]
-  commands: [start, help, brainstorm, setup-engine, init-template, map-systems, project-stage-detect,
+  commands: [start, help, concept-brainstorm, setup-engine, init-template, map-systems, project-stage-detect,
              gate-check, create-architecture, architecture-decision]
   rules: []
   plugins: [ccgs-hooks, drift-detector, changelog-generator]
@@ -546,7 +546,7 @@ const SKILL_MAP = {
   // core
   'start': 'core',
   'help': 'core',
-  'brainstorm': 'core',
+  'concept-brainstorm': 'core',
   'setup-engine': 'core',
   'init-template': 'core',
   'map-systems': 'core',
@@ -682,7 +682,7 @@ const COMMAND_MAP = {
   // core
   'start': 'core',
   'help': 'core',
-  'brainstorm': 'core',
+  'concept-brainstorm': 'core',
   'setup-engine': 'core',
   'init-template': 'core',
   'map-systems': 'core',
@@ -1799,7 +1799,7 @@ Add after the project structure section:
 This project uses theme modules. Not every project needs every module.
 
 **Core (always installed):** creative-director, technical-director, producer, /start,
-/help, /brainstorm, /setup-engine, validation suite.
+/help, /concept-brainstorm, /setup-engine, validation suite.
 
 **Available modules:** art, design, architecture, stories, programming, ui, audio,
 narrative, level-design, qa, release, prototyping, live-ops, localization, data,

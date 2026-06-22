@@ -1,0 +1,11 @@
+name: engine-raylib
+version: "0.6.0"
+description: "Raylib engine specialist — simple C/C++ multimedia library for graphics, audio, input, and game development."
+depends: [core]
+provides:
+  agents: [raylib-specialist]
+  skills: []
+  commands: []
+  rules: []
+plugged-into:
+  engines: [raylib]

@@ -1,0 +1,11 @@
+name: data
+version: "0.6.0"
+description: "Data file conventions and validation rules."
+depends: [core]
+provides:
+  agents: []
+  skills: []
+  commands: []
+  rules: [data-files]
+plugged-into:
+  engines: []

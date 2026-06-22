@@ -182,3 +182,7 @@ Always involve this agent when:
 - Implementing UI with UI Toolkit or UGUI
 - Building for any platform
 - Optimizing with Unity-specific tools
+
+## MCP Integration
+
+- Use the unity-mcp server (`read_console`, `manage_scene` with actions `get_active` / `get_hierarchy`, resource `mcpforunity://editor/state`) to audit project state and verify in-editor behavior during development sessions. Requires Unity Editor running and `opencode.json` `mcp.unity.enabled: true`.

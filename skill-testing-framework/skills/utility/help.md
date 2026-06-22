@@ -72,8 +72,8 @@ None. `/help` is a read-only navigation skill. No director gates apply.
 
 **Expected behavior:**
 1. Skill reads stage.txt — detects Concept stage
-2. Skill outputs the Concept-stage workflow: brainstorm → map-systems → design-system
-3. Suggested skills are: `/brainstorm`, `/map-systems` (if concept exists)
+2. Skill outputs the Concept-stage workflow: concept-brainstorm → map-systems → design-system
+3. Suggested skills are: `/concept-brainstorm`, `/map-systems` (if concept exists)
 4. Current progress is noted: "Engine configured, concept not yet created"
 
 **Assertions:**

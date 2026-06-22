@@ -1,7 +1,7 @@
 # Available Skills (Slash Commands)
 
 73 slash commands organized by phase. Each skill belongs to a **module** under
-`.opencode/modules/<name>/skills/`. Install only the modules you need:
+`.agents/modules/<name>/skills/`. Install only the modules you need:
 `node .opencode/modules/install.mjs add <name>`. Type `/` in OpenCode to access
 any available command.
 
@@ -20,7 +20,7 @@ any available command.
 
 | Command | Purpose |
 |---------|---------|
-| `/brainstorm` | Guided ideation using professional studio methods (MDA, SDT, Bartle, verb-first) |
+| `/concept-brainstorm` | Guided ideation using professional studio methods (MDA, SDT, Bartle, verb-first) |
 | `/map-systems` | Decompose game concept into systems, map dependencies, prioritize design order |
 | `/design-system` | Guided, section-by-section GDD authoring for a single game system |
 | `/quick-design` | Lightweight design spec for small changes — tuning, tweaks, minor additions |

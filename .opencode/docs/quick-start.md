@@ -69,7 +69,7 @@ Ask yourself: "What department would handle this in a real studio?"
 | Build GDExtension modules | `godot-gdextension-specialist` |
 | Plan live events and seasons | `live-ops-designer` |
 | Write patch notes for players | `community-manager` |
-| Brainstorm a new game idea | Use `/brainstorm` skill |
+| Brainstorm a new game idea | Use `/concept-brainstorm` skill |
 
 ### 3. Use Slash Commands for Common Tasks
 
@@ -81,7 +81,7 @@ Ask yourself: "What department would handle this in a real studio?"
 | `/project-stage-detect` | Analyze project state, detect stage, identify gaps |
 | `/setup-engine` | Configure engine + version, populate reference docs |
 | `/adopt` | Brownfield audit and migration plan for existing projects |
-| `/brainstorm` | Guided game concept ideation from scratch |
+| `/concept-brainstorm` | Guided game concept ideation from scratch |
 | `/map-systems` | Decompose concept into systems, map dependencies, guide per-system GDDs |
 | `/design-system` | Guided, section-by-section GDD authoring for a single game system |
 | `/quick-design` | Lightweight spec for small changes — tuning, tweaks, minor additions |
@@ -207,7 +207,7 @@ If you already know what you need, jump directly to the relevant path:
 
 ### Path A: "I have no idea what to build"
 
-1. **Run `/start`** (or `/brainstorm open`) — guided creative exploration:
+1. **Run `/start`** (or `/concept-brainstorm open`) — guided creative exploration:
    what excites you, what you've played, your constraints
    - Generates 3 concepts, helps you pick one, defines core loop and pillars
    - Produces a game concept document and recommends an engine
@@ -225,6 +225,16 @@ If you already know what you need, jump directly to the relevant path:
    ```
    Once configured, run `/automated-smoke-test` to verify the project launches
    without errors.
+
+4b. **Enhance with unity-mcp (Unity only)** — Install the CoplayDev unity-mcp
+    package in your Unity project for interactive AI-assisted dev:
+    ```
+    # In Unity: Window → Package Manager → + → Add package from git URL
+    # Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
+    ```
+    Then add the `mcp.unity` block to your `opencode.json` and set
+    `enabled: true` once Unity Editor is running. See `/setup-engine` §7.4
+    for full details.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
 6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
 7. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)

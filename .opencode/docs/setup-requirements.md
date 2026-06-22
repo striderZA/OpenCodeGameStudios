@@ -97,3 +97,47 @@ The MCP server is configured via `opencode.json` or editor MCP settings. See `/s
 - `get_debug_output` — live debug feedback
 - `create_scene`, `add_node`, `save_scene` — scene manipulation
 - `get_godot_version`, `get_project_info`, `list_projects` — project introspection
+
+### Unity-MCP (Optional — Unity Only)
+
+The [unity-mcp](https://github.com/CoplayDev/unity-mcp) server (by CoplayDev) provides runtime tools for AI-assisted interaction with a running Unity Editor. It enables agents to manage assets, control scenes, edit scripts, and read the Editor console during development sessions.
+
+**Prerequisites:**
+- Unity 2021.3 LTS or newer
+- Python 3.10+ with `uv` (install via `pip install uv` or `winget install astral-sh.uv`)
+
+**Installation:**
+
+The unity-mcp server runs as a package inside Unity Editor (not a standalone CLI). Install via the Unity Package Manager:
+
+```
+# In Unity: Window → Package Manager → + → Add package from git URL
+# Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
+```
+
+Then click **Window → MCP for Unity → "Configure All Detected Clients"** to auto-configure detected MCP clients. OpenCode may require manual config — see below.
+
+**Configuration:**
+
+Add this block to the `mcp` object in your `opencode.json` (the wizard may auto-configure, but manual is the reliable fallback):
+
+```json
+"unity": {
+  "type": "local",
+  "url": "http://localhost:8080/mcp",
+  "enabled": false
+}
+```
+
+Flip `enabled` to `true` once Unity Editor is running.
+
+> ⚠ **Unity Editor must be running** before OCGS agents can use unity-mcp tools. If the Editor is closed, MCP calls will fail with a connection error. Open your project in Unity, then continue.
+
+**Tools provided (selection):**
+- `manage_gameobject`, `manage_scene`, `find_gameobjects` — scene and GameObject management
+- `create_script`, `script_apply_edits`, `validate_script` — script creation and editing
+- `manage_material`, `manage_asset` — material and asset management
+- `manage_ui` — UI Toolkit workflows
+- `read_console` — Editor console output (errors, warnings, compile status)
+- `run_tests` — async test execution (EditMode / PlayMode)
+- `batch_execute` — multiple MCP commands in a single batch (10-100x faster)
