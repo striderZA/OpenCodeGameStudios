@@ -353,5 +353,5 @@ If the agent skips any of these, remind it:
 
 - **Full Principle Documentation:** [docs/COLLABORATIVE-DESIGN-PRINCIPLE.md](../COLLABORATIVE-DESIGN-PRINCIPLE.md)
 - **Workflow Guide:** [docs/WORKFLOW-GUIDE.md](../WORKFLOW-GUIDE.md)
-- **Agent Roster:** [.opencode/docs/agent-roster.md](../../.opencode/docs/agent-roster.md)
+- **Agent Roster:** [docs/framework/agent-roster.md](../../docs/framework/agent-roster.md)
 - **AGENTS.md (Collaboration Protocol):** [AGENTS.md](../../AGENTS.md#collaboration-protocol)

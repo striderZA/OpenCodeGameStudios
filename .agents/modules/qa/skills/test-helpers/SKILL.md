@@ -36,7 +36,7 @@ and systems — so every developer writes less boilerplate and more assertions.
 
 ## 2. Detect Engine and Language
 
-Read `.opencode/docs/technical-preferences.md` and extract:
+Read `docs/framework/technical-preferences.md` and extract:
 - `Engine:` value
 - `Language:` value
 - `Framework:` from the Testing section

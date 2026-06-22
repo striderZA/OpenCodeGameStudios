@@ -11,7 +11,7 @@
 >
 > The pipeline has 7 phases. Each phase has a formal gate (`/gate-check`)
 > that must pass before you advance. The authoritative phase sequence is
-> defined in `.opencode/docs/workflow-catalog.yaml` and read by `/help`.
+> defined in `docs/framework/workflow-catalog.yaml` and read by `/help`.
 
 ---
 
@@ -234,7 +234,7 @@ Or with a specific engine:
 
 **What /setup-engine does:**
 
-- Populates `.opencode/docs/technical-preferences.md` with naming conventions,
+- Populates `docs/framework/technical-preferences.md` with naming conventions,
   performance budgets, and engine-specific defaults
 - Detects knowledge gaps (engine version newer than LLM training data) and
   advises cross-referencing `docs/engine-reference/`
@@ -1142,7 +1142,7 @@ Bypasses normal sprint processes with a full audit trail:
 
 ```
 Ask Claude to create a post-mortem using the template at
-.opencode/docs/templates/post-mortem.md
+docs/framework/templates/post-mortem.md
 ```
 
 ---
@@ -1174,7 +1174,7 @@ By default they run at every checkpoint. You can control how much review you get
 The `--review` flag works on all gate-using skills. Change the global mode at any
 time by editing `production/review-mode.txt` directly or re-running `/start`.
 
-Full gate definitions and check pattern: `.opencode/docs/director-gates.md`
+Full gate definitions and check pattern: `docs/framework/director-gates.md`
 
 ---
 

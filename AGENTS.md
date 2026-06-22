@@ -37,6 +37,14 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── docs/
 │   ├── architecture/            # Architecture Decision Records (ADRs)
 │   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
+│   ├── framework/               # OCGS framework reference docs & templates
+│   │   ├── director-gates.md    # Quality gate definitions
+│   │   ├── technical-preferences.md  # Project tech config (populated by /setup-engine)
+│   │   ├── agent-roster.md      # Full agent inventory
+│   │   ├── coding-standards.md  # Code review standards
+│   │   ├── coordination-rules.md    # Agent coordination rules
+│   │   ├── templates/           # Document templates (GDDs, ADRs, specs, etc.)
+│   │   └── ...                  # Skills reference, workflow catalog, etc.
 │   ├── pi-compatibility.md      # Pi setup guide
 │   ├── pi-extensions.md         # Pi extension reference
 │   ├── pi-workflow.md           # Pi workflow differences

@@ -85,7 +85,7 @@ auto-detect using these heuristics (check from most-advanced backward):
 
 ### 4. Generate Stage Report
 
-Use template: `.opencode/docs/templates/project-stage-report.md`
+Use template: `docs/framework/templates/project-stage-report.md`
 
 **Report structure**:
 ```markdown
