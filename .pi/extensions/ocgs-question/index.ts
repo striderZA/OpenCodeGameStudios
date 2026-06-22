@@ -83,7 +83,7 @@ export default function (pi: ExtensionAPI) {
 		promptSnippet:
 			"Present a strategic decision with options and capture the user's choice",
 		promptGuidelines: [
-			"Use the question tool when you need the user to make a strategic choice between 2-4 options.",
+			"Use the question tool when you need the user to make a strategic choice between 2-10 options.",
 			"ALWAYS write your full reasoning in conversation text BEFORE calling the question tool — explain the trade-offs, your recommendation, and why.",
 			"Add '(Recommended)' to your preferred option's label.",
 			"Labels: 1-5 words. Descriptions: 1 sentence with the key trade-off.",
@@ -135,6 +135,8 @@ export default function (pi: ExtensionAPI) {
 				index?: number;
 			} | null>((tui, theme, _kb, done) => {
 				let optionIndex = 0;
+				let scrollOffset = 0;
+				const VISIBLE_OPTIONS = 6;
 				let editMode = false;
 				let cachedLines: string[] | undefined;
 
@@ -182,11 +184,14 @@ export default function (pi: ExtensionAPI) {
 
 					if (matchesKey(data, Key.up)) {
 						optionIndex = Math.max(0, optionIndex - 1);
+						if (optionIndex < scrollOffset) scrollOffset = optionIndex;
 						refresh();
 						return;
 					}
 					if (matchesKey(data, Key.down)) {
 						optionIndex = Math.min(allOptions.length - 1, optionIndex + 1);
+						if (optionIndex >= scrollOffset + VISIBLE_OPTIONS)
+							scrollOffset = optionIndex - VISIBLE_OPTIONS + 1;
 						refresh();
 						return;
 					}
@@ -204,6 +209,26 @@ export default function (pi: ExtensionAPI) {
 							});
 						}
 						return;
+					}
+
+					// Number shortcuts: 1-9 for options 1-9, 0 for option 10
+					const digit = /^[0-9]$/.test(data) ? parseInt(data, 10) : -1;
+					if (digit >= 0) {
+						const target = digit === 0 ? 9 : digit - 1;
+						if (target < allOptions.length) {
+							const selected = allOptions[target];
+							if (selected.isOther) {
+								optionIndex = target;
+								editMode = true;
+							} else {
+								done({
+									answer: selected.label,
+									wasCustom: false,
+									index: target + 1,
+								});
+							}
+							return;
+						}
 					}
 
 					if (matchesKey(data, Key.escape)) {
@@ -249,13 +274,28 @@ export default function (pi: ExtensionAPI) {
 					addWrappedWithPrefix(" ", theme.fg("text", params.question));
 					lines.push("");
 
-					// Options
-					for (let i = 0; i < allOptions.length; i++) {
-						const opt = allOptions[i];
-						const selected = i === optionIndex;
+					// Options (scrollable window)
+					const numPad = String(allOptions.length).length;
+					const visible = allOptions.slice(
+						scrollOffset,
+						scrollOffset + VISIBLE_OPTIONS,
+					);
+					const hasMoreAbove = scrollOffset > 0;
+					const hasMoreBelow =
+						scrollOffset + VISIBLE_OPTIONS < allOptions.length;
+
+					if (hasMoreAbove) {
+						addWrappedWithPrefix("  ", theme.fg("dim", "↑ more"));
+					}
+
+					for (let i = 0; i < visible.length; i++) {
+						const realIndex = scrollOffset + i;
+						const opt = allOptions[realIndex];
+						const selected = realIndex === optionIndex;
 						const isOther = opt.isOther === true;
 						const prefix = selected ? theme.fg("accent", "> ") : "  ";
-						const label = `${i + 1}. ${opt.label}${isOther && editMode ? " ✎" : ""}`;
+						const numStr = String(realIndex + 1).padStart(numPad);
+						const label = `${numStr}. ${opt.label}${isOther && editMode ? " ✎" : ""}`;
 						const color = selected || (isOther && editMode) ? "accent" : "text";
 
 						addWrappedWithPrefix(prefix, theme.fg(color, label));
@@ -264,6 +304,10 @@ export default function (pi: ExtensionAPI) {
 						if (opt.description) {
 							addWrappedWithPrefix("     ", theme.fg("muted", opt.description));
 						}
+					}
+
+					if (hasMoreBelow) {
+						addWrappedWithPrefix("  ", theme.fg("dim", "↓ more"));
 					}
 
 					// Edit mode: inline text editor
@@ -285,7 +329,7 @@ export default function (pi: ExtensionAPI) {
 					} else {
 						addWrappedWithPrefix(
 							" ",
-							theme.fg("dim", "↑↓ navigate • Enter to select • Esc to cancel"),
+							theme.fg("dim", "↑↓ navigate • 1-9 choose • 0=Other • Enter to select • Esc to cancel"),
 						);
 					}
 					lines.push(theme.fg("accent", "─".repeat(renderWidth)));
