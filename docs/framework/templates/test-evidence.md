@@ -81,6 +81,6 @@ past the sprint review.
 
 ---
 
-*Template: `.opencode/docs/templates/test-evidence.md`*
+*Template: `docs/framework/templates/test-evidence.md`*
 *Used for: Visual/Feel and UI story type evidence records*
 *Location: `production/qa/evidence/[story-slug]-evidence.md`*

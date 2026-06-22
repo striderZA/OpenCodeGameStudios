@@ -41,7 +41,7 @@ engine is configured.
 - GDD for the target feature exists at `design/gdd/combat.md`
 - Sound bible exists at `design/gdd/sound-bible.md`
 - Existing audio assets are listed in `assets/audio/`
-- Engine is configured in `.opencode/docs/technical-preferences.md`
+- Engine is configured in `docs/framework/technical-preferences.md`
 - No accessibility gaps exist in the planned audio event list
 
 **Input:** `/team-audio combat`
@@ -154,14 +154,14 @@ engine is configured.
 ### Case 5: Engine Not Configured — Engine specialist step skipped gracefully
 
 **Fixture:**
-- Engine is NOT configured in `.opencode/docs/technical-preferences.md` (shows `[TO BE CONFIGURED]`)
+- Engine is NOT configured in `docs/framework/technical-preferences.md` (shows `[TO BE CONFIGURED]`)
 - GDD for the target feature exists
 - Sound bible may or may not exist
 
 **Input:** `/team-audio boss encounter`
 
 **Expected behavior:**
-1. Context gathering: orchestrator reads `.opencode/docs/technical-preferences.md` and detects no engine is configured
+1. Context gathering: orchestrator reads `docs/framework/technical-preferences.md` and detects no engine is configured
 2. Steps 1–2 proceed normally (audio-director, sound-designer, accessibility-specialist)
 3. Step 3: technical-artist is spawned normally; engine specialist spawn is SKIPPED
 4. Orchestrator notes in conversation: "Engine specialist not spawned — no engine configured in technical-preferences.md. Engine integration validation will be deferred until an engine is selected."

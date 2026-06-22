@@ -18,7 +18,7 @@ Read the argument:
 
 ## Phase 2: Load Performance Budgets
 
-Check for existing performance targets in design docs or CLAUDE.md:
+Check for existing performance targets in design docs or AGENTS.md:
 
 - Target FPS (e.g., 60fps = 16.67ms frame budget)
 - Memory budget (total and per-system)

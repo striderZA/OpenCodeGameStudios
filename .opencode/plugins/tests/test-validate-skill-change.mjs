@@ -2,7 +2,8 @@
  * Test suite for validate-skill-change hook (detectSkillChange)
  *
  * Tests behavioral equivalence with bash validate-skill-change.sh:
- *   - Detects file edits inside .opencode/skills/ or .opencode/commands/
+ *   - Detects file edits inside .agents/skills/ or .agents/commands/ (canonical)
+ *   - Also matches .opencode/skills/ or .opencode/commands/ (backward compat)
  *   - Extracts skill/command name from path
  *   - Returns null for non-skill paths
  *   - Works with Windows-style paths
@@ -14,7 +15,8 @@ import { strict as assert } from "node:assert"
 // Copy of handler logic (mirrors ccgs-hooks.ts)
 // ──────────────────────────────────────────────
 
-const SKILL_CHANGE_RE = /\.opencode\/(?:skills|commands)\/([^/]+)/
+// Matches both canonical .agents/ and backward-compat .opencode/ paths
+const SKILL_CHANGE_RE = /\.(?:opencode|agents)\/(?:skills|commands)\/([^/]+)/
 
 function detectSkillChange(filePath) {
   const match = filePath.match(SKILL_CHANGE_RE)
@@ -46,19 +48,29 @@ function run(name, fn) {
 
 console.log("\n🧪 validate-skill-change hook tests\n")
 
-// ── S1: Detects skill file in .opencode/skills/ ──
+// ── S1: Detects skill file in .agents/skills/ (canonical path) ──
 {
-  const result = detectSkillChange("/project/.opencode/skills/my-skill/SKILL.md")
-  run("S1: .opencode/skills/ path — extracts name", () => {
+  const result = detectSkillChange("/project/.agents/skills/my-skill/SKILL.md")
+  run("S1: .agents/skills/ path — extracts name", () => {
     assert.equal(result, "my-skill")
   })
 }
 
-// ── S2: Detects command file in .opencode/commands/ ──
+// ── S2: Detects command file in .agents/commands/ (canonical path) ──
 {
-  const result = detectSkillChange("/project/.opencode/commands/my-command/COMMAND.md")
-  run("S2: .opencode/commands/ path — extracts name", () => {
+  const result = detectSkillChange("/project/.agents/commands/my-command/COMMAND.md")
+  run("S2: .agents/commands/ path — extracts name", () => {
     assert.equal(result, "my-command")
+  })
+}
+
+// ── S2b: Backward compat — .opencode/ paths still match ──
+{
+  const r1 = detectSkillChange("/project/.opencode/skills/legacy-skill/SKILL.md")
+  const r2 = detectSkillChange("/project/.opencode/commands/legacy-cmd/COMMAND.md")
+  run("S2b: .opencode/ paths (legacy) — still extract name", () => {
+    assert.equal(r1, "legacy-skill")
+    assert.equal(r2, "legacy-cmd")
   })
 }
 
@@ -68,34 +80,32 @@ console.log("\n🧪 validate-skill-change hook tests\n")
   const r2 = detectSkillChange("/project/design/gdd/combat.md")
   const r3 = detectSkillChange("/project/opencode.json")
   const r4 = detectSkillChange("/project/.opencode/plugins/ccgs-hooks.ts")
+  const r5 = detectSkillChange("/project/.agents/plugins/some-tool.ts")
 
   run("S3: Non-skill paths return null", () => {
     assert.equal(r1, null)
     assert.equal(r2, null)
     assert.equal(r3, null)
     assert.equal(r4, null)
+    assert.equal(r5, null)
   })
 }
 
 // ── S4: Windows backslash paths — still matches ──
 {
-  const result = detectSkillChange("E:\\Project\\.opencode\\skills\\my-skill\\SKILL.md")
   run("S4: Windows backslash path — still extracts name", () => {
-    // After normalizePath, backslashes → forward slashes
-    const normalized = result // already tested with forward, test with actual backslashes too
-    // The regex uses forward slashes, so Windows paths need normalizePath first
-    // This test verifies the function works when called from the handler (which normalizes)
+    // Backslashes don't match forward-slash regex before normalization
     const rawResult = detectSkillChange("E:\\Project\\.opencode\\skills\\my-skill\\SKILL.md")
-    assert.equal(rawResult, null) // backslashes don't match forward-slash regex
-    // But after normalize it works
-    const normResult = detectSkillChange("E:/Project/.opencode/skills/my-skill/SKILL.md")
+    assert.equal(rawResult, null)
+    // After normalizePath (backslashes → forward slashes) it matches
+    const normResult = detectSkillChange("E:/Project/.agents/skills/my-skill/SKILL.md")
     assert.equal(normResult, "my-skill")
   })
 }
 
 // ── S5: Relative path without leading / ──
 {
-  const result = detectSkillChange(".opencode/commands/format-code/COMMAND.md")
+  const result = detectSkillChange(".agents/commands/format-code/COMMAND.md")
   run("S5: Relative path — still extracts name", () => {
     assert.equal(result, "format-code")
   })
@@ -103,7 +113,7 @@ console.log("\n🧪 validate-skill-change hook tests\n")
 
 // ── S6: Deeply nested file inside skill directory ──
 {
-  const result = detectSkillChange("/project/.opencode/skills/debugging/reference/examples.json")
+  const result = detectSkillChange("/project/.agents/skills/debugging/reference/examples.json")
   run("S6: Deep file in skill dir — extracts name", () => {
     assert.equal(result, "debugging")
   })
@@ -111,7 +121,7 @@ console.log("\n🧪 validate-skill-change hook tests\n")
 
 // ── S7: Name with hyphens and numbers ──
 {
-  const result = detectSkillChange("/project/.opencode/skills/test-driven-development/SCRIPTS.md")
+  const result = detectSkillChange("/project/.agents/skills/test-driven-development/SCRIPTS.md")
   run("S7: Name with hyphens — extracted correctly", () => {
     assert.equal(result, "test-driven-development")
   })
@@ -125,18 +135,18 @@ console.log("\n🧪 validate-skill-change hook tests\n")
   })
 }
 
-// ── S9: Skills directory NOT under .opencode/ — not matched ──
+// ── S9: Skills directory NOT under .agents/ or .opencode/ — not matched ──
 {
   const result = detectSkillChange("/project/src/skills/stuff.txt")
-  run("S9: skills/ dir not under .opencode/ — null", () => {
+  run("S9: skills/ dir not under .agents/.opencode — null", () => {
     assert.equal(result, null)
   })
 }
 
-// ── S10: Commands directory NOT under .opencode/ — not matched ──
+// ── S10: Commands directory NOT under .agents/ or .opencode/ — not matched ──
 {
   const result = detectSkillChange("/project/other/commands/foo.md")
-  run("S10: commands/ dir not under .opencode/ — null", () => {
+  run("S10: commands/ dir not under .agents/.opencode — null", () => {
     assert.equal(result, null)
   })
 }
@@ -151,7 +161,7 @@ console.log("\n🧪 validate-skill-change hook tests\n")
 
 // ── S12: Path ending with the skill directory itself ──
 {
-  const result = detectSkillChange("/project/.opencode/skills/caveman")
+  const result = detectSkillChange("/project/.agents/skills/caveman")
   run("S12: Path ends at skill dir (no file) — still extracts name", () => {
     assert.equal(result, "caveman")
   })

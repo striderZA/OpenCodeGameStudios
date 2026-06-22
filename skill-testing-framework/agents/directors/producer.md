@@ -10,7 +10,7 @@
 
 ## Static Assertions (Structural)
 
-Verified by reading the agent's `.opencode/agents/producer.md` frontmatter:
+Verified by reading the agent's `.agents/agents/producer.md` frontmatter:
 
 - [ ] `description:` field is present and domain-specific (references scope, sprint, milestone, production — not generic)
 - [ ] `allowed-tools:` list is primarily read-focused; Bash only if sprint/milestone files require parsing

@@ -20,7 +20,7 @@ Extract `--depth [full|lean|solo]` if present. Default is `full` when no flag is
 
 ## Phase 1: Load Documents
 
-Read the target design document in full. Read CLAUDE.md to understand project context and standards. Read related design documents referenced or implied by the target doc (check `design/gdd/` for related systems).
+Read the target design document in full. Read AGENTS.md to understand project context and standards. Read related design documents referenced or implied by the target doc (check `design/gdd/` for related systems).
 
 **Dependency graph validation:** For every system listed in the Dependencies section, use Glob to check whether its GDD file exists in `design/gdd/`. Flag any that don't exist yet — these are broken references that downstream authors will hit.
 
@@ -90,7 +90,7 @@ Read the GDD and identify every domain present. A GDD can touch multiple domains
 | Multiplayer, sync, replication | `network-programmer` |
 | Audio cues, music triggers | `audio-director` |
 | Performance, draw calls, memory | `performance-analyst` |
-| Engine-specific patterns or APIs | Primary engine specialist (from `.opencode/docs/technical-preferences.md`) |
+| Engine-specific patterns or APIs | Primary engine specialist (from `docs/framework/technical-preferences.md`) |
 | Acceptance criteria, test coverage | `qa-lead` |
 | Data schema, resource structure | `systems-designer` |
 | Any gameplay system | `game-designer` (always) |

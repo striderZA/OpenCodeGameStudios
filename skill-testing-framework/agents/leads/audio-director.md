@@ -10,7 +10,7 @@
 
 ## Static Assertions (Structural)
 
-Verified by reading the agent's `.opencode/agents/audio-director.md` frontmatter:
+Verified by reading the agent's `.agents/agents/audio-director.md` frontmatter:
 
 - [ ] `description:` field is present and domain-specific (references music direction, sound design, mix, audio implementation — not generic)
 - [ ] `allowed-tools:` list is read-focused; no Bash unless audio asset pipeline checks are justified

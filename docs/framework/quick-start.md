@@ -147,7 +147,7 @@ Ask yourself: "What department would handle this in a real studio?"
 
 ### 4. Use Templates for New Documents
 
-Templates are in `.opencode/docs/templates/`:
+Templates are in `docs/framework/templates/`:
 
 - `game-design-document.md` -- for new mechanics and systems
 - `architecture-decision-record.md` -- for technical decisions
@@ -184,7 +184,7 @@ Templates are in `.opencode/docs/templates/`:
 - `difficulty-curve.md` -- for difficulty axes, onboarding ramp, and cross-system interactions
 - `test-evidence.md` -- template for recording manual test evidence (screenshots, walkthrough notes)
 
-Also in `.opencode/docs/templates/collaborative-protocols/` (used by agents, not typically edited directly):
+Also in `docs/framework/templates/collaborative-protocols/` (used by agents, not typically edited directly):
 
 - `design-agent-protocol.md` -- question-options-draft-approval cycle for design agents
 - `implementation-agent-protocol.md` -- story pickup through /story-done cycle for programming agents
@@ -213,8 +213,8 @@ If you already know what you need, jump directly to the relevant path:
    - Produces a game concept document and recommends an engine
 2. **Initialize your project** — Run `/init-template` to customize the template with your game name, engine, and clean out example files.
 3. **Set up the engine** — Run `/setup-engine` (uses the brainstorm recommendation)
-   - Configures CLAUDE.md, detects knowledge gaps, populates reference docs
-   - Creates `.opencode/docs/technical-preferences.md` with naming conventions,
+   - Configures AGENTS.md, detects knowledge gaps, populates reference docs
+   - Creates `docs/framework/technical-preferences.md` with naming conventions,
      performance budgets, and engine-specific defaults
    - If the engine version is newer than the LLM's training data, it fetches
      current docs from the web so agents suggest correct APIs
