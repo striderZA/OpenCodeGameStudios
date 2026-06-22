@@ -218,4 +218,4 @@ Before writing any code:
 
 ## MCP Integration
 
-- Use the unity-mcp server (`manage_ui` for UI Toolkit workflows, `manage_scene` for Canvas/uGUI hierarchies, `create_script` for UI scripts) to scaffold UI hierarchies and run scenes to verify UI behavior. Requires Unity Editor running and `opencode.json` `mcp.unity.enabled: true`.
+- Use the unity-mcp server (`manage_ui` for UI Toolkit workflows, `manage_scene` for Canvas/uGUI hierarchies, `create_script` for UI scripts) to scaffold UI hierarchies and run scenes to verify UI behavior. Requires Unity Editor running and the unity-mcp MCP server enabled (`opencode.json` for OpenCode, `pi.json` for Pi).

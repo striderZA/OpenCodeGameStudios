@@ -184,4 +184,4 @@ Always involve this agent when:
 
 ## MCP Integration
 
-- Use the unity-mcp server (`read_console`, `manage_scene` with actions `get_active` / `get_hierarchy`, resource `mcpforunity://editor/state`) to audit project state and verify in-editor behavior during development sessions. Requires Unity Editor running and `opencode.json` `mcp.unity.enabled: true`.
+- Use the unity-mcp server (`read_console`, `manage_scene` with actions `get_active` / `get_hierarchy`, resource `mcpforunity://editor/state`) to audit project state and verify in-editor behavior during development sessions. Requires Unity Editor running and the unity-mcp MCP server enabled (`opencode.json` for OpenCode, `pi.json` for Pi).

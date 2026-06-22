@@ -413,8 +413,8 @@ runtime tools for interacting with the Godot editor and running project:
 npx @coding-solo/godot-mcp@latest
 ```
 
-**OpenCode MCP configuration:**
-Add to `opencode.json` or the appropriate MCP config file:
+**MCP Configuration:**
+Add the following to your harness MCP config (`opencode.json` for OpenCode, `pi.json` for Pi):
 ```json
 {
   "mcpServers": {
@@ -466,11 +466,11 @@ After the package imports, MCP for Unity opens a **setup wizard** automatically:
 2. Click **Done**. Once dependencies are green, a list of detected MCP clients appears.
 3. Pick the clients you want to configure and click **Configure Selected**.
 
-> **Note:** The wizard's per-client list (Claude Desktop, Cursor, Claude Code, VS Code, Windsurf, Cline, etc.) does not explicitly mention OpenCode. The wizard MAY auto-configure OpenCode's `opencode.json` (verify by checking the file after); if it does not, use the manual config below.
+> **Note:** The wizard's per-client list (Claude Desktop, Cursor, Claude Code, VS Code, Windsurf, Cline, etc.) does not explicitly mention OpenCode or Pi. The wizard MAY auto-configure `opencode.json` or `pi.json` (verify by checking the file after); if it does not, use the manual config below.
 
-#### Manual opencode.json config (reliable fallback)
+#### Manual MCP config (reliable fallback)
 
-Add this block to the `mcp` object in your project's `opencode.json`:
+Add this block to the `mcp` object in your harness config (`opencode.json` for OpenCode, `pi.json` for Pi):
 
 ```json
 "unity": {
@@ -493,7 +493,7 @@ In a session where `enabled: true`, call any unity-mcp tool (e.g. `list_scenes`)
 - **Bridge not connecting** — Open **Window → MCP for Unity** and check the status panel. Restart Unity if needed.
 - **Server not starting** — Verify `uv --version` works in your terminal. Check the MCP for Unity log for errors.
 - **Client not connecting** — Confirm the HTTP server is running on `localhost:8080` and the URL in your client config matches.
-- **Port 8080 conflict** — Open Unity's MCP for Unity window and change the port; update the `url` in `opencode.json` to match.
+- **Port 8080 conflict** — Open Unity's MCP for Unity window and change the port; update the `url` in your harness MCP config to match.
 
 ---
 

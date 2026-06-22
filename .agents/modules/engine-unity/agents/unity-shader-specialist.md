@@ -178,4 +178,4 @@ Before writing any code:
 
 ## MCP Integration
 
-- Use the unity-mcp server (`manage_material`, `manage_asset` for shader files, `read_console`) to apply material/shader changes and watch for shader compile errors in the Unity console. Requires Unity Editor running and `opencode.json` `mcp.unity.enabled: true`.
+- Use the unity-mcp server (`manage_material`, `manage_asset` for shader files, `read_console`) to apply material/shader changes and watch for shader compile errors in the Unity console. Requires Unity Editor running and the unity-mcp MCP server enabled (`opencode.json` for OpenCode, `pi.json` for Pi).
