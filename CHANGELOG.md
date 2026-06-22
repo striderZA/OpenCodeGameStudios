@@ -7,7 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## Unreleased
+## [v0.10.1] — 2026-06-22
+
+### Changed
+
+- **Path canonicalization**: Moved framework reference docs from `.opencode/docs/` to `docs/framework/`
+  — 54 files (16 reference docs + 38 document templates), all re-referenced across 145 skill files
+- Updated `AGENTS.md` project structure to document `docs/framework/`
+
+### Fixed
+
+- **CLAUDE.md references**: 33 skill/agent files referenced non-existent `CLAUDE.md` instead of `AGENTS.md`
+- **Canonical agent/skill/command paths**: 21 files pointed at symlinked `.opencode/` paths instead of
+  canonical `.agents/` directories
+- **`.claude/` stale references**: 3 workflow-catalog.yaml copies referenced `.claude/docs/` instead of
+  `docs/framework/`
+- **Pi harness awareness**: MCP config sections (godot-mcp, unity-mcp) now document `pi.json` alongside
+  `opencode.json`; 5 Unity specialist agents updated to be harness-agnostic
+- **Question tool `maxItems`**: Raised from 4 to 10 to support larger option sets with scrolling UI,
+  number-key shortcuts (1-9), and aligned rendering
+- **Question tool `ReferenceError`**: Fixed `answerText` → `result.answer` in TUI result rendering
+- **`/brainstorm` → `/concept-brainstorm`**: Renamed to avoid clash with Superpowers brainstorming skill;
+  updated all CI/test references and module catalogs
+- **Question tool factory pattern**: Removed dead ternary (both branches returned same value)
+
+## [v0.10.0] — 2026-06-21
 
 ### Added
 
