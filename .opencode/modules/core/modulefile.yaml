@@ -4,12 +4,34 @@ description: "Framework skeleton — directors, onboarding, validation, workflow
 depends: []
 provides:
   agents: [creative-director, technical-director, producer]
-  skills: [start, help, brainstorm, setup-engine, init-template, map-systems, project-stage-detect,
-           gate-check, create-architecture, architecture-decision]
-  commands: [start, help, brainstorm, setup-engine, init-template, map-systems, project-stage-detect,
-             create-architecture, architecture-decision]
+  skills:
+    [
+      start,
+      help,
+      concept-brainstorm,
+      setup-engine,
+      init-template,
+      map-systems,
+      project-stage-detect,
+      gate-check,
+      create-architecture,
+      architecture-decision,
+    ]
+  commands:
+    [
+      start,
+      help,
+      concept-brainstorm,
+      setup-engine,
+      init-template,
+      map-systems,
+      project-stage-detect,
+      create-architecture,
+      architecture-decision,
+    ]
   rules: []
   plugins: [ccgs-hooks, drift-detector, changelog-generator]
-  docs: [workflow-catalog, director-gates, coordination-rules, context-management]
+  docs:
+    [workflow-catalog, director-gates, coordination-rules, context-management]
 plugged-into:
   engines: []
