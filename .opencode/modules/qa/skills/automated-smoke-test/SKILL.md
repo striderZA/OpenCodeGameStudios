@@ -24,7 +24,7 @@ the version string. If it fails, inform the user:
 
 > "godot-mcp server is not available. Install it with:
 > `npx @coding-solo/godot-mcp`
-> Then configure the MCP server in `opencode.json`."
+> Then configure the MCP server in `opencode.json` (OpenCode) or `pi.json` (Pi)."
 
 Stop if the server is unavailable.
 

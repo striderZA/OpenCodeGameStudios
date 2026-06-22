@@ -32,7 +32,7 @@ phases:
         command: /setup-engine
         required: true
         artifact:
-          glob: ".claude/docs/technical-preferences.md"
+          glob: "docs/framework/technical-preferences.md"
           pattern: "Engine: [^[]"
         description: "Configure engine, pin version, set naming conventions and performance budgets"
 
