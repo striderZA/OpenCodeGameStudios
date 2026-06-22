@@ -4,9 +4,9 @@
  * Agent Framework Validator
  *
  * Validates the structural integrity of the OCGS agent framework:
- * - Agent markdown files (.opencode/agents/)
- * - Skill markdown files (.opencode/skills/)
- * - Command markdown files (.opencode/commands/)
+ * - Agent markdown files (.agents/agents/)
+ * - Skill markdown files (.agents/skills/)
+ * - Command markdown files (.agents/commands/)
  *
  * Produces a PASS/FAIL report with detailed diagnostics.
  * Exits with code 0 on pass, 1 on failure.

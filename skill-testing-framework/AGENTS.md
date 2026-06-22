@@ -69,7 +69,7 @@ creative    → writer, world-builder, game-designer, economy-designer,
 ## Workflow for testing a skill
 
 1. Read `catalog.yaml` to get the skill's `spec:` path and `category:`
-2. Read the skill at `.opencode/skills/[name]/SKILL.md`
+2. Read the skill at `.agents/skills/[name]/SKILL.md`
 3. Read the spec at the `spec:` path
 4. Evaluate assertions case by case
 5. Offer to write results to `results/` and update `catalog.yaml`
