@@ -331,7 +331,7 @@ build/
 
 ## 5. Populate Technical Preferences
 
-After updating CLAUDE.md, create or update `.opencode/docs/technical-preferences.md` with
+After updating CLAUDE.md, create or update `docs/framework/technical-preferences.md` with
 engine-appropriate defaults. Read the existing template first, then fill in:
 
 ### Engine & Language Section

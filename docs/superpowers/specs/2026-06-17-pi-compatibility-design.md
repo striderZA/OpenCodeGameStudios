@@ -1517,12 +1517,12 @@ The following are explicitly **not** part of this design. They may be revisited 
 
 ### Existing OCGS documentation
 - `AGENTS.md` — Project configuration, available commands, studio hierarchy
-- `.opencode/docs/agent-roster.md` — Full list of 51 agents
-- `.opencode/docs/agent-coordination-map.md` — Cross-agent delegation patterns
-- `.opencode/docs/director-gates.md` — Strategic decision flow
-- `.opencode/docs/hooks-reference.md` — CCGS-to-OpenCode plugin port documentation
-- `.opencode/docs/skills-reference.md` — All 77 skills
-- `.opencode/docs/commands-reference.md` — All 54 commands
+- `docs/framework/agent-roster.md` — Full list of 51 agents
+- `docs/framework/agent-coordination-map.md` — Cross-agent delegation patterns
+- `docs/framework/director-gates.md` — Strategic decision flow
+- `docs/framework/hooks-reference.md` — CCGS-to-OpenCode plugin port documentation
+- `docs/framework/skills-reference.md` — All 77 skills
+- `docs/framework/commands-reference.md` — All 54 commands
 - `UPGRADING.md` — Prior upgrade patterns (v0.3.0 Godot MCP, v0.4.0 Unity MCP)
 - `docs/superpowers/specs/2026-05-09-modular-framework-design.md` — Prior modular framework design
 

@@ -74,9 +74,9 @@ Configure via `opencode.json` MCP settings (see `setup-engine` skill section 7.3
 - `.opencode/agents/godot-specialist.md` — MCP capability line added  
 - `.opencode/agents/ui-programmer.md` — MCP capability line added
 - `.opencode/agents/qa-tester.md` — MCP capability line added
-- `.opencode/docs/setup-requirements.md` — godot-mcp dependency section added
-- `.opencode/docs/quick-start.md` — setup step added, steps renumbered
-- `.opencode/docs/skills-reference.md` — automated-smoke-test entry added
+- `docs/framework/setup-requirements.md` — godot-mcp dependency section added
+- `docs/framework/quick-start.md` — setup step added, steps renumbered
+- `docs/framework/skills-reference.md` — automated-smoke-test entry added
 
 ## v0.4.0 — Unity MCP Integration
 

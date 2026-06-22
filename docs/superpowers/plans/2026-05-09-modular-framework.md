@@ -822,7 +822,7 @@ for (const f of fs.readdirSync('.opencode/plugins').filter(f => f.endsWith('.ts'
 }
 // docs
 for (const f of ['workflow-catalog.yaml', 'director-gates.md', 'coordination-rules.md', 'context-management.md']) {
-  fs.copyFileSync('.opencode/docs/' + f, '.opencode/modules/core/docs/' + f);
+  fs.copyFileSync('docs/framework/' + f, '.opencode/modules/core/docs/' + f);
 }
 console.log('Done.');
 "

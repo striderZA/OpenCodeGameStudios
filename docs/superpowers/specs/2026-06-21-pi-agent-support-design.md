@@ -709,12 +709,12 @@ Resolution: determined during Phase 1 implementation based on OpenCode's current
 
 ### Existing OCGS documentation
 - `AGENTS.md` — Project configuration, available commands, studio hierarchy
-- `.opencode/docs/agent-roster.md` — Full list of 51 agents
-- `.opencode/docs/agent-coordination-map.md` — Cross-agent delegation patterns
-- `.opencode/docs/director-gates.md` — Strategic decision flow
-- `.opencode/docs/hooks-reference.md` — CCGS-to-OpenCode plugin port documentation
-- `.opencode/docs/skills-reference.md` — All 77 skills
-- `.opencode/docs/commands-reference.md` — All 54 commands
+- `docs/framework/agent-roster.md` — Full list of 51 agents
+- `docs/framework/agent-coordination-map.md` — Cross-agent delegation patterns
+- `docs/framework/director-gates.md` — Strategic decision flow
+- `docs/framework/hooks-reference.md` — CCGS-to-OpenCode plugin port documentation
+- `docs/framework/skills-reference.md` — All 77 skills
+- `docs/framework/commands-reference.md` — All 54 commands
 - `docs/superpowers/specs/2026-05-09-modular-framework-design.md` — Prior modular framework design
 - `docs/superpowers/specs/2026-05-11-modular-framework-fixes-design.md` — Prior fixes
 - `docs/superpowers/specs/2026-06-17-pi-compatibility-design.md` — Earlier Pi design (superseded)

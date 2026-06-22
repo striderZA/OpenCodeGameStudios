@@ -23,7 +23,7 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 - [ ] Error Recovery Protocol section is present with all four recovery steps
 - [ ] Uses `AskUserQuestion` at phase transitions for user approval before proceeding
 - [ ] Phase 3 is explicitly marked as parallel (gameplay-programmer, ai-programmer, technical-artist, sound-designer)
-- [ ] Phase 2 includes spawning the primary engine specialist (read from `.opencode/docs/technical-preferences.md`)
+- [ ] Phase 2 includes spawning the primary engine specialist (read from `docs/framework/technical-preferences.md`)
 - [ ] Team Composition lists all seven roles (game-designer, gameplay-programmer, ai-programmer, technical-artist, sound-designer, engine specialist, qa-tester)
 
 ---
@@ -34,7 +34,7 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 
 **Fixture:**
 - `design/gdd/game-concept.md` exists and is populated
-- Engine is configured in `.opencode/docs/technical-preferences.md` (Engine Specialists section filled)
+- Engine is configured in `docs/framework/technical-preferences.md` (Engine Specialists section filled)
 - No existing GDD for the requested combat feature
 
 **Input:** `/team-combat parry and riposte system`
@@ -133,7 +133,7 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 ### Case 5: Architecture Phase Engine Routing — Engine specialist receives correct context
 
 **Fixture:**
-- `.opencode/docs/technical-preferences.md` has Engine Specialists section populated (e.g., Primary: godot-specialist)
+- `docs/framework/technical-preferences.md` has Engine Specialists section populated (e.g., Primary: godot-specialist)
 - Architecture sketch produced by gameplay-programmer is available
 - Engine version pinned in `docs/engine-reference/godot/VERSION.md`
 
@@ -141,14 +141,14 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 
 **Expected behavior:**
 1. Phase 2 — gameplay-programmer produces architecture sketch
-2. Skill reads `.opencode/docs/technical-preferences.md` Engine Specialists section to identify the primary engine specialist agent type
+2. Skill reads `docs/framework/technical-preferences.md` Engine Specialists section to identify the primary engine specialist agent type
 3. Engine specialist is spawned with: the architecture sketch, the GDD path, the engine version from `VERSION.md`, and explicit instructions to check for deprecated APIs
 4. Engine specialist output (idiom notes, deprecated API warnings, native system recommendations) is returned to orchestrator
 5. Orchestrator incorporates engine notes into the architecture before presenting Phase 2 results to user
 6. `AskUserQuestion` includes engine specialist's notes alongside the architecture sketch
 
 **Assertions:**
-- [ ] Engine specialist agent type is read from `.opencode/docs/technical-preferences.md` — not hardcoded
+- [ ] Engine specialist agent type is read from `docs/framework/technical-preferences.md` — not hardcoded
 - [ ] Engine specialist prompt includes the architecture sketch and GDD path
 - [ ] Engine specialist checks for deprecated APIs against the pinned engine version
 - [ ] Engine specialist output is incorporated before Phase 3 begins (not skipped or appended separately)

@@ -15,7 +15,7 @@ Read the target file(s) in full. Read CLAUDE.md for project coding standards.
 
 ## Phase 2: Identify Engine Specialists
 
-Read `.opencode/docs/technical-preferences.md`, section `## Engine Specialists`. Note:
+Read `docs/framework/technical-preferences.md`, section `## Engine Specialists`. Note:
 
 - The **Primary** specialist (used for architecture and broad engine concerns)
 - The **Language/Code Specialist** (used when reviewing the project's primary language files)
