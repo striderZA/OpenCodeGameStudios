@@ -2,12 +2,18 @@
 
 Thanks for your interest in OpenCode Game Studios!
 
+OpenCode Game Studios runs on both [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent).
+
 ## Quick Start
 
+### OpenCode
 ```bash
-git clone https://github.com/striderZA/OpenCodeGameStudios.git
-cd OpenCodeGameStudios
 opencode
+```
+
+### Pi
+```bash
+pi
 ```
 
 ## How to Contribute
