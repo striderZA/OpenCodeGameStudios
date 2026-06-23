@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v0.10.2] — 2026-06-22
+
+### Changed
+
+- **Pi docs**: Updated README.md, CONTRIBUTING.md, framework quick-start, and setup-requirements
+  to document Pi alongside OpenCode as a supported harness
+- **Gitignore**: Added `.superpowers/`, `docs/superpowers/`, and `framework/` paths
+
+### Housekeeping
+
+- Purged `docs/superpowers/` and `framework/` from git history (11 design docs, ~352KB)
+- Removed superpowers reference from CHANGELOG
+
 ## [v0.10.1] — 2026-06-22
 
 ### Changed
