@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Agent Framework Validation
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
       - uses: actions/setup-node@v6
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Workflow Integrity
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
       - uses: actions/setup-node@v6
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Module Integrity
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
       - uses: actions/setup-node@v6
