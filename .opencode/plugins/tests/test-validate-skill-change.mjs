@@ -10,18 +10,8 @@
  */
 
 import { strict as assert } from "node:assert"
+import { detectSkillChange } from "../ccgs-hooks.ts"
 
-// ──────────────────────────────────────────────
-// Copy of handler logic (mirrors ccgs-hooks.ts)
-// ──────────────────────────────────────────────
-
-// Matches both canonical .agents/ and backward-compat .opencode/ paths
-const SKILL_CHANGE_RE = /\.(?:opencode|agents)\/(?:skills|commands)\/([^/]+)/
-
-function detectSkillChange(filePath) {
-  const match = filePath.match(SKILL_CHANGE_RE)
-  return match ? match[1] : null
-}
 
 // ──────────────────────────────────────────────
 // Helpers

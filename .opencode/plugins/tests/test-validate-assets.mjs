@@ -12,50 +12,8 @@ import * as fs from "node:fs"
 import * as path from "node:path"
 import { tmpdir } from "node:os"
 import { strict as assert } from "node:assert"
+import { validateAssetPath } from "../ccgs-hooks.ts"
 
-// ──────────────────────────────────────────────
-// Copy of handler logic (mirrors ccgs-hooks.ts)
-// ──────────────────────────────────────────────
-
-const ASSETS_PATH_RE = /(?:^|\/)assets\//
-
-function validateJson(filePath) {
-  try {
-    const content = fs.readFileSync(filePath, "utf8")
-    JSON.parse(content)
-    return true
-  } catch {
-    return false
-  }
-}
-
-function normalizePath(p) {
-  return p.replace(/\\/g, "/")
-}
-
-function validateAssetPath(projectRoot, filePath) {
-  filePath = normalizePath(filePath)
-  const warnings = []
-  const errors = []
-
-  if (!ASSETS_PATH_RE.test(filePath)) {
-    return { warnings, errors }
-  }
-
-  const filename = path.basename(filePath)
-
-  if (/[A-Z\s-]/.test(filename)) {
-    warnings.push(`NAMING: ${filePath} must be lowercase with underscores (got: ${filename})`)
-  }
-
-  if (/\/assets\/data\/.*\.json$/.test(filePath)) {
-    if (fs.existsSync(filePath) && !validateJson(filePath)) {
-      errors.push(`FORMAT: ${filePath} is not valid JSON`)
-    }
-  }
-
-  return { warnings, errors }
-}
 
 // ──────────────────────────────────────────────
 // Helpers

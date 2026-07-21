@@ -10,7 +10,7 @@ import * as path from "path"
 
 const PROTECTED_BRANCHES = ["main", "master", "develop"]
 const SOURCE_EXTENSIONS = [".gd", ".cs", ".cpp", ".c", ".h", ".hpp", ".rs", ".py", ".js", ".ts"]
-const DESIGN_SECTIONS = [
+export const DESIGN_SECTIONS = [
   "Overview",
   "Player Fantasy",
   "Detailed",
@@ -378,6 +378,7 @@ export function detectSkillChange(filePath: string): string | null {
 }
 
 export function validateAssetPath(projectRoot: string, filePath: string): { warnings: string[]; errors: string[] } {
+  filePath = normalizePath(filePath)
   const warnings: string[] = []
   const errors: string[] = []
 
@@ -498,7 +499,7 @@ export function buildCompactionContext(projectRoot: string): string {
   return lines.join("\n")
 }
 
-function logCompactionEvent(projectRoot: string) {
+export function logCompactionEvent(projectRoot: string) {
   try {
     const logDir = path.join(projectRoot, "production", "session-logs")
     if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true })

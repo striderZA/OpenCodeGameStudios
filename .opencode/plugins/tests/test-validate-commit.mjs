@@ -12,73 +12,8 @@ import * as fs from "node:fs"
 import * as path from "node:path"
 import { tmpdir } from "node:os"
 import { strict as assert } from "node:assert"
+import { validateCommitFiles, DESIGN_SECTIONS } from "../ccgs-hooks.ts"
 
-// ──────────────────────────────────────────────
-// Copy of handler logic (mirrors ccgs-hooks.ts)
-// ──────────────────────────────────────────────
-
-const DESIGN_SECTIONS = [
-  "Overview",
-  "Player Fantasy",
-  "Detailed",
-  "Formulas",
-  "Edge Cases",
-  "Dependencies",
-  "Tuning Knobs",
-  "Acceptance Criteria",
-]
-
-function validateJson(filePath) {
-  try {
-    const content = fs.readFileSync(filePath, "utf8")
-    JSON.parse(content)
-    return true
-  } catch {
-    return false
-  }
-}
-
-function validateCommitFiles(projectRoot, stagedFiles) {
-  const warnings = []
-  const errors = []
-
-  for (const file of stagedFiles) {
-    const fp = path.join(projectRoot, file)
-    if (!fs.existsSync(fp)) continue
-
-    if (file.startsWith("design/gdd/") && file.endsWith(".md")) {
-      const content = fs.readFileSync(fp, "utf8")
-      for (const section of DESIGN_SECTIONS) {
-        if (!content.toLowerCase().includes(section.toLowerCase())) {
-          warnings.push(`DESIGN: ${file} missing required section: ${section}`)
-        }
-      }
-    }
-
-    if (/^assets\/data\/.*\.json$/.test(file)) {
-      if (!validateJson(fp)) {
-        errors.push(`BLOCKED: ${file} is not valid JSON. Fix before committing.`)
-      }
-    }
-
-    if (file.startsWith("src/gameplay/")) {
-      const content = fs.readFileSync(fp, "utf8")
-      if (/(damage|health|speed|rate|chance|cost|duration)\s*[:=]\s*\d+/.test(content)) {
-        warnings.push(`CODE: ${file} may contain hardcoded gameplay values. Use data files.`)
-      }
-    }
-
-    if (file.startsWith("src/")) {
-      const content = fs.readFileSync(fp, "utf8")
-      const badTodos = content.split("\n").filter((l) => /(TODO|FIXME|HACK)[^(]/.test(l))
-      if (badTodos.length > 0) {
-        warnings.push(`STYLE: ${file} has TODO/FIXME without owner tag. Use TODO(name) format.`)
-      }
-    }
-  }
-
-  return { warnings, errors }
-}
 
 // ──────────────────────────────────────────────
 // Helpers

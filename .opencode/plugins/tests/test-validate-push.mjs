@@ -9,21 +9,7 @@
  */
 
 import { strict as assert } from "node:assert"
-
-// ──────────────────────────────────────────────
-// Copy of handler logic (mirrors ccgs-hooks.ts)
-// ──────────────────────────────────────────────
-
-const PROTECTED_BRANCHES = ["main", "master", "develop"]
-
-function detectPushToProtected(cmd, currentBranch) {
-  for (const b of PROTECTED_BRANCHES) {
-    if (currentBranch === b || new RegExp(`\\s${b}(\\s|$)`).test(cmd)) {
-      return b
-    }
-  }
-  return ""
-}
+import { detectPushToProtected } from "../ccgs-hooks.ts"
 
 // ──────────────────────────────────────────────
 // Helpers
