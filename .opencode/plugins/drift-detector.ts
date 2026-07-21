@@ -36,7 +36,7 @@ const SKILL_RECOMMENDED_SECTIONS = [
   "Next Steps",
 ]
 
-function parseFrontmatter(content: string): Record<string, string> | null {
+export function parseFrontmatter(content: string): Record<string, string> | null {
   const match = content.match(/^---\n([\s\S]*?)\n---/)
   if (!match) return null
 
@@ -51,7 +51,7 @@ function parseFrontmatter(content: string): Record<string, string> | null {
   return data
 }
 
-function detectAgentDrift(projectRoot: string, filePath: string): DriftIssue[] {
+export function detectAgentDrift(projectRoot: string, filePath: string): DriftIssue[] {
   const issues: DriftIssue[] = []
 
   if (!filePath.startsWith(".agents/agents/") || !filePath.endsWith(".md")) return issues
@@ -136,7 +136,7 @@ function detectAgentDrift(projectRoot: string, filePath: string): DriftIssue[] {
   return issues
 }
 
-function detectSkillDrift(projectRoot: string, filePath: string): DriftIssue[] {
+export function detectSkillDrift(projectRoot: string, filePath: string): DriftIssue[] {
   const issues: DriftIssue[] = []
 
   if (!filePath.startsWith(".agents/skills/") || !filePath.endsWith("SKILL.md")) return issues
@@ -212,7 +212,7 @@ function detectSkillDrift(projectRoot: string, filePath: string): DriftIssue[] {
   return issues
 }
 
-function detectCommandDrift(projectRoot: string, filePath: string): DriftIssue[] {
+export function detectCommandDrift(projectRoot: string, filePath: string): DriftIssue[] {
   const issues: DriftIssue[] = []
 
   if (!filePath.startsWith(".agents/commands/") || !filePath.endsWith(".md")) return issues
