@@ -1,5 +1,5 @@
 import type { Plugin } from "@opencode-ai/plugin"
-import { execSync } from "child_process"
+import { execSync, spawnSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -31,7 +31,8 @@ const TYPE_CATEGORIES = ["feat", "fix", "perf", "refactor", "revert", "docs", "t
 
 function git(projectRoot: string, args: string[]): string {
   try {
-    return execSync(`git ${args.join(" ")}`, { encoding: "utf8", cwd: projectRoot, stdio: ["pipe", "pipe", "ignore"] }).trim()
+    const result = spawnSync("git", args, { encoding: "utf8", cwd: projectRoot, stdio: ["pipe", "pipe", "ignore"] })
+    return result.stdout.trim()
   } catch {
     return ""
   }
@@ -181,7 +182,7 @@ export function updateChangelogFile(projectRoot: string, version: string, conten
 type PluginLogger = ReturnType<typeof createPluginLogger>
 function createPluginLogger(client: any, service: string) {
   const log = (level: string, message: string, extra?: any) => {
-    client?.app?.log({ body: { service, level, message, extra } }).catch(() => {})
+    client?.app?.log({ body: { service, level, message, extra } }).catch(() => { })
   }
   return {
     debug: (m: string, x?: any) => log("debug", m, x),

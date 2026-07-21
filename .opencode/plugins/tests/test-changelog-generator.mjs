@@ -12,7 +12,7 @@ import { strict as assert } from "node:assert"
 import * as fs from "node:fs"
 import * as path from "node:path"
 import { tmpdir } from "node:os"
-import { execSync } from "node:child_process"
+import { execSync, execFileSync } from "node:child_process"
 
 import {
   parseConventionalCommits,
@@ -33,10 +33,15 @@ function makeTempRepo(commits) {
   execSync("git init", { cwd: dir, stdio: "ignore" })
   execSync('git config user.email "test@test.com"', { cwd: dir })
   execSync('git config user.name "Test"', { cwd: dir })
+  // Create initial commit and tag so parseConventionalCommits has a baseline
+  fs.writeFileSync(path.join(dir, "init.txt"), "init")
+  execSync("git add init.txt", { cwd: dir })
+  execSync('git commit -m "initial"', { cwd: dir, stdio: "ignore" })
+  execSync("git tag v1.0.0", { cwd: dir })
   for (const msg of commits) {
     fs.writeFileSync(path.join(dir, "file.txt"), msg)
     execSync("git add file.txt", { cwd: dir })
-    execSync(`git commit -m "${msg}"`, { cwd: dir, stdio: "ignore" })
+    execFileSync("git", ["commit", "-m", msg], { cwd: dir, stdio: "ignore" })
   }
   return dir
 }
@@ -71,14 +76,15 @@ describe("parseConventionalCommits", () => {
       "chore: bump deps",
     ])
     try {
-      const entries = parseConventionalCommits(dir, "initial")
+      const entries = parseConventionalCommits(dir, "v1.0.0")
       assert.equal(entries.length, 3)
-      assert.equal(entries[0].type, "feat")
-      assert.equal(entries[0].message, "add login")
+      // git log returns newest-first
+      assert.equal(entries[0].type, "chore")
+      assert.equal(entries[0].message, "bump deps")
       assert.equal(entries[1].type, "fix")
       assert.equal(entries[1].message, "resolve crash")
-      assert.equal(entries[2].type, "chore")
-      assert.equal(entries[2].message, "bump deps")
+      assert.equal(entries[2].type, "feat")
+      assert.equal(entries[2].message, "add login")
     } finally {
       cleanup(dir)
     }
@@ -90,12 +96,13 @@ describe("parseConventionalCommits", () => {
       "wip stuff",
     ])
     try {
-      const entries = parseConventionalCommits(dir, "initial")
+      const entries = parseConventionalCommits(dir, "v1.0.0")
       assert.equal(entries.length, 2)
+      // git log returns newest-first
       assert.equal(entries[0].type, "other")
-      assert.equal(entries[0].message, "random message")
+      assert.equal(entries[0].message, "wip stuff")
       assert.equal(entries[1].type, "other")
-      assert.equal(entries[1].message, "wip stuff")
+      assert.equal(entries[1].message, "random message")
     } finally {
       cleanup(dir)
     }
@@ -119,14 +126,15 @@ describe("parseConventionalCommits", () => {
       "fix(parser): handle edge case",
     ])
     try {
-      const entries = parseConventionalCommits(dir, "initial")
+      const entries = parseConventionalCommits(dir, "v1.0.0")
       assert.equal(entries.length, 2)
-      assert.equal(entries[0].type, "feat")
-      assert.equal(entries[0].scope, "auth")
-      assert.equal(entries[0].message, "add OAuth")
-      assert.equal(entries[1].type, "fix")
-      assert.equal(entries[1].scope, "parser")
-      assert.equal(entries[1].message, "handle edge case")
+      // git log returns newest-first
+      assert.equal(entries[0].type, "fix")
+      assert.equal(entries[0].scope, "parser")
+      assert.equal(entries[0].message, "handle edge case")
+      assert.equal(entries[1].type, "feat")
+      assert.equal(entries[1].scope, "auth")
+      assert.equal(entries[1].message, "add OAuth")
     } finally {
       cleanup(dir)
     }
@@ -146,14 +154,14 @@ describe("parseConventionalCommits", () => {
       for (const msg of moreCommits) {
         fs.writeFileSync(path.join(dir, "file.txt"), msg)
         execSync("git add file.txt", { cwd: dir })
-        execSync(`git commit -m "${msg}"`, { cwd: dir, stdio: "ignore" })
+        execFileSync("git", ["commit", "-m", msg], { cwd: dir, stdio: "ignore" })
       }
 
-      // Should only return commits after the tag
+      // Should only return commits after the tag (newest-first)
       const entries = parseConventionalCommits(dir, "v0.1.0")
       assert.equal(entries.length, 2)
-      assert.equal(entries[0].message, "post-tag feature")
-      assert.equal(entries[1].message, "post-tag fix")
+      assert.equal(entries[0].message, "post-tag fix")
+      assert.equal(entries[1].message, "post-tag feature")
     } finally {
       cleanup(dir)
     }

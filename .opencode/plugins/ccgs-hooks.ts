@@ -1,5 +1,5 @@
 import type { Plugin } from "@opencode-ai/plugin"
-import { execSync } from "child_process"
+import { execSync, spawnSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -32,8 +32,8 @@ function isGitRepo(cwd: string): boolean {
 
 function git(cwd: string, ...args: string[]): string {
   try {
-    const cmd = args.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")
-    return execSync(`git ${cmd}`, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] }).trim()
+    const result = spawnSync("git", args, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] })
+    return result.stdout.trim()
   } catch {
     return ""
   }
@@ -318,7 +318,7 @@ export function handleDetectGaps(projectRoot: string): string[] {
 
   if (srcCount > 100) {
     if (!fs.existsSync(path.join(projectRoot, "production", "sprints")) &&
-        !fs.existsSync(path.join(projectRoot, "production", "milestones"))) {
+      !fs.existsSync(path.join(projectRoot, "production", "milestones"))) {
       add(`GAP: ${srcCount} files but no production planning. Run: /sprint-plan`)
     }
   }
@@ -551,7 +551,7 @@ export function detectPushToProtected(cmd: string, currentBranch: string): strin
 type PluginLogger = ReturnType<typeof createPluginLogger>
 function createPluginLogger(client: any, service: string) {
   const log = (level: string, message: string, extra?: any) => {
-    client.app.log({ body: { service, level, message, extra } }).catch(() => {})
+    client.app.log({ body: { service, level, message, extra } }).catch(() => { })
   }
   return { debug: (m: string, x?: any) => log("debug", m, x), info: (m: string, x?: any) => log("info", m, x), warn: (m: string, x?: any) => log("warn", m, x), error: (m: string, x?: any) => log("error", m, x) }
 }
