@@ -14,58 +14,7 @@ import { execSync } from "node:child_process"
 import { tmpdir } from "node:os"
 import { strict as assert } from "node:assert"
 
-// ──────────────────────────────────────────────
-// Copy of handler logic (mirrors ccgs-hooks.ts)
-// ──────────────────────────────────────────────
-
-function isGitRepo(cwd) {
-  try {
-    execSync("git rev-parse --git-dir", { encoding: "utf8", cwd, stdio: "ignore" })
-    return true
-  } catch {
-    return false
-  }
-}
-
-function git(cwd, ...args) {
-  try {
-    const cmd = args.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")
-    return execSync(`git ${cmd}`, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] }).trim()
-  } catch {
-    return ""
-  }
-}
-
-function sessionTimestamp() {
-  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
-}
-
-function handleSessionIdle(projectRoot) {
-  const timestamp = sessionTimestamp()
-  const logDir = path.join(projectRoot, "production", "session-logs")
-  if (!fs.existsSync(logDir)) {
-    try { fs.mkdirSync(logDir, { recursive: true }) } catch { /* ignore */ }
-  }
-
-  const stateFile = path.join(projectRoot, "production", "session-state", "active.md")
-  if (fs.existsSync(stateFile)) {
-    const block = `## Archived Session State: ${timestamp}\n${fs.readFileSync(stateFile, "utf8")}\n---\n`
-    try { fs.appendFileSync(path.join(logDir, "session-log.md"), block) } catch { /* ignore */ }
-  }
-
-  const hasGit = isGitRepo(projectRoot)
-  if (hasGit) {
-    const recentCommits = git(projectRoot, "log", "--oneline", "--since=8 hours ago")
-    const modifiedFiles = git(projectRoot, "diff", "--name-only")
-    if (recentCommits || modifiedFiles) {
-      let entry = `## Session End: ${timestamp}\n`
-      if (recentCommits) entry += `### Commits\n${recentCommits}\n`
-      if (modifiedFiles) entry += `### Uncommitted Changes\n${modifiedFiles}\n`
-      entry += "---\n"
-      try { fs.appendFileSync(path.join(logDir, "session-log.md"), entry) } catch { /* ignore */ }
-    }
-  }
-}
+import { handleSessionIdle, handleLogAgentStop } from "../ccgs-hooks.ts"
 
 // ──────────────────────────────────────────────
 // Helpers
