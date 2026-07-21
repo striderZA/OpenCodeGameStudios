@@ -14,153 +14,9 @@ import * as fs from "node:fs"
 import * as path from "node:path"
 import { tmpdir } from "node:os"
 import { strict as assert } from "node:assert"
+import { handleDetectGaps } from "../ccgs-hooks.ts"
 
-// ──────────────────────────────────────────────
-// Copy of handler logic (mirrors ccgs-hooks.ts)
-// ──────────────────────────────────────────────
 
-const SOURCE_EXTENSIONS = [".gd", ".cs", ".cpp", ".c", ".h", ".hpp", ".rs", ".py", ".js", ".ts"]
-
-function findFilesRecursive(root, predicate) {
-  const results = []
-  try {
-    const entries = fs.readdirSync(root, { withFileTypes: true })
-    for (const entry of entries) {
-      const fullPath = path.join(root, entry.name)
-      if (entry.isDirectory()) {
-        results.push(...findFilesRecursive(fullPath, predicate))
-      } else if (entry.isFile() && predicate(entry.name, fullPath)) {
-        results.push(fullPath)
-      }
-    }
-  } catch { /* skip */ }
-  return results
-}
-
-function isEngineConfigured(projectRoot) {
-  const agentsMd = path.join(projectRoot, "AGENTS.md")
-  if (!fs.existsSync(agentsMd)) return false
-  try {
-    const content = fs.readFileSync(agentsMd, "utf8")
-    const engineLine = content.split("\n").find((l) => /^\s*-\s*\*\*Engine\*\*:/.test(l))
-    return !engineLine?.includes("[CHOOSE:")
-  } catch {
-    return false
-  }
-}
-
-function countSourceFiles(projectRoot) {
-  const srcDir = path.join(projectRoot, "src")
-  if (!fs.existsSync(srcDir)) return 0
-  return findFilesRecursive(srcDir, (name) => SOURCE_EXTENSIONS.some((ext) => name.endsWith(ext))).length
-}
-
-function countDesignDocs(projectRoot) {
-  const gddDir = path.join(projectRoot, "design", "gdd")
-  if (!fs.existsSync(gddDir)) return 0
-  return findFilesRecursive(gddDir, (name) => name.endsWith(".md")).length
-}
-
-function getSubdirNames(root) {
-  if (!fs.existsSync(root)) return []
-  return fs.readdirSync(root, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name)
-}
-
-function handleDetectGaps(projectRoot) {
-  const lines = []
-  const emit = (...args) => lines.push(args.join(" "))
-
-  emit("=== Checking for Documentation Gaps ===")
-
-  const engineConfigured = isEngineConfigured(projectRoot)
-  const hasGameConcept = fs.existsSync(path.join(projectRoot, "design", "gdd", "game-concept.md"))
-  const srcCount = countSourceFiles(projectRoot)
-  const isFresh = !engineConfigured && !hasGameConcept && srcCount === 0
-
-  if (isFresh) {
-    emit("")
-    emit("NEW PROJECT: No engine configured, no game concept, no source code.")
-    emit("   This looks like a fresh start! Run: /start")
-    emit("")
-    emit("To get a comprehensive project analysis, run: /project-stage-detect")
-    emit("===================================")
-    return lines.join("\n")
-  }
-
-  const designCount = countDesignDocs(projectRoot)
-  if (srcCount > 50 && designCount < 5) {
-    emit(`GAP: Substantial codebase (${srcCount} source files) but sparse design docs (${designCount} files)`)
-    emit("    Suggested action: /reverse-document design src/[system]")
-    emit("    Or run: /project-stage-detect to get full analysis")
-  }
-
-  const protoDir = path.join(projectRoot, "prototypes")
-  if (fs.existsSync(protoDir)) {
-    const undocumented = []
-    for (const dir of getSubdirNames(protoDir)) {
-      const readme = path.join(protoDir, dir, "README.md")
-      const concept = path.join(protoDir, dir, "CONCEPT.md")
-      if (!fs.existsSync(readme) && !fs.existsSync(concept)) {
-        undocumented.push(dir)
-      }
-    }
-    if (undocumented.length > 0) {
-      emit(`GAP: ${undocumented.length} undocumented prototype(s) found:`)
-      for (const proto of undocumented) {
-        emit(`    - prototypes/${proto}/ (no README or CONCEPT doc)`)
-      }
-      emit("    Suggested action: /reverse-document concept prototypes/[name]")
-    }
-  }
-
-  const coreDir = path.join(projectRoot, "src", "core")
-  const engineDir = path.join(projectRoot, "src", "engine")
-  const archDir = path.join(projectRoot, "docs", "architecture")
-  if (fs.existsSync(coreDir) || fs.existsSync(engineDir)) {
-    if (!fs.existsSync(archDir)) {
-      emit("GAP: Core engine/systems exist but no docs/architecture/ directory")
-      emit("    Suggested action: Create docs/architecture/ and run /architecture-decision")
-    } else {
-      const adrCount = findFilesRecursive(archDir, (name) => name.endsWith(".md")).length
-      if (adrCount < 3) {
-        emit(`GAP: Core systems exist but only ${adrCount} ADR(s) documented`)
-        emit("    Suggested action: /reverse-document architecture src/core/[system]")
-      }
-    }
-  }
-
-  const gameplayDir = path.join(projectRoot, "src", "gameplay")
-  if (fs.existsSync(gameplayDir)) {
-    for (const system of getSubdirNames(gameplayDir)) {
-      const sysPath = path.join(gameplayDir, system)
-      const fileCount = findFilesRecursive(sysPath, () => true).length
-      if (fileCount >= 5) {
-        const doc1 = path.join(projectRoot, "design", "gdd", `${system}-system.md`)
-        const doc2 = path.join(projectRoot, "design", "gdd", `${system}.md`)
-        if (!fs.existsSync(doc1) && !fs.existsSync(doc2)) {
-          emit(`GAP: Gameplay system 'src/gameplay/${system}/' (${fileCount} files) has no design doc`)
-          emit(`    Expected: design/gdd/${system}-system.md or design/gdd/${system}.md`)
-          emit(`    Suggested action: /reverse-document design src/gameplay/${system}`)
-        }
-      }
-    }
-  }
-
-  if (srcCount > 100) {
-    if (!fs.existsSync(path.join(projectRoot, "production", "sprints")) &&
-        !fs.existsSync(path.join(projectRoot, "production", "milestones"))) {
-      emit(`GAP: Large codebase (${srcCount} files) but no production planning found`)
-      emit("    Suggested action: /sprint-plan or create production/ directory")
-    }
-  }
-
-  emit("")
-  emit("To get a comprehensive project analysis, run: /project-stage-detect")
-  emit("===================================")
-  return lines.join("\n")
-}
 
 // ──────────────────────────────────────────────
 // Helpers
@@ -195,12 +51,12 @@ console.log("\n🧪 detect-gaps hook tests\n")
 // ── S1: Fresh project — no AGENTS.md, no game concept, no source ──
 {
   const root = makeTempProject()
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S1: Fresh project suggests /start", () => {
     assert.ok(output.includes("NEW PROJECT"), "should detect fresh project")
     assert.ok(output.includes("/start"), "should suggest /start")
     assert.ok(output.includes("/project-stage-detect"), "should suggest stage detect")
-    assert.ok(output.endsWith("==================================="), "should return early")
+    assert.ok(!output.includes("GAP:"), "returns early without gaps")
   })
   cleanup(root)
 }
@@ -211,7 +67,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
   fs.mkdirSync(path.join(root, "design", "gdd"), { recursive: true })
   fs.writeFileSync(path.join(root, "AGENTS.md"),
     "# Project\n## Tech Stack\n- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5]\n", "utf8")
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S2: Unconfigured AGENTS.md → fresh project", () => {
     assert.ok(output.includes("NEW PROJECT"), "[CHOOSE:] engine means not configured")
   })
@@ -233,11 +89,11 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "src", `file${i}.gd`), "# code", "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S3: Configured project — no gap warnings", () => {
     assert.ok(!output.includes("NEW PROJECT"), "not fresh")
     assert.ok(!output.includes("GAP:"), "no gaps")
-    assert.ok(output.includes("/project-stage-detect"), "has summary")
+    assert.strictEqual(output, "", "no output for clean project")
   })
   cleanup(root)
 }
@@ -255,10 +111,10 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "src", `file${i}.gd`), "# code", "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S4: 55 source files but 2 design docs — gap warning", () => {
     assert.ok(output.includes("55 source files"), "should mention 55 files")
-    assert.ok(output.includes("2 files"), "should mention 2 design docs")
+    assert.ok(output.includes("2 design docs"), "should mention 2 design docs")
     assert.ok(output.includes("/reverse-document"), "should suggest reverse doc")
   })
   cleanup(root)
@@ -278,7 +134,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "src", `f${i}.gd`), "# code", "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S5: 55 files + 7 design docs — no gap", () => {
     assert.ok(!output.includes("GAP: Substantial codebase"), "design count >= 5 should suppress gap")
   })
@@ -298,9 +154,9 @@ console.log("\n🧪 detect-gaps hook tests\n")
   fs.mkdirSync(path.join(root, "prototypes", "proto-net"), { recursive: true })
   // proto-ai and proto-net have no README/CONCEPT
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S6: Reports undocumented prototypes", () => {
-    assert.ok(output.includes("2 undocumented prototype(s)"), "should count 2 undocumented")
+    assert.ok(output.includes("2 undocumented prototypes"), "should count 2 undocumented")
     assert.ok(output.includes("proto-ai"), "should list proto-ai")
     assert.ok(output.includes("proto-net"), "should list proto-net")
     assert.ok(!output.includes("proto-ui"), "should not list documented proto")
@@ -317,9 +173,9 @@ console.log("\n🧪 detect-gaps hook tests\n")
   fs.mkdirSync(path.join(root, "src", "core"), { recursive: true })
   fs.writeFileSync(path.join(root, "src", "core", "engine.gd"), "# core engine", "utf8")
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S7: Core dir exists but no arch docs", () => {
-    assert.ok(output.includes("no docs/architecture/ directory"), "should flag missing arch dir")
+    assert.ok(output.includes("no docs/architecture/"), "should flag missing arch dir")
   })
   cleanup(root)
 }
@@ -335,9 +191,9 @@ console.log("\n🧪 detect-gaps hook tests\n")
   fs.mkdirSync(path.join(root, "docs", "architecture"), { recursive: true })
   fs.writeFileSync(path.join(root, "docs", "architecture", "001-initial.md"), "# ADR 1", "utf8")
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S8: Core exists but only 1 ADR (< 3)", () => {
-    assert.ok(output.includes("only 1 ADR(s) documented"), "should flag too few ADRs")
+    assert.ok(output.includes("ADRs for core systems"), "should flag too few ADRs")
   })
   cleanup(root)
 }
@@ -355,7 +211,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "docs", "architecture", `${String(i).padStart(3, "0")}-adr.md`), `# ADR ${i}`, "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S9: Core exists with 3 ADRs — no gap", () => {
     assert.ok(!output.includes("ADR"), "should not mention ADRs")
     assert.ok(!output.includes("docs/architecture"), "no arch gap")
@@ -378,11 +234,11 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "src", "gameplay", "inventory", `item${i}.gd`), "# code", "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S10: Combat (7 files, no doc) flagged; inventory (3 files) not flagged", () => {
     assert.ok(output.includes("combat"), "combat should be flagged")
     assert.ok(output.includes("7 files"), "should mention file count")
-    assert.ok(output.includes("design/gdd/combat-system.md"), "should mention expected doc path")
+    assert.ok(output.includes("has no design doc"), "should mention missing doc")
     assert.ok(!output.includes("inventory"), "inventory < 5 files should not be flagged")
   })
   cleanup(root)
@@ -400,7 +256,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "src", "gameplay", "combat", `a${i}.gd`), "# code", "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S11: Combat with design/gdd/combat.md — no gap", () => {
     assert.ok(!output.includes("combat"), "should not flag combat")
   })
@@ -418,7 +274,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "src", `f${i}.gd`), "# code", "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S12: 101+ files without sprints/milestones — gap", () => {
     assert.ok(output.includes("101 files"), "should mention count")
     assert.ok(output.includes("no production planning"), "should flag production gap")
@@ -439,7 +295,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
   fs.mkdirSync(path.join(root, "production", "sprints"), { recursive: true })
   fs.writeFileSync(path.join(root, "production", "sprints", "sprint-01.md"), "# Sprint 1", "utf8")
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S13: 101 files with sprint planning — no gap", () => {
     assert.ok(!output.includes("no production planning"), "should not flag")
   })
@@ -457,7 +313,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
     fs.writeFileSync(path.join(root, "src", `f${i}.gd`), "# code", "utf8")
   }
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S14: Exactly 50 source files — no code/design gap", () => {
     assert.ok(!output.includes("50 source files"), "50 is not > 50")
     assert.ok(!output.includes("GAP: Substantial codebase"), "no code/design gap")
@@ -473,7 +329,7 @@ console.log("\n🧪 detect-gaps hook tests\n")
   // Only non-source files
   fs.writeFileSync(path.join(root, "src", "notes.txt"), "some notes", "utf8")
 
-  const output = handleDetectGaps(root)
+  const output = handleDetectGaps(root).join("\n")
   run("S15: src/ with only non-source files — 0 source files counted", () => {
     assert.ok(!output.includes("source files"), "no source count shown")
   })

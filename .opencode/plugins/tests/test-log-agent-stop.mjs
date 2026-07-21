@@ -11,26 +11,8 @@ import * as fs from "node:fs"
 import * as path from "node:path"
 import { tmpdir } from "node:os"
 import { strict as assert } from "node:assert"
+import { handleLogAgentStop } from "../ccgs-hooks.ts"
 
-// ──────────────────────────────────────────────
-// Copy of handler logic (mirrors ccgs-hooks.ts)
-// ──────────────────────────────────────────────
-
-function sessionTimestamp() {
-  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)
-}
-
-function handleLogAgentStop(projectRoot, agentType) {
-  const timestamp = sessionTimestamp()
-  const dir = path.join(projectRoot, "production", "session-logs")
-  if (!fs.existsSync(dir)) {
-    try { fs.mkdirSync(dir, { recursive: true }) } catch { return }
-  }
-  const name = agentType || "unknown"
-  try {
-    fs.appendFileSync(path.join(dir, "agent-audit.log"), `${timestamp} | Agent completed: ${name}\n`)
-  } catch { /* ignore */ }
-}
 
 // ──────────────────────────────────────────────
 // Helpers
