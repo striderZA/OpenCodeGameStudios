@@ -19,7 +19,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 /
 ├── AGENTS.md                    # Project configuration
 ├── opencode.json                # OpenCode config (permissions, plugins)
-├── pi.json                      # Pi settings (generated)
+├── .pi/                         # Pi settings and extensions
 ├── .agents/                     # Canonical content (harness-agnostic)
 │   ├── agents/                  # 51 agent definitions
 │   ├── skills/                  # 77 skill workflows
