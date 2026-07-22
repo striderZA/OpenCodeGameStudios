@@ -7,14 +7,11 @@
  *   npm run test:parity --quick  # Smoke test (single scenario)
  */
 
-import { execSync, spawnSync } from "node:child_process";
-import fs from "node:fs";
-import path from "node:path";
+import { spawnSync } from "node:child_process";
 import assert from "node:assert";
 import { describe, it } from "node:test";
 
 const TEST_TIMEOUT = 30000;
-const OUTPUT_DIR = "test-output";
 
 interface HarnessResult {
   available: boolean;
@@ -24,45 +21,38 @@ interface HarnessResult {
   duration: number;
 }
 
-function isCommandAvailable(cmd: string): boolean {
-  try {
-    execSync(`${cmd} --version`, { stdio: "ignore", timeout: 5000 });
-    return true;
-  } catch {
-    return false;
-  }
-}
+// Cache to avoid spawning each harness multiple times across tests
+const harnessCache = new Map<string, HarnessResult>();
 
-function runHarness(cmd: string, args: string[], timeout: number): HarnessResult {
+function runHarness(cmd: string): HarnessResult {
+  if (harnessCache.has(cmd)) return harnessCache.get(cmd)!;
+
   const start = Date.now();
-  const result = spawnSync(cmd, args, {
+  const result = spawnSync(cmd, ["--version"], {
     encoding: "utf8",
-    timeout,
+    timeout: TEST_TIMEOUT,
     stdio: ["pipe", "pipe", "pipe"],
   });
   const duration = Date.now() - start;
 
-  return {
-    available: result.status !== null || result.error?.message?.includes("ENOENT") !== true,
+  const entry: HarnessResult = {
+    available: result.error?.code !== "ENOENT" && result.status !== null,
     exitCode: result.status,
     stdout: result.stdout || "",
     stderr: result.stderr || "",
     duration,
   };
+
+  harnessCache.set(cmd, entry);
+  return entry;
 }
 
 function runOpencodeScenario(): HarnessResult {
-  if (!isCommandAvailable("opencode")) {
-    return { available: false, exitCode: null, stdout: "", stderr: "", duration: 0 };
-  }
-  return runHarness("opencode", ["--version"], TEST_TIMEOUT);
+  return runHarness("opencode");
 }
 
 function runPiScenario(): HarnessResult {
-  if (!isCommandAvailable("pi")) {
-    return { available: false, exitCode: null, stdout: "", stderr: "", duration: 0 };
-  }
-  return runHarness("pi", ["--version"], TEST_TIMEOUT);
+  return runHarness("pi");
 }
 
 describe("Harness parity", () => {

@@ -1,5 +1,5 @@
 import type { Plugin } from "@opencode-ai/plugin"
-import { execSync, spawnSync } from "child_process"
+import { execFileSync, execSync, spawnSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -31,12 +31,9 @@ function isGitRepo(cwd: string): boolean {
 }
 
 function git(cwd: string, ...args: string[]): string {
-  try {
-    const result = spawnSync("git", args, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"], timeout: 15000 })
-    return result.stdout.trim()
-  } catch {
-    return ""
-  }
+  const result = spawnSync("git", args, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"], timeout: 15000 })
+  if (result.error || result.status !== 0) return ""
+  return result.stdout.trim()
 }
 
 function normalizePath(p: string): string {
@@ -540,14 +537,12 @@ export function showNotification(message: string) {
         { stdio: "ignore", timeout: 10000 }
       )
     } else if (platform === "darwin") {
-      const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"')
-      execSync(`osascript -e 'display notification "${escaped}" with title "OpenCode"'`, {
+      execFileSync("osascript", ["-e", `display notification ${JSON.stringify(text)} with title "OpenCode"`], {
         stdio: "ignore",
         timeout: 5000,
       })
     } else if (platform === "linux") {
-      const escaped = text.replace(/'/g, "'\\''")
-      execSync(`notify-send "OpenCode" "${escaped}"`, {
+      execFileSync("notify-send", ["OpenCode", text], {
         stdio: "ignore",
         timeout: 5000,
       })

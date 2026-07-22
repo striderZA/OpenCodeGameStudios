@@ -171,6 +171,13 @@ export function updateChangelogFile(projectRoot: string, version: string, conten
     existing = fs.readFileSync(filePath, "utf8")
   }
 
+  // Guard against duplicate prepends: if the file already starts with the
+  // same version section header, skip the write (handles repeated session.idle).
+  const versionHeaderMatch = content.match(/^(## \[.+\].*)$/m)
+  if (versionHeaderMatch && existing.includes(versionHeaderMatch[1])) {
+    return
+  }
+
   // Prepend new version content, keep existing below
   const updated = existing
     ? content + "\n\n" + existing.replace(/^# Changelog\n\n/m, "") + "\n"
