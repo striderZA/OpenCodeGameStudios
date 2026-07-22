@@ -173,8 +173,9 @@ export function updateChangelogFile(projectRoot: string, version: string, conten
 
   // Guard against duplicate prepends: if the existing file already starts with
   // the same content (handles repeated session.idle with no new commits).
+  const contentBody = content.replace(/^# Changelog\n\n/m, "").trim()
   const existingBody = existing.replace(/^# Changelog\n\n/m, "").trim()
-  if (existingBody && existingBody.startsWith(content.trim())) {
+  if (existingBody && existingBody.startsWith(contentBody)) {
     return
   }
 
