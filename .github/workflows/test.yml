@@ -17,14 +17,5 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 20
-      - run: node .opencode/plugins/tests/test-session-start.mjs
-      - run: node .opencode/plugins/tests/test-session-stop.mjs
-      - run: node .opencode/plugins/tests/test-detect-gaps.mjs
-      - run: node .opencode/plugins/tests/test-validate-assets.mjs
-      - run: node .opencode/plugins/tests/test-validate-commit.mjs
-      - run: node .opencode/plugins/tests/test-validate-push.mjs
-      - run: node .opencode/plugins/tests/test-validate-skill-change.mjs
-      - run: node .opencode/plugins/tests/test-pre-compact.mjs
-      - run: node .opencode/plugins/tests/test-post-compact.mjs
-      - run: node .opencode/plugins/tests/test-log-agent.mjs
-      - run: node .opencode/plugins/tests/test-log-agent-stop.mjs
+      - run: npm install
+      - run: npm test
