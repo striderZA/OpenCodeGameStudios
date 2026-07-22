@@ -3,6 +3,21 @@
 ## Bug Fixes
 
 - Resolve Windows git() issues and fix changelog test assertions
+
+## Under the Hood
+
+- Convert all test files to node:test describe/it pattern
+- Rewrite session/compact tests to import from source
+- Rewrite log/gap tests to import from source
+- Rewrite validation tests to import from source
+- Export internal functions for test access
+
+
+# Update unreleased — 2026-07-22
+
+## Bug Fixes
+
+- Resolve Windows git() issues and fix changelog test assertions
 - Bump question tool max options from 4 to 10
 
 ## Under the Hood
@@ -123,5 +138,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Pi extension parity tests (`tests/e2e/`)
 - Added extension-specific tests (`tests/extensions/`)
+
 
 
