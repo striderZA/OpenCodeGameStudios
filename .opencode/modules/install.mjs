@@ -31,7 +31,7 @@ function setHarness(mode) {
 
 // ── Logging ────────────────────────────────────────────────────────────────
 
-const LOG_PREFIXES = { ADD: 'ADD', DEL: 'DEL', SKIP: 'SKIP', KEEP: 'KEEP', WARN: 'WARN', ERR: 'ERR', OK: 'OK' };
+const LOG_PREFIXES = { ADD: 'ADD', DEL: 'DEL', SKIP: 'SKIP', KEEP: 'KEEP', WARN: 'WARN', ERR: 'ERR', OK: 'OK', SAME: 'SAME', UPDATE: 'UPDATE' };
 
 function log(prefix, msg) {
   const p = (LOG_PREFIXES[prefix] || prefix).padEnd(5);
@@ -410,7 +410,7 @@ function runValidation() {
     return;
   }
   log('OK', 'Running post-install validation...');
-  const result = spawnSync('node', [validatePath], { cwd: ROOT, stdio: 'inherit', shell: true });
+  const result = spawnSync('node', [validatePath], { cwd: ROOT, stdio: 'inherit' });
   if (result.status !== 0) {
     log('WARN', `Validation exited with code ${result.status} — fix issues if needed`);
   } else {

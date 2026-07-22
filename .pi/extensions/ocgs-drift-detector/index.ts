@@ -68,18 +68,19 @@ export default function(pi: ExtensionAPI) {
 
     scanDir(path.join(AGENTS_DIR, "agents"));
     scanDir(path.join(AGENTS_DIR, "skills"));
+    scanDir(path.join(AGENTS_DIR, "commands"));
 
     if (driftCount > 0 && _ctx.hasUI) {
       _ctx.ui.setStatus("ocgs-drift", `drift: ${driftCount} files`);
     }
   });
 
-  // Post-write drift check
   pi.on("tool_result", async (event, _ctx) => {
     const toolName = event.toolName;
     const input = event.input as Record<string, unknown>;
 
     if (toolName === "write" || toolName === "edit") {
+      if (!input || typeof input !== "object") return;
       const filePath = input.path as string;
       if (filePath && filePath.startsWith(".agents")) {
         const issues = await checkFileForDrift(filePath);
