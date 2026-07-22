@@ -23,7 +23,7 @@ export const DESIGN_SECTIONS = [
 
 function isGitRepo(cwd: string): boolean {
   try {
-    execSync("git rev-parse --git-dir", { encoding: "utf8", cwd, stdio: "ignore" })
+    execSync("git rev-parse --git-dir", { encoding: "utf8", cwd, stdio: "ignore", timeout: 5000 })
     return true
   } catch {
     return false
@@ -32,7 +32,7 @@ function isGitRepo(cwd: string): boolean {
 
 function git(cwd: string, ...args: string[]): string {
   try {
-    const result = spawnSync("git", args, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] })
+    const result = spawnSync("git", args, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"], timeout: 15000 })
     return result.stdout.trim()
   } catch {
     return ""
@@ -403,7 +403,7 @@ export function validateAssetPath(projectRoot: string, filePath: string): { warn
 
 function runGit(cwd: string, cmd: string): string {
   try {
-    return execSync(cmd, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"] }).trim()
+    return execSync(cmd, { encoding: "utf8", cwd, stdio: ["pipe", "pipe", "ignore"], timeout: 15000 }).trim()
   } catch {
     return ""
   }
@@ -522,21 +522,37 @@ export function handlePostCompact(projectRoot: string): string {
 
 export function showNotification(message: string) {
   const text = (message || "Claude Code needs your attention").slice(0, 200)
+  const platform = process.platform
+
   try {
-    execSync(
-      `powershell.exe -NonInteractive -WindowStyle Hidden -Command "` +
-      `Add-Type -AssemblyName System.Windows.Forms; ` +
-      `$n = New-Object System.Windows.Forms.NotifyIcon; ` +
-      `$n.Icon = [System.Drawing.SystemIcons]::Information; ` +
-      `$n.BalloonTipTitle = 'Claude Code'; ` +
-      `$n.BalloonTipText = '${text.replace(/'/g, "''")}'; ` +
-      `$n.Visible = $true; ` +
-      `$n.ShowBalloonTip(5000); ` +
-      `Start-Sleep -Seconds 6; ` +
-      `$n.Dispose()"`,
-      { stdio: "ignore", timeout: 10000 }
-    )
-  } catch { /* ignore */ }
+    if (platform === "win32") {
+      execSync(
+        `powershell.exe -NonInteractive -WindowStyle Hidden -Command "` +
+        `Add-Type -AssemblyName System.Windows.Forms; ` +
+        `$n = New-Object System.Windows.Forms.NotifyIcon; ` +
+        `$n.Icon = [System.Drawing.SystemIcons]::Information; ` +
+        `$n.BalloonTipTitle = 'OpenCode'; ` +
+        `$n.BalloonTipText = '${text.replace(/'/g, "''")}'; ` +
+        `$n.Visible = $true; ` +
+        `$n.ShowBalloonTip(5000); ` +
+        `Start-Sleep -Seconds 6; ` +
+        `$n.Dispose()"`,
+        { stdio: "ignore", timeout: 10000 }
+      )
+    } else if (platform === "darwin") {
+      const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"')
+      execSync(`osascript -e 'display notification "${escaped}" with title "OpenCode"'`, {
+        stdio: "ignore",
+        timeout: 5000,
+      })
+    } else if (platform === "linux") {
+      const escaped = text.replace(/'/g, "'\\''")
+      execSync(`notify-send "OpenCode" "${escaped}"`, {
+        stdio: "ignore",
+        timeout: 5000,
+      })
+    }
+  } catch { /* ignore — notification is best-effort */ }
 }
 
 export function detectPushToProtected(cmd: string, currentBranch: string): string {

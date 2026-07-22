@@ -31,7 +31,7 @@ const TYPE_CATEGORIES = ["feat", "fix", "perf", "refactor", "revert", "docs", "t
 
 function git(projectRoot: string, args: string[]): string {
   try {
-    const result = spawnSync("git", args, { encoding: "utf8", cwd: projectRoot, stdio: ["pipe", "pipe", "ignore"] })
+    const result = spawnSync("git", args, { encoding: "utf8", cwd: projectRoot, stdio: ["pipe", "pipe", "ignore"], timeout: 15000 })
     return result.stdout.trim()
   } catch {
     return ""
@@ -224,10 +224,12 @@ export const ChangelogGenerator: Plugin = async ({ project, client, directory, w
         try {
           const { internal, player } = generateChangelogs(projectRoot, "unreleased")
           if (!internal.includes("No changes")) {
-            logger.info("Changelog generated with unreleased changes — run changelog-generator to write CHANGELOG.md.")
+            updateChangelogFile(projectRoot, "unreleased", internal, false)
+            updateChangelogFile(projectRoot, "unreleased", player, true)
+            logger.info("Changelog written to CHANGELOG.md and CHANGELOG_INTERNAL.md")
           }
         } catch (err) {
-          logger.error("Failed to generate changelog preview", { error: String(err) })
+          logger.error("Failed to generate changelog", { error: String(err) })
         }
       }
     },

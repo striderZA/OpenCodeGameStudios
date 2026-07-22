@@ -10,7 +10,8 @@
   "scripts": {
     "test": "node --import tsx --test .opencode/plugins/tests/test-*.mjs",
     "test:plugins": "node --import tsx --test .opencode/plugins/tests/",
-    "test:framework": "node tests/agents/validate.mjs"
+    "test:framework": "node tests/agents/validate.mjs",
+    "test:parity": "node --import tsx --test tests/e2e/test-parity.test.ts"
   },
   "repository": {
     "type": "git",
