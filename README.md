@@ -76,7 +76,7 @@ and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil
 | ⌨️ **Commands** | — | 54 commands (`.agents/commands/`) | → prompt templates | ✅ New |
 | 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 7 Pi extensions (`.pi/extensions/`) | ✅ **183 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
-| ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | `AGENTS.md` + `pi.json` | ✅ |
+| ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | `AGENTS.md` + `.pi/settings.json` | ✅ |
 
 ---
 
@@ -182,7 +182,7 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 | `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` | `.pi/extensions/` |
 | `.claude/rules/*.md` → | `.agents/rules/*.md` | `.agents/rules/*.md` |
 | `CLAUDE.md` → | `AGENTS.md` | `AGENTS.md` |
-| `.claude/settings.json` → | `opencode.json` | `pi.json` |
+| `.claude/settings.json` → | `opencode.json` | `.pi/settings.json` |
 
 ---
 
@@ -265,7 +265,7 @@ node utils/assign-models.js --config my-models.json
 /
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
-├── pi.json                    ⚙️ Pi config (MCP, settings)
+├── .pi/                       ⚙️ Pi config (extensions, settings)
 ├── .agents/                   📦 Canonical content (harness-agnostic)
 │   ├── agents/                🤖 51 agent definitions
 │   ├── skills/                🛠️ 77 skill workflows

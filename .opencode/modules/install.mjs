@@ -8,9 +8,26 @@ import { parseModulefile, parseFlowList } from '../../tools/lib/parse-modulefile
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
-const MODULES_DIR = join(ROOT, '.opencode', 'modules');
-const INSTALLED_PATH = join(MODULES_DIR, 'installed.json');
+
+// Harness target: 'opencode' (default) or 'pi' (--pi flag)
+// Controls where module files are installed and where installed.json lives.
+let HARNESS = 'opencode';
+let MODULES_DIR = join(ROOT, '.opencode', 'modules');
+let INSTALLED_PATH = join(MODULES_DIR, 'installed.json');
+let HARNESS_TARGET = '.opencode';
 const OPENCODE_JSON = join(ROOT, 'opencode.json');
+
+function setHarness(mode) {
+  HARNESS = mode;
+  if (mode === 'pi') {
+    MODULES_DIR = join(ROOT, '.agents', 'modules');
+    HARNESS_TARGET = '.agents';
+  } else {
+    MODULES_DIR = join(ROOT, '.opencode', 'modules');
+    HARNESS_TARGET = '.opencode';
+  }
+  INSTALLED_PATH = join(MODULES_DIR, 'installed.json');
+}
 
 // ── Logging ────────────────────────────────────────────────────────────────
 
@@ -163,7 +180,7 @@ function cmdAdd(args) {
           continue;
         }
 
-        walkAndCopy(entryPath, join(ROOT, '.opencode', entry), addedFiles, force);
+        walkAndCopy(entryPath, join(ROOT, HARNESS_TARGET, entry), addedFiles, force);
       }
 
       // Handle MCP fragments
@@ -176,6 +193,13 @@ function cmdAdd(args) {
           const fragment = readJSON(mcpPath);
           if (!fragment) {
             log('WARN', `MCP fragment '${mcpFile}' is not valid JSON — skipped`);
+            continue;
+          }
+          // MCP fragments are only merged into opencode.json (OpenCode harness).
+          // Pi harness manages MCP separately — skip with a warning.
+          if (HARNESS === 'pi') {
+            log('WARN', `MCP fragment '${mcpFile}' — Pi harness does not merge MCP via installer (skipped)`);
+            summary.mcpSkipped++;
             continue;
           }
           const ocfg = readJSON(OPENCODE_JSON) || {};
@@ -245,14 +269,14 @@ function walkAndCopy(srcDir, destDir, fileList, force = false) {
             copyFileSync(srcPath, destPath);
             log('UPDATE', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
           }
-          fileList.push(toForward(relative(join(ROOT, '.opencode'), destPath)));
+          fileList.push(toForward(relative(join(ROOT, HARNESS_TARGET), destPath)));
         } else {
           log('SKIP', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
         }
       } else {
         copyFileSync(srcPath, destPath);
         log('ADD', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
-        fileList.push(toForward(relative(join(ROOT, '.opencode'), destPath)));
+        fileList.push(toForward(relative(join(ROOT, HARNESS_TARGET), destPath)));
       }
     }
   }
@@ -304,7 +328,7 @@ function cmdRemove(name) {
 
     // Remove tracked files
     for (const f of files) {
-      const installedPath = join(ROOT, '.opencode', f);
+      const installedPath = join(ROOT, HARNESS_TARGET, f);
       const sourcePath = join(MODULES_DIR, name, f);
 
       if (!existsSync(installedPath)) {
@@ -332,8 +356,8 @@ function cmdRemove(name) {
     // Clean up empty parent directories
     const parentDirs = new Set();
     for (const f of files) {
-      let dir = dirname(join(ROOT, '.opencode', f));
-      while (dir.startsWith(join(ROOT, '.opencode'))) {
+      let dir = dirname(join(ROOT, HARNESS_TARGET, f));
+      while (dir.startsWith(join(ROOT, HARNESS_TARGET))) {
         parentDirs.add(dir);
         dir = dirname(dir);
       }
@@ -349,8 +373,8 @@ function cmdRemove(name) {
       } catch { /* skip */ }
     }
 
-    // Remove MCP servers from opencode.json
-    if (mcpServers.length > 0) {
+    // Remove MCP servers from opencode.json (OpenCode-only)
+    if (mcpServers.length > 0 && HARNESS !== 'pi') {
       const ocfg = readJSON(OPENCODE_JSON);
       if (ocfg && ocfg.mcp) {
         for (const serverName of mcpServers) {
@@ -398,12 +422,24 @@ function runValidation() {
 
 function main() {
   const args = process.argv.slice(2);
+
+  // Parse --pi flag (can appear anywhere in args)
+  const piIndex = args.indexOf('--pi');
+  if (piIndex !== -1) {
+    setHarness('pi');
+    args.splice(piIndex, 1);
+  }
+
   if (args.length === 0) {
+    const scriptPath = HARNESS === 'pi' ? '.agents/modules/install.mjs' : '.opencode/modules/install.mjs';
     console.log('Usage:');
-    console.log('  node .opencode/modules/install.mjs list');
-    console.log('  node .opencode/modules/install.mjs info <name>');
-    console.log('  node .opencode/modules/install.mjs add <name...>');
-    console.log('  node .opencode/modules/install.mjs remove <name>');
+    console.log(`  node ${scriptPath} list [--pi]`);
+    console.log(`  node ${scriptPath} info <name> [--pi]`);
+    console.log(`  node ${scriptPath} add <name...> [--pi]`);
+    console.log(`  node ${scriptPath} remove <name> [--pi]`);
+    console.log('');
+    console.log('Options:');
+    console.log('  --pi    Install to .agents/ instead of .opencode/ (Pi harness)');
     process.exit(0);
   }
 
