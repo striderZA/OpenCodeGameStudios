@@ -1,3 +1,12 @@
+# Update unreleased — 2026-07-23
+
+## Bug Fixes
+
+- Update .opencode/{agents,skills,commands}/ paths to canonical .agents/
+- Bump question tool max options from 4 to 10
+- Remove dead ternary in question tool (both branches same value)
+
+
 # Update unreleased — 2026-07-22
 
 ## Bug Fixes
@@ -147,6 +156,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Pi extension parity tests (`tests/e2e/`)
 - Added extension-specific tests (`tests/extensions/`)
+
 
 
 
