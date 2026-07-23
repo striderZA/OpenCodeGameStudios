@@ -76,8 +76,8 @@ SetMusicPan(bgm, 0.5f);
 SetMusicPitch(bgm, 1.0f);
 
 // Looping
-SetMusicVolume(bgm, 0.7f);
-// Music loops by default
+// Music loops by default — use StopMusicStream() to stop, or
+// check GetMusicTimePlayed() >= GetMusicTimeLength() to manually loop.
 
 // Check playback state
 if (IsMusicStreamPlaying(bgm)) {

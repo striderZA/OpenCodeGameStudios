@@ -5,7 +5,7 @@ Last verified: 2026-07-22 | Engine: Raylib 5.5
 ## Overview
 
 raymath is a header-only math library providing vector, matrix, and quaternion
-operations. Include `raymath.h` separately or use the functions built into `raylib.h`.
+operations. Include `raymath.h` separately — it is NOT bundled with `raylib.h`.
 
 All functions follow the pattern: `TypeName_Operation(args)`.
 
@@ -14,7 +14,7 @@ All functions follow the pattern: `TypeName_Operation(args)`.
 ### Vector2 Operations
 ```c
 #include "raylib.h"
-#include "raymath.h" // Or use built-in from raylib.h
+#include "raymath.h"
 
 Vector2 a = {10.0f, 20.0f};
 Vector2 b = {5.0f, 15.0f};
@@ -189,11 +189,11 @@ camera.projection = CAMERA_PERSPECTIVE;
 Matrix view = GetCameraMatrix(camera);
 Matrix projection = GetCameraProjection(camera, 800.0f/600.0f);
 
-// Screen to world
-Vector3 worldPos = GetScreenToWorldRay(mousePos, camera);
-// or for a point on a plane:
+// Screen to world (returns a Ray; use GetRayCollision for intersection)
+Ray ray = GetScreenToWorldRay(mousePos, camera);
+// or for a point along the ray:
 Vector3 rayEnd = Vector3Add(camera.position,
-    Vector3Scale(GetScreenToWorldRay(mousePos, camera).direction, 100));
+    Vector3Scale(ray.direction, 100));
 ```
 
 ## Common Mistakes

@@ -243,14 +243,14 @@ const char* assetPath;
     assetPath = "assets/texture.png"; // Filesystem
 #endif
 
-Texture2D texture = LoadTexture(assetPath);
+Texture texture = LoadTexture(assetPath);
 ```
 
 ### Save Data
 ```c
 // Platform-appropriate save location
 #if defined(PLATFORM_ANDROID)
-    const char* savePath = "/data/data/com.game/save.dat";
+    const char* savePath = "/data/data/com.studio.gamename/save.dat";
 #elif defined(PLATFORM_WEB)
     // Use IndexedDB via JavaScript interop
     const char* savePath = "save.dat"; // In-memory FS

@@ -84,6 +84,9 @@ polygon.setPoint(2, {100.f, 0.f});
 
 ### Shaders (OpenGL 3.3+)
 ```cpp
+// Note: sf::Shader still uses loadFromFile() — unlike Texture/Font/SoundBuffer
+// which moved to constructors, shaders support multiple load configurations
+// (vertex+fragment, vertex-only, fragment-only) so retain the method-based API.
 sf::Shader shader;
 shader.loadFromFile("assets/shader.vert", "assets/shader.frag");
 shader.setUniform("resolution", sf::Glsl::Vec2(window.getSize()));

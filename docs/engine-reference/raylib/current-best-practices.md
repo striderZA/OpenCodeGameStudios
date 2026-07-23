@@ -9,7 +9,7 @@ and learning, but proper patterns prevent common issues.
 
 - **Always pair Load* with Unload*** — memory leak prevention
   ```c
-  Texture2D texture = LoadTexture("assets/player.png");
+  Texture texture = LoadTexture("assets/player.png");
   // ... use texture ...
   UnloadTexture(texture); // MUST call before program exits
   ```
@@ -17,18 +17,18 @@ and learning, but proper patterns prevent common issues.
 - **Load resources once, reuse** — don't reload every frame
   ```c
   // GOOD: Load once in initialization
-  Texture2D playerTex = LoadTexture("assets/player.png");
+  Texture playerTex = LoadTexture("assets/player.png");
 
   // BAD: Loading every frame (expensive!)
   void DrawPlayer() {
-      Texture2D tex = LoadTexture("assets/player.png"); // DON'T DO THIS
+      Texture tex = LoadTexture("assets/player.png"); // DON'T DO THIS
       DrawTexture(tex, x, y, WHITE);
   }
   ```
 
 - **Check resource validity** — handle load failures
   ```c
-  Texture2D texture = LoadTexture("assets/missing.png");
+  Texture texture = LoadTexture("assets/missing.png");
   if (texture.id == 0) {
       TraceLog(LOG_WARNING, "Failed to load texture");
       // Use fallback or handle error
@@ -38,14 +38,14 @@ and learning, but proper patterns prevent common issues.
 - **Resource manager pattern** for larger projects
   ```c
   typedef struct {
-      Texture2D* textures;
+      Texture* textures;
       int textureCount;
       Sound* sounds;
       int soundCount;
   } ResourceManager;
 
   void InitResources(ResourceManager* mgr) {
-      mgr->textures = (Texture2D*)malloc(sizeof(Texture2D) * MAX_TEXTURES);
+      mgr->textures = (Texture*)malloc(sizeof(Texture) * MAX_TEXTURES);
       mgr->textureCount = 0;
   }
 
@@ -68,7 +68,7 @@ and learning, but proper patterns prevent common issues.
       SetTargetFPS(60);
 
       // Initialize resources
-      Texture2D texture = LoadTexture("assets/player.png");
+      Texture texture = LoadTexture("assets/player.png");
       Vector2 position = {400, 300};
 
       // Main game loop
@@ -120,7 +120,7 @@ and learning, but proper patterns prevent common issues.
   typedef struct {
       Vector2 position;
       float speed;
-      Texture2D texture;
+      Texture texture;
   } Player;
 
   void UpdatePlayer(Player* player) {

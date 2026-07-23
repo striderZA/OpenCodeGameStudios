@@ -65,7 +65,7 @@ rlMultMatrixf(matrixData);
 ### Texture Binding
 ```c
 // Bind texture for rlgl drawing
-Texture2D texture = LoadTexture("assets/sprite.png");
+Texture texture = LoadTexture("assets/sprite.png");
 
 rlEnableTexture(texture.id);
     rlBegin(RL_QUADS);
@@ -100,7 +100,7 @@ UnloadShader(shader);
 
 ### Render Textures (Off-screen Rendering)
 ```c
-RenderTexture2D target = LoadRenderTexture(256, 256);
+RenderTexture target = LoadRenderTexture(256, 256);
 
 // Draw to render texture
 BeginTextureMode(target);

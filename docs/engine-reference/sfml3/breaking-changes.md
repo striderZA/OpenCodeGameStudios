@@ -105,7 +105,7 @@ try {
 | Vectors | Brace initialization | `sf::Vector2f({1.0f, 2.0f})` supported. |
 | Shapes | Constructor changes | Some shape constructors updated. Verify usage. |
 | Shaders | OpenGL 3.3+ | Shader code must be compatible with OpenGL 3.3+. |
-| RenderTarget | View API | `getDefaultView()` API unchanged but verify usage patterns. |
+| RenderTarget | View API | `getDefaultView()`, `setView()`, `getView()` unchanged — center/size/rotation work as in 2.x. |
 
 ## Common Migration Checklist
 
