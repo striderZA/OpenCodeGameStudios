@@ -103,7 +103,7 @@ See [**OCGS-Pong**](https://github.com/striderZA/OCGS-Pong) — a complete Pong 
 
 ## 🧩 Modular Framework
 
-The framework is partitioned into **19 pluggable theme modules**. Only install what you need for your project:
+The framework is partitioned into **21 pluggable theme modules**. Only install what you need for your project:
 
 | Module | Description |
 |--------|-------------|
@@ -125,6 +125,8 @@ The framework is partitioned into **19 pluggable theme modules**. Only install w
 | `engine-godot` | Godot 4 specialists (GDScript, C#, shaders, GDExtension) |
 | `engine-unity` | Unity specialists (DOTS, shaders, Addressables, UI) + unity-mcp |
 | `engine-unreal` | Unreal Engine 5 specialists (GAS, Blueprint, replication, UMG) |
+| `engine-sfml3` | SFML 3 specialist (Graphics, Audio, Network, Window, System) |
+| `engine-raylib` | Raylib specialist (core, rlgl, raudio, raymath, raygui) |
 | `data` | Data file conventions and validation |
 
 ```bash
@@ -271,7 +273,7 @@ node utils/assign-models.js --config my-models.json
 │   ├── skills/                🛠️ 77 skill workflows
 │   ├── commands/              ⌨️ 54 slash commands
 │   ├── rules/                 📏 11 coding standards
-│   └── modules/               🧩 19 pluggable theme modules
+│   └── modules/               🧩 21 pluggable theme modules
 │       ├── ...                21 modules total
 ├── .opencode/                 ⚙️ OpenCode-specific (plugins, config)
 │   ├── commands/ → .agents/commands/ (symlink)
