@@ -1,7 +1,7 @@
-# Update unreleased — 2026-07-23
+# Changelog
 
 ## Bug Fixes
-
+    
 - Update .opencode/{agents,skills,commands}/ paths to canonical .agents/
 - Bump question tool max options from 4 to 10
 - Remove dead ternary in question tool (both branches same value)
