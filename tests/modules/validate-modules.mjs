@@ -10,10 +10,10 @@ let passed = 0;
 let failed = 0;
 
 const PATH_MAP = {
-  agents:   (name) => join(ROOT, ".opencode", "agents", `${name}.md`),
-  skills:   (name) => join(ROOT, ".opencode", "skills", name, "SKILL.md"),
-  commands: (name) => join(ROOT, ".opencode", "commands", `${name}.md`),
-  rules:    (name) => join(ROOT, ".opencode", "rules", `${name}.md`),
+  agents: (name) => join(ROOT, ".agents", "agents", `${name}.md`),
+  skills: (name) => join(ROOT, ".agents", "skills", name, "SKILL.md"),
+  commands: (name) => join(ROOT, ".agents", "commands", `${name}.md`),
+  rules: (name) => join(ROOT, ".agents", "rules", `${name}.md`),
 };
 
 function parseModulefile(filePath) {

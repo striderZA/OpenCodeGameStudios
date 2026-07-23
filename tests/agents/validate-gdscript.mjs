@@ -68,7 +68,7 @@ function validateSnippet(code, file, blockIndex) {
 }
 
 function validateAgentFiles() {
-  const agentsDir = join(ROOT, '.opencode', 'agents');
+  const agentsDir = join(ROOT, '.agents', 'agents');
   if (!existsSync(agentsDir)) {
     console.log('No agents directory found');
     process.exit(0);

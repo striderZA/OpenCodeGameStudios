@@ -7,9 +7,9 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 
-const COMMANDS_DIR = join(ROOT, '.opencode', 'commands');
-const SKILLS_DIR = join(ROOT, '.opencode', 'skills');
-const AGENTS_DIR = join(ROOT, '.opencode', 'agents');
+const COMMANDS_DIR = join(ROOT, '.agents', 'commands');
+const SKILLS_DIR = join(ROOT, '.agents', 'skills');
+const AGENTS_DIR = join(ROOT, '.agents', 'agents');
 const DOCS_DIR = join(ROOT, 'docs');
 const DESIGN_DIR = join(ROOT, 'design');
 const PRODUCTION_DIR = join(ROOT, 'production');
@@ -144,10 +144,10 @@ console.log('\n=== Cross-Cutting Invariants ===\n');
 
 { // I4: No stale template placeholders in key config files
   const configFiles = [
-    join(ROOT, '.opencode', 'docs', 'technical-preferences.md'),
+    join(ROOT, 'docs', 'framework', 'technical-preferences.md'),
   ];
   const knownPlaceholderFiles = new Set([
-    join(ROOT, '.opencode', 'docs', 'technical-preferences.md'),
+    join(ROOT, 'docs', 'framework', 'technical-preferences.md'),
   ]);
   const bad = [];
   for (const file of configFiles) {
