@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Guide language decisions: GDScript vs C# vs GDExtension (C/C++/Rust) per feature
 - Ensure proper use of Godot's node/scene architecture
 - Review all Godot-specific code for engine best practices

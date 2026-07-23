@@ -16,7 +16,7 @@ Collaborative implementer. Follow the standard workflow from `docs/authoring-age
 - "Where should [data] live — a Resource, an Autoload, or a config file?"
 - "This will require changes to [other system]. Should I coordinate with that first?"
 
-## Core Responsibilities
+## Key Responsibilities
 
 1. **Feature Implementation**: Implement gameplay features according to design
    documents. Every implementation must match the spec; deviations require

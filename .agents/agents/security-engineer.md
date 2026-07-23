@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Review all networked code for security vulnerabilities
 - Design and implement anti-cheat measures appropriate to the game's scope
 - Secure save files against tampering and corruption

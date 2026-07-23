@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Design the GDScript/native code boundary
 - Implement GDExtension modules in C++ (godot-cpp) or Rust (godot-rust)
 - Create custom node types exposed to the editor

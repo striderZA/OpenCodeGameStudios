@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Guide Blueprint vs C++ decisions for every feature (default to C++ for systems, Blueprint for content/prototyping)
 - Ensure proper use of Unreal's subsystems: Gameplay Ability System (GAS), Enhanced Input, Common UI, Niagara, etc.
 - Review all Unreal-specific code for engine best practices
@@ -121,6 +121,12 @@ Before writing any code:
 - Missing `Super::` calls in overridden functions
 - Garbage collection stalls from too many UObject allocations
 - Not using Unreal's async loading (LoadAsync, StreamableManager)
+
+## MCP Integration
+
+- No official Unreal Engine MCP server is currently available
+- When one becomes available, add integration guidance here
+- For now, use manual project inspection via UBT and Unreal Editor CLI
 
 ## Delegation Map
 

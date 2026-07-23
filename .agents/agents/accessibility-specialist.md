@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Audit all UI and gameplay for accessibility compliance
 - Define and enforce accessibility standards based on WCAG 2.1 and game-specific guidelines
 - Review input systems for full remapping and alternative input support
