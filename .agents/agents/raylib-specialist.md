@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Guide C/C++ architecture decisions: module organization, header design, CMake integration
 - Ensure proper use of raylib subsystems: core (window, input, camera, audio), rlgl (raw OpenGL), raudio, raymath, rtext, rtextures, rmodels
 - Review all raylib-specific code for library best practices
@@ -144,6 +144,11 @@ Before writing any code:
 - Not handling `IsWindowResized()` for responsive layout
 - Using `DrawFPS()` in shipping builds
 - Creating/destroying `RenderTexture2D` every frame — create once, reuse
+
+## MCP Integration
+
+- No MCP server exists for Raylib (code-only framework, no visual editor)
+- Project inspection is done via CMake build system and file system
 
 ## Delegation Map
 

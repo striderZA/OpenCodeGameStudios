@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Enforce C# coding standards and .NET best practices in Godot projects
 - Design `[Signal]` delegate architecture and event patterns
 - Implement C# design patterns (state machines, command, observer) with Godot integration

@@ -31,14 +31,8 @@ const ROOT = resolve(__dirname, "..", "..");
 // Used for Tier 2 engine specialists (UE/Unity) where rough edges are acceptable
 // per the Framework Hardening scope. Remove from this list when sections are added.
 const AGENT_EXCEPTIONS = [
-	"ue-blueprint-specialist.md",
-	"ue-gas-specialist.md",
-	"ue-replication-specialist.md",
-	"ue-umg-specialist.md",
-	"unity-addressables-specialist.md",
-	"unity-dots-specialist.md",
-	"unity-shader-specialist.md",
-	"unity-ui-specialist.md",
+	// All 8 UE/Unity sub-specialists now pass validation
+	// Delegation Map + Reports to: + Must NOT sections added in #80
 ];
 
 const REQUIRED_AGENT_FRONTMATTER = ["description", "maxTurns"];
@@ -56,6 +50,7 @@ const OPTIONAL_AGENT_SECTIONS = [
 ];
 
 const REQUIRED_SKILL_FRONTMATTER = [
+	"name",
 	"description",
 	"user-invocable",
 	"allowed-tools",
@@ -89,7 +84,7 @@ function parseFrontmatter(content) {
 // ── Agent Validation ────────────────────────────────────────────────────
 
 function validateAgents() {
-	const agentsDir = join(ROOT, ".opencode", "agents");
+	const agentsDir = join(ROOT, ".agents", "agents");
 	if (!existsSync(agentsDir))
 		return { error: `Agents directory not found: ${agentsDir}` };
 
@@ -193,7 +188,7 @@ function validateAgents() {
 // ── Skill Validation ────────────────────────────────────────────────────
 
 function validateSkills() {
-	const skillsDir = join(ROOT, ".opencode", "skills");
+	const skillsDir = join(ROOT, ".agents", "skills");
 	if (!existsSync(skillsDir))
 		return { error: `Skills directory not found: ${skillsDir}` };
 
@@ -207,7 +202,7 @@ function validateSkills() {
 		failed = 0;
 
 	// Build valid agent names for cross-reference validation
-	const agentNames = readdirSync(join(ROOT, ".opencode", "agents"))
+	const agentNames = readdirSync(join(ROOT, ".agents", "agents"))
 		.filter((f) => f.endsWith(".md"))
 		.map((f) => f.replace(".md", ""));
 
@@ -281,7 +276,7 @@ function validateSkills() {
 // ── Command Validation ──────────────────────────────────────────────────
 
 function validateCommands() {
-	const commandsDir = join(ROOT, ".opencode", "commands");
+	const commandsDir = join(ROOT, ".agents", "commands");
 	if (!existsSync(commandsDir))
 		return { error: `Commands directory not found: ${commandsDir}` };
 
@@ -293,8 +288,8 @@ function validateCommands() {
 		failed = 0;
 
 	// Build valid skill names
-	const skillNames = readdirSync(join(ROOT, ".opencode", "skills")).filter(
-		(d) => statSync(join(ROOT, ".opencode", "skills", d)).isDirectory(),
+	const skillNames = readdirSync(join(ROOT, ".agents", "skills")).filter(
+		(d) => statSync(join(ROOT, ".agents", "skills", d)).isDirectory(),
 	);
 
 	for (const file of files) {
@@ -358,7 +353,7 @@ function validateCrossReferences() {
 	const issues = [];
 
 	// Find orphan skills (skill dirs with no SKILL.md)
-	const skillsDir = join(ROOT, ".opencode", "skills");
+	const skillsDir = join(ROOT, ".agents", "skills");
 	if (existsSync(skillsDir)) {
 		const skillDirs = readdirSync(skillsDir).filter((d) =>
 			statSync(join(skillsDir, d)).isDirectory(),

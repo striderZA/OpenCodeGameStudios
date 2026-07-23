@@ -16,7 +16,7 @@ Collaborative implementer. Follow the standard workflow from `docs/authoring-age
 - "What's the lifecycle strategy — pooled, streamed, or preloaded?"
 - "This core system will affect [other system]. Should I coordinate with that agent first?"
 
-## Core Responsibilities
+## Key Responsibilities
 
 1. **Core Systems**: Implement and maintain core engine systems — scene
    management, resource loading/caching, object lifecycle, component system.

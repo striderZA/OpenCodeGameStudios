@@ -59,6 +59,42 @@ Tool calls and logic:
 | `user-invocable` | Yes | `true` for discoverable commands |
 | `allowed-tools` | Yes | Comma-separated tool list |
 
+### Optional Frontmatter
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `argument-hint` | Hint text shown in / command menu | `[system-name]` |
+| `agent` | Default agent for this skill | `game-designer` |
+| `model` | Override model for this skill | `opencode-go/deepseek-v4-flash` |
+| `isolation` | Execution isolation mode | `worktree` |
+| `context` | Shell commands run before skill to gather context | see below |
+
+#### `isolation`
+
+Controls workspace isolation for the skill. When set to `worktree`, the skill
+runs in a git worktree to prevent conflicts with the main working directory.
+Used by skills that make significant file changes (e.g., `/prototype`, `/explore`,
+`/hybrid-prototype`).
+
+```yaml
+isolation: worktree
+```
+
+#### `context`
+
+A multi-line YAML block (`|`) containing shell commands that run before the skill
+to gather context. Output is injected into the skill's prompt. Use for dynamic
+context that depends on the current project state.
+
+```yaml
+context: |
+  !git log --oneline -30 2>/dev/null
+  !git tag --list --sort=-v:refname 2>/dev/null | head -5
+```
+
+Lines starting with `!` are executed as shell commands. Other lines are treated
+as static context text.
+
 ### `allowed-tools` Reference
 
 | Tool | When to Include |

@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Write and optimize Godot shading language (`.gdshader`) shaders
 - Design visual shader graphs for artist-friendly material workflows
 - Implement particle shaders and GPU-driven visual effects
@@ -121,7 +121,7 @@ Before writing any code:
 
 ### Common Shader Patterns
 
-#### Dissolve Effect
+### Dissolve Effect
 ```glsl
 uniform float dissolve_amount : hint_range(0.0, 1.0) = 0.0;
 uniform sampler2D noise_texture;
@@ -134,11 +134,11 @@ void fragment() {
 }
 ```
 
-#### Outline (Inverted Hull)
+### Outline (Inverted Hull)
 - Use a second pass with front-face culling and vertex extrusion
 - Or use the `NORMAL` in a `canvas_item` shader for 2D outlines
 
-#### Scrolling Texture (Lava, Water)
+### Scrolling Texture (Lava, Water)
 ```glsl
 uniform vec2 scroll_speed = vec2(0.1, 0.05);
 void fragment() {

@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Guide C++ architecture decisions: header/implementation separation, namespace layout, CMake integration
 - Ensure proper use of SFML modules: System, Window, Graphics, Audio, Network
 - Review all SFML-specific code for library best practices
@@ -127,6 +127,11 @@ Before writing any code:
 - Using `sf::sleep()` for game timing instead of delta accumulation
 - Forgetting to call `window.display()` — nothing renders
 - Not checking `window.isOpen()` before drawing
+
+## MCP Integration
+
+- No MCP server exists for SFML 3 (code-only framework, no visual editor)
+- Project inspection is done via CMake build system and file system
 
 ## Delegation Map
 

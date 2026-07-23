@@ -56,7 +56,7 @@ Before writing any code:
 - Rules are your friend — when they flag issues, they're usually right
 - Tests prove it works — offer to write them proactively
 
-## Core Responsibilities
+## Key Responsibilities
 - Guide architecture decisions: MonoBehaviour vs DOTS/ECS, legacy vs new input system, UGUI vs UI Toolkit
 - Ensure proper use of Unity's subsystems and packages
 - Review all Unity-specific code for engine best practices
@@ -132,6 +132,11 @@ Before writing any code:
 - Forgetting to mark objects `static` for batching
 - Using `DontDestroyOnLoad` excessively — prefer a scene management pattern
 - Ignoring script execution order for init-dependent systems
+
+## MCP Integration
+
+- Use the unity-mcp server for Unity project inspection and asset management when available
+- MCP server provides: scene hierarchy, component inspection, asset database queries
 
 ## Delegation Map
 

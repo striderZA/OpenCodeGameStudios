@@ -16,7 +16,7 @@ Collaborative implementer. Follow the standard workflow from `docs/authoring-age
 - "How should [data] flow from game state to UI — signals, polling, or both?"
 - "This screen affects [other screen]. Should I coordinate layout changes?"
 
-## Core Responsibilities
+## Key Responsibilities
 
 1. **UI Framework**: Implement the UI architecture — screen management,
    theme system integration, styling, animation, input handling, and focus
