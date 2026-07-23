@@ -1,67 +1,4 @@
-# Update unreleased — 2026-07-23
-
-## Bug Fixes
-
-- Update .opencode/{agents,skills,commands}/ paths to canonical .agents/
-- Bump question tool max options from 4 to 10
-- Remove dead ternary in question tool (both branches same value)
-
-
-# Update unreleased — 2026-07-22
-
-## Bug Fixes
-
-- Update .opencode/{agents,skills,commands}/ paths to canonical .agents/
-- Bump question tool max options from 4 to 10
-- Remove dead ternary in question tool (both branches same value)
-
-
-# Update unreleased — 2026-07-22
-
-## Bug Fixes
-
-- Resolve Windows git() issues and fix changelog test assertions
-
-## Under the Hood
-
-- Convert all test files to node:test describe/it pattern
-- Rewrite session/compact tests to import from source
-- Rewrite log/gap tests to import from source
-- Rewrite validation tests to import from source
-- Export internal functions for test access
-
-
-# Update unreleased — 2026-07-22
-
-## Bug Fixes
-
-- Resolve Windows git() issues and fix changelog test assertions
-- Bump question tool max options from 4 to 10
-
-## Under the Hood
-
-- Convert all test files to node:test describe/it pattern
-- Rewrite session/compact tests to import from source
-- Rewrite log/gap tests to import from source
-- Rewrite validation tests to import from source
-- Export internal functions for test access
-
-
-# Update unreleased — 2026-07-22
-
-## Bug Fixes
-
-- Resolve Windows git() issues and fix changelog test assertions
-- Bump question tool max options from 4 to 10
-
-## Under the Hood
-
-- Convert all test files to node:test describe/it pattern
-- Rewrite session/compact tests to import from source
-- Rewrite log/gap tests to import from source
-- Rewrite validation tests to import from source
-- Export internal functions for test access
-
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -69,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [v0.11.0] — 2026-07-22
+
+### Added
+
+- **SFML 3 engine reference docs** — 9 files: VERSION, breaking changes, deprecated APIs,
+  current best practices, and module guides (graphics, audio, network, window, system)
+- **Raylib engine reference docs** — 10 files: VERSION, breaking changes, deprecated APIs,
+  current best practices, and module guides (core, rlgl, raudio, raymath, raygui, platforms)
+- Brings SFML 3 and Raylib to full parity with existing Godot, Unity, and Unreal engine
+  reference sets (#78, #85)
+
+### Fixed
+
+- **Pi compatibility**: Fixed module installer `--pi` flag, Pi config awareness in drift
+  detector, and cross-harness install path resolution (#84)
+- **Plugin code quality**: Removed dead code, fixed cross-platform notification paths,
+  improved E2E test coverage (#83)
+
+### Dependencies
+
+- Bumped `actions/setup-node` from 6 to 7 (#75)
+- Bumped `actions/checkout` from 6 to 7 (#74)
+
 
 ## [v0.10.2] — 2026-06-22
 
