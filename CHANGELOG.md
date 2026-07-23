@@ -1,5 +1,12 @@
 # Changelog
 
+## Bug Fixes
+    
+- Update .opencode/{agents,skills,commands}/ paths to canonical .agents/
+- Bump question tool max options from 4 to 10
+- Remove dead ternary in question tool (both branches same value)
+
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
@@ -117,6 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Pi extension parity tests (`tests/e2e/`)
 - Added extension-specific tests (`tests/extensions/`)
+
 
 
 
