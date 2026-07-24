@@ -7,8 +7,8 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 
-const SKILLS_DIR = join(ROOT, '.opencode', 'skills');
-const COMMANDS_DIR = join(ROOT, '.opencode', 'commands');
+const SKILLS_DIR = join(ROOT, '.agents', 'skills');
+const COMMANDS_DIR = join(ROOT, '.agents', 'commands');
 const DOCS_DIR = join(ROOT, 'docs');
 
 function getSkillContent(name) {

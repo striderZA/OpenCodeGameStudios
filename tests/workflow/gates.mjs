@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 
-const SKILLS_DIR = join(ROOT, '.opencode', 'skills');
+const SKILLS_DIR = join(ROOT, '.agents', 'skills');
 
 function getSkillContent(name) {
   const p = join(SKILLS_DIR, name, 'SKILL.md');
@@ -69,8 +69,8 @@ if (gate) {
       'production/session-logs/',
       'prototypes/explore/',
       'design/difficulty-curve.md',
-      '.opencode/docs/technical-preferences.md',
-      '.opencode/docs/director-gates.md',
+      'docs/framework/technical-preferences.md',
+      'docs/framework/director-gates.md',
       '.github/workflows/tests.yml',
       'docs/consistency-failures.md',
     ]);
@@ -179,7 +179,7 @@ if (gate) {
     const hybrid = readFileSync(hybridDoc, 'utf-8');
     const refs = [...hybrid.matchAll(/`\/([a-z][\w-]+)`/g)].map(m => m[1]);
     const unique = [...new Set(refs)];
-    const commandsDir = join(ROOT, '.opencode', 'commands');
+    const commandsDir = join(ROOT, '.agents', 'commands');
     const commandNames = existsSync(commandsDir)
       ? new Set(readdirSync(commandsDir).filter(f => f.endsWith('.md') && f !== 'README.md').map(f => f.replace('.md', '')))
       : new Set();
@@ -210,7 +210,7 @@ if (gate) {
       const content = readFileSync(doc, 'utf-8');
       const refs = [...content.matchAll(/`\/([a-z][\w-]+)`/g)].map(m => m[1]);
       const unique = [...new Set(refs)];
-      const commandsDir = join(ROOT, '.opencode', 'commands');
+      const commandsDir = join(ROOT, '.agents', 'commands');
       const commandNames = existsSync(commandsDir)
         ? new Set(readdirSync(commandsDir).filter(f => f.endsWith('.md') && f !== 'README.md').map(f => f.replace('.md', '')))
         : new Set();
