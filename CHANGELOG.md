@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v0.12.1] — 2026-08-02
+
+### Fixed
+
+- **Windows `.opencode/` symlinks**: New `tools/fix-opencode-symlinks.mjs` repairs the
+  `.opencode/{agents,commands,skills,rules}` symlinks into real symlinks/junctions when a
+  Windows checkout (`core.symlinks=false`) materializes them as inert stub files, which
+  silently broke OpenCode's agent/skill/command discovery (#77, #93)
+- **`assign-models.js`**: Now points directly at the canonical `.agents/agents` directory
+  instead of the `.opencode/agents` symlink, so it no longer silently scans 0 agent files
+  when the symlink isn't materialized (#96)
+- **Plugin test docs**: `npm run test:plugins` was broken (`ERR_MODULE_NOT_FOUND`) and docs
+  told contributors to invoke `.mjs` test files directly, which fails without the `tsx` ESM
+  loader; both are fixed and now run 158/158 passing (#95)
+- **Stale doc counts**: Corrected command count (54 -> 77), test count (183 -> 158), and
+  module count (17 -> 21) across AGENTS.md, README.md, and docs/pi-compatibility.md (#94)
+
+### Changed
+
+- Bumped `actions/stale` from 10 to 11 (#92)
+- Added `.gitignore` pattern for stray `omp-session-*.html` coding-agent transcripts (#97)
+
+
 ## [v0.11.0] — 2026-07-22
 
 ### Added
