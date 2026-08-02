@@ -28,5 +28,8 @@ desktop.ini
 *~
 tests/agents/validation-report.md
 
+# Coding-agent session transcripts accidentally dropped at repo root
+omp-session-*.html
+
 # Submodule dependencies
 tools/aseprite-mcp/.venv/
