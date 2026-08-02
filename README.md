@@ -346,7 +346,7 @@ All 12 bash hooks from CCGS ported to `ccgs-hooks.ts`:
 | 11 | `post-compact.sh` | `experimental.compaction.autocontinue` | **5** |
 | 12 | `notify.sh` | Utility (`showNotification`) | — |
 
-> 🧪 Run plugin test suite: `node .opencode/plugins/tests/test-<name>.mjs`
+> 🧪 Run plugin test suite: `npm run test:plugins` (needs the `tsx` ESM loader — see CONTRIBUTING.md)
 > 🧪 Run workflow integrity suite: `node tests/workflow/run-all.mjs`
 
 ### Contributing to the Framework

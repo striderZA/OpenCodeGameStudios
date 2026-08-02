@@ -245,8 +245,8 @@ Before merging to `development`, the CI must pass:
   - All agent files have required frontmatter and sections
   - All skill files have valid cross-references to existing agents
   - All command files reference valid skill directories
-- **Plugin tests** (`node .opencode/plugins/tests/test-*.mjs`):
-  - 11 test suites, 129+ tests covering all hooks
+- **Plugin tests** (`npm run test:plugins`):
+  - 18 test suites, 158 tests covering all hooks
 
 ## Notes
 
