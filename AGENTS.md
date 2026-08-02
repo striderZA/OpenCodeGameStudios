@@ -191,7 +191,7 @@ See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup g
 
 ## Available Commands
 
-Type `/` in OpenCode to see all available commands. All 54 commands route to
+Type `/` in OpenCode to see all available commands. All 77 commands route to
 corresponding skills in `.agents/skills/`.
 
 | Category | Commands |

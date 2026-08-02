@@ -9,9 +9,9 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-51-blueviolet)](.agents/agents/)
 [![Skills](https://img.shields.io/badge/skills-77-brightgreen)](.agents/skills/)
-[![Commands](https://img.shields.io/badge/commands-54-blue)](.agents/commands/)
+[![Commands](https://img.shields.io/badge/commands-77-blue)](.agents/commands/)
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
-[![Tests](https://img.shields.io/badge/tests-183-success)](tests/)
+[![Tests](https://img.shields.io/badge/tests-158-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
 [![Pi Compatible](https://img.shields.io/badge/Pi-compatible-4f46e5)](https://github.com/earendil-works/pi-coding-agent)
 
@@ -53,7 +53,7 @@ for the full game lifecycle:
   maturity
 - **51 coordinated agents** — From creative director to engine specialists, each
   with defined responsibilities, delegation maps, and strict domain boundaries
-- **54 slash commands** — Route through the right skill every time, from
+- **77 slash commands** — Route through the right skill every time, from
   `/concept-brainstorm` to `/launch-checklist`
 
 This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
@@ -73,8 +73,8 @@ and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil
 |-----------|-------------------|----------|-----|--------|
 | 🤖 **Agents** | 49 agents (`.claude/agents/`) | 51 agents (`.agents/agents/`) | 51 agents (`.agents/agents/`) | ✅ |
 | ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.agents/skills/`) | 77 skills (`.agents/skills/`) | ✅ +5 |
-| ⌨️ **Commands** | — | 54 commands (`.agents/commands/`) | → prompt templates | ✅ New |
-| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 7 Pi extensions (`.pi/extensions/`) | ✅ **183 tests** |
+| ⌨️ **Commands** | — | 77 commands (`.agents/commands/`) | → prompt templates | ✅ New |
+| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 7 Pi extensions (`.pi/extensions/`) | ✅ **158 tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | `AGENTS.md` + `.pi/settings.json` | ✅ |
 
@@ -86,7 +86,7 @@ and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil
 ```bash
 opencode
 ```
-Type `/` to browse all 77 skills and 54 commands, or `/start` for onboarding.
+Type `/` to browse all 77 skills and 77 commands, or `/start` for onboarding.
 
 ### Pi
 ```bash
@@ -284,7 +284,7 @@ node utils/assign-models.js --config my-models.json
 │   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
-│   │   └── tests/             🧪 11 test suites (140 tests)
+│   │   └── tests/             🧪 18 test suites (158 tests)
 │   └── modules/
 │       ├── install.mjs        CLI: add/remove/list modules
 │       ├── installed.json     Module manifest
