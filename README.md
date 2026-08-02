@@ -86,6 +86,8 @@ and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil
 ```bash
 opencode
 ```
+> **Windows users:** `.opencode/{agents,commands,skills,rules}` are git symlinks and require `core.symlinks=true` (+ Developer Mode) to check out correctly — see [Known Issues](#-known-issues) if `/` shows no commands.
+
 Type `/` to browse all 77 skills and 54 commands, or `/start` for onboarding.
 
 ### Pi
@@ -374,6 +376,7 @@ skills, commands, rules, and plugins.
 | Issue | Impact | Workaround |
 |-------|--------|------------|
 | **Subagent model resolution via `task`** — Agent `model:` frontmatter fails with `ProviderModelNotFoundError` for models that work when used directly via `opencode -m <model>`. Subagents inherit the caller's model per OpenCode docs, so the frontmatter model may only apply when the agent runs as a primary session. | Agents using `opencode-go/kimi-k2.6` and `opencode-go/deepseek-v4-flash` as subagents via `task` | Use `opencode-go/qwen3.6-plus` for subagent-heavy workflows, or start dedicated sessions with `opencode -m <model>` for director-level agents. Root cause being tracked upstream in OpenCode. |
+| **`.opencode/*` symlinks inert on Windows** — `.opencode/{agents,commands,skills,rules}` are committed as git symlinks. With the Windows default `core.symlinks=false`, git checks them out as plain-text stub files instead of real symlinks, so OpenCode's `/`-command and skill/agent discovery finds nothing. | OpenCode is non-functional on a stock Windows clone (Pi is unaffected — it reads `.agents/` directly) | `git config --global core.symlinks true` + enable Developer Mode, then re-clone; or run `node tools/fix-opencode-symlinks.mjs` to repair an existing checkout. |
 
 ---
 
