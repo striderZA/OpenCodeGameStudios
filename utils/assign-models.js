@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const AGENTS_DIR = path.resolve(__dirname, "..", ".opencode", "agents");
+const AGENTS_DIR = path.resolve(__dirname, "..", ".agents", "agents");
 const MODEL_RE = /^(model:\s*).+/m;
 
 function usage() {
