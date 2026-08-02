@@ -72,3 +72,17 @@ If you have an existing OCGS project:
 1. Run `node tools/migrate-to-agents.mjs` to migrate content from `.opencode/` to `.agents/`
 2. Run with `--dry-run` first to preview
 3. Use `--remove-old` to delete the original `.opencode/` content after verification
+
+## Windows Symlink Setup
+
+`.opencode/{agents,commands,skills,rules}` are git symlinks pointing at the
+canonical `.agents/*` directories. On Windows, git only checks these out as
+real symlinks if `core.symlinks=true` is set (and Developer Mode/admin rights
+are enabled) **before** cloning. Otherwise they check out as inert stub files
+containing the link-target text, and OpenCode's `.opencode/`-based discovery
+silently finds nothing (Pi is unaffected — it reads `.agents/` directly).
+
+Fix: `git config --global core.symlinks true` + enable Developer Mode, then
+re-clone (or run `git checkout -- .opencode` after enabling). Alternatively,
+run `node tools/fix-opencode-symlinks.mjs` to detect and repair inert stub
+files in an existing checkout.
