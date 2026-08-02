@@ -22,7 +22,7 @@ pi
 2. Discuss the approach with maintainers
 3. Fork the repo and create a branch
 4. Make your changes
-5. Run the plugin tests: `node .opencode/plugins/tests/test-<name>.mjs`
+5. Run the plugin tests: `npm run test:plugins` (needs the `tsx` ESM loader — a plain `node .opencode/plugins/tests/test-<name>.mjs` will fail, since the tests import `.ts` sources)
 6. Submit a pull request
 
 ## Commit Conventions
