@@ -152,8 +152,8 @@ Migration Guides (https://bevyengine.org/learn/migration-guides/).
 ### 0.17 — `bevy_render` reorganization into new crates
 - **Old**: `use bevy::render::mesh::Mesh;` / `use bevy::core_pipeline::core_3d::Camera3d;` (0.16 paths)
 - **New**: `use bevy::mesh::Mesh;` / `use bevy::camera::Camera3d;`
-- **Migration**: Many rendering types moved to new crates: camera types → `bevy_camera` (`bevy::camera`), shader types → `bevy_shader` (`bevy::shader`), light types → `bevy_light` (`bevy::light`), mesh types → `bevy_mesh` (`bevy::mesh`), image types → `bevy_image` (`bevy::image`); post-process effects → `bevy_post_process` (`bevy::post_process`), AA → `bevy_anti_alias` (`bevy::anti_alias`); sprite/UI render types → `bevy_sprite_render` / `bevy_ui_render`. In 0.18 the remaining `bevy_render` re-exports for mesh/image were removed — import from the new crates.
-- **Source**: https://bevy.org/learn/migration-guides/0-16-to-0-17/#bevy-render-reorganization and https://bevy.org/learn/migration-guides/0-17-to-0-18/#bevy-render-reorganization
+- **Migration**: Many rendering types moved to new crates: camera types → `bevy_camera` (`bevy::camera`), shader types → `bevy_shader` (`bevy::shader`), light types → `bevy_light` (`bevy::light`), mesh types → `bevy_mesh` (`bevy::mesh`), image types → `bevy_image` (`bevy::image`); post-process effects → `bevy_post_process` (`bevy::post_process`), AA → `bevy_anti_alias` (`bevy::anti_alias`); sprite/UI render types → `bevy_sprite_render` / `bevy_ui_render`. As part of this reorganization, the remaining `bevy_render` re-exports for mesh/image were removed in 0.17 — import from the new crates.
+- **Source**: https://bevy.org/learn/migration-guides/0-16-to-0-17/#bevy-render-reorganization
 
 ### 0.17 — System sets standardized on `*Systems` naming
 - **Old**: `RenderSet`, `TransformSystem`, `UiSystem`, `InputSystem`, `PickSet`

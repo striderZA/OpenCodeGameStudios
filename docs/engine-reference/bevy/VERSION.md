@@ -23,10 +23,10 @@ The Migration Guides are the authoritative source for version transitions.
 
 | Version | Release | Risk Level | Key Theme |
 |---------|---------|------------|-----------|
-| 0.16 | 2025-04-24 | HIGH | `Event` trait split into `Message` (buffered) and `Event` (observers); `bevy_render` reorganized into `bevy_camera` / `bevy_shader` / `bevy_light` / `bevy_mesh` / `bevy_image`; system sets standardized on `*Systems` naming |
-| 0.17 | 2025-09-30 | HIGH | Entities rework (`EntityRow` index, flush removed, `EntitiesAllocator`); `RenderTarget` moved from a `Camera` field to a component; Cargo feature collections; `Internal` component removed |
-| 0.18 | 2026-01-13 | HIGH | Resources are now stored as components on dedicated entities; `RenderGraph` replaced by systems; text moved from `cosmic-text` to `parley`; `bevy_scene` renamed to `bevy_world_serialization` (BSN arrives) |
-| 0.19 | 2026-06-18 | HIGH | Resources-as-components; render graph as systems; Parley text overhaul; `audio`/`ui` Cargo features no longer implied by `3d`/`2d`; bloom luma now computed in linear space |
+| 0.16 | 2025-04-24 | HIGH | **0.16 → 0.17:** `Event` trait split into `Message` (buffered) and `Event` (observers); `bevy_render` reorganized into `bevy_camera` / `bevy_shader` / `bevy_light` / `bevy_mesh` / `bevy_image`; system sets standardized on `*Systems` naming |
+| 0.17 | 2025-09-30 | HIGH | **0.17 → 0.18:** Entities rework (`EntityRow` index, flush removed, `EntitiesAllocator`); `RenderTarget` moved from a `Camera` field to a component; Cargo feature collections; `Internal` component removed |
+| 0.18 | 2026-01-13 | HIGH | **0.18 → 0.19:** Resources are now stored as components on dedicated entities; `RenderGraph` replaced by systems; text moved from `cosmic-text` to `parley`; `bevy_scene` renamed to `bevy_world_serialization` (BSN arrives); `audio`/`ui` Cargo features no longer implied by `3d`/`2d`; bloom luma now computed in linear space |
+| 0.19 | 2026-06-18 | HIGH | — (latest release; no 0.19 → 0.20 migration guide exists yet) |
 
 ## Bevy Characteristics
 
@@ -50,7 +50,7 @@ The Migration Guides are the authoritative source for version transitions.
 | bevy_audio | Audio playback (rodio backend; format support behind `vorbis`/`wav`/`mp3`/`flac` features) |
 | bevy_camera | Camera types (`Camera`, `Camera3d`, `Camera2d`, projections) — split out of `bevy_render` in 0.17 |
 | bevy_shader | Shader types (`Shader`, `ShaderRef`, `ShaderCache`) — split out in 0.17 |
-| bevy_light | Light types (`PointLight`, `SpotLight`, `DirectionalLight`, `AmbientLight`, `Skybox`, `Atmosphere`) — split out in 0.17 |
+| bevy_light | Light types (`PointLight`, `SpotLight`, `DirectionalLight`, `AmbientLight`, `Atmosphere`) — split out in 0.17; `Skybox` moved here from `bevy_core_pipelines` in 0.19 |
 | bevy_mesh | Mesh types (`Mesh`, `Mesh3d`, `Mesh2d`, `Indices`, `Meshable`) — split out in 0.17 |
 | bevy_image | Image types (`Image`, `ImagePlugin`, `ImageFormat`) — split out in 0.17 |
 | bevy_material | Material machinery extracted from `bevy_pbr`/`bevy_render` in 0.19 (`AlphaMode`, `MaterialProperties`) |

@@ -52,7 +52,7 @@ full change list see the corresponding guide URL in the Source column.
 | `Handle::Weak` / `weak_handle!` / `Handle::clone_weak` | `Handle::Uuid` / `uuid_handle!` / `Handle::clone` | 0.17 | https://bevy.org/learn/migration-guides/0-16-to-0-17/#handle-weak-has-been-replaced-by-handle-uuid |
 | `Timer::paused()` / `Timer::finished()` | `Timer::is_paused()` / `Timer::is_finished()` | 0.17 | https://bevy.org/learn/migration-guides/0-16-to-0-17/#renamed-timer-paused-to-timer-is-paused-and-timer-finished-to-timer-is-finished |
 | `World::iter_entities()` / `World::iter_entities_mut()` | `world.query::<EntityRef>().iter(&world)` / `world.query::<EntityMut>().iter(&mut world)` | 0.17 | https://bevy.org/learn/migration-guides/0-16-to-0-17/#deprecate-iter-entities-and-iter-entities-mut |
-| `MergeMeshError` (0.16 name `MergeMeshError` struct) | `MeshMergeError` (enum, with `IncompatiblePrimitiveTopology` variant) | 0.17 | https://bevy.org/learn/migration-guides/0-16-to-0-17/#rework-mergemesherror |
+| `MergeMeshError` (0.16 name; was a struct) | `MeshMergeError` (enum, with `IncompatiblePrimitiveTopology` variant) | 0.17 | https://bevy.org/learn/migration-guides/0-16-to-0-17/#rework-mergemesherror |
 | `ScaleVolume` Add/Sub arithmetic on `Volume::Linear` | `Volume::Linear(x).increase_by_percentage(...)` | 0.17 | https://bevy.org/learn/migration-guides/0-16-to-0-17/#remove-the-add-sub-impls-on-volume |
 | `SceneSpawner::despawn`/`despawn_sync`/`update_spawned_scenes` (0.16, dynamic-scene variants) | `despawn_dynamic` / `despawn_dynamic_sync` / `update_spawned_dynamic_scenes`; the un-suffixed names now act on `Scene` | 0.17 | https://bevy.org/learn/migration-guides/0-16-to-0-17/#scenespawner-methods-have-been-renamed-and-replaced |
 
