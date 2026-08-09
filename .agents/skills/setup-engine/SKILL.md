@@ -36,7 +36,7 @@ If no engine is specified, run an interactive engine selection process:
 
 **Question 1 — Prior experience** (ask this first, always, via `question`):
 - Prompt: "Have you worked in any of these engines before?"
-- Options: `Godot` / `Unity` / `Unreal Engine 5` / `SFML 3 (C++ library)` / `Raylib (C/C++ library)` / `Multiple — I'll explain` / `None of them`
+- Options: `Godot` / `Unity` / `Unreal Engine 5` / `SFML 3 (C++ library)` / `Raylib (C/C++ library)` / `Bevy (Rust engine)` / `Multiple — I'll explain` / `None of them`
 - If they pick a specific engine → recommend that engine. Prior experience outweighs all other factors. Confirm with them and skip the matrix.
 - If "None" or "Multiple" → continue to the questions below.
 
@@ -94,9 +94,16 @@ Do NOT use a simple scoring matrix that eliminates engines. Instead, reason thro
 - Licensing reality: zlib/libpng license — completely free with no restrictions whatsoever
 - Best fit: Learning/teaching game development; rapid prototyping; tiny indie games; game jams; developers who want the simplest possible graphics API; multi-platform 2D games with low performance requirements
 
+**Bevy**
+- Genuine strengths: Modern Rust with strong type safety; ECS-first data-oriented design scales well for systems-heavy gameplay; free forever (MIT OR Apache-2.0); fast iteration with hot reload; solid 2D and capable 3D (wgpu); rapidly growing ecosystem and community
+- Real limitations: No visual editor — everything is code; fast release cadence (breaking changes roughly every 3 months) means frequent migration work; steep Rust learning curve for non-Rust teams; smaller asset/tutorial ecosystem than Godot or Unity; console support is weak; mobile/web require extra tooling (WASM/NDK)
+- Licensing reality: MIT OR Apache-2.0 — completely free with no restrictions whatsoever
+- Best fit: Systems-heavy 2D or 3D games; teams already proficient in Rust; projects that value data-oriented ECS architecture; prototypes to mid-scope games
+
 **Genre-specific guidance** (factor this into the recommendation):
 - 2D any style → Godot strongly preferred; Raylib viable for simple 2D; SFML3 excellent for custom-rendered 2D
 - 3D stylized / atmospheric / contained world → Godot viable, Unity solid alternative; Raylib viable for simple 3D; SFML3 limited 3D (no built-in model loader)
+- Rust teams / systems-heavy gameplay → Bevy (ECS-first; capable in both 2D and 3D)
 - 3D open world (large, seamless) → Unity or Unreal; Godot is not production-proven for this
 - 3D photorealistic / AAA-quality → Unreal
 - Mobile-first → Unity strongly preferred; Raylib has Android/iOS support but significant extra work
@@ -552,6 +559,7 @@ Check whether the engine version is likely beyond the LLM's training data.
 - Unreal: training data likely covers up to ~5.3 / early 5.4
 - SFML 3: training data likely covers up to ~3.0.x (SFML 3.0 released early 2025)
 - Raylib: training data likely covers up to ~5.5
+- Bevy: training data likely covers up to ~0.16/0.17
 
 Compare the user's chosen version against these baselines:
 
