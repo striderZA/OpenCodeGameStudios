@@ -231,7 +231,7 @@ Migration Guides (https://bevyengine.org/learn/migration-guides/).
 ### 0.18 — Same-state transitions now trigger `OnEnter`/`OnExit`
 - **Old**: `next_state.set(State::Menu);` (no transition when already `Menu`)
 - **New**: `next_state.set_if_neq(State::Menu);` to preserve the old behavior
-- **Migration**: `NextState::set` now always runs state transition schedules (including `DespawnOnEnter`/`DespawnOnExit`) even when the target state equals the current one. Use `set_if_neq` if you do not want same-state transitions.
+- **Migration**: `NextState::set` now always runs state transition schedules (`OnEnter`/`OnExit`) even when the target state equals the current one. Use `set_if_neq` if you do not want same-state transitions.
 - **Source**: https://bevy.org/learn/migration-guides/0-17-to-0-18/#same-state-transitions
 
 ### 0.18 — `AmbientLight` split into component + resource
@@ -297,6 +297,12 @@ Migration Guides (https://bevyengine.org/learn/migration-guides/).
   ```
 - **Migration**: `Command` now takes `Out` as an associated type instead of a generic parameter; implementors must fill in `type Out = ();` (or `Result`). `HandleError` and `CommandWithEntity` functionality folded into `Command`/`EntityCommand`.
 - **Source**: https://bevy.org/learn/migration-guides/0-18-to-0-19/#command-error-handling-has-been-simplified
+
+### 0.19 — `DespawnOnEnter`/`DespawnOnExit` now trigger on same-state transitions
+- **Old**: `next_state.set(State::Menu);` when already `Menu` ran `OnEnter`/`OnExit` but skipped `DespawnOnEnter`/`DespawnOnExit` (a 0.18 bug).
+- **New**: `next_state.set(State::Menu);` runs `DespawnOnEnter`/`DespawnOnExit` too; `next_state.set_if_neq(State::Menu);` runs no state transition schedules when the state is unchanged.
+- **Migration**: 0.19 fixes the 0.18 bug where same-state transitions skipped `DespawnOnEnter`/`DespawnOnExit`. If your code relied on that behavior, switch to `set_if_neq`.
+- **Source**: https://bevy.org/learn/migration-guides/0-18-to-0-19/#despawnonenter-despawnonexit-can-now-trigger-during-same-state-transitions
 
 ### 0.18 — `DragEnter` now fires on drag starts
 - **Old**: `DragEnter` fired only when entering an entity other than the dragged one.

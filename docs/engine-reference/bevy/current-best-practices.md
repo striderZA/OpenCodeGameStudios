@@ -41,11 +41,11 @@ verifiable against a cited source is omitted.
   ```
   **Source**: https://bevy.org/learn/migration-guides/0-18-to-0-19/#resources-as-components
 
-- **Practice**: Use `NextState::set_if_neq` instead of `set` when you do not want same-state transitions; `set` now always runs `OnEnter`/`OnExit` (and `DespawnOnEnter`/`DespawnOnExit`) even if the state is unchanged.
+- **Practice**: Use `NextState::set_if_neq` instead of `set` when you do not want same-state transitions; `set` always runs `OnEnter`/`OnExit` on same-state transitions (and `DespawnOnEnter`/`DespawnOnExit` since 0.19 — in 0.18 they were skipped due to a bug).
   ```rust
   next_state.set_if_neq(State::Menu);
   ```
-  **Source**: https://bevy.org/learn/migration-guides/0-17-to-0-18/#same-state-transitions
+  **Source**: https://bevy.org/learn/migration-guides/0-17-to-0-18/#same-state-transitions and https://bevy.org/learn/migration-guides/0-18-to-0-19/#despawnonenter-despawnonexit-can-now-trigger-during-same-state-transitions
 
 - **Practice**: Name system sets with the `*Systems` suffix and schedule with executors passed as instances (0.19 removed `ExecutorKind`).
   ```rust

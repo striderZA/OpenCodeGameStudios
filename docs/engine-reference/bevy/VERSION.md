@@ -50,7 +50,7 @@ The Migration Guides are the authoritative source for version transitions.
 | bevy_audio | Audio playback (rodio backend; format support behind `vorbis`/`wav`/`mp3`/`flac` features) |
 | bevy_camera | Camera types (`Camera`, `Camera3d`, `Camera2d`, projections) — split out of `bevy_render` in 0.17 |
 | bevy_shader | Shader types (`Shader`, `ShaderRef`, `ShaderCache`) — split out in 0.17 |
-| bevy_light | Light types (`PointLight`, `SpotLight`, `DirectionalLight`, `AmbientLight`, `Atmosphere`) — split out in 0.17; `Skybox` moved here from `bevy_core_pipelines` in 0.19 |
+| bevy_light | Light types (`PointLight`, `SpotLight`, `DirectionalLight`, `AmbientLight`, `AtmosphereEnvironmentMapLight`) — split out in 0.17; `Skybox` moved here from `bevy_core_pipelines` in 0.19; `Atmosphere` added in 0.19 |
 | bevy_mesh | Mesh types (`Mesh`, `Mesh3d`, `Mesh2d`, `Indices`, `Meshable`) — split out in 0.17 |
 | bevy_image | Image types (`Image`, `ImagePlugin`, `ImageFormat`) — split out in 0.17 |
 | bevy_material | Material machinery extracted from `bevy_pbr`/`bevy_render` in 0.19 (`AlphaMode`, `MaterialProperties`) |
