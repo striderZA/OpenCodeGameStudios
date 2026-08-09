@@ -62,6 +62,7 @@ agent (usually `producer` or the domain lead) should delegate to specialists.
 | `unreal-specialist` | Unreal Engine 5 | Sonnet | Blueprint vs C++, GAS overview, UE subsystems, Unreal optimization |
 | `unity-specialist` | Unity | Sonnet | MonoBehaviour vs DOTS, Addressables, URP/HDRP, Unity optimization |
 | `godot-specialist` | Godot 4 | Sonnet | GDScript patterns, node/scene architecture, signals, Godot optimization |
+| `bevy-specialist` | Bevy | Sonnet | ECS architecture, 2D/3D rendering, bevy_ui, Cargo build, Bevy optimization |
 
 ### Unreal Engine Sub-Specialists
 
