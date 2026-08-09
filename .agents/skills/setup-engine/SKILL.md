@@ -204,9 +204,17 @@ Update the Technology Stack section, replacing the `[CHOOSE]` placeholders with 
 - **Asset Pipeline**: Custom (file-based loading via LoadTexture, LoadSound, etc.)
 ```
 
+**For Bevy:**
+```markdown
+- **Engine**: Bevy 0.19
+- **Language**: Rust
+- **Build System**: Cargo
+- **Asset Pipeline**: AssetServer / bevy_asset
+```
+
 ---
 
-## 4.5. Scaffold Build System (SFML 3 / Raylib Only)
+## 4.5. Scaffold Build System (SFML 3 / Raylib / Bevy Only)
 
 If SFML 3 or Raylib was chosen, ask the user about scaffolding the build system:
 
@@ -326,6 +334,46 @@ int main() {
 }
 ```
 
+### For Bevy
+
+Ask: "I can create a skeleton Cargo project (Cargo.toml + src/main.rs) to get you started. May I scaffold these files?"
+
+Create `Cargo.toml`:
+
+```toml
+[package]
+name = "[project-name-lowercase]"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bevy = "0.19"
+```
+
+Create `src/main.rs`:
+
+```rust
+use bevy::prelude::*;
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_systems(Startup, setup)
+        .add_systems(Update, hello)
+        .run();
+}
+
+fn setup(mut commands: Commands) {
+    commands.spawn(Camera2d);
+}
+
+fn hello() {
+    println!("Hello, Bevy!");
+}
+```
+
+Verify the skeleton against `docs/engine-reference/bevy/modules/` for the pinned 0.19 version — if the reference docs show renames (e.g., camera or plugin component changes), update the skeleton to match. Note: Bevy is Rust-only, so the C-vs-C++ language-selection question does NOT apply.
+
 Also ensure `src/` and `assets/` directories exist (create them if missing).
 
 Add a `.gitignore` entry for the build directory if one does not exist:
@@ -345,6 +393,8 @@ engine-appropriate defaults. Read the existing template first, then fill in:
 - Fill from the engine choice made in step 4
 
 ### Language Selection (SFML 3 and Raylib only)
+
+(Bevy is excluded — Rust is the only language.)
 
 If SFML 3 or Raylib was chosen, ask the user about C vs C++:
 
@@ -536,6 +586,26 @@ Also populate the `## Engine Specialists` section in `technical-preferences.md` 
 | Shader files (.glsl, .vs, .fs) | raylib-specialist |
 | CMake build files (CMakeLists.txt) | raylib-specialist |
 | General architecture review | raylib-specialist |
+```
+
+**For Bevy:**
+```markdown
+## Engine Specialists
+- **Primary**: bevy-specialist
+- **Language/Code Specialist**: bevy-specialist (Rust — single specialist covers all code)
+- **Shader Specialist**: bevy-specialist (WGSL shaders, wgpu materials)
+- **UI Specialist**: bevy-specialist (bevy_ui)
+- **Additional Specialists**: None
+- **Routing Notes**: Invoke primary for all Bevy code, Cargo build, and architecture decisions. The single specialist covers ECS, rendering, UI, assets, audio, and input.
+
+### File Extension Routing
+
+| File Extension / Type | Specialist to Spawn |
+|-----------------------|---------------------|
+| Game code (.rs files) | bevy-specialist |
+| Shader files (.wgsl) | bevy-specialist |
+| Asset / scene files (.ron, .gltf, .scene) | bevy-specialist |
+| General architecture review | bevy-specialist |
 ```
 
 ### Collaborative Step
