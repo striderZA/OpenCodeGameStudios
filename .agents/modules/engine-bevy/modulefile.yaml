@@ -1,0 +1,11 @@
+name: engine-bevy
+version: "0.6.0"
+description: "Bevy engine specialist — Rust ECS game engine for 2D and 3D."
+depends: [core]
+provides:
+  agents: [bevy-specialist]
+  skills: []
+  commands: []
+  rules: []
+plugged-into:
+  engines: [bevy]
