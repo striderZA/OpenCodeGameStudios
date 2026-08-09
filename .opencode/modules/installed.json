@@ -346,5 +346,14 @@
       "agents/raylib-specialist.md"
     ],
     "mcp": []
+  },
+  "engine-bevy": {
+    "version": "0.6.0",
+    "status": "installed",
+    "timestamp": "2026-08-09T19:15:22.436Z",
+    "files": [
+      "agents/bevy-specialist.md"
+    ],
+    "mcp": []
   }
 }
