@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v0.13.0] — 2026-08-10
+
+### Added
+
+- **Bevy engine support** — brings Bevy to parity with the other five engine specialists:
+  - `engine-bevy` module (`.agents/modules/` and `.opencode/modules/` trees) with a single
+    `bevy-specialist` agent covering ECS, 2D/3D rendering, bevy_ui, assets, audio, input,
+    Cargo build, and WASM/mobile targets
+  - 12 version-pinned reference docs at `docs/engine-reference/bevy/` (pinned **Bevy
+    0.19.0**, HIGH knowledge-gap risk) — VERSION, breaking-changes, deprecated-apis,
+    current-best-practices, and 8 module guides, every API claim source-cited against
+    official Bevy 0.19 migration guides and docs.rs
+  - `/setup-engine` guided selection, tradeoffs, genre guidance, Cargo scaffold, and
+    specialist routing for Bevy
+  - Cross-cutting updates: AGENTS.md, README.md, `init-template` skill, `engine-code` rule
+    (Rust/Bevy zero-alloc example), agent roster (#104)
+
+### Fixed
+
+- **Bevy agent frontmatter leak**: the canonical `.agents/agents/bevy-specialist.md` carried
+  OpenCode-only `mode`/`model` frontmatter fields that belong solely in the
+  `.opencode/modules/` copy, breaking parity with every other canonical engine specialist
+  and the harness-agnostic contract
+- **Stale agent/module counts**: adding the 22nd module and 52nd agent left README.md and
+  AGENTS.md still reporting "21 modules" / "51 agents" in six places; corrected to 22/52
+
+---
+
 ## [v0.12.1] — 2026-08-02
 
 ### Fixed

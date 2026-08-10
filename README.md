@@ -51,7 +51,7 @@ for the full game lifecycle:
 - **Workflow selection** — Choose Hybrid (lightweight discovery then production)
   or Full OCGS (process-heavy from day one), depending on team size and project
   maturity
-- **51 coordinated agents** — From creative director to engine specialists, each
+- **52 coordinated agents** — From creative director to engine specialists, each
   with defined responsibilities, delegation maps, and strict domain boundaries
 - **77 slash commands** — Route through the right skill every time, from
   `/concept-brainstorm` to `/launch-checklist`
@@ -71,7 +71,7 @@ and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil
 
 | Component | CCGS (Claude Code) | OpenCode | Pi | Status |
 |-----------|-------------------|----------|-----|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 51 agents (`.agents/agents/`) | 51 agents (`.agents/agents/`) | ✅ |
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | ✅ |
 | ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.agents/skills/`) | 77 skills (`.agents/skills/`) | ✅ +5 |
 | ⌨️ **Commands** | — | 77 commands (`.agents/commands/`) | → prompt templates | ✅ New |
 | 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 7 Pi extensions (`.pi/extensions/`) | ✅ **158 tests** |
@@ -105,7 +105,7 @@ See [**OCGS-Pong**](https://github.com/striderZA/OCGS-Pong) — a complete Pong 
 
 ## 🧩 Modular Framework
 
-The framework is partitioned into **21 pluggable theme modules**. Only install what you need for your project:
+The framework is partitioned into **22 pluggable theme modules**. Only install what you need for your project:
 
 | Module | Description |
 |--------|-------------|
@@ -272,12 +272,12 @@ node utils/assign-models.js --config my-models.json
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .pi/                       ⚙️ Pi config (extensions, settings)
 ├── .agents/                   📦 Canonical content (harness-agnostic)
-│   ├── agents/                🤖 51 agent definitions
+│   ├── agents/                🤖 52 agent definitions
 │   ├── skills/                🛠️ 77 skill workflows
 │   ├── commands/              ⌨️ 54 slash commands
 │   ├── rules/                 📏 11 coding standards
-│   └── modules/               🧩 21 pluggable theme modules
-│       ├── ...                21 modules total
+│   └── modules/               🧩 22 pluggable theme modules
+│       ├── ...                22 modules total
 ├── .opencode/                 ⚙️ OpenCode-specific (plugins, config)
 │   ├── commands/ → .agents/commands/ (symlink)
 │   ├── agents/ → .agents/agents/     (symlink)
@@ -291,7 +291,7 @@ node utils/assign-models.js --config my-models.json
 │   └── modules/
 │       ├── install.mjs        CLI: add/remove/list modules
 │       ├── installed.json     Module manifest
-│       └── ...                21 module sources
+│       └── ...                22 module sources
 ├── design/                    🎨 Game design documents
 ├── .pi/                        ⚙️ Pi-specific extensions & settings
 │   └── extensions/            🧩 Pi extensions (ocgs-core, delegation, question, etc.)
