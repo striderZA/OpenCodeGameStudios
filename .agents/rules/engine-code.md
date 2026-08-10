@@ -62,6 +62,34 @@ void Update() {
 }
 ```
 
+**Correct** (zero-alloc hot path — Rust / Bevy):
+
+```rust
+// Query once; iterate without allocating per frame
+fn update_positions(
+    mut query: Query<(&mut Transform, &Velocity)>,
+    time: Res<Time>,
+) {
+    for (mut transform, velocity) in &mut query {
+        transform.translation.x += velocity.x * time.delta_secs();
+    }
+}
+```
+
+**Incorrect** (allocating in hot path — Rust / Bevy):
+
+```rust
+fn update_positions(
+    query: Query<(&Transform, &Velocity)>,
+) {
+    let mut tmp: Vec<f32> = Vec::new();  // VIOLATION: heap alloc every frame
+    for (_, velocity) in &query {
+        tmp.push(velocity.x);
+    }
+    // ...
+}
+```
+
 ## Anti-Patterns
 
 - Calling `free()` instead of `queue_free()` in signal callbacks (use-after-free crashes)
@@ -82,6 +110,7 @@ void Update() {
 - Agent: `godot-specialist` — Godot-specific engine patterns
 - Agent: `sfml-specialist` — SFML 3-specific engine patterns
 - Agent: `raylib-specialist` — Raylib-specific engine patterns
+- Agent: `bevy-specialist` — Bevy-specific engine patterns
 - Agent: `performance-analyst` — profiles engine performance
 - Agent: `technical-director` — approves engine architecture
 - Rule: `network-code.md` — transport layer dependency

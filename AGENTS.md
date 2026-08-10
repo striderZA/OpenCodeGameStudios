@@ -5,13 +5,13 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
 
-- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5 / SFML 3 / Raylib]
+- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5 / SFML 3 / Raylib / Bevy]
 - **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint / C / C++17]
 - **Build System**: [SPECIFY after choosing engine]
 - **Asset Pipeline**: [SPECIFY after choosing engine]
 
 > **Note**: Engine-specialist agents exist for Godot, Unity, Unreal, SFML 3,
-> and Raylib. Use the set matching your engine.
+> Raylib, and Bevy. Use the set matching your engine.
 
 ## Project Structure
 
@@ -76,7 +76,7 @@ The framework is partitioned into installable theme modules.
 
 **Core** (always installed): creative-director, technical-director, producer, /start, /help, /concept-brainstorm, /setup-engine, validation suite.
 
-**Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib.
+**Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib, engine-bevy.
 
 **Install:** `node .opencode/modules/install.mjs add <name>`
 **Remove:** `node .opencode/modules/install.mjs remove <name>`
@@ -159,7 +159,7 @@ This project supports two workflow modes. Choose the one that fits your team siz
 Run `/start` in OpenCode to begin the guided onboarding flow.
 Or jump directly to:
 - `/concept-brainstorm` — explore game ideas from scratch
-- `/setup-engine godot 4.6` — configure your engine (also: unity, unreal, sfml3, raylib)
+- `/setup-engine godot 4.6` — configure your engine (also: unity, unreal, sfml3, raylib, bevy)
 - `/project-stage-detect` — analyze an existing project
 - `/prototype` — rapid prototype a concept
 - `/hybrid-prototype` — fast-lane prototype for discovery phase
@@ -236,6 +236,7 @@ Tier 3 — Specialists (Subagents)
 - **Unreal Engine 5**: `unreal-specialist` + `ue-blueprint-specialist`, `ue-gas-specialist`, `ue-replication-specialist`, `ue-umg-specialist`
 - **SFML 3**: `sfml-specialist` (single agent — covers Graphics, Audio, Network, Window, System)
 - **Raylib**: `raylib-specialist` (single agent — covers core, rlgl, raudio, raymath, raygui)
+- **Bevy**: `bevy-specialist` (single agent — ECS, 2D/3D rendering, bevy_ui, assets, audio)
 
 ## Quality Gates
 

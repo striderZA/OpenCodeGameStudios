@@ -64,6 +64,7 @@ Available modules (run `node .agents/modules/install.mjs list` to see all):
 | `engine-godot` | Godot 4 specialists |
 | `engine-unity` | Unity specialists |
 | `engine-unreal` | Unreal Engine 5 specialists |
+| `engine-bevy` | Bevy specialists |
 | `data` | Data file conventions |
 
 ## Phase 2: Replace README.md

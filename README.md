@@ -129,6 +129,7 @@ The framework is partitioned into **21 pluggable theme modules**. Only install w
 | `engine-unreal` | Unreal Engine 5 specialists (GAS, Blueprint, replication, UMG) |
 | `engine-sfml3` | SFML 3 specialist (Graphics, Audio, Network, Window, System) |
 | `engine-raylib` | Raylib specialist (core, rlgl, raudio, raymath, raygui) |
+| `engine-bevy` | Bevy specialist (ECS, 2D/3D rendering, bevy_ui, assets, audio) |
 | `data` | Data file conventions and validation |
 
 ```bash
