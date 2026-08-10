@@ -1,6 +1,6 @@
 # OpenCode Game Studios
 
-Indie game development managed through 51 coordinated OpenCode agents.
+Indie game development managed through 52 coordinated OpenCode agents.
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
@@ -21,11 +21,11 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── opencode.json                # OpenCode config (permissions, plugins)
 ├── .pi/                         # Pi settings and extensions
 ├── .agents/                     # Canonical content (harness-agnostic)
-│   ├── agents/                  # 51 agent definitions
+│   ├── agents/                  # 52 agent definitions
 │   ├── skills/                  # 77 skill workflows
 │   ├── commands/                # 54 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
-│   └── modules/                 # 21 installable modules
+│   └── modules/                 # 22 installable modules
 ├── .opencode/                   # OpenCode-specific
 │   ├── plugins/                 # TypeScript plugins (ccgs-hooks, drift-detector, changelog-generator)
 │   ├── agents/ → ../.agents/agents/   (symlink)
@@ -252,7 +252,7 @@ Before merging to `development`, the CI must pass:
 ## Notes
 
 This is a port of [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)
-to OpenCode. The 77 skills are in `.agents/skills/`, the 51 agents are in
+to OpenCode. The 77 skills are in `.agents/skills/`, the 52 agents are in
 `.agents/agents/`, and the 12 original bash hooks are implemented as a
 TypeScript plugin in `.opencode/plugins/ccgs-hooks.ts`.
 
