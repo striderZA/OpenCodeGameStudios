@@ -3,7 +3,7 @@
 > **How to go from zero to a shipped game using the Agent Architecture.**
 >
 > This guide walks you through every phase of game development using the
-> 51-agent system, 54 slash commands, and 3 TypeScript plugins. It assumes you
+> 52-agent system, 77 slash commands, and 3 TypeScript plugins. It assumes you
 > have OpenCode installed and are working from the project root.
 >
 > > **Pi users:** See [`docs/pi-workflow.md`](pi-workflow.md) for harness-specific differences and

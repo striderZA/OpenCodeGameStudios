@@ -34,7 +34,7 @@ Two cross-harness delegation primitives: `Task` tool (vertical execution) and `/
 pi.registerTool({
   name: "Task",
   parameters: {
-    agent: StringEnum([...51 agent names]),  // Optional, auto-detected
+    agent: StringEnum([...52 agent names]),  // Optional, auto-detected
     prompt: string,                           // What to delegate
     context?: string,                         // Optional additional context
     isolation?: "same-context" | "forked",    // Default: same-context

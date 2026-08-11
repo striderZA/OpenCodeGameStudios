@@ -274,7 +274,7 @@ node utils/assign-models.js --config my-models.json
 ├── .agents/                   📦 Canonical content (harness-agnostic)
 │   ├── agents/                🤖 52 agent definitions
 │   ├── skills/                🛠️ 77 skill workflows
-│   ├── commands/              ⌨️ 54 slash commands
+│   ├── commands/              ⌨️ 77 slash commands
 │   ├── rules/                 📏 11 coding standards
 │   └── modules/               🧩 22 pluggable theme modules
 │       ├── ...                22 modules total
@@ -351,6 +351,7 @@ All 12 bash hooks from CCGS ported to `ccgs-hooks.ts`:
 
 > 🧪 Run plugin test suite: `npm run test:plugins` (needs the `tsx` ESM loader — see CONTRIBUTING.md)
 > 🧪 Run workflow integrity suite: `node tests/workflow/run-all.mjs`
+> 🧪 Run e2e parity suite: `npm run test:parity` (requires both the `opencode` and `pi` CLIs installed)
 
 ### Contributing to the Framework
 

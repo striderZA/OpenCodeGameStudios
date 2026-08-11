@@ -21,6 +21,7 @@ Each engine gets its own directory:
 ├── breaking-changes.md     # API changes between versions, organized by risk level
 ├── deprecated-apis.md      # "Don't use X → Use Y" lookup tables
 ├── current-best-practices.md  # New practices not in model training data
+├── PLUGINS.md              # Engine plugin/extension API notes (unity/, unreal/)
 └── modules/                # Per-subsystem quick references (~150 lines max each)
     ├── rendering.md
     ├── physics.md

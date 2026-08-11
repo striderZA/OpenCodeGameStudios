@@ -1,6 +1,6 @@
 # Available Skills (Slash Commands)
 
-73 slash commands organized by phase. Each skill belongs to a **module** under
+77 slash commands organized by phase. Each skill belongs to a **module** under
 `.agents/modules/<name>/skills/`. Install only the modules you need:
 `node .opencode/modules/install.mjs add <name>`. Type `/` in OpenCode to access
 any available command.
@@ -33,6 +33,14 @@ any available command.
 |---------|---------|
 | `/ux-design` | Guided section-by-section UX spec authoring (screen/flow, HUD, or pattern library) |
 | `/ux-review` | Validate UX specs for GDD alignment, accessibility, and pattern compliance |
+
+## Art & Assets
+
+| Command | Purpose |
+|---------|---------|
+| `/art-bible` | Guided, section-by-section Art Bible authoring — the visual identity spec that gates all asset production |
+| `/asset-spec` | Generate per-asset visual specifications and AI generation prompts from GDDs and level docs |
+| `/art-generate` | Generate placeholder .aseprite files from asset specs using the Aseprite MCP |
 
 ## Architecture
 
@@ -70,6 +78,7 @@ any available command.
 | `/tech-debt` | Scan, track, prioritize, and report on technical debt |
 | `/gate-check` | Validate readiness to advance between development phases (PASS/CONCERNS/FAIL) |
 | `/consistency-check` | Scan all GDDs against the entity registry to detect cross-document inconsistencies (stats, names, rules that contradict each other) |
+| `/security-audit` | Audit the game for security vulnerabilities: save tampering, cheat vectors, network exploits, data exposure |
 
 ## QA & Testing
 
@@ -85,6 +94,7 @@ any available command.
 | `/test-evidence-review` | Quality review of test files and manual evidence documents |
 | `/test-flakiness` | Detect non-deterministic (flaky) tests from CI run logs |
 | `/skill-test` | Validate skill files for structural compliance and behavioral correctness |
+| `/skill-improve` | Improve a skill using a test-fix-retest loop |
 
 ## Production
 
@@ -106,6 +116,7 @@ any available command.
 | `/changelog` | Auto-generate changelog from git commits and sprint data |
 | `/patch-notes` | Generate player-facing patch notes from git history and internal data |
 | `/hotfix` | Emergency fix workflow with audit trail, bypassing normal sprint process |
+| `/day-one-patch` | Prepare a scoped, QA-gated day-one patch for post-launch issues |
 
 ## Creative & Content
 
@@ -113,6 +124,7 @@ any available command.
 |---------|---------|
 | `/prototype` | Rapid throwaway prototype to validate a mechanic (relaxed standards, isolated worktree) |
 | `/hybrid-prototype` | Fast-lane prototype for discovery phase — 2-3 day build, no formal gates, lightweight DECISION.md |
+| `/explore` | Pre-workflow rapid prototyping — compare multiple game ideas with zero workflow commitment |
 | `/onboard` | Generate contextual onboarding document for a new contributor or agent |
 | `/localize` | Localization workflow: string extraction, validation, translation readiness |
 

@@ -40,7 +40,7 @@ Agent prompts reference the `Task` tool identically in both harnesses:
 
 > "Use the `Task` tool to delegate to `game-designer`: 'Review the combat system GDD'"
 
-In Pi, `ocgs-delegation` registers this tool with all 51 agent names discovered from `.agents/agents/`. The subagent runs in-memory and returns the result.
+In Pi, `ocgs-delegation` registers this tool with all 52 agent names discovered from `.agents/agents/`. The subagent runs in-memory and returns the result.
 
 ### Peer Review (/consult)
 

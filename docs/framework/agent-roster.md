@@ -63,6 +63,8 @@ agent (usually `producer` or the domain lead) should delegate to specialists.
 | `unity-specialist` | Unity | Sonnet | MonoBehaviour vs DOTS, Addressables, URP/HDRP, Unity optimization |
 | `godot-specialist` | Godot 4 | Sonnet | GDScript patterns, node/scene architecture, signals, Godot optimization |
 | `bevy-specialist` | Bevy | Sonnet | ECS architecture, 2D/3D rendering, bevy_ui, Cargo build, Bevy optimization |
+| `sfml-specialist` | SFML 3 | Sonnet | Graphics, Audio, Network, Window, System modules, C++ patterns |
+| `raylib-specialist` | Raylib | Sonnet | core, rlgl, raudio, raymath, raygui, C patterns |
 
 ### Unreal Engine Sub-Specialists
 
@@ -87,5 +89,6 @@ agent (usually `producer` or the domain lead) should delegate to specialists.
 | Agent | Subsystem | Model | When to Use |
 | ---- | ---- | ---- | ---- |
 | `godot-gdscript-specialist` | GDScript | Sonnet | Static typing, design patterns, signals, coroutines, GDScript performance |
+| `godot-csharp-specialist` | C# | Sonnet | C# bindings, .NET integration, C# project structure, C# performance |
 | `godot-shader-specialist` | Shaders/Rendering | Sonnet | Godot shading language, visual shaders, particles, post-processing |
 | `godot-gdextension-specialist` | GDExtension | Sonnet | C++/Rust bindings, native performance, custom nodes, build systems |
