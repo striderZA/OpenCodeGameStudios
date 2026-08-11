@@ -22,7 +22,7 @@ phases:
     steps:
       - id: brainstorm
         name: "Brainstorm"
-        command: /brainstorm
+        command: /concept-brainstorm
         required: false
         description: "Explore the game concept using MDA, verb-first, and player psychology frameworks"
 
@@ -37,7 +37,7 @@ phases:
 
       - id: game-concept
         name: "Game Concept Document"
-        command: /brainstorm
+        command: /concept-brainstorm
         required: true
         artifact:
           glob: "design/gdd/game-concept.md"
@@ -55,7 +55,7 @@ phases:
         required: true
         artifact:
           glob: "design/art/art-bible.md"
-        description: "Author the visual identity specification (9 sections). Uses the Visual Identity Anchor produced by /brainstorm. Run after game concept is formed, before systems design."
+        description: "Author the visual identity specification (9 sections). Uses the Visual Identity Anchor produced by /concept-brainstorm. Run after game concept is formed, before systems design."
 
       - id: map-systems
         name: "Systems Map"

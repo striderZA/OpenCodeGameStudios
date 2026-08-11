@@ -5,11 +5,11 @@
 ├── AGENTS.md                    # Master configuration
 ├── opencode.json                # OpenCode config (permissions, plugins)
 ├── .agents/                     # Canonical content (harness-agnostic)
-│   ├── agents/                  # 51 agent definitions
+│   ├── agents/                  # 52 agent definitions
 │   ├── skills/                  # 77 skill workflows
-│   ├── commands/                # 54 slash commands
+│   ├── commands/                # 77 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
-│   └── modules/                 # 21 theme modules (source of truth)
+│   └── modules/                 # 22 theme modules (source of truth)
 │       ├── installed.json       # Manifest of installed modules
 │       ├── core/                # Core module (always installed)
 │       ├── art/                 # Art module (aseprite MCP, art bible)
@@ -19,8 +19,9 @@
 │       ├── engine-unreal/       # Unreal Engine 5 specialists
 │       ├── engine-sfml3/        # SFML 3 specialist
 │       ├── engine-raylib/       # Raylib specialist
+│       ├── engine-bevy/         # Bevy specialist
 │       ├── qa/                  # QA module (testing, profiling, security)
-│       └── ...                  # 21 modules total
+│       └── ...                  # 22 modules total
 ├── .opencode/                   # OpenCode-specific (plugins, symlinks)
 │   ├── agents/ → ../.agents/agents/    (symlink)
 │   ├── skills/ → ../.agents/skills/    (symlink)
@@ -30,7 +31,7 @@
 │   │   ├── ccgs-hooks.ts       # Session lifecycle, validation
 │   │   ├── drift-detector.ts   # Template drift detection
 │   │   ├── changelog-generator.ts
-│   │   └── tests/              # 11 test suites (140+ tests)
+│   │   └── tests/              # 18 test suites (158 tests)
 │   └── modules/
 │       ├── install.mjs          # CLI: add/remove/list modules
 │       └── installed.json       # Module manifest
@@ -87,7 +88,7 @@
    contains agents, skills, commands, and rules for a domain. Install with
    `node .opencode/modules/install.mjs add <name>`.
 
-4. **21 modules available**: core, art, design, architecture, stories, programming,
+4. **22 modules available**: core, art, design, architecture, stories, programming,
    ui, audio, narrative, level-design, qa, release, prototyping, live-ops,
    localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3,
-   engine-raylib.
+   engine-raylib, engine-bevy.

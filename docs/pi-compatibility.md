@@ -14,11 +14,11 @@ All OCGS skills, commands, and agents are available automatically through the `.
 
 ```
 .agents/                     ← Canonical content (harness-agnostic)
-  agents/                    ← 51 agent definitions
+  agents/                    ← 52 agent definitions
   skills/                    ← 77 skill workflows
   commands/                  ← 77 slash commands
   rules/                     ← 11 path-scoped rules
-  modules/                   ← 21 installable modules
+  modules/                   ← 22 installable modules
 .opencode/                   ← OpenCode-specific plugins & config
 .pi/                         ← Pi-specific extensions & settings
 ```

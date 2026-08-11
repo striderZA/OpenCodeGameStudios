@@ -23,7 +23,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── .agents/                     # Canonical content (harness-agnostic)
 │   ├── agents/                  # 52 agent definitions
 │   ├── skills/                  # 77 skill workflows
-│   ├── commands/                # 54 slash commands
+│   ├── commands/                # 77 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
 │   └── modules/                 # 22 installable modules
 ├── .opencode/                   # OpenCode-specific
@@ -196,16 +196,16 @@ corresponding skills in `.agents/skills/`.
 
 | Category | Commands |
 |----------|----------|
-| **Onboarding** | `/start`, `/help`, `/project-stage-detect`, `/setup-engine`, `/init-template` |
-| **Design** | `/concept-brainstorm`, `/map-systems`, `/design-system`, `/quick-design`, `/design-review`, `/review-all-gdds` |
+| **Onboarding** | `/start`, `/help`, `/project-stage-detect`, `/setup-engine`, `/init-template`, `/adopt` |
+| **Design** | `/concept-brainstorm`, `/map-systems`, `/design-system`, `/quick-design`, `/design-review`, `/review-all-gdds`, `/ux-design`, `/ux-review` |
 | **Architecture** | `/create-architecture`, `/architecture-decision`, `/architecture-review`, `/create-control-manifest` |
 | **Stories** | `/create-epics`, `/create-stories`, `/story-readiness`, `/dev-story`, `/story-done`, `/code-review` |
 | **QA** | `/qa-plan`, `/smoke-check`, `/soak-test`, `/regression-suite`, `/test-setup`, `/test-helpers`, `/test-evidence-review`, `/test-flakiness` |
-| **Prototyping** | `/prototype`, `/reverse-document` |
-| **Team** | `/team-combat`, `/team-narrative`, `/team-ui`, `/team-level`, `/team-audio`, `/team-polish`, `/team-qa`, `/team-release` |
+| **Prototyping** | `/prototype`, `/hybrid-prototype`, `/explore`, `/reverse-document` |
+| **Team** | `/team-combat`, `/team-narrative`, `/team-ui`, `/team-level`, `/team-audio`, `/team-polish`, `/team-qa`, `/team-release`, `/team-live-ops` |
 | **Release** | `/sprint-plan`, `/sprint-status`, `/milestone-review`, `/release-checklist`, `/launch-checklist`, `/retrospective` |
 | **Ops** | `/hotfix`, `/day-one-patch`, `/bug-report`, `/bug-triage`, `/security-audit` |
-| **Other** | `/balance-check`, `/consistency-check`, `/content-audit`, `/asset-audit`, `/perf-profile`, `/scope-check`, `/gate-check`, `/changelog`, `/patch-notes`, `/localize`, `/onboard`, `/tech-debt`, `/propagate-design-change`, `/estimate`, `/art-bible`, `/asset-spec`, `/playtest-report`, `/automated-smoke-test` |
+| **Other** | `/balance-check`, `/consistency-check`, `/content-audit`, `/asset-audit`, `/perf-profile`, `/scope-check`, `/gate-check`, `/changelog`, `/patch-notes`, `/localize`, `/onboard`, `/tech-debt`, `/propagate-design-change`, `/estimate`, `/art-bible`, `/asset-spec`, `/art-generate`, `/playtest-report`, `/automated-smoke-test`, `/skill-improve`, `/skill-test` |
 
 ## Studio Hierarchy
 

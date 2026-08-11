@@ -8,11 +8,12 @@
 
 This is a complete agent architecture for game development, supporting both
 [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent). It
-organizes 48 specialized AI agents into a studio hierarchy that mirrors
+organizes 52 specialized AI agents into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
 for Godot, Unity, and Unreal — each with dedicated sub-specialists for
-major engine subsystems. All design agents and templates are grounded in
+major engine subsystems, plus single-specialist coverage for Bevy, SFML 3,
+and Raylib. All design agents and templates are grounded in
 established game design theory (MDA Framework, Self-Determination Theory,
 Flow State, Bartle Player Types). Use whichever engine set matches your project.
 
