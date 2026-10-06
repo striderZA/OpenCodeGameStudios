@@ -1,4 +1,5 @@
-import type { Plugin as OpenCodePlugin, Session as OpenCodeSession } from "@opencode/plugin"
+import type { Plugin as OpenCodePlugin } from "@opencode/plugin"
+import type { Session as OpenCodeSession } from "@opencode/schema/session"
 import { execFileSync, execSync, spawnSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
