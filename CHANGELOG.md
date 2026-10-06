@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v0.13.1] — 2026-10-06
+
+### Fixed
+
+- **OpenCode V2 plugin migration**: `CCGSHooks`, `DriftDetector`, and `ChangelogGenerator`
+  ported to the OpenCode V2 `id`/`setup(ctx)` plugin contract and V2 hook payloads
+  (`ctx.tool.hook`, `ctx.event.subscribe`) in all six runtime/core-module copies (#107, #108)
+- **Project-scoped event handling**: events resolve to this project via envelope/nested
+  location or `session.get()` when location is omitted; foreign-project `session.created`
+  / `session.idle` events are ignored before archiving state (#108)
+- **Asset validation reporting**: invalid V2 asset output is reported through the completed
+  tool result instead of throwing from `execute.after` (#108)
+- **V2 `shell` tool recognition**: protected-branch push checks and changelog command
+  detection read V2 `shell` input; CCGS agent auditing handles V2 `subagent` invocations
+  and completions with correct ordering (#108)
+- **Session ID import**: `Session.ID` imported from `@opencode/schema/session` in all six
+  plugin copies (#108)
+- **Framework docs alignment**: agent/module counts and stale references corrected across
+  framework documentation (#106)
+- Plugin regression suite `test-plugin-v2.mjs` (19 tests); full suite now 177 tests passing
+
+---
+
 ## [v0.13.0] — 2026-08-10
 
 ### Added
