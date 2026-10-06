@@ -1,4 +1,4 @@
-import type { Plugin } from "@opencode-ai/plugin"
+import type { Plugin as OpenCodePlugin, Session as OpenCodeSession } from "@opencode/plugin"
 import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
@@ -178,16 +178,66 @@ function updateChangelogFile(projectRoot: string, version: string, content: stri
   fs.writeFileSync(filePath, updated)
 }
 
-type PluginLogger = ReturnType<typeof createPluginLogger>
-function createPluginLogger(client: any, service: string) {
-  const log = (level: string, message: string, extra?: any) => {
-    client?.app?.log({ body: { service, level, message, extra } }).catch(() => {})
+interface PluginLogger {
+  debug(message: string, extra?: unknown): void
+  info(message: string, extra?: unknown): void
+  warn(message: string, extra?: unknown): void
+  error(message: string, extra?: unknown): void
+}
+
+function createPluginLogger(service: string): PluginLogger {
+  const log = (level: "debug" | "info" | "warn" | "error", message: string, extra?: unknown) => {
+    const formatted = `[${service}] ${message}`
+    if (extra === undefined) console[level](formatted)
+    else console[level](formatted, extra)
   }
   return {
-    debug: (m: string, x?: any) => log("debug", m, x),
-    info: (m: string, x?: any) => log("info", m, x),
-    warn: (m: string, x?: any) => log("warn", m, x),
-    error: (m: string, x?: any) => log("error", m, x),
+    debug: (message: string, extra?: unknown) => log("debug", message, extra),
+    info: (message: string, extra?: unknown) => log("info", message, extra),
+    warn: (message: string, extra?: unknown) => log("warn", message, extra),
+    error: (message: string, extra?: unknown) => log("error", message, extra),
+  }
+}
+
+function getToolArgs(input: unknown): Record<string, unknown> {
+  if (input === null || typeof input !== "object" || Array.isArray(input)) return {}
+  return input as Record<string, unknown>
+}
+
+async function isEventForProject(
+  ctx: OpenCodePlugin.Context,
+  event: { type: string; location?: { directory?: string }; data?: unknown },
+  projectRoot: string,
+  logger: PluginLogger,
+): Promise<boolean> {
+  const data = event.data && typeof event.data === "object"
+    ? event.data as { location?: { directory?: string }; sessionID?: OpenCodeSession.ID }
+    : undefined
+  const directory = event.location?.directory ?? data?.location?.directory
+  const matchesProject = (candidate: string) => {
+    const eventDirectory = path.resolve(candidate)
+    const pluginDirectory = path.resolve(projectRoot)
+    return process.platform === "win32"
+      ? eventDirectory.toLowerCase() === pluginDirectory.toLowerCase()
+      : eventDirectory === pluginDirectory
+  }
+
+  if (typeof directory === "string") return matchesProject(directory)
+  if (typeof data?.sessionID !== "string") {
+    logger.warn("Ignoring session event without a resolvable location", { type: event.type })
+    return false
+  }
+
+  try {
+    const session = await ctx.session.get({ sessionID: data.sessionID })
+    return matchesProject(session.location.directory)
+  } catch (error) {
+    logger.warn("Could not resolve session location; ignoring event", {
+      type: event.type,
+      sessionID: data.sessionID,
+      error: String(error),
+    })
+    return false
   }
 }
 
@@ -210,36 +260,50 @@ export function generateChangelogs(projectRoot: string, version?: string): { int
   }
 }
 
-export const ChangelogGenerator: Plugin = async ({ project, client, directory, worktree }) => {
-  const projectRoot = directory || worktree || process.cwd()
-  const logger = createPluginLogger(client, "changelog-generator")
+/** OpenCode V2 plugin that previews changelog updates and detects changelog commands. */
+export const ChangelogGenerator: OpenCodePlugin.Plugin = {
+  id: "ocgs.changelog-generator",
+  async setup(ctx) {
+    const projectRoot = ctx.location.directory || process.cwd()
+    const logger = createPluginLogger("changelog-generator")
 
-  logger.info("Changelog generator loaded", { projectRoot })
+    logger.info("Changelog generator loaded", { projectRoot })
 
-  return {
-    event: async ({ event }) => {
-      // Auto-generate changelog on session idle for uncommitted work
-      if (event.type === "session.idle" || event.type === "server.instance.disposed") {
-        try {
-          const { internal, player } = generateChangelogs(projectRoot, "unreleased")
-          if (!internal.includes("No changes")) {
-            logger.info("Changelog generated with unreleased changes — run changelog-generator to write CHANGELOG.md.")
-          }
-        } catch (err) {
-          logger.error("Failed to generate changelog preview", { error: String(err) })
-        }
-      }
-    },
+    await ctx.tool.hook("execute.before", (event) => {
+      if (event.tool !== "bash") return
 
-    "tool.execute.before": async (input, output) => {
-      if (input.tool !== "bash") return
-
-      const cmd = output.args?.command as string || ""
-
-      // Detect changelog-related commands
-      if (cmd.includes("changelog") || cmd.includes("CHANGELOG")) {
+      const args = getToolArgs(event.input)
+      const command = typeof args.command === "string" ? args.command : ""
+      if (command.includes("changelog") || command.includes("CHANGELOG")) {
         logger.info("Changelog-related command detected — consider running the changelog generator")
       }
-    },
-  }
+    })
+
+    const controller = new AbortController()
+    void (async () => {
+      try {
+        for await (const event of ctx.event.subscribe({ signal: controller.signal })) {
+          if (event.type !== "session.idle") continue
+          if (!await isEventForProject(ctx, event, projectRoot, logger)) continue
+
+          try {
+            const { internal } = generateChangelogs(projectRoot, "unreleased")
+            if (!internal.includes("No changes")) {
+              logger.info("Changelog generated with unreleased changes — run changelog-generator to write CHANGELOG.md.")
+            }
+          } catch (error) {
+            logger.error("Failed to generate changelog preview", { error: String(error) })
+          }
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          logger.error("Event subscription failed", { error: String(error) })
+        }
+      }
+    })()
+
+    return () => controller.abort()
+  },
 }
+
+export default ChangelogGenerator

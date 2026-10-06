@@ -1,4 +1,4 @@
-import type { Plugin } from "@opencode-ai/plugin"
+import type { Plugin as OpenCodePlugin, Session as OpenCodeSession } from "@opencode/plugin"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -262,89 +262,90 @@ export function detectCommandDrift(projectRoot: string, filePath: string): Drift
   return issues
 }
 
-type PluginLogger = ReturnType<typeof createPluginLogger>
-function createPluginLogger(client: any, service: string) {
-  const log = (level: string, message: string, extra?: any) => {
-    client?.app?.log({ body: { service, level, message, extra } }).catch(() => {})
+interface PluginLogger {
+  debug(message: string, extra?: unknown): void
+  info(message: string, extra?: unknown): void
+  warn(message: string, extra?: unknown): void
+  error(message: string, extra?: unknown): void
+}
+
+function createPluginLogger(service: string): PluginLogger {
+  const log = (level: "debug" | "info" | "warn" | "error", message: string, extra?: unknown) => {
+    const formatted = `[${service}] ${message}`
+    if (extra === undefined) console[level](formatted)
+    else console[level](formatted, extra)
   }
   return {
-    debug: (m: string, x?: any) => log("debug", m, x),
-    info: (m: string, x?: any) => log("info", m, x),
-    warn: (m: string, x?: any) => log("warn", m, x),
-    error: (m: string, x?: any) => log("error", m, x),
+    debug: (message: string, extra?: unknown) => log("debug", message, extra),
+    info: (message: string, extra?: unknown) => log("info", message, extra),
+    warn: (message: string, extra?: unknown) => log("warn", message, extra),
+    error: (message: string, extra?: unknown) => log("error", message, extra),
   }
 }
 
-export const DriftDetector: Plugin = async ({ project, client, directory, worktree }) => {
-  const projectRoot = directory || worktree || process.cwd()
-  const logger = createPluginLogger(client, "drift-detector")
+function getToolArgs(input: unknown): Record<string, unknown> {
+  if (input === null || typeof input !== "object" || Array.isArray(input)) return {}
+  return input as Record<string, unknown>
+}
 
-  logger.info("Drift detector loaded", { projectRoot })
+async function isEventForProject(
+  ctx: OpenCodePlugin.Context,
+  event: { type: string; location?: { directory?: string }; data?: unknown },
+  projectRoot: string,
+  logger: PluginLogger,
+): Promise<boolean> {
+  const data = event.data && typeof event.data === "object"
+    ? event.data as { location?: { directory?: string }; sessionID?: OpenCodeSession.ID }
+    : undefined
+  const directory = event.location?.directory ?? data?.location?.directory
+  const matchesProject = (candidate: string) => {
+    const eventDirectory = path.resolve(candidate)
+    const pluginDirectory = path.resolve(projectRoot)
+    return process.platform === "win32"
+      ? eventDirectory.toLowerCase() === pluginDirectory.toLowerCase()
+      : eventDirectory === pluginDirectory
+  }
 
-  return {
-    event: async ({ event }) => {
-      if (event.type !== "session.created") return
+  if (typeof directory === "string") return matchesProject(directory)
+  if (typeof data?.sessionID !== "string") {
+    logger.warn("Ignoring session event without a resolvable location", { type: event.type })
+    return false
+  }
 
-      // Full scan on session start
-      logger.info("Running drift detection scan...")
-      const allIssues: DriftIssue[] = []
+  try {
+    const session = await ctx.session.get({ sessionID: data.sessionID })
+    return matchesProject(session.location.directory)
+  } catch (error) {
+    logger.warn("Could not resolve session location; ignoring event", {
+      type: event.type,
+      sessionID: data.sessionID,
+      error: String(error),
+    })
+    return false
+  }
+}
 
-      const agentsDir = path.join(projectRoot, ".agents", "agents")
-      if (fs.existsSync(agentsDir)) {
-        for (const file of fs.readdirSync(agentsDir)) {
-          if (!file.endsWith(".md")) continue
-          const relPath = `.agents/agents/${file}`
-          allIssues.push(...detectAgentDrift(projectRoot, relPath))
-        }
-      }
+/** OpenCode V2 plugin that reports agent, skill, and command drift. */
+export const DriftDetector: OpenCodePlugin.Plugin = {
+  id: "ocgs.drift-detector",
+  async setup(ctx) {
+    const projectRoot = ctx.location.directory || process.cwd()
+    const logger = createPluginLogger("drift-detector")
 
-      const skillsDir = path.join(projectRoot, ".agents", "skills")
-      if (fs.existsSync(skillsDir)) {
-        for (const dir of fs.readdirSync(skillsDir)) {
-          const skillPath = path.join(skillsDir, dir)
-          if (!fs.statSync(skillPath).isDirectory()) continue
-          const relPath = `.agents/skills/${dir}/SKILL.md`
-          if (fs.existsSync(path.join(projectRoot, relPath))) {
-            allIssues.push(...detectSkillDrift(projectRoot, relPath))
-          }
-        }
-      }
+    logger.info("Drift detector loaded", { projectRoot })
 
-      const commandsDir = path.join(projectRoot, ".agents", "commands")
-      if (fs.existsSync(commandsDir)) {
-        for (const file of fs.readdirSync(commandsDir)) {
-          if (!file.endsWith(".md") || file === "README.md") continue
-          const relPath = `.agents/commands/${file}`
-          allIssues.push(...detectCommandDrift(projectRoot, relPath))
-        }
-      }
+    await ctx.tool.hook("execute.after", (event) => {
+      if (event.status !== "completed") return
 
-      const high = allIssues.filter((i) => i.severity === "HIGH")
-      const medium = allIssues.filter((i) => i.severity === "MEDIUM")
-      const low = allIssues.filter((i) => i.severity === "LOW")
-
-      if (high.length > 0) {
-        logger.error(`Drift detected: ${high.length} HIGH severity issues`, { issues: high })
-      }
-      if (medium.length > 0) {
-        logger.warn(`Drift detected: ${medium.length} MEDIUM severity issues`, { issues: medium })
-      }
-      if (low.length > 0) {
-        logger.info(`Drift advisory: ${low.length} LOW severity suggestions`, { issues: low })
-      }
-
-      if (allIssues.length === 0) {
-        logger.info("Drift scan: CLEAN — all agent/skill/command files match templates")
-      }
-    },
-
-    "tool.execute.after": async (input, output) => {
-      const filePath = ((input.args?.filePath as string) || (output.args?.filePath as string) || "")
-        .replace(/\\/g, "/")
+      const args = getToolArgs(event.input)
+      const filePath = (
+        (typeof args.filePath === "string" ? args.filePath : "") ||
+        (typeof args.path === "string" ? args.path : "")
+      ).replace(/\\/g, "/")
 
       if (!filePath) return
 
-      // Quick single-file drift check on write/edit
+      // Quick single-file drift check on write/edit.
       let issues: DriftIssue[] = []
 
       if (filePath.startsWith(".agents/agents/")) {
@@ -356,16 +357,90 @@ export const DriftDetector: Plugin = async ({ project, client, directory, worktr
       }
 
       if (issues.length > 0) {
-        const high = issues.filter((i) => i.severity === "HIGH")
+        const high = issues.filter((issue) => issue.severity === "HIGH")
         if (high.length > 0) {
           logger.error(`Drift in ${filePath}: ${high.length} HIGH issues`, { issues: high })
         }
 
-        const remaining = issues.filter((i) => i.severity !== "HIGH")
+        const remaining = issues.filter((issue) => issue.severity !== "HIGH")
         if (remaining.length > 0) {
           logger.info(`Drift in ${filePath}: ${remaining.length} advisory items`, { issues: remaining })
         }
       }
-    },
-  }
+    })
+
+    const controller = new AbortController()
+    void (async () => {
+      try {
+        for await (const event of ctx.event.subscribe({ signal: controller.signal })) {
+          if (event.type !== "session.created") continue
+          if (!await isEventForProject(ctx, event, projectRoot, logger)) continue
+
+          try {
+            // Full scan on session start.
+            logger.info("Running drift detection scan...")
+            const allIssues: DriftIssue[] = []
+
+            const agentsDir = path.join(projectRoot, ".agents", "agents")
+            if (fs.existsSync(agentsDir)) {
+              for (const file of fs.readdirSync(agentsDir)) {
+                if (!file.endsWith(".md")) continue
+                const relPath = `.agents/agents/${file}`
+                allIssues.push(...detectAgentDrift(projectRoot, relPath))
+              }
+            }
+
+            const skillsDir = path.join(projectRoot, ".agents", "skills")
+            if (fs.existsSync(skillsDir)) {
+              for (const dir of fs.readdirSync(skillsDir)) {
+                const skillPath = path.join(skillsDir, dir)
+                if (!fs.statSync(skillPath).isDirectory()) continue
+                const relPath = `.agents/skills/${dir}/SKILL.md`
+                if (fs.existsSync(path.join(projectRoot, relPath))) {
+                  allIssues.push(...detectSkillDrift(projectRoot, relPath))
+                }
+              }
+            }
+
+            const commandsDir = path.join(projectRoot, ".agents", "commands")
+            if (fs.existsSync(commandsDir)) {
+              for (const file of fs.readdirSync(commandsDir)) {
+                if (!file.endsWith(".md") || file === "README.md") continue
+                const relPath = `.agents/commands/${file}`
+                allIssues.push(...detectCommandDrift(projectRoot, relPath))
+              }
+            }
+
+            const high = allIssues.filter((issue) => issue.severity === "HIGH")
+            const medium = allIssues.filter((issue) => issue.severity === "MEDIUM")
+            const low = allIssues.filter((issue) => issue.severity === "LOW")
+
+            if (high.length > 0) {
+              logger.error(`Drift detected: ${high.length} HIGH severity issues`, { issues: high })
+            }
+            if (medium.length > 0) {
+              logger.warn(`Drift detected: ${medium.length} MEDIUM severity issues`, { issues: medium })
+            }
+            if (low.length > 0) {
+              logger.info(`Drift advisory: ${low.length} LOW severity suggestions`, { issues: low })
+            }
+
+            if (allIssues.length === 0) {
+              logger.info("Drift scan: CLEAN — all agent/skill/command files match templates")
+            }
+          } catch (error) {
+            logger.error("Drift detection scan failed", { error: String(error) })
+          }
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          logger.error("Event subscription failed", { error: String(error) })
+        }
+      }
+    })()
+
+    return () => controller.abort()
+  },
 }
+
+export default DriftDetector

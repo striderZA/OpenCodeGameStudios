@@ -1,6 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["./.opencode/plugins/ccgs-hooks.ts"],
+  "plugins": [
+    "./.opencode/plugins/ccgs-hooks.ts",
+    "./.opencode/plugins/drift-detector.ts",
+    "./.opencode/plugins/changelog-generator.ts"
+  ],
   "command": {
     "hybrid-prototype": {
       "template": "Run the hybrid-prototype skill: load .agents/skills/hybrid-prototype/SKILL.md and follow the fast-lane prototype workflow. Concept: $ARGUMENTS",
