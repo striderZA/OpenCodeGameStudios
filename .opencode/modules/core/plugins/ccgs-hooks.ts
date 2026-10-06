@@ -1,4 +1,5 @@
-import type { Plugin } from "@opencode-ai/plugin"
+import type { Plugin as OpenCodePlugin } from "@opencode/plugin"
+import type { Session as OpenCodeSession } from "@opencode/schema/session"
 import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
@@ -41,10 +42,6 @@ function git(cwd: string, ...args: string[]): string {
 
 function normalizePath(p: string): string {
   return p.replace(/\\/g, "/")
-}
-
-function getProjectRoot(directory: string | undefined, worktree: string | undefined): string {
-  return directory || worktree || process.cwd()
 }
 
 function logAudit(projectRoot: string, message: string) {
@@ -378,6 +375,7 @@ export function detectSkillChange(filePath: string): string | null {
 }
 
 export function validateAssetPath(projectRoot: string, filePath: string): { warnings: string[]; errors: string[] } {
+  filePath = normalizePath(filePath)
   const warnings: string[] = []
   const errors: string[] = []
 
@@ -391,8 +389,9 @@ export function validateAssetPath(projectRoot: string, filePath: string): { warn
     warnings.push(`NAMING: ${filePath} must be lowercase with underscores (got: ${filename})`)
   }
 
-  if (/\/assets\/data\/.*\.json$/.test(filePath)) {
-    if (fs.existsSync(filePath) && !validateJson(filePath)) {
+  if (/(?:^|\/)assets\/data\/.*\.json$/.test(filePath)) {
+    const absolutePath = path.isAbsolute(filePath) ? filePath : path.join(projectRoot, filePath)
+    if (fs.existsSync(absolutePath) && !validateJson(absolutePath)) {
       errors.push(`FORMAT: ${filePath} is not valid JSON`)
     }
   }
@@ -547,132 +546,208 @@ export function detectPushToProtected(cmd: string, currentBranch: string): strin
   return ""
 }
 
-type PluginLogger = ReturnType<typeof createPluginLogger>
-function createPluginLogger(client: any, service: string) {
-  const log = (level: string, message: string, extra?: any) => {
-    client.app.log({ body: { service, level, message, extra } }).catch(() => {})
-  }
-  return { debug: (m: string, x?: any) => log("debug", m, x), info: (m: string, x?: any) => log("info", m, x), warn: (m: string, x?: any) => log("warn", m, x), error: (m: string, x?: any) => log("error", m, x) }
+type PluginLogLevel = "debug" | "info" | "warn" | "error"
+
+interface PluginLogger {
+  debug(message: string, extra?: unknown): void
+  info(message: string, extra?: unknown): void
+  warn(message: string, extra?: unknown): void
+  error(message: string, extra?: unknown): void
 }
 
-export const CCGSHooks: Plugin = async ({ project, client, $, directory, worktree }) => {
-  const projectRoot = getProjectRoot(directory, worktree)
-  const logger = createPluginLogger(client, "ccgs-hooks")
-  const gc = (s: string) => globalThis[s as any]
-  const log = client?.app?.log ? logger : { debug: gc, info: gc, warn: gc, error: gc }
-
-  log.info("Plugin loaded", { projectRoot })
-  logAudit(projectRoot, "Plugin loaded")
-
+function createPluginLogger(service: string): PluginLogger {
+  const log = (level: PluginLogLevel, message: string, extra?: unknown) => {
+    const formatted = `[${service}] ${message}`
+    if (extra === undefined) console[level](formatted)
+    else console[level](formatted, extra)
+  }
   return {
-    event: async ({ event }) => {
-      try {
-        if (event.type === "session.created") {
-          const ctx = handleSessionCreated(projectRoot)
-          const gaps = handleDetectGaps(projectRoot)
-          log.info("Session context", { summary: ctx.split("\n")[0] || "no context" })
-          if (gaps.length > 0) {
-            log.warn("Documentation gaps", { gaps: gaps.length, details: gaps })
-          }
-        } else if (event.type === "session.idle" || event.type === "server.instance.disposed") {
-          handleSessionIdle(projectRoot)
-          log.info("Session idle — state archived")
-        }
-      } catch (err) {
-        log.error(`Error in event ${event.type}`, { error: String(err) })
-        logAudit(projectRoot, `ERROR in event ${event.type}: ${err}`)
-      }
-    },
+    debug: (message: string, extra?: unknown) => log("debug", message, extra),
+    info: (message: string, extra?: unknown) => log("info", message, extra),
+    warn: (message: string, extra?: unknown) => log("warn", message, extra),
+    error: (message: string, extra?: unknown) => log("error", message, extra),
+  }
+}
 
-    "experimental.session.compacting": async (input, output) => {
+function getToolArgs(input: unknown): Record<string, unknown> {
+  if (input === null || typeof input !== "object" || Array.isArray(input)) return {}
+  return input as Record<string, unknown>
+}
+
+function getAgentType(args: Record<string, unknown>): string {
+  const agentType = args.agent || args.subagent_type || args.subagentType || args.agent_type || args.agentType
+  return typeof agentType === "string" ? agentType : ""
+}
+
+async function isEventForProject(
+  ctx: OpenCodePlugin.Context,
+  event: { type: string; location?: { directory?: string }; data?: unknown },
+  projectRoot: string,
+  logger: PluginLogger,
+): Promise<boolean> {
+  const data = event.data && typeof event.data === "object"
+    ? event.data as { location?: { directory?: string }; sessionID?: OpenCodeSession.ID }
+    : undefined
+  const directory = event.location?.directory ?? data?.location?.directory
+  const matchesProject = (candidate: string) => {
+    const eventDirectory = path.resolve(candidate)
+    const pluginDirectory = path.resolve(projectRoot)
+    return process.platform === "win32"
+      ? eventDirectory.toLowerCase() === pluginDirectory.toLowerCase()
+      : eventDirectory === pluginDirectory
+  }
+
+  if (typeof directory === "string") return matchesProject(directory)
+  if (typeof data?.sessionID !== "string") {
+    logger.warn("Ignoring session event without a resolvable location", { type: event.type })
+    return false
+  }
+
+  try {
+    const session = await ctx.session.get({ sessionID: data.sessionID })
+    return matchesProject(session.location.directory)
+  } catch (error) {
+    logger.warn("Could not resolve session location; ignoring event", {
+      type: event.type,
+      sessionID: data.sessionID,
+      error: String(error),
+    })
+    return false
+  }
+}
+
+/** OpenCode V2 plugin that wires CCGS session and tool behavior into the runtime. */
+export const CCGSHooks: OpenCodePlugin.Plugin = {
+  id: "ocgs.ccgs-hooks",
+  async setup(ctx) {
+    const projectRoot = ctx.location.directory || process.cwd()
+    const logger = createPluginLogger("ccgs-hooks")
+
+    logger.info("Plugin loaded", { projectRoot })
+    logAudit(projectRoot, "Plugin loaded")
+
+    await ctx.session.hook("compaction", (event) => {
       const context = buildCompactionContext(projectRoot)
       logCompactionEvent(projectRoot)
-      output.context.push(context)
-    },
+      event.system.push({ type: "text", text: context })
+    })
 
-    "experimental.compaction.autocontinue": async (input, output) => {
-      const msg = handlePostCompact(projectRoot)
-      log.info(msg)
-    },
+    await ctx.tool.hook("execute.before", (event) => {
+      const args = getToolArgs(event.input)
+      const command = typeof args.command === "string" ? args.command : ""
 
-    "tool.execute.before": async (input, output) => {
-      if (isGitRepo(projectRoot) && input.tool === "bash" && output.args?.command) {
-        const cmd = output.args.command as string
-        if (/^git\s+push/.test(cmd)) {
-          const matched = detectPushToProtected(cmd, git(projectRoot, "rev-parse", "--abbrev-ref", "HEAD"))
+      if (isGitRepo(projectRoot) && event.tool === "shell" && command) {
+        if (/^git\s+push/.test(command)) {
+          const matched = detectPushToProtected(command, git(projectRoot, "rev-parse", "--abbrev-ref", "HEAD"))
           if (matched) {
-            log.warn(`Push to protected branch '${matched}'`, { branch: matched })
+            logger.warn(`Push to protected branch '${matched}'`, { branch: matched })
             logAudit(projectRoot, `Push to protected branch '${matched}' detected.`)
             logAudit(projectRoot, "Reminder: Ensure build passes, unit tests pass, and no S1/S2 bugs exist.")
           }
         }
-        if (/^git\s+commit/.test(cmd)) {
+        if (/^git\s+commit/.test(command)) {
           const staged = git(projectRoot, "diff", "--cached", "--name-only")
           if (!staged) return
           const result = validateCommitFiles(projectRoot, staged.split("\n"))
           if (result.errors.length > 0) {
-            log.error("Commit blocked by validation errors", { errors: result.errors })
+            logger.error("Commit blocked by validation errors", { errors: result.errors })
             throw new Error(result.errors.join("\n"))
           }
           if (result.warnings.length > 0) {
-            log.warn("Commit warnings", { warnings: result.warnings })
-            result.warnings.forEach((w) => logAudit(projectRoot, w))
+            logger.warn("Commit warnings", { warnings: result.warnings })
+            result.warnings.forEach((warning) => logAudit(projectRoot, warning))
           }
         }
       }
 
-      if (input.tool === "task") {
-        const agentType =
-          (output.args?.subagent_type as string) ||
-          (output.args?.subagentType as string) ||
-          (output.args?.agent_type as string) ||
-          (output.args?.agentType as string) ||
-          ""
+      if (event.tool === "subagent") {
+        const agentType = getAgentType(args)
         handleLogAgent(projectRoot, agentType)
-        log.debug("Agent invoked", { agentType })
+        logger.debug("Agent invoked", { agentType })
       }
-    },
+    })
 
-    "tool.execute.after": async (input, output) => {
+    await ctx.tool.hook("execute.after", (event) => {
+      if (event.status !== "completed") return
+
+      const args = getToolArgs(event.input)
+      if (event.tool === "subagent") {
+        const agentType = getAgentType(args)
+        handleLogAgentStop(projectRoot, agentType)
+        logger.debug("Agent completed", { agentType })
+      }
       const filePath = normalizePath(
-        (input.args?.filePath as string) ||
-        (input.args?.path as string) ||
-        (output.args?.filePath as string) ||
-        (output.args?.path as string) ||
-        ""
+        (typeof args.filePath === "string" ? args.filePath : "") ||
+        (typeof args.path === "string" ? args.path : "")
       )
 
       if (!filePath) return
 
       const assetResult = validateAssetPath(projectRoot, filePath)
       if (assetResult.warnings.length > 0) {
-        log.warn("Asset warnings", { warnings: assetResult.warnings })
-        assetResult.warnings.forEach((w) => logAudit(projectRoot, w))
+        logger.warn("Asset warnings", { warnings: assetResult.warnings })
+        assetResult.warnings.forEach((warning) => logAudit(projectRoot, warning))
         logAudit(projectRoot, "(Warnings are advisory. Fix before final commit.)")
       }
       if (assetResult.errors.length > 0) {
-        log.error("Asset validation failed", { errors: assetResult.errors })
-        assetResult.errors.forEach((e) => logAudit(projectRoot, e))
-        throw new Error("Asset validation failed. Fix errors before proceeding.")
-      }
+        logger.error("Asset validation failed", { errors: assetResult.errors })
+        assetResult.errors.forEach((error) => logAudit(projectRoot, error))
 
-      if (input.tool === "task") {
-        const agentType =
-          (output.args?.subagent_type as string) ||
-          (output.args?.subagentType as string) ||
-          (output.args?.agent_type as string) ||
-          (output.args?.agentType as string) ||
-          ""
-        handleLogAgentStop(projectRoot, agentType)
-        log.debug("Agent completed", { agentType })
+        const existingContent = typeof event.result.content === "string"
+          ? (event.result.content ? [{ type: "text" as const, text: event.result.content }] : [])
+          : [...(event.result.content ?? [])]
+        event.result = {
+          ...event.result,
+          content: [
+            ...existingContent,
+            { type: "text" as const, text: "Asset validation failed. Fix errors before proceeding." },
+            ...assetResult.errors.map((error) => ({ type: "text" as const, text: error })),
+          ],
+        }
       }
 
       const skillChange = detectSkillChange(filePath)
       if (skillChange) {
-        log.info(`Skill modified: ${skillChange}`, { skill: skillChange })
+        logger.info(`Skill modified: ${skillChange}`, { skill: skillChange })
         logAudit(projectRoot, `=== Skill Modified: ${skillChange} ===`)
         logAudit(projectRoot, `Run /skill-test static ${skillChange} to validate structural compliance.`)
       }
-    },
-  }
+    })
+
+    const controller = new AbortController()
+    void (async () => {
+      try {
+        for await (const event of ctx.event.subscribe({ signal: controller.signal })) {
+          if (event.type !== "session.created" && event.type !== "session.idle" && event.type !== "session.compacted") continue
+          if (!await isEventForProject(ctx, event, projectRoot, logger)) continue
+          try {
+            if (event.type === "session.created") {
+              const context = handleSessionCreated(projectRoot)
+              const gaps = handleDetectGaps(projectRoot)
+              logger.info("Session context", { summary: context.split("\n")[0] || "no context" })
+              if (gaps.length > 0) {
+                logger.warn("Documentation gaps", { gaps: gaps.length, details: gaps })
+              }
+            } else if (event.type === "session.idle") {
+              handleSessionIdle(projectRoot)
+              logger.info("Session idle — state archived")
+            } else if (event.type === "session.compacted") {
+              logger.info(handlePostCompact(projectRoot))
+            }
+          } catch (error) {
+            logger.error(`Error in event ${event.type}`, { error: String(error) })
+            logAudit(projectRoot, `ERROR in event ${event.type}: ${error}`)
+          }
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          logger.error("Event subscription failed", { error: String(error) })
+        }
+      }
+    })()
+
+    return () => controller.abort()
+  },
 }
+
+export default CCGSHooks
