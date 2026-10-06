@@ -271,7 +271,7 @@ export const ChangelogGenerator: OpenCodePlugin.Plugin = {
     logger.info("Changelog generator loaded", { projectRoot })
 
     await ctx.tool.hook("execute.before", (event) => {
-      if (event.tool !== "bash") return
+      if (event.tool !== "shell") return
 
       const args = getToolArgs(event.input)
       const command = typeof args.command === "string" ? args.command : ""

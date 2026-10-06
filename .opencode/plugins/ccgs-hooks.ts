@@ -586,7 +586,7 @@ function getToolArgs(input: unknown): Record<string, unknown> {
 }
 
 function getAgentType(args: Record<string, unknown>): string {
-  const agentType = args.subagent_type || args.subagentType || args.agent_type || args.agentType
+  const agentType = args.agent || args.subagent_type || args.subagentType || args.agent_type || args.agentType
   return typeof agentType === "string" ? agentType : ""
 }
 
@@ -647,7 +647,7 @@ export const CCGSHooks: OpenCodePlugin.Plugin = {
       const args = getToolArgs(event.input)
       const command = typeof args.command === "string" ? args.command : ""
 
-      if (isGitRepo(projectRoot) && event.tool === "bash" && command) {
+      if (isGitRepo(projectRoot) && event.tool === "shell" && command) {
         if (/^git\s+push/.test(command)) {
           const matched = detectPushToProtected(command, git(projectRoot, "rev-parse", "--abbrev-ref", "HEAD"))
           if (matched) {
@@ -671,7 +671,7 @@ export const CCGSHooks: OpenCodePlugin.Plugin = {
         }
       }
 
-      if (event.tool === "task") {
+      if (event.tool === "subagent") {
         const agentType = getAgentType(args)
         handleLogAgent(projectRoot, agentType)
         logger.debug("Agent invoked", { agentType })
@@ -682,6 +682,11 @@ export const CCGSHooks: OpenCodePlugin.Plugin = {
       if (event.status !== "completed") return
 
       const args = getToolArgs(event.input)
+      if (event.tool === "subagent") {
+        const agentType = getAgentType(args)
+        handleLogAgentStop(projectRoot, agentType)
+        logger.debug("Agent completed", { agentType })
+      }
       const filePath = normalizePath(
         (typeof args.filePath === "string" ? args.filePath : "") ||
         (typeof args.path === "string" ? args.path : "")
@@ -710,12 +715,6 @@ export const CCGSHooks: OpenCodePlugin.Plugin = {
             ...assetResult.errors.map((error) => ({ type: "text" as const, text: error })),
           ],
         }
-      }
-
-      if (event.tool === "task") {
-        const agentType = getAgentType(args)
-        handleLogAgentStop(projectRoot, agentType)
-        logger.debug("Agent completed", { agentType })
       }
 
       const skillChange = detectSkillChange(filePath)

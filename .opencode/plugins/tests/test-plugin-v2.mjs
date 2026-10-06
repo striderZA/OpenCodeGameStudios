@@ -290,58 +290,128 @@ describe("OpenCode V2 hook behavior", () => {
     }
   })
 
-  it("reads V2 bash input when checking protected-branch pushes", async () => {
+  it("reads V2 shell input when checking protected-branch pushes in both CCGS copies", async () => {
     const root = makeTempProject("ocgs-v2-push-")
     execSync("git init -q", { cwd: root, stdio: "ignore" })
     execSync("git checkout -b feature/plugin-v2", { cwd: root, stdio: "ignore" })
-    const plugin = definition(runtimePlugins["ccgs-hooks"])
-    const fixture = createContext(root)
-    let dispose
-    let messages
+    const plugins = [runtimePlugins["ccgs-hooks"], modulePlugins["ccgs-hooks"]]
+    const messages = []
 
     try {
-      assert.equal(typeof plugin?.setup, "function")
-      messages = await captureConsole(async () => {
-        dispose = await plugin.setup(fixture.context)
-        const hook = fixture.handlers.get("tool:execute.before")
-        assert.equal(typeof hook, "function")
-        await hook({ tool: "bash", input: { command: "git push origin master" } })
-      })
+      for (const pluginModule of plugins) {
+        const plugin = definition(pluginModule)
+        const fixture = createContext(root)
+        let dispose
+
+        try {
+          messages.push(...await captureConsole(async () => {
+            dispose = await plugin.setup(fixture.context)
+            const hook = fixture.handlers.get("tool:execute.before")
+            assert.equal(typeof hook, "function")
+            await hook({ tool: "shell", input: { command: "git push origin master" } })
+          }))
+        } finally {
+          await dispose?.()
+        }
+      }
     } finally {
-      await dispose?.()
       fs.rmSync(root, { recursive: true, force: true })
     }
-    assert.ok(messages.some((message) => message.includes("Push to protected branch 'master'")))
+    assert.equal(messages.filter((message) => message.includes("Push to protected branch 'master'")).length, 2)
   })
 
-  it("blocks invalid data-file commits from V2 bash input", async () => {
+  it("blocks invalid data-file commits from V2 shell input in both CCGS copies", async () => {
     const root = makeTempProject("ocgs-v2-commit-")
     const dataDir = path.join(root, "assets", "data")
     fs.mkdirSync(dataDir, { recursive: true })
     fs.writeFileSync(path.join(dataDir, "broken.json"), "not valid JSON\\n")
     execSync("git init -q", { cwd: root, stdio: "ignore" })
     execSync("git add assets/data/broken.json", { cwd: root, stdio: "ignore" })
-    const plugin = definition(runtimePlugins["ccgs-hooks"])
-    const fixture = createContext(root)
-    let dispose
+    const plugins = [runtimePlugins["ccgs-hooks"], modulePlugins["ccgs-hooks"]]
 
     try {
-      assert.equal(typeof plugin?.setup, "function")
-      await captureConsole(async () => {
-        dispose = await plugin.setup(fixture.context)
-        const hook = fixture.handlers.get("tool:execute.before")
-        assert.equal(typeof hook, "function")
-        assert.throws(
-          () => hook({ tool: "bash", input: { command: "git commit -m 'fix: invalid data'" } }),
-          /not valid JSON/,
-        )
-      })
+      for (const pluginModule of plugins) {
+        const plugin = definition(pluginModule)
+        const fixture = createContext(root)
+        let dispose
+
+        try {
+          await captureConsole(async () => {
+            dispose = await plugin.setup(fixture.context)
+            const hook = fixture.handlers.get("tool:execute.before")
+            assert.equal(typeof hook, "function")
+            assert.throws(
+              () => hook({ tool: "shell", input: { command: "git commit -m 'fix: invalid data'" } }),
+              /not valid JSON/,
+            )
+          })
+        } finally {
+          await dispose?.()
+        }
+      }
     } finally {
-      await dispose?.()
       fs.rmSync(root, { recursive: true, force: true })
     }
   })
 
+  it("audits V2 subagent invocations and completions in both CCGS copies", async () => {
+    for (const pluginModule of [runtimePlugins["ccgs-hooks"], modulePlugins["ccgs-hooks"]]) {
+      const root = makeTempProject("ocgs-v2-subagent-")
+      const plugin = definition(pluginModule)
+      const fixture = createContext(root)
+      let dispose
+
+      try {
+        await captureConsole(async () => {
+          dispose = await plugin.setup(fixture.context)
+          const beforeHook = fixture.handlers.get("tool:execute.before")
+          const afterHook = fixture.handlers.get("tool:execute.after")
+          assert.equal(typeof beforeHook, "function")
+          assert.equal(typeof afterHook, "function")
+          await beforeHook({ tool: "subagent", input: { agent: "reviewer", task: "Review the changes" } })
+          await afterHook({
+            tool: "subagent",
+            status: "completed",
+            input: { agent: "reviewer", task: "Review the changes" },
+            result: { content: "Review complete." },
+          })
+        })
+
+        const auditFile = path.join(root, "production", "session-logs", "agent-audit.log")
+        const audit = fs.readFileSync(auditFile, "utf8")
+        assert.match(audit, /Agent invoked: reviewer/)
+        assert.match(audit, /Agent completed: reviewer/)
+      } finally {
+        await dispose?.()
+        fs.rmSync(root, { recursive: true, force: true })
+      }
+    }
+  })
+
+  it("reads V2 shell input when detecting changelog commands in both copies", async () => {
+    const plugins = [runtimePlugins["changelog-generator"], modulePlugins["changelog-generator"]]
+    const messages = []
+
+    for (const pluginModule of plugins) {
+      const root = makeTempProject("ocgs-v2-changelog-")
+      const plugin = definition(pluginModule)
+      const fixture = createContext(root)
+      let dispose
+
+      try {
+        messages.push(...await captureConsole(async () => {
+          dispose = await plugin.setup(fixture.context)
+          const hook = fixture.handlers.get("tool:execute.before")
+          assert.equal(typeof hook, "function")
+          await hook({ tool: "shell", input: { command: "npm run changelog" } })
+        }))
+      } finally {
+        await dispose?.()
+        fs.rmSync(root, { recursive: true, force: true })
+      }
+    }
+    assert.equal(messages.filter((message) => message.includes("Changelog-related command detected")).length, 2)
+  })
 
   it("runs the drift scan for a V2 session-created event", async () => {
     const root = makeTempProject("ocgs-v2-event-")
@@ -400,25 +470,4 @@ describe("OpenCode V2 hook behavior", () => {
     assert.ok(messages.some((message) => message.includes("HIGH issues")))
   })
 
-  it("reads the V2 tool input when detecting changelog commands", async () => {
-    const root = makeTempProject("ocgs-v2-changelog-")
-    const plugin = definition(runtimePlugins["changelog-generator"])
-    const fixture = createContext(root)
-    let dispose
-    let messages
-
-    try {
-      assert.equal(typeof plugin?.setup, "function")
-      messages = await captureConsole(async () => {
-        dispose = await plugin.setup(fixture.context)
-        const hook = fixture.handlers.get("tool:execute.before")
-        assert.equal(typeof hook, "function")
-        await hook({ tool: "bash", input: { command: "npm run changelog" } })
-      })
-    } finally {
-      await dispose?.()
-      fs.rmSync(root, { recursive: true, force: true })
-    }
-    assert.ok(messages.some((message) => message.includes("Changelog-related command detected")))
-  })
 })
