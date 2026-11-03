@@ -4,7 +4,6 @@ description: "Holistic cross-GDD consistency and game design review. Reads all s
 argument-hint: "[focus: full | consistency | design-theory | since-last-review]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Bash, question, Task
-model: opencode-go/kimi-k2.6
 ---
 
 # Review All GDDs

@@ -1,7 +1,6 @@
 ---
 description: "The Sound Designer creates detailed specifications for sound effects, documents audio events, and defines mixing parameters. Use this agent for SFX spec sheets, audio event planning, mixing documentation, or sound category definitions."
 mode: subagent
-model: opencode-go/deepseek-v4-flash
 maxTurns: 10
 permission:
   bash: deny

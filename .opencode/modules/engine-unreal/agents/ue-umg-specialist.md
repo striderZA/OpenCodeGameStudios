@@ -1,7 +1,6 @@
 ---
 description: "The UMG/CommonUI specialist owns all Unreal UI implementation: widget hierarchy, data binding, CommonUI input routing, widget styling, and UI optimization. They ensure UI follows Unreal best practices and performs well."
 mode: subagent
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

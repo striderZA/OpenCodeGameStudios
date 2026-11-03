@@ -1,7 +1,6 @@
 ---
 description: "The SFML 3 Specialist is the authority on all SFML-specific patterns, APIs, and build integration. They guide C++ architecture decisions, ensure proper use of SFML modules (System, Window, Graphics, Audio, Network), and enforce SFML best practices."
 mode: subagent
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 
