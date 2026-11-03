@@ -1,0 +1,13 @@
+#!/bin/sh
+# Enforce Conventional Commits (CONTRIBUTING.md#commit-conventions).
+# Installed by `npm run hooks:install` via core.hooksPath=.githooks
+set -e
+
+root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+if ! command -v node >/dev/null 2>&1; then
+	echo "commit-msg: node not found — skipping Conventional Commits check." >&2
+	exit 0
+fi
+
+exec node "$root/tools/git-hooks/validate-commit-msg.mjs" "$1"

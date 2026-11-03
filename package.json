@@ -8,8 +8,11 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "node --import tsx --test .opencode/plugins/tests/test-*.mjs",
+    "prepare": "node tools/git-hooks/install.mjs",
+    "hooks:install": "node tools/git-hooks/install.mjs",
+    "test": "npm run test:plugins && npm run test:hooks",
     "test:plugins": "node --import tsx --test .opencode/plugins/tests/test-*.mjs",
+    "test:hooks": "node --test tests/git-hooks/test-commit-msg.mjs tests/git-hooks/test-pre-commit.mjs",
     "test:framework": "node tests/agents/validate.mjs",
     "test:parity": "node --import tsx --test tests/e2e/test-parity.test.ts"
   },
