@@ -3,7 +3,6 @@
 ## Agent Summary
 Domain: Profiling, bottleneck identification, performance metrics tracking, and optimization recommendations.
 Does NOT own: implementing optimizations (belongs to the appropriate programmer for that domain).
-Model tier: Sonnet (default).
 No gate IDs assigned.
 
 ---
@@ -12,7 +11,6 @@ No gate IDs assigned.
 
 - [ ] `description:` field is present and domain-specific (references profiling / bottleneck analysis / performance metrics)
 - [ ] `allowed-tools:` list includes Read, Write, Edit, Bash, Glob, Grep
-- [ ] Model tier is Sonnet (default for specialists)
 - [ ] Agent definition does not claim authority over implementing any optimization — explicitly identifies itself as analysis/recommendation only
 
 ---
