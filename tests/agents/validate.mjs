@@ -510,10 +510,12 @@ function main() {
 	// Print to console
 	console.log(report);
 
-	// Write report file
+	// Write report file (skipped from git hooks: hooks must not mutate the work tree)
 	const reportPath = join(ROOT, "tests", "agents", "validation-report.md");
-	writeFileSync(reportPath, report);
-	console.log(`📄 Report saved to: tests/agents/validation-report.md`);
+	if (!process.argv.includes("--no-report")) {
+		writeFileSync(reportPath, report);
+		console.log(`📄 Report saved to: tests/agents/validation-report.md`);
+	}
 
 	if (!passed) {
 		console.log(

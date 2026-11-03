@@ -41,6 +41,30 @@ Examples:
 - `fix(agents): correct model prefix for director agents`
 - `docs: add model assignment strategy section`
 
+### Git hooks
+
+These rules are enforced locally by tracked hooks in `.githooks/`:
+
+- **`commit-msg`** — rejects non-conventional messages: unknown or uppercase type,
+  empty or malformed scope, trailing period, header over 100 characters, and a `!`
+  header without a `BREAKING CHANGE:` footer. Git-generated `Merge …`, `Revert "…"`,
+  `fixup!`/`squash!` and `Initial commit` messages are exempt.
+- **`pre-commit`** — blocks staged credentials, unresolved conflict markers and files
+  over 20 MB, checks that the `.opencode/*` redirect stubs still resolve, and runs
+  `tests/agents/validate.mjs --no-report` plus `tests/workflow/run-all.mjs` when
+  `.agents/`, `tests/agents/` or `AGENTS.md` is staged — or `npm run test:plugins`
+  when `.opencode/plugins/` is staged.
+
+Install once per clone (also runs on `npm install` via `prepare`):
+
+```bash
+npm run hooks:install   # sets core.hooksPath=.githooks
+```
+
+Bypass a single commit with `git commit --no-verify`. Skip only the framework/plugin
+gates with `OCGS_SKIP_HOOK_CHECKS=1 git commit …`; the secret scan always runs.
+Hook behavior is covered by `npm run test:hooks`.
+
 ## Pull Request Process
 
 - Keep PRs focused — one feature/fix per PR
