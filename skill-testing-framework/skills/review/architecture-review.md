@@ -2,7 +2,7 @@
 
 ## Skill Summary
 
-`/architecture-review` is an Opus-tier skill that validates a technical architecture
+`/architecture-review` is a skill that validates a technical architecture
 document against the project's 8 required architecture sections and checks that it
 is internally consistent, non-contradictory with existing ADRs, and correctly
 targeting the pinned engine version. It produces a verdict of APPROVED /

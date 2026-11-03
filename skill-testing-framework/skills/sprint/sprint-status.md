@@ -2,7 +2,7 @@
 
 ## Skill Summary
 
-`/sprint-status` is a Haiku-tier read-only skill that reads the current active
+`/sprint-status` is a read-only skill that reads the current active
 sprint file and the session state to produce a concise sprint health summary.
 It reports story counts by status (Complete / In Progress / Blocked / Not Started)
 and emits one of three sprint-health verdicts: ON TRACK, AT RISK, or BLOCKED.
@@ -153,7 +153,6 @@ None. `/sprint-status` is a read-only reporting skill; no gates are invoked.
 - [ ] Presents story count breakdown before emitting verdict
 - [ ] Does not ask for approval
 - [ ] Ends with a recommended next step based on verdict
-- [ ] Runs on Haiku model tier (fast, low-cost)
 
 ---
 
