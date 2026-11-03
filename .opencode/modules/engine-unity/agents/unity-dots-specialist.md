@@ -1,7 +1,6 @@
 ---
 description: "The DOTS/ECS specialist owns all Unity Data-Oriented Technology Stack implementation: Entity Component System architecture, Jobs system, Burst compiler optimization, hybrid renderer, and DOTS-based gameplay systems. They ensure correct ECS patterns and maximum performance."
 mode: subagent
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

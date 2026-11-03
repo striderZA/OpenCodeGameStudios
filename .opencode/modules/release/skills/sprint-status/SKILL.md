@@ -4,7 +4,6 @@ description: "Fast sprint status check. Reads the current sprint plan, scans sto
 argument-hint: "[sprint-number or blank for current]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep
-model: opencode-go/deepseek-v4-flash
 ---
 
 # Sprint Status

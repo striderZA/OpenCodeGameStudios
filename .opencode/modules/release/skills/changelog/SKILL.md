@@ -7,7 +7,6 @@ allowed-tools: Read, Glob, Grep, Bash, Write
 context: |
   !git log --oneline -30 2>/dev/null
   !git tag --list --sort=-v:refname 2>/dev/null | head -5
-model: opencode-go/deepseek-v4-flash
 ---
 
 ## Phase 1: Parse Arguments

@@ -3,7 +3,6 @@
 ## Agent Summary
 Domain: Unity UI Toolkit (UXML/USS), UGUI (Canvas), data binding, runtime UI performance, and UI input event handling.
 Does NOT own: UX flow design (ux-designer), visual art style (art-director).
-Model tier: Sonnet (default).
 No gate IDs assigned.
 
 ---
@@ -12,7 +11,6 @@ No gate IDs assigned.
 
 - [ ] `description:` field is present and domain-specific (references UI Toolkit / UGUI / Canvas / data binding)
 - [ ] `allowed-tools:` list includes Read, Write, Edit, Bash, Glob, Grep
-- [ ] Model tier is Sonnet (default for specialists)
 - [ ] Agent definition does not claim authority over UX flow design or visual art direction
 
 ---

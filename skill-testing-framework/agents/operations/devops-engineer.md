@@ -3,7 +3,6 @@
 ## Agent Summary
 - **Domain**: CI/CD pipeline configuration, build scripts, version control workflow enforcement, deployment infrastructure, branching strategy, environment management, automated test integration in CI
 - **Does NOT own**: Game logic or gameplay systems, security audits (security-engineer), QA test strategy (qa-lead), game networking logic (network-programmer)
-- **Model tier**: Sonnet
 - **Gate IDs**: None; escalates deployment blockers to producer
 
 ---
@@ -12,7 +11,6 @@
 
 - [ ] `description:` field is present and domain-specific (references CI/CD, build, deployment, version control)
 - [ ] `allowed-tools:` list matches the agent's role (Read/Write for pipeline config files, shell scripts, YAML; no game source editing tools)
-- [ ] Model tier is Sonnet (default for operations specialists)
 - [ ] Agent definition does not claim authority over game logic, security audits, or QA test design
 
 ---
@@ -46,10 +44,10 @@
 ### Case 4: Branching strategy conflict
 **Input**: "Half the team wants to use GitFlow with long-lived feature branches. The other half wants trunk-based development. How should we set this up?"
 **Expected behavior**:
-- Recommends trunk-based development per project conventions (AGENTS.md / coordination-rules.md specify Git with trunk-based development)
-- Provides concrete rationale for the recommendation in this project's context: smaller team, fewer integration conflicts, faster CI feedback
+- Recommends the documented development-branch workflow per `docs/CONTRIBUTING.md` (PR Process): feature branches from `development`, one issue per branch, merged back to `development`, and `development` merged to `master` at milestone completion
+- Provides concrete rationale grounded in this project's workflow: one issue per branch keeps reviews small, and CI gates both `development` (agent-validation workflow) and `master` (test workflow)
 - Does NOT present this as a 50/50 choice if the project has an established convention
-- Explains how to implement trunk-based development with short-lived feature branches and feature flags if needed
+- Explains how to follow the documented flow: branch as `feature/{issue-number}-{short-name}`, use Conventional Commits, and reference the issue with `Closes #N`
 - Does NOT override the project convention without flagging that doing so requires updating AGENTS.md
 
 ### Case 5: Context pass — platform-specific build matrix
@@ -67,7 +65,7 @@
 
 - [ ] Stays within declared domain (CI/CD, build scripts, version control, deployment)
 - [ ] Redirects game logic and networking requests to appropriate programmers
-- [ ] Recommends trunk-based development when branching strategy is contested, per project conventions
+- [ ] Recommends the documented development-branch workflow (`docs/CONTRIBUTING.md`) when branching strategy is contested
 - [ ] Returns structured pipeline configurations (YAML, scripts) not freeform advice
 - [ ] Flags platform SDK licensing constraints for console builds rather than silently producing incorrect configs
 

@@ -1,7 +1,6 @@
 ---
 description: "The Gameplay Programmer implements game mechanics, player systems, combat, and interactive features as code. Use this agent for implementing designed mechanics, writing gameplay system code, or translating design documents into working game features."
 mode: subagent
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

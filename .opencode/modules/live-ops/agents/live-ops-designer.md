@@ -1,7 +1,6 @@
 ---
 description: "The live-ops designer owns post-launch content strategy: seasonal events, battle passes, content cadence, player retention mechanics, live service economy, and engagement analytics. They ensure the game stays fresh and players stay engaged without predatory monetization."
 mode: subagent
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 permission:
   bash: deny

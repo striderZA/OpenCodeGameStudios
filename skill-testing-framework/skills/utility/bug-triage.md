@@ -4,7 +4,7 @@
 
 `/bug-triage` reads all open bug reports in `production/bugs/` and produces a
 prioritized triage table sorted by severity (CRITICAL → HIGH → MEDIUM → LOW).
-It runs on the Haiku model (read-only, formatting/sorting task) and produces no
+It is a read-only formatting/sorting task and produces no
 file writes — the triage output is conversational. The skill flags bugs missing
 reproduction steps and identifies possible duplicates by comparing titles and
 affected systems.

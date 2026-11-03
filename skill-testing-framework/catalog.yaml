@@ -853,7 +853,7 @@ skills:
     category: utility
 
 agents:
-  # Tier 1 Directors (Opus)
+  # Tier 1 Directors
   - name: creative-director
     spec: CCGS Skill Testing Framework/agents/directors/creative-director.md
     last_spec: ""
@@ -878,7 +878,7 @@ agents:
     last_spec_result: ""
     category: director
 
-  # Tier 2 Leads (Sonnet)
+  # Tier 2 Leads
   - name: lead-programmer
     spec: CCGS Skill Testing Framework/agents/leads/lead-programmer.md
     last_spec: ""
@@ -921,7 +921,7 @@ agents:
     last_spec_result: ""
     category: lead
 
-  # Core Specialists (Sonnet)
+  # Core Specialists
   - name: gameplay-programmer
     spec: CCGS Skill Testing Framework/agents/specialists/gameplay-programmer.md
     last_spec: ""

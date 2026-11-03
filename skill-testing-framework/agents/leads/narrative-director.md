@@ -3,7 +3,6 @@
 ## Agent Summary
 **Domain owned:** Story architecture, character design direction, world-building oversight, ND-CONSISTENCY gate, dialogue quality review.
 **Does NOT own:** Visual art style (art-director), technical systems or code (lead-programmer), production scheduling (producer), game mechanics rules (game-designer).
-**Model tier:** Sonnet (individual system analysis — narrative consistency and lore review).
 **Gate IDs handled:** ND-CONSISTENCY.
 
 ---
@@ -14,7 +13,6 @@ Verified by reading the agent's `.agents/agents/narrative-director.md` frontmatt
 
 - [ ] `description:` field is present and domain-specific (references story, character, world-building, consistency — not generic)
 - [ ] `allowed-tools:` list is read-focused; includes Read for lore documents, GDDs, and narrative docs; no Bash unless justified
-- [ ] Model tier is `claude-sonnet-4-6` per coordination-rules.md
 - [ ] Agent definition does not claim authority over visual style, technical systems, or production scheduling
 
 ---

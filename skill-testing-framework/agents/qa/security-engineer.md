@@ -3,7 +3,6 @@
 ## Agent Summary
 Domain: Anti-cheat systems, save data security, network security, vulnerability assessment, and data privacy compliance.
 Does NOT own: game logic design (gameplay-programmer), server infrastructure (devops-engineer).
-Model tier: Sonnet (default).
 No gate IDs assigned.
 
 ---
@@ -12,7 +11,6 @@ No gate IDs assigned.
 
 - [ ] `description:` field is present and domain-specific (references anti-cheat / security / vulnerability assessment)
 - [ ] `allowed-tools:` list includes Read, Write, Edit, Bash, Glob, Grep
-- [ ] Model tier is Sonnet (default for specialists)
 - [ ] Agent definition does not claim authority over game logic design or server deployment
 
 ---

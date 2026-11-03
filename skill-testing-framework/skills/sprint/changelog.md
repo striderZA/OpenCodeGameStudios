@@ -2,7 +2,7 @@
 
 ## Skill Summary
 
-`/changelog` is a Haiku-tier skill that auto-generates a developer-facing
+`/changelog` is a skill that auto-generates a developer-facing
 changelog by reading git commit history and closed sprint stories since the
 last release tag. It organizes entries into features, fixes, and known issues.
 No director gates are used. The skill asks "May I write to `docs/CHANGELOG.md`?"
@@ -138,8 +138,7 @@ None. Changelog generation is a fast compilation task; no gates are invoked.
 **Expected behavior:**
 1. Skill compiles changelog in full mode
 2. No director gate is invoked (changelog generation is compilation, not a delivery gate)
-3. Skill runs on Haiku model — fast compilation
-4. Skill asks user for approval and writes file on confirmation
+3. Skill asks user for approval and writes file on confirmation
 
 **Assertions:**
 - [ ] No director gate is invoked regardless of review mode
@@ -155,7 +154,6 @@ None. Changelog generation is a fast compilation task; no gates are invoked.
 - [ ] Always asks "May I write" before writing changelog
 - [ ] No director gates are invoked
 - [ ] Verdict is always COMPLETE
-- [ ] Runs on Haiku model tier (fast, low-cost)
 
 ---
 

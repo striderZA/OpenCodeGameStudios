@@ -51,7 +51,6 @@ Every agent must have:
 ---
 description: "One-sentence description of the agent's domain and purpose"
 mode: subagent          # primary (director) or subagent (specialist)
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 permission:             # optional — add `bash: deny` for non-code agents
   bash: deny

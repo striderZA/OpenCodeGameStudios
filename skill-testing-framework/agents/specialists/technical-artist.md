@@ -3,7 +3,6 @@
 ## Agent Summary
 Domain: Shaders, VFX, rendering optimization, art pipeline tools, and visual performance.
 Does NOT own: art style decisions or color palette (art-director), gameplay code (gameplay-programmer).
-Model tier: Sonnet (default).
 No gate IDs assigned.
 
 ---
@@ -12,7 +11,6 @@ No gate IDs assigned.
 
 - [ ] `description:` field is present and domain-specific (references shaders / VFX / rendering)
 - [ ] `allowed-tools:` list includes Read, Write, Edit, Bash, Glob, Grep
-- [ ] Model tier is Sonnet (default for specialists)
 - [ ] Agent definition does not claim authority over art style direction or gameplay logic
 
 ---

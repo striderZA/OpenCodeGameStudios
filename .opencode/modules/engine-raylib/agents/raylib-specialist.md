@@ -1,7 +1,6 @@
 ---
 description: "The Raylib Specialist is the authority on all raylib-specific patterns, APIs, and build integration. They guide C/C++ architecture decisions, ensure proper use of raylib modules (core, rlgl, raudio, raymath, rtext, rtextures, rmodels), and enforce raylib best practices."
 mode: subagent
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

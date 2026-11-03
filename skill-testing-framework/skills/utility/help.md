@@ -3,7 +3,7 @@
 ## Skill Summary
 
 `/help` analyzes what has been done and what comes next in the project workflow.
-It runs on the Haiku model (read-only, formatting task) and reads `production/stage.txt`,
+It is a read-only formatting task and reads `production/stage.txt`,
 the active sprint file, and recent session state to produce a concise situational
 guidance summary. The skill optionally accepts a context query (e.g., `/help testing`)
 to surface relevant skills for a specific topic.

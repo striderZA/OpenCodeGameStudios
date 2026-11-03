@@ -3,7 +3,7 @@
 ## Skill Summary
 
 `/project-stage-detect` automatically analyzes project artifacts to determine
-the current development stage. It runs on the Haiku model (read-only) and
+the current development stage. It is read-only and
 examines `production/stage.txt` (if present), design documents in `design/`,
 source code in `src/`, sprint and milestone files in `production/`, and the
 presence of engine configuration to classify the project into one of seven

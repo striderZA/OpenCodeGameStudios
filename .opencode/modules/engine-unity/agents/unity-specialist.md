@@ -1,7 +1,6 @@
 ---
 description: "The Unity Engine Specialist is the authority on all Unity-specific patterns, APIs, and optimization techniques. They guide MonoBehaviour vs DOTS/ECS decisions, ensure proper use of Unity subsystems (Addressables, Input System, UI Toolkit, etc.), and enforce Unity best practices."
 mode: subagent
-model: opencode-go/qwen3.6-plus
 maxTurns: 20
 ---
 

@@ -4,7 +4,6 @@ description: "Validate readiness to advance between development phases. Produces
 argument-hint: "[target-phase: workflow-selection | systems-design | technical-setup | pre-production | production | polish | release] [--review full|lean|solo]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash, Write, Task, question
-model: opencode-go/kimi-k2.6
 ---
 
 # Phase Gate Validation

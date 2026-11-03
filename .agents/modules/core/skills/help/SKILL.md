@@ -6,7 +6,6 @@ user-invocable: true
 allowed-tools: Read, Glob, Grep
 context: |
   Static help skill — reads production artifacts directly to determine project state and next steps.
-model: opencode-go/deepseek-v4-flash
 ---
 
 # Studio Help — What Do I Do Next?

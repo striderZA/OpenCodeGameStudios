@@ -2,7 +2,7 @@
 
 ## Skill Summary
 
-`/review-all-gdds` is an Opus-tier skill that performs a holistic cross-GDD review
+`/review-all-gdds` is a skill that performs a holistic cross-GDD review
 across all files in `design/gdd/`. It runs two complementary review phases in
 parallel: Phase 1 checks for consistency (contradictions, formula mismatches,
 stale references, competing ownership), and Phase 2 checks design theory (dominant

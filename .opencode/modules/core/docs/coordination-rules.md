@@ -12,25 +12,6 @@
 5. **No Unilateral Cross-Domain Changes**: An agent must never modify files
    outside its designated directories without explicit delegation.
 
-## Model Tier Assignment
-
-Skills and agents are assigned to model tiers based on task complexity:
-
-| Tier | Model | When to use |
-|------|-------|-------------|
-| **Haiku** | `opencode-go/deepseek-v4-flash` | Read-only status checks, formatting, simple lookups — no creative judgment needed |
-| **Sonnet** | `opencode-go/qwen3.6-plus` | Implementation, design authoring, analysis of individual systems — default for most work |
-| **Opus** | `opencode-go/kimi-k2.6` | Multi-document synthesis, high-stakes phase gate verdicts, cross-system holistic review |
-
-Skills with `model: haiku`: `/help`, `/sprint-status`, `/story-readiness`, `/scope-check`,
-`/project-stage-detect`, `/changelog`, `/patch-notes`, `/onboard`
-
-Skills with `model: opus`: `/review-all-gdds`, `/architecture-review`, `/gate-check`
-
-All other skills default to Sonnet. When creating new skills, assign Haiku if the
-skill only reads and formats; assign Opus if it must synthesize 5+ documents with
-high-stakes output; otherwise leave unset (Sonnet).
-
 ## Subagents vs Agent Teams
 
 This project uses two distinct multi-agent patterns:
