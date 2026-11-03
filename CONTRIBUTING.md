@@ -51,7 +51,8 @@ These rules are enforced locally by tracked hooks in `.githooks/`:
   `fixup!`/`squash!` and `Initial commit` messages are exempt.
 - **`pre-commit`** — blocks staged credentials, unresolved conflict markers and files
   over 20 MB, checks that the `.opencode/*` redirect stubs still resolve, and runs
-  `tests/agents/validate.mjs` when `.agents/` is staged or `npm run test:plugins`
+  `tests/agents/validate.mjs --no-report` plus `tests/workflow/run-all.mjs` when
+  `.agents/`, `tests/agents/` or `AGENTS.md` is staged — or `npm run test:plugins`
   when `.opencode/plugins/` is staged.
 
 Install once per clone (also runs on `npm install` via `prepare`):

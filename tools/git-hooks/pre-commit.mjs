@@ -333,9 +333,15 @@ export function runGates(root, gates, env = process.env) {
 	}
 
 	if (gates.includes("framework")) {
-		const result = runCommand(root, process.execPath, ["tests/agents/validate.mjs", "--no-report"])
-		if (result.ok) notes.push("framework validation passed")
-		else errors.push(`framework validation failed:\n${tail(result.output)}`)
+		const checks = [
+			["framework validation", [process.execPath, ["tests/agents/validate.mjs", "--no-report"]]],
+			["workflow integrity", [process.execPath, ["tests/workflow/run-all.mjs"]]],
+		]
+		for (const [label, [command, args]] of checks) {
+			const result = runCommand(root, command, args)
+			if (result.ok) notes.push(`${label} passed`)
+			else errors.push(`${label} failed:\n${tail(result.output)}`)
+		}
 	}
 
 	if (gates.includes("plugins")) {

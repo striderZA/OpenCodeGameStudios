@@ -15,6 +15,7 @@ import {
 	evaluatePreCommit,
 	parseAddedLines,
 	planGates,
+	runGates,
 	scanAddedLines,
 } from "../../tools/git-hooks/pre-commit.mjs"
 
@@ -203,6 +204,57 @@ describe("pre-commit: gate planning", () => {
 			planGates([".agents/skills/x/SKILL.md", ".opencode/plugins/ccgs-hooks.ts"]),
 			["framework", "plugins"],
 		)
+	})
+})
+
+describe("pre-commit: framework gate", () => {
+	function stubScripts(root, {
+		agentExit = 0,
+		workflowExit = 0,
+		workflowOutput = "",
+	} = {}) {
+		mkdirSync(join(root, "tests", "agents"), { recursive: true })
+		mkdirSync(join(root, "tests", "workflow"), { recursive: true })
+		writeFileSync(
+			join(root, "tests", "agents", "validate.mjs"),
+			`process.exit(${agentExit})\n`,
+			"utf8",
+		)
+		writeFileSync(
+			join(root, "tests", "workflow", "run-all.mjs"),
+			`console.log(${JSON.stringify(workflowOutput)})\nprocess.exit(${workflowExit})\n`,
+			"utf8",
+		)
+	}
+
+	it("runs framework validation and workflow integrity", () => {
+		const root = makeTempDir()
+		stubScripts(root)
+
+		const result = runGates(root, ["framework"])
+		assert.deepEqual(result.errors, [])
+		assert.deepEqual(result.notes, ["framework validation passed", "workflow integrity passed"])
+		cleanup(root)
+	})
+
+	it("reports which gate failed and keeps the passing note", () => {
+		const root = makeTempDir()
+		stubScripts(root, { workflowExit: 1, workflowOutput: "FAIL I5: unknown agents" })
+
+		const result = runGates(root, ["framework"])
+		assert.equal(result.errors.length, 1)
+		assert.match(result.errors[0], /workflow integrity failed/)
+		assert.match(result.errors[0], /FAIL I5: unknown agents/)
+		assert.deepEqual(result.notes, ["framework validation passed"])
+		cleanup(root)
+	})
+
+	it("skips all gates when OCGS_SKIP_HOOK_CHECKS=1", () => {
+		const root = makeTempDir()
+		const result = runGates(root, ["framework", "plugins"], { OCGS_SKIP_HOOK_CHECKS: "1" })
+		assert.deepEqual(result.errors, [])
+		assert.match(result.notes[0], /Skipped gates/)
+		cleanup(root)
 	})
 })
 

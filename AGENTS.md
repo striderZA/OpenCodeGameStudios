@@ -251,10 +251,10 @@ Before merging to `development`, the CI must pass:
 - **Plugin tests** (`npm run test:plugins`):
   - 19 test suites, 177 tests covering all hooks
 - **Git hooks** (`.githooks/`, installed by `npm run hooks:install`):
-  - `commit-msg` enforces Conventional Commits (`npm run test:hooks`)
-  - `pre-commit` blocks credentials, conflict markers and >20 MB files, verifies the
-    `.opencode/*` redirect stubs, and runs the framework or plugin gate when their
-    paths are staged
+  - `.githooks/commit-msg` enforces Conventional Commits (`npm run test:hooks`)
+  - `.githooks/pre-commit` blocks credentials, conflict markers and >20 MB files,
+    verifies the `.opencode/*` redirect stubs, and runs framework validation plus
+    workflow integrity — or plugin tests — when their paths are staged
 
 ## Notes
 
