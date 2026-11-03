@@ -20,6 +20,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── AGENTS.md                    # Project configuration
 ├── opencode.json                # OpenCode config (permissions, plugins)
 ├── .pi/                         # Pi settings and extensions
+├── .githooks/                   # Tracked git hooks (commit-msg, pre-commit)
 ├── .agents/                     # Canonical content (harness-agnostic)
 │   ├── agents/                  # 52 agent definitions
 │   ├── skills/                  # 77 skill workflows
@@ -65,6 +66,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── design/                      # Game design documents
 ├── tools/                       # Build and pipeline tools
 │   ├── migrate-to-agents.mjs    # Migration script (.opencode/ → .agents/)
+│   ├── git-hooks/               # Hook validators (commit-msg, pre-commit) + installer
 │   └── ...
 ├── prototypes/                  # Throwaway prototypes
 └── production/                  # Sprint plans, milestones, session logs
@@ -247,7 +249,12 @@ Before merging to `development`, the CI must pass:
   - All skill files have valid cross-references to existing agents
   - All command files reference valid skill directories
 - **Plugin tests** (`npm run test:plugins`):
-  - 18 test suites, 158 tests covering all hooks
+  - 19 test suites, 177 tests covering all hooks
+- **Git hooks** (`.githooks/`, installed by `npm run hooks:install`):
+  - `commit-msg` enforces Conventional Commits (`npm run test:hooks`)
+  - `pre-commit` blocks credentials, conflict markers and >20 MB files, verifies the
+    `.opencode/*` redirect stubs, and runs the framework or plugin gate when their
+    paths are staged
 
 ## Notes
 
