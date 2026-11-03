@@ -24,9 +24,6 @@
 - [🚀 Quick Start](#-quick-start)
 - [🔌 Recommended Plugins](#-recommended-plugins)
 - [🗺️ Key Mappings](#️-key-mappings)
-- [🧠 Model Mapping](#-model-mapping)
-- [🎯 Model Assignment Strategy](#-model-assignment-strategy)
-- [🔄 Customizing Models](#-customizing-models)
 - [📁 Directory Tree](#-directory-tree)
 - [🔗 Hooks Plugin](#-hooks-plugin)
 - [🏗️ Studio Hierarchy](#️-studio-hierarchy)
@@ -191,79 +188,6 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 
 ---
 
-## 🧠 Model Mapping
-
-| CCGS | OpenCode |
-|------|----------|
-| `opus` 🐙 | `kimi-k2.6` |
-| `sonnet` 🖋️ | `qwen3.6-plus` |
-| `haiku` 🍃 | `deepseek-v4-flash` |
-
----
-
-## 🎯 Model Assignment Strategy
-
-| Tier | Model | Agents | Rationale |
-|------|-------|--------|-----------|
-| **Directors** (Tier 1) | `opencode-go/kimi-k2.6` | 3 (creative-director, technical-director, producer) | Heaviest model for strategic planning, architecture decisions, and cross-team coordination |
-| **Workhorses** (Tier 2-3) | `opencode-go/qwen3.6-plus` | 43 (all other agents) | Balanced model for day-to-day design, implementation, testing, and review tasks |
-| **Lightweight** (Special) | `opencode-go/deepseek-v4-flash` | 3 (community-manager, devops-engineer, sound-designer) | Fast, low-latency model for simple, repetitive, or always-running agents |
-
-> **Note:** Subagents invoked via the `task` tool inherit the caller's model regardless of their frontmatter `model:` field. See [Known Issues](#known-issues).
-
-The default session model (set via `opencode -m`) should match the tier of work:
-- `opencode -m opencode-go/kimi-k2.6` — director-level sessions
-- `opencode -m opencode-go/qwen3.6-plus` — general development sessions
-- `opencode -m opencode-go/deepseek-v4-flash` — quick QA or maintenance sessions
-
----
-
-## 🔄 Customizing Models
-
-OpenCode supports **any model provider** — switch the studio to your preferred
-models, including local ones, with a single command.
-
-### Quick switch
-
-```bash
-# Preview the change first
-node utils/assign-models.js --dry-run --map '{
-  "opencode-go/kimi-k2.6":         "anthropic/claude-opus-4",
-  "opencode-go/qwen3.6-plus":      "openai/gpt-4o",
-  "opencode-go/deepseek-v4-flash": "ollama/llama3.2"
-}'
-
-# Apply it
-node utils/assign-models.js --map '{
-  "opencode-go/kimi-k2.6":         "anthropic/claude-opus-4",
-  "opencode-go/qwen3.6-plus":      "openai/gpt-4o",
-  "opencode-go/deepseek-v4-flash": "ollama/llama3.2"
-}'
-```
-
-Or save your mapping to a JSON file and refer to it:
-
-```bash
-node utils/assign-models.js --config my-models.json
-```
-
-### Provider examples
-
-| Provider | Model ID Format | Example |
-|----------|----------------|---------|
-| **OpenCode** (default) | `opencode-go/<model>` | `opencode-go/qwen3.6-plus` |
-| **Anthropic Claude** | `anthropic/<model>` | `anthropic/claude-opus-4`, `anthropic/claude-sonnet-4` |
-| **OpenAI** | `openai/<model>` | `openai/gpt-4o`, `openai/o3` |
-| **Google Gemini** | `google/<model>` | `google/gemini-2.5-pro` |
-| **Ollama** (local) | `ollama/<model>` | `ollama/llama3.2`, `ollama/mistral` |
-| **OpenAI-compatible** | `<endpoint>/<model>` | `http://localhost:11434/v1/llama3.2` |
-
-> **Tip:** Run `opencode models` to list all models available through your
-> configured providers. See the [OpenCode provider docs](https://opencode.ai)
-> for setup instructions.
-
----
-
 ## 📁 Directory Tree
 
 ```
@@ -311,8 +235,6 @@ node utils/assign-models.js --config my-models.json
 │   ├── [game-specific tests]
 │   └── [spawned by test-setup]
 ├── production/                📊 Sprint plans, session logs
-├── utils/                     🔧 Developer utilities
-│   └── assign-models.js       🎯 Batch-model assignment tool
 └── ...                        🎮 Game source & assets
 ```
 

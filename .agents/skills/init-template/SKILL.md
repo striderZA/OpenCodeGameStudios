@@ -30,7 +30,6 @@ Otherwise, use `question` to gather missing details:
 
 ### Tab 3: Team
 - **Team size** (solo / small 2-5 / medium 6-15 / large 16+)
-- **Preferred model tier** (default / workhorse / lightweight) — refer to the README's Model Mapping section for options
 
 ### Modular Installation
 
@@ -108,7 +107,6 @@ Replace `[Game Name]`, `[One-line description]`, and `[Engine]` with the user's 
 
 Read AGENTS.md and update:
 - Set the engine to the user's choice by changing the `## Technology Stack` section
-- Update the model assignment: replace the model table with the user's preference (default/workhorse/lightweight), mapping to their engine's specialist agents
 - Remove or update any project-specific settings
 - If AGENTS.md is missing or malformed, warn and skip this phase
 
