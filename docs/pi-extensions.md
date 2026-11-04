@@ -249,6 +249,40 @@ After every `write` or `edit` to a `.agents/` path, validates the modified file 
 
 ---
 
+## ocgs-hooks
+
+**File:** `.pi/extensions/ocgs-hooks/index.ts` (wiring), `core.ts` (logic, no harness imports)
+
+The 12 hooks from the Claude Code original (listed under "Hooks Mapping" in the root README), wired for Pi and oh-my-pi. Each harness emits only some of the events below. A handler for an event the running harness never emits never fires.
+
+### Events
+
+| Original hook | Pi event | omp event | Behavior |
+|---|---|---|---|
+| `session-start.sh`, `detect-gaps.sh` | `session_start` | `session_start` | Branch, recent commits, active sprint and milestone, open bugs, TODO counts, documentation gaps |
+| `session-stop.sh` | `agent_settled` | `session_stop` | Archives `active.md` and the session's commits to `session-log.md` |
+| `pre-compact.sh` | `session_before_compact` (audit), `session_compact` (context message) | `session.compacting` (context added to the summary) | Logs each compaction; restores `active.md`, git state, and WIP markers |
+| `post-compact.sh` | `session_compact` | `session_compact` | Restore notice |
+| `validate-commit.sh` | `tool_call` on `bash` `git commit` | `tool_call` | Blocks invalid asset JSON; warns on missing design sections, hardcoded gameplay values, untagged TODOs |
+| `validate-push.sh` | `tool_call` on `bash` `git push` | `tool_call` | Warns on pushes to `main`, `master`, `develop` (not blocked) |
+| `validate-assets.sh` | `tool_result` (`write`, `edit`) | `tool_result` | Asset naming and JSON validity; errors are appended to the tool result |
+| `validate-skill-change.sh` | `tool_result` (`write`, `edit`) | `tool_result` | Audit line advising `/skill-test` |
+| `log-agent.sh`, `log-agent-stop.sh` | `tool_call` / `tool_result` on `Task` | `tool_call` / `tool_result` on `task` | Agent start and completion in `agent-audit.log` |
+| `notify.sh` | `ui_prompt_start` | `tool_approval_requested` | OS notification when the agent waits for input |
+
+### Differences from the bash originals
+
+- Pi has no hook that runs before the summary is written. On Pi the context is sent as a hidden message after compaction. On omp it goes into the summary through `session.compacting`, and `session_compact` skips the message when omp already injected it.
+- `agent_settled` fires after every agent run, so `session-log.md` gets one entry per run.
+- Session-start, session-stop, and compaction-context handlers skip subagent sessions when the harness sets `ctx.agent.kind === "sub"`. omp does. Pi 0.85.1's `ExtensionContext` has no `agent` field, so on Pi subagent sessions are not detected.
+- Not ported: the upstream hooks outside the 12 listed (`validate-read`, `validate-write`, `validate-registry`, `validate-agent-artifact`, `update-check`, `log-instructions`).
+
+### Logs
+
+Writes to `production/session-logs/agent-audit.log`, `session-log.md`, and `compaction-log.txt`.
+
+---
+
 ## Glossary
 
 | Term | Definition |

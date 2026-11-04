@@ -18,6 +18,7 @@ Pi discovers `.agents/` content through the `ocgs-core` extension's `resources_d
 | `ocgs-drift-detector` | `resources_discover` + `tool_result` | Detects structural drift in `.agents/` files after writes |
 | `ocgs-changelog` | `registerCommand` | `/changelog` command with TUI for conventional-commit changelogs |
 | `ocgs-validate` | `resources_discover` + `tool_result` | Validates `.agents/` content for harness-neutral conformance |
+| `ocgs-hooks` | `session_start` + `agent_settled` + `session_compact` + `tool_call` + `tool_result` + `ui_prompt_start` | The 12 CCGS hooks: session context, commit and push guards, asset and skill checks, agent audit, compaction context, notifications. See `docs/pi-extensions.md` |
 
 ## How Extensions Load
 

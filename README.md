@@ -271,6 +271,8 @@ All 12 bash hooks from CCGS ported to `ccgs-hooks.ts`:
 | 11 | `post-compact.sh` | `experimental.compaction.autocontinue` | **5** |
 | 12 | `notify.sh` | Utility (`showNotification`) | — |
 
+Pi and oh-my-pi run the same 12 hooks from `.pi/extensions/ocgs-hooks/`. See [docs/pi-extensions.md](docs/pi-extensions.md#ocgs-hooks).
+
 > 🧪 Run plugin test suite: `npm run test:plugins` (needs the `tsx` ESM loader — see CONTRIBUTING.md)
 > 🧪 Run workflow integrity suite: `node tests/workflow/run-all.mjs`
 > 🧪 Run e2e parity suite: `npm run test:parity` (requires both the `opencode` and `pi` CLIs installed)
