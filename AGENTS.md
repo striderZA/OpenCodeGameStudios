@@ -23,8 +23,8 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── .githooks/                   # Tracked git hooks (commit-msg, pre-commit)
 ├── .agents/                     # Canonical content (harness-agnostic)
 │   ├── agents/                  # 52 agent definitions
-│   ├── skills/                  # 77 skill workflows
-│   ├── commands/                # 77 slash commands
+│   ├── skills/                  # 78 skill workflows
+│   ├── commands/                # 78 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
 │   └── modules/                 # 22 installable modules
 ├── .opencode/                   # OpenCode-specific
@@ -203,7 +203,7 @@ See [docs/omp-compatibility.md](docs/omp-compatibility.md) for omp setup, extens
 
 ## Available Commands
 
-Type `/` in OpenCode to see all available commands. All 77 commands route to
+Type `/` in OpenCode to see all available commands. All 78 commands route to
 corresponding skills in `.agents/skills/`.
 
 | Category | Commands |
@@ -212,7 +212,7 @@ corresponding skills in `.agents/skills/`.
 | **Design** | `/concept-brainstorm`, `/map-systems`, `/design-system`, `/quick-design`, `/design-review`, `/review-all-gdds`, `/ux-design`, `/ux-review` |
 | **Architecture** | `/create-architecture`, `/architecture-decision`, `/architecture-review`, `/create-control-manifest` |
 | **Stories** | `/create-epics`, `/create-stories`, `/story-readiness`, `/dev-story`, `/story-done`, `/code-review` |
-| **QA** | `/qa-plan`, `/smoke-check`, `/soak-test`, `/regression-suite`, `/test-setup`, `/test-helpers`, `/test-evidence-review`, `/test-flakiness` |
+| **QA** | `/qa-plan`, `/smoke-check`, `/soak-test`, `/regression-suite`, `/test-setup`, `/test-helpers`, `/test-evidence-review`, `/test-flakiness`, `/autopilot-playtest` |
 | **Prototyping** | `/prototype`, `/hybrid-prototype`, `/explore`, `/reverse-document` |
 | **Team** | `/team-combat`, `/team-narrative`, `/team-ui`, `/team-level`, `/team-audio`, `/team-polish`, `/team-qa`, `/team-release`, `/team-live-ops` |
 | **Release** | `/sprint-plan`, `/sprint-status`, `/milestone-review`, `/release-checklist`, `/launch-checklist`, `/retrospective` |
@@ -269,7 +269,7 @@ Before merging to `development`, the CI must pass:
 ## Notes
 
 This is a port of [Claude Code Game Studios](https://github.com/Donchitos/Claude-Code-Game-Studios)
-to OpenCode. The 77 skills are in `.agents/skills/`, the 52 agents are in
+to OpenCode. The 78 skills are in `.agents/skills/`, the 52 agents are in
 `.agents/agents/`, and the 12 original bash hooks are implemented as a
 TypeScript plugin in `.opencode/plugins/ccgs-hooks.ts`.
 

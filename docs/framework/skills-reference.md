@@ -1,6 +1,6 @@
 # Available Skills (Slash Commands)
 
-77 slash commands organized by phase. Each skill belongs to a **module** under
+78 slash commands organized by phase. Each skill belongs to a **module** under
 `.agents/modules/<name>/skills/`. Install only the modules you need:
 `node .opencode/modules/install.mjs add <name>`. Type `/` in OpenCode to access
 any available command.

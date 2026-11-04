@@ -14,6 +14,12 @@
   },
   "mcp": {
     "servers": {
+      "autopilot": {
+        "type": "local",
+        "command": ["autopilot", "mcp"],
+        "disabled": true,
+        "codemode": false
+      },
       "aseprite": {
         "type": "local",
         "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"],
