@@ -7,6 +7,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v0.14.0] — 2026-11-04
+
+### Added
+
+- **oh-my-pi (`omp`) harness support** — a project-scoped `.omp/config.yml` loads the
+  shared `.pi/extensions` under `omp` 18.16.0, while `omp` reads `.agents/` natively
+  (agents, skills, commands, rules). New `docs/omp-compatibility.md` documents what
+  loads, the acceptance matrix, and the open gaps (#112)
+- **`ocgs-hooks` extension for Pi and `omp`** — the 12 CCGS bash hooks ported to one
+  harness-neutral `core.ts` with per-harness event mapping: session context, commit and
+  push guards, asset and skill checks, agent audit, compaction context, and
+  notifications. Subagent sessions cannot archive the parent `active.md` (#113)
+- **Tracked git hooks** — `.githooks/commit-msg` enforces Conventional Commits and
+  `.githooks/pre-commit` blocks staged credentials, conflict markers, >20 MB files and
+  broken `.opencode/*` redirect stubs. The pre-commit gate runs framework validation,
+  workflow integrity, and plugin tests when their paths are staged. Installed by
+  `npm run hooks:install` and covered by `npm run test:hooks` (#110)
+- **`/autopilot-playtest` skill and command** — optional MCP-driven playtesting through
+  [Autopilot](https://github.com/ramenvr/autopilot) for Godot 4.7+ projects. The MCP
+  server ships disabled and nothing launches until the user opts in. Tool naming covers
+  OpenCode, Pi and `omp` (#114)
+- **Autopilot integration decision record** — `docs/framework/autopilot-integration.md`,
+  with `/setup-engine` wiring for OpenCode, Pi and `omp`, plus setup-requirements and
+  quick-start entries (#114)
+- **Godot 4.7.2 engine reference** — refreshed from 4.6 with the official 4.6 → 4.7
+  migration notes, 4.7 breaking changes, renamed/removed APIs, and the 4.7 timeline row
+
+### Changed
+
+- **OpenCode V2 configuration schema** — `opencode.json` now uses `mcp.servers`,
+  `disabled`, the ordered `permissions` array, and `commands`. Under V2 the previous V1
+  shapes loaded without error and were then ignored, so MCP servers and deny rules
+  (including `rm -rf`, force pushes and `sudo`) were not in effect. Verified on OpenCode
+  2.2.5 (#107, #114)
+- **Model assignment removed from the framework** — per-item `model:` frontmatter was
+  dropped from 85 agent and skill files, `utils/assign-models.js` and the model-tier
+  policy were removed, and the OpenCode GitHub workflow was deleted. Model choice now
+  belongs to each developer's harness (#111)
+
+### Removed
+
+- `utils/assign-models.js` and the `/init-template` model-assignment step (#111)
+- `.github/workflows/opencode.yml` (`/oc` comment trigger) (#111)
+- Per-item `model:` frontmatter in `.agents/` and the OpenCode module copies (#111)
+
+### Fixed
+
+- **Stale documentation counts** — README.md and the framework docs now report the
+  actual tree: 78 skills, 78 commands, 52 agents, 9 Pi extensions, 19 plugin test
+  suites (177 tests) and 54 hook tests. The README port-status and key-mapping tables
+  gained an `omp` column, and the quick start gained an `oh-my-pi` section
+
+---
+
 ## [v0.13.1] — 2026-10-06
 
 ### Fixed

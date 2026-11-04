@@ -259,9 +259,10 @@ Before merging to `development`, the CI must pass:
   - All skill files have valid cross-references to existing agents
   - All command files reference valid skill directories
 - **Plugin tests** (`npm run test:plugins`):
-  - 19 test suites, 177 tests covering all hooks
+  - 19 test suites, 177 tests
 - **Git hooks** (`.githooks/`, installed by `npm run hooks:install`):
-  - `.githooks/commit-msg` enforces Conventional Commits (`npm run test:hooks`)
+  - 13 suites, 54 tests (`npm run test:hooks`)
+  - `.githooks/commit-msg` enforces Conventional Commits
   - `.githooks/pre-commit` blocks credentials, conflict markers and >20 MB files,
     verifies the `.opencode/*` redirect stubs, and runs framework validation plus
     workflow integrity — or plugin tests — when their paths are staged

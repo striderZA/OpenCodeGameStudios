@@ -15,8 +15,8 @@ All OCGS skills, commands, and agents are available automatically through the `.
 ```
 .agents/                     ← Canonical content (harness-agnostic)
   agents/                    ← 52 agent definitions
-  skills/                    ← 77 skill workflows
-  commands/                  ← 77 slash commands
+  skills/                    ← 78 skill workflows
+  commands/                  ← 78 slash commands
   rules/                     ← 11 path-scoped rules
   modules/                   ← 22 installable modules
 .opencode/                   ← OpenCode-specific plugins & config

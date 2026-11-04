@@ -4,16 +4,17 @@
   <img src="assets/banner.png" alt="OpenCode Game Studios Banner" width="100%">
 </p>
 
-> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework supporting both [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent) coding agents.
+> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework supporting [OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent) and [oh-my-pi](https://omp.sh/) coding agents.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Agents](https://img.shields.io/badge/agents-51-blueviolet)](.agents/agents/)
-[![Skills](https://img.shields.io/badge/skills-77-brightgreen)](.agents/skills/)
-[![Commands](https://img.shields.io/badge/commands-77-blue)](.agents/commands/)
+[![Agents](https://img.shields.io/badge/agents-52-blueviolet)](.agents/agents/)
+[![Skills](https://img.shields.io/badge/skills-78-brightgreen)](.agents/skills/)
+[![Commands](https://img.shields.io/badge/commands-78-blue)](.agents/commands/)
 [![Hooks](https://img.shields.io/badge/plugins-3-orange)](.opencode/plugins/)
-[![Tests](https://img.shields.io/badge/tests-158-success)](tests/)
+[![Tests](https://img.shields.io/badge/tests-231-success)](tests/)
 [![Built for OpenCode](https://img.shields.io/badge/built%20for-OpenCode-5f5f5f)](https://opencode.ai)
 [![Pi Compatible](https://img.shields.io/badge/Pi-compatible-4f46e5)](https://github.com/earendil-works/pi-coding-agent)
+[![omp Compatible](https://img.shields.io/badge/omp-compatible-6b46c1)](https://omp.sh/)
 
 ---
 
@@ -50,11 +51,12 @@ for the full game lifecycle:
   maturity
 - **52 coordinated agents** — From creative director to engine specialists, each
   with defined responsibilities, delegation maps, and strict domain boundaries
-- **77 slash commands** — Route through the right skill every time, from
+- **78 slash commands** — Route through the right skill every time, from
   `/concept-brainstorm` to `/launch-checklist`
 
 This project evolved from [CCGS](https://github.com/Donchitos/Claude-Code-Game-Studios)
-and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent).
+and runs on [OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent)
+and [oh-my-pi](https://omp.sh/).
 
 ---
 
@@ -66,14 +68,14 @@ and runs on [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil
 
 ## 📊 Port Status
 
-| Component | CCGS (Claude Code) | OpenCode | Pi | Status |
-|-----------|-------------------|----------|-----|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | ✅ |
-| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 77 skills (`.agents/skills/`) | 77 skills (`.agents/skills/`) | ✅ +5 |
-| ⌨️ **Commands** | — | 77 commands (`.agents/commands/`) | → prompt templates | ✅ New |
-| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 7 Pi extensions (`.pi/extensions/`) | ✅ **158 tests** |
-| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
-| ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | `AGENTS.md` + `.pi/settings.json` | ✅ |
+| Component | CCGS (Claude Code) | OpenCode | Pi | omp | Status |
+|-----------|-------------------|----------|-----|-----|--------|
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (read natively) | ✅ |
+| ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`/skill:<name>`) | ✅ +6 |
+| ⌨️ **Commands** | — | 78 commands (`.agents/commands/`) | → prompt templates | → slash commands | ✅ New |
+| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 9 Pi extensions (`.pi/extensions/`) | 7 shared via config | ✅ **177 plugin + 54 hook tests** |
+| 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
+| ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | `AGENTS.md` + `.pi/settings.json` | `AGENTS.md` + `.omp/config.yml` | ✅ |
 
 ---
 
@@ -85,7 +87,7 @@ opencode
 ```
 > **Windows users:** `.opencode/{agents,commands,skills,rules}` are git symlinks and require `core.symlinks=true` (+ Developer Mode) to check out correctly — see [Known Issues](#-known-issues) if `/` shows no commands.
 
-Type `/` to browse all 77 skills and 54 commands, or `/start` for onboarding.
+Type `/` to browse all 78 skills and 78 commands, or `/start` for onboarding.
 
 ### Pi
 ```bash
@@ -93,6 +95,13 @@ pi
 ```
 All OCGS skills, commands, and agents load automatically through Pi extensions.
 See [docs/pi-compatibility.md](docs/pi-compatibility.md) for setup details.
+
+### oh-my-pi (omp)
+```bash
+omp
+```
+omp reads `.agents/` natively and loads the shared Pi extensions through `.omp/config.yml`.
+See [docs/omp-compatibility.md](docs/omp-compatibility.md) for setup details and known gaps.
 
 ### 🎮 Demo Game
 
@@ -177,14 +186,14 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 
 ## 🗺️ Key Mappings
 
-| CCGS (Claude Code) | OpenCode | Pi |
-|--------------------|----------|-----|
-| `.claude/skills/*.md` → | `.agents/skills/*.md` | `.agents/skills/*.md` |
-| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` |
-| `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` | `.pi/extensions/` |
-| `.claude/rules/*.md` → | `.agents/rules/*.md` | `.agents/rules/*.md` |
-| `CLAUDE.md` → | `AGENTS.md` | `AGENTS.md` |
-| `.claude/settings.json` → | `opencode.json` | `.pi/settings.json` |
+| CCGS (Claude Code) | OpenCode | Pi | omp |
+|--------------------|----------|-----|-----|
+| `.claude/skills/*.md` → | `.agents/skills/*.md` | `.agents/skills/*.md` | `.agents/skills/*.md` |
+| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` | `.agents/agents/*.md` |
+| `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` | `.pi/extensions/` | `.pi/extensions/` (via `.omp/config.yml`) |
+| `.claude/rules/*.md` → | `.agents/rules/*.md` | `.agents/rules/*.md` | `.agents/rules/*.md` |
+| `CLAUDE.md` → | `AGENTS.md` | `AGENTS.md` | `AGENTS.md` |
+| `.claude/settings.json` → | `opencode.json` | `.pi/settings.json` | `.omp/config.yml` |
 
 ---
 
@@ -195,10 +204,11 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .pi/                       ⚙️ Pi config (extensions, settings)
+├── .omp/                      ⚙️ oh-my-pi config (extensions, MCP)
 ├── .agents/                   📦 Canonical content (harness-agnostic)
 │   ├── agents/                🤖 52 agent definitions
-│   ├── skills/                🛠️ 77 skill workflows
-│   ├── commands/              ⌨️ 77 slash commands
+│   ├── skills/                🛠️ 78 skill workflows
+│   ├── commands/              ⌨️ 78 slash commands
 │   ├── rules/                 📏 11 coding standards
 │   └── modules/               🧩 22 pluggable theme modules
 │       ├── ...                22 modules total
@@ -211,7 +221,7 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 │   │   ├── ccgs-hooks.ts      🔗 Session lifecycle, validation
 │   │   ├── drift-detector.ts  🔍 Template drift detection
 │   │   ├── changelog-generator.ts 📝 Changelog generation
-│   │   └── tests/             🧪 18 test suites (158 tests)
+│   │   └── tests/             🧪 19 test suites (177 tests)
 │   └── modules/
 │       ├── install.mjs        CLI: add/remove/list modules
 │       ├── installed.json     Module manifest
@@ -226,6 +236,7 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 │   ├── pi-compatibility.md    🔧 Pi setup guide
 │   ├── pi-extensions.md       🧩 Pi extension reference
 │   ├── pi-workflow.md         🔄 Pi workflow differences
+│   ├── omp-compatibility.md   🔧 oh-my-pi setup guide
 │   ├── framework/             🏛️ OCGS framework reference docs & templates
 │   ├── architecture/          🏗️ ADRs
 │   └── engine-reference/      📚 Engine API reference
@@ -292,7 +303,7 @@ skills, commands, rules, and plugins.
 ├── 🎵  audio-director      ├── 🧪  qa-lead
 ├── 📖  narrative-director  ├── 📦  release-manager
 ├── 🎮  game-designer       └── 🌍  localization-lead
-└── ... (49 agents total)
+└── ... (52 agents total)
 ```
 
 ---

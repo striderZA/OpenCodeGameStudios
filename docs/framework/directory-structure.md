@@ -31,7 +31,7 @@
 │   │   ├── ccgs-hooks.ts       # Session lifecycle, validation
 │   │   ├── drift-detector.ts   # Template drift detection
 │   │   ├── changelog-generator.ts
-│   │   └── tests/              # 18 test suites (158 tests)
+│   │   └── tests/              # 19 test suites (177 tests)
 │   └── modules/
 │       ├── install.mjs          # CLI: add/remove/list modules
 │       └── installed.json       # Module manifest
