@@ -149,7 +149,7 @@ The [Autopilot](https://github.com/ramenvr/autopilot) addon, by the developers o
 
 **Requirements:**
 - Godot 4.7 or later. Autopilot's addon README documents this and tests on 4.7.2. The addon has no runtime version check.
-- OpenCode 2.2.5 or Pi 1.x. Autopilot's MCP wiring is verified on both. Other harnesses are not verified.
+- OpenCode 2.2.5, Pi 1.x or omp 18.16.0. Autopilot's MCP wiring is verified on all three. Other harnesses are not verified.
 - Autopilot's agent service and Bun.
 - Your own keys: a TypeSafe decision key and an LLM key, in Autopilot's `autopilot.env`.
 
@@ -158,7 +158,7 @@ The [Autopilot](https://github.com/ramenvr/autopilot) addon, by the developers o
 - Enable it in Project > Project Settings > Plugins, then commit the `project.godot` changes it makes.
 
 **Configuration:**
-- Add the `autopilot` server to your harness's MCP config, disabled by default. OpenCode: `opencode.json`. Pi: your user-level `~/.pi/agent/mcp.json`, with `exposure` set to `direct`. `/setup-engine` shows the block for your harness. Enable it for a session when you want to run `/autopilot-playtest`.
+- Add the `autopilot` server to your harness's MCP config, disabled by default. OpenCode: `opencode.json`. Pi: your user-level `~/.pi/agent/mcp.json`, with `exposure` set to `direct`. omp: `.omp/mcp.json` in the project. `/setup-engine` shows the block for your harness. Enable it for a session when you want to run `/autopilot-playtest`, then restart omp if you use it.
 - In the Autopilot dock's Privacy step, turn sharing off. It is on by default.
 - Exclude `addons/autopilot/*` from export presets.
 

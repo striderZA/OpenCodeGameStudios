@@ -8,9 +8,10 @@
 
 ## Decision
 
-Autopilot is an optional MCP tool, used from OpenCode V2:
+Autopilot is an optional MCP tool, used from OpenCode V2, Pi and omp:
 
 - `opencode.json`: `mcp.servers.autopilot` is `{"type": "local", "command": ["autopilot", "mcp"], "disabled": true, "codemode": false}`. A session enables it by setting `disabled` to `false`.
+- `.omp/mcp.json` (omp, project): `mcpServers.autopilot`, with `enabled` set to `false`. A session enables it by setting `enabled` to `true`, then restarting omp.
 - Skill `autopilot-playtest` in the `qa` module (`.agents/modules/qa/skills/`). Its Setup section holds the per-project steps.
 - Command `/autopilot-playtest` (`.agents/modules/qa/commands/`).
 - Reports go to `production/qa/playtests/autopilot-<date>-<slug>.md`, labelled as automated evidence.
@@ -58,14 +59,16 @@ Tested with OpenCode V2 2.2.5, installed from npm (`@opencode/cli`) into a scrat
 1. **Two tracked module trees.** `.opencode/modules/` (224 files; the installer reads it) and `.agents/modules/` (220 files) both exist. The V2 edits went to both where the same text existed. Consolidating them is a separate decision.
 2. **Windows symlinks.** On this checkout, `.opencode/skills`, `.opencode/commands`, `.opencode/agents`, and `.opencode/rules` are git symlinks checked out as text stubs. Skills still load from `.agents/skills/`. Command expansion may depend on `.opencode/commands/` (unverified).
 3. **Playtest folders.** `playtest-report` writes `production/qa/playtests/`. `gate-check` and `soak-test` use `production/playtests/`. `qa-plan`, `story-done`, and `test-evidence-review` use `production/session-logs/`. The gate artifact globs live in `.agents/modules/core/docs/workflow-catalog.yaml` and `tests/workflow/gates.mjs`, so consolidating them is a gate change.
-4. **Engine version.** Autopilot's Godot addon documents Godot 4.7 or later and is tested on 4.7.2 (`plugin/godot/README.md`). The addon has no runtime version check, so 4.6 is untested. `docs/engine-reference/godot/` is now pinned to 4.7.2. The Autopilot offer in `/setup-engine` is gated to a chosen engine of Godot, Godot 4.7+, and OpenCode or Pi.
+4. **Engine version.** Autopilot's Godot addon documents Godot 4.7 or later and is tested on 4.7.2 (`plugin/godot/README.md`). The addon has no runtime version check, so 4.6 is untested. `docs/engine-reference/godot/` is now pinned to 4.7.2. The Autopilot offer in `/setup-engine` is gated to a chosen engine of Godot, Godot 4.7+, and OpenCode, Pi or omp.
 5. **Not done:** excluding `addons/autopilot/*` from release presets, and creating the Godot project. Both need a game project.
 6. **Pre-existing, not changed here:** the plugin README names `session.compacted` for post-compaction notifications. The PR #108 review flagged a possible V2 event rename (`session.compaction.ended`).
 7. **Harness scope.** Autopilot's MCP wiring is verified on OpenCode 2.2.5, where a scripted-model run reached the real server, and on Pi 1.5.0. On Pi, `pi mcp list` showed a connection and 14 tools with `exposure: "direct"`, and `enabled: false` stayed disconnected. A scripted-model run under Pi offered the model 14 `mcp__autopilot__*` tools with `exposure: "direct"`, and the model called `mcp__autopilot__start_run`, which reached the real server and returned its not-running answer. With the default `codemode` exposure, the model was offered only `codemode`, so the Autopilot tools were not visible to it. The scripted model tests tool access, not model judgment; a real model run under Pi is not tested. Pi ignores a project `.pi/mcp.json` until the project is trusted, so the setup offer points to the user-level file. The installer skips MCP fragments for Pi. The godot-mcp and unity-mcp sections in `/setup-engine` name `pi.json` for Pi, but Pi reads `mcp.json`; those sections are wrong and are not changed here.
+8. **omp (oh-my-pi 18.16.0).** `.omp/mcp.json` holds `mcpServers.autopilot`, disabled. With the default agent directory and model, `enabled: true` and `autopilot` on PATH reached the real server: the model called `mcp__autopilot_start_run` and got the not-running answer. With `enabled: false`, the model reported no such tool. The `/mcp list` command is in omp's docs but was not run here. Isolating omp with `PI_CODING_AGENT_DIR` connected the server but offered its tools to nobody, so the checks use the default directory.
 
 ## Files changed
 
 - `opencode.json`: V2 schema, with the autopilot server disabled.
+- `.omp/mcp.json`: omp project MCP entry for the autopilot server, disabled.
 - `.opencode/modules/install.mjs`: MCP merge and removal under `mcp.servers`.
 - `.agents/modules/qa/` and `.agents/skills/autopilot-playtest/`: skill and command (module source and installed copy), `modulefile.yaml` and `installed.json` entries.
 - `.agents/modules/art/mcp/aseprite.json` and `.opencode/modules/art/mcp/aseprite.json`: fragment shape.

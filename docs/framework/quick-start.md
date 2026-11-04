@@ -242,7 +242,7 @@ If you already know what you need, jump directly to the relevant path:
     Then add the `mcp.servers.unity` block to your MCP config (`opencode.json` for OpenCode, `pi.json` for Pi) and set
     `disabled` to `false` once Unity Editor is running. See `/setup-engine` §7.4
     for full details.
-4c. **Optional: Autopilot playtesting (Godot 4.7+, OpenCode or Pi)** — Autopilot plays your game open in the Godot editor and reports what it finds. Its results are automated evidence, never a human playtest. Set it up in the Autopilot section of `/setup-engine` (OpenCode or Pi; other harnesses are not verified), or follow the Setup section of `/autopilot-playtest`. It needs the Autopilot addon, its agent service, and your own keys.
+4c. **Optional: Autopilot playtesting (Godot 4.7+, OpenCode, Pi or omp)** — Autopilot plays your game open in the Godot editor and reports what it finds. Its results are automated evidence, never a human playtest. Set it up in the Autopilot section of `/setup-engine` (OpenCode, Pi or omp; other harnesses are not verified), or follow the Setup section of `/autopilot-playtest`. It needs the Autopilot addon, its agent service, and your own keys.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
 6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
 7. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)
