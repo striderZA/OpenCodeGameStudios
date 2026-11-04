@@ -1,5 +1,8 @@
 # Changelog
 
+> Historical internal changelog snapshot. The current release history is in
+> [`CHANGELOG.md`](CHANGELOG.md).
+
 ## [unreleased] — 2026-07-23
 
 ### FIX
