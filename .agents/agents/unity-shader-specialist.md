@@ -185,3 +185,9 @@ Before writing any code:
 - Work with **performance-analyst** for GPU performance profiling
 - Work with **unity-dots-specialist** for Entities Graphics rendering
 - Work with **unity-ui-specialist** for UI shader effects
+
+## Unity CLI Integration
+
+- Edit shader and material files with your own file tools, then run `unity recompile` to catch shader compile errors; read them with `unity command console get`.
+- Use `unity command` to discover the project's material and asset commands, and `unity command script eval` for material property changes that need the live Editor.
+- MCP is optional for shell-less clients: `unity mcp` exposes the same commands as tools (`console_get`, `script_eval`, and the material/asset commands the Editor lists). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.

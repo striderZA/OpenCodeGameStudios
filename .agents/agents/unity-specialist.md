@@ -133,11 +133,6 @@ Before writing any code:
 - Using `DontDestroyOnLoad` excessively — prefer a scene management pattern
 - Ignoring script execution order for init-dependent systems
 
-## MCP Integration
-
-- Use the unity-mcp server for Unity project inspection and asset management when available
-- MCP server provides: scene hierarchy, component inspection, asset database queries
-
 ## Delegation Map
 
 **Reports to**: `technical-director` (via `lead-programmer`)
@@ -186,3 +181,9 @@ Always involve this agent when:
 - Implementing UI with UI Toolkit or UGUI
 - Building for any platform
 - Optimizing with Unity-specific tools
+
+## Unity CLI Integration
+
+- Use the Unity CLI as the default editor bridge: `unity status` confirms the Editor is connected, then `unity command` lists the commands the project's Pipeline package exposes.
+- Audit state and verify behavior with `unity command scene get_hierarchy` and `unity command console get`; use `unity command script eval` for in-editor checks, and `unity recompile` after C# changes.
+- MCP is optional and only for clients without shell access: `unity mcp` exposes the same commands as tools (`scene_get_hierarchy`, `console_get`, `script_eval`). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.

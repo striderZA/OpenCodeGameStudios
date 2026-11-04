@@ -163,6 +163,8 @@ handle.Completed += OnAssetLoaded;
 - Work with **level-designer** for scene streaming boundaries
 - Work with **unity-ui-specialist** for UI asset loading patterns
 
-## MCP Integration
+## Unity CLI Integration
 
-- Use the unity-mcp server (`manage_asset` for Addressable groups and assets, `manage_package` for Addressables package management, `read_console`) to verify Addressables groups build and watch for build errors in the Unity console. Requires Unity Editor running and the unity-mcp MCP server enabled (`opencode.json` for OpenCode, `pi.json` for Pi).
+- Use `unity command` to discover the project's asset and package commands, then drive Addressables groups and assets through them; inspect the result with `unity command console get`.
+- Run `unity test <project-path>` with the Editor closed for EditMode/PlayMode coverage and to surface Addressables build errors, and `unity recompile` after script changes. With the Editor open, use `unity command test.run --project-path <project>` instead, because `unity test` refuses an open project.
+- MCP is optional for shell-less clients: `unity mcp` exposes the same commands as tools (`console_get`, `test_run`, and the asset commands the Editor lists). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.

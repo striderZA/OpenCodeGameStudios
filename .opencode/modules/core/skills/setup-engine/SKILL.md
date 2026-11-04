@@ -414,7 +414,7 @@ npx @coding-solo/godot-mcp@latest
 ```
 
 **MCP Configuration:**
-Add the following to your harness MCP config (`opencode.json` for OpenCode, `pi.json` for Pi):
+Add the following to your harness MCP config (`opencode.json` for OpenCode, `~/.pi/agent/mcp.json` for Pi):
 ```json
 {
   "mcpServers": {
@@ -440,62 +440,135 @@ Optionally set `GODOT_PATH` if the Godot binary is not in PATH:
 }
 ```
 
-### 7.4. Configure unity-mcp (Optional — Unity Only)
+### 7.4. Configure Unity agent access (Optional — Unity Only)
 
-> **What it is:** A bridge between AI agents and Unity Editor via MCP, exposing ~50+ tools for scene, script, and asset management. Maintained by CoplayDev, MIT licensed. See [github.com/CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp).
+> **What it is:** Unity's official agent integration. The [Unity CLI](https://docs.unity.com/unity-cli) drives a running Unity 6+ Editor through the project's `com.unity.pipeline` package, and its built-in `unity mcp` command exposes the same Editor commands to MCP clients. This replaces the community CoplayDev `unity-mcp` package the framework previously recommended. Unity deprecated the in-Editor MCP server in `com.unity.ai.assistant`; the CLI is its supported replacement, and third-party MCP packages are unaffected.
 
 #### Prerequisites (must be installed first)
 
-- **Unity 2021.3 LTS or newer** — [Download Unity](https://unity.com/download)
-- **Python 3.10+** with `uv` — install `uv` via `pip install uv` (or `winget install astral-sh.uv` on Windows)
-- **MCP for Unity package** installed in your Unity project (see below)
+- **Unity 6.0 (6000.0) or newer** — the Pipeline package requires Unity 6.0+ to drive the Editor.
+- **Unity CLI** — the Hub installs and updates it by default. Verify with `unity --version`; if missing, install it:
+  - Windows (PowerShell): `irm https://unity.com/install.ps1 | iex`
+  - macOS / Linux: `curl -fsSL https://unity.com/install.sh | bash`
+- **Pipeline package** in the Unity project — `unity pipeline install --project-path <project>` (or add `com.unity.pipeline` through Package Manager).
 
-#### Install steps
+#### Recommended setup (agents that can run shell commands)
 
-In your Unity project, open **Window → Package Manager**, click the **`+`** button, choose **Add package from git URL...**, and paste:
+OCGS agents run shell commands, so use the CLI directly. It exposes more Editor commands than the MCP server and needs no server process.
 
+1. Open the project in Unity 6+ and confirm the Editor is reachable:
+
+   ```bash
+   unity status --project-path /path/to/MyProject
+   ```
+
+   Expect `state: ready` (or a list of running Editors). `unity status` also reports Safe Mode and its compile errors.
+
+2. Discover the commands this Editor exposes, then drive it:
+
+   ```bash
+   unity command --project-path /path/to/MyProject
+   unity command scene get_hierarchy --project-path /path/to/MyProject
+   unity command console get --project-path /path/to/MyProject
+   unity command editor.playmode start --project-path /path/to/MyProject
+   unity recompile --strict --project-path /path/to/MyProject
+   ```
+
+   `unity test` starts its own batch Editor and refuses a project that is already open in an Editor. To run EditMode/PlayMode tests, close the Editor and run `unity test /path/to/MyProject`, or run the Pipeline's test command in the open Editor (`unity command test.run --project-path /path/to/MyProject`; `run_tests` on older packages).
+
+   Command names come from the project's Pipeline package. Use `unity command` rather than guessing, and `unity commands --grep <term>` to search the CLI, plugin and Editor command lists.
+
+3. Optionally install Unity's own agent skills where supported:
+
+   ```bash
+   unity skill install --list
+   unity skill install opencode        # OpenCode
+   unity skill install claude-code     # Claude Code
+   ```
+
+   OpenCode also has `unity setup opencode`, which installs the skills and a session plugin. `unity setup all` configures every detected client and deliberately does **not** register an MCP server for clients that can run shell commands. Pi and omp are not supported by `unity skill install`; use the CLI directly with the Unity specialist agents.
+
+#### MCP fallback (clients without shell access, or if you prefer MCP tools)
+
+`unity mcp` (Unity CLI 0.1.0-beta.8 or later) is the CLI's own stdio MCP server, not the deprecated in-Editor server. It starts even when no Editor is running and exposes a `unity-cli-status` tool until one connects. Tool names are the Editor command names with spaces and dots replaced by underscores (`scene_get_hierarchy`, `console_get`, `script_eval`); check `tools/list` for the names your Editor exposes, because an older Pipeline package may use flat names such as `eval` and `run_tests`.
+
+Register it automatically where supported:
+
+```bash
+unity mcp configure --list          # supported clients and config paths
+unity mcp configure claude-code     # also: cursor, vscode, windsurf, cline, codex, zed, ...
 ```
-https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
+
+`unity mcp configure` supports 16 clients but not OpenCode, Pi, or omp. It can also remove an entry left by the deprecated in-Editor server:
+
+```bash
+unity mcp configure cursor --replace-legacy
 ```
 
-> Use `#beta` instead of `#main` for the latest beta features. `#main` is recommended for stability and currently tracks the v9.7.0 release.
+If you are upgrading from the framework's previous CoplayDev `unity-mcp` setup, delete the old `"unity"` entry that points at `http://localhost:8080/mcp` from your harness config — `opencode.json`, Pi's `~/.pi/agent/mcp.json` or `.pi/mcp.json`, or `.omp/mcp.json` — by hand before adding the block below. `--replace-legacy` only removes entries left by Unity's deprecated in-Editor AI Assistant relay, and `unity mcp configure` does not support OpenCode, Pi, or omp.
 
-After the package imports, MCP for Unity opens a **setup wizard** automatically:
+Manual config for the harnesses OCGS documents:
 
-1. Confirm Python and `uv` are installed — the wizard guides you through both if missing.
-2. Click **Done**. Once dependencies are green, a list of detected MCP clients appears.
-3. Pick the clients you want to configure and click **Configure Selected**.
-
-> **Note:** The wizard's per-client list (Claude Desktop, Cursor, Claude Code, VS Code, Windsurf, Cline, etc.) does not explicitly mention OpenCode or Pi. The wizard MAY auto-configure `opencode.json` or `pi.json` (verify by checking the file after); if it does not, use the manual config below.
-
-#### Manual MCP config (reliable fallback)
-
-Add this block to `mcp.servers` in your harness config (`opencode.json` for OpenCode, `pi.json` for Pi):
+**OpenCode** — add to `mcp.servers` in `opencode.json`:
 
 ```json
 "unity": {
-  "type": "remote",
-  "url": "http://localhost:8080/mcp",
-  "disabled": true
+  "type": "local",
+  "command": ["unity", "mcp"],
+  "disabled": true,
+  "codemode": false
 }
 ```
 
-`disabled: true` keeps it off (servers connect automatically otherwise). Set `disabled` to `false` once Unity Editor is running and you want OCGS agents to use unity-mcp tools.
+**Pi** — add to the user-level `~/.pi/agent/mcp.json` (Pi ignores a project `.pi/mcp.json` until the project is trusted). `exposure: "direct"` is required; the default `codemode` exposure hides the tools from the model:
 
-> ⚠ **Unity Editor must be running** before OCGS agents can use unity-mcp tools. If the Editor is closed, MCP calls will fail with a connection error. Open your project in Unity, then continue.
+```json
+{
+  "mcpServers": {
+    "unity": {
+      "command": "unity",
+      "args": ["mcp"],
+      "enabled": false,
+      "exposure": "direct"
+    }
+  }
+}
+```
+
+**omp** — add to `.omp/mcp.json` in the project:
+
+```json
+{
+  "mcpServers": {
+    "unity": {
+      "type": "stdio",
+      "command": "unity",
+      "args": ["mcp"],
+      "enabled": false
+    }
+  }
+}
+```
+
+Keep the entry disabled until you want a session to use MCP tools, then restart the client. Pass `--project-path <project>` in `args` when the client starts outside the Unity project or more than one Editor is open. Add `--cli-tools` for six read-only CLI tools that work with no Editor running, and `--tools` / `--exclude-tools` to keep the tool list small.
+
+> ⚠ **The Unity Editor must be running** for Editor commands to work. With no Editor, `unity status` reports none and MCP sessions expose only `unity-cli-status`; start the Editor and open the project, then retry.
 
 #### Verify
 
-In a session where `disabled` is `false`, call any unity-mcp tool (e.g. `list_scenes`) via OCGS. Expect a list of scenes from your open Unity project.
+- CLI: `unity status --project-path <project>` reports `state: ready`, and `unity command --project-path <project>` lists commands.
+- MCP: with the entry enabled and the client restarted, call `unity-cli-status`, then `scene_get_hierarchy`. A connected Editor adds its commands as tools automatically.
 
 #### Troubleshooting
 
-- **Bridge not connecting** — Open **Window → MCP for Unity** and check the status panel. Restart Unity if needed.
-- **Server not starting** — Verify `uv --version` works in your terminal. Check the MCP for Unity log for errors.
-- **Client not connecting** — Confirm the HTTP server is running on `localhost:8080` and the URL in your client config matches.
-- **Port 8080 conflict** — Open Unity's MCP for Unity window and change the port; update the `url` in your harness MCP config to match.
+- **`unity` not found** — reopen the shell after installing; check `unity --version`.
+- **No Editor found** — the project is not open in Unity 6+, the Pipeline package is missing (`unity pipeline install`), or the Editor is still loading. Check `unity status` and the Editor console.
+- **Safe Mode** — a compile error stops the Pipeline package from loading. `unity status` lists the errors; fix them, then retry `unity recompile`.
+- **MCP client shows only `unity-cli-status`** — no Editor is connected. Start Unity, open the project, then call `unity-cli-status` again; the client picks up the new tools through `tools/list_changed`.
+- **Two Unity servers / duplicate tools** — an old `unity` entry is still present. `unity mcp configure <client> --replace-legacy` removes a relay entry left by Unity's deprecated in-Editor server in the 16 clients it supports; for OpenCode, Pi, and omp, delete the old entry by hand.
+- **Pi shows no tools** — set `exposure: "direct"` in the Pi entry.
 
----
+> **Unity 2021.3–5.x:** the Unity CLI can only drive Unity 6.0+ Editors. On older projects, the community [MCP for Unity](https://github.com/CoplayDev/unity-mcp) package still works and is unaffected by Unity's deprecation, but it is no longer the framework default. Prefer upgrading to Unity 6 when you can.
 
 ### 7.5. Configure Autopilot Playtesting (Optional — Godot 4.7+, OpenCode, Pi or omp)
 

@@ -172,3 +172,9 @@ handle.Completed += OnAssetLoaded;
 - Work with **devops-engineer** for CDN and content delivery pipeline
 - Work with **level-designer** for scene streaming boundaries
 - Work with **unity-ui-specialist** for UI asset loading patterns
+
+## Unity CLI Integration
+
+- Use `unity command` to discover the project's asset and package commands, then drive Addressables groups and assets through them; inspect the result with `unity command console get`.
+- Run `unity test <project-path>` with the Editor closed for EditMode/PlayMode coverage and to surface Addressables build errors, and `unity recompile` after script changes. With the Editor open, use `unity command test.run --project-path <project>` instead, because `unity test` refuses an open project.
+- MCP is optional for shell-less clients: `unity mcp` exposes the same commands as tools (`console_get`, `test_run`, and the asset commands the Editor lists). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.

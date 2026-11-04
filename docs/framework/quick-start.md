@@ -233,15 +233,20 @@ If you already know what you need, jump directly to the relevant path:
    Once configured, run `/automated-smoke-test` to verify the project launches
    without errors.
 
-4b. **Enhance with unity-mcp (Unity only)** — Install the CoplayDev unity-mcp
-    package in your Unity project for interactive AI-assisted dev:
+4b. **Enhance with the Unity CLI (Unity only) — recommended** — Unity's
+    official agent integration drives a running Unity 6+ Editor through the
+    project's `com.unity.pipeline` package:
+    ```bash
+    unity status --project-path /path/to/MyProject   # state: ready
+    unity command --project-path /path/to/MyProject  # list Editor commands
     ```
-    # In Unity: Window → Package Manager → + → Add package from git URL
-    # Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
-    ```
-    Then add the `mcp.servers.unity` block to your MCP config (`opencode.json` for OpenCode, `pi.json` for Pi) and set
-    `disabled` to `false` once Unity Editor is running. See `/setup-engine` §7.4
-    for full details.
+    If `unity` is missing, install it: `irm https://unity.com/install.ps1 | iex`
+    (Windows) or `curl -fsSL https://unity.com/install.sh | bash` (macOS/Linux).
+    For OpenCode, `unity setup opencode` also installs Unity's skills.
+    Agents that can run shell commands should use the CLI directly; MCP
+    (`unity mcp`) is only needed for clients without shell access, or when you
+    prefer MCP tools. See `/setup-engine`
+    §7.4 for the MCP fallback and harness-specific config.
 4c. **Optional: Autopilot playtesting (Godot 4.7+, OpenCode, Pi or omp)** — Autopilot plays your game open in the Godot editor and reports what it finds. Its results are automated evidence, never a human playtest. Set it up in the Autopilot section of `/setup-engine` (OpenCode, Pi or omp; other harnesses are not verified), or follow the Setup section of `/autopilot-playtest`. It needs the Autopilot addon, its agent service, and your own keys.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
 6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
@@ -326,7 +331,7 @@ Available modules: art, design, architecture, stories, programming, ui, audio, n
 ```
 AGENTS.md                          -- Master config (read this first)
 .opencode/  (opencode.json at root) -- OpenCode settings & plugin config
-.pi/           (pi.json at root)       -- Pi MCP & settings
+.pi/           (settings, extensions; MCP at ~/.pi/agent/mcp.json) -- Pi settings
   extensions/                         -- 7 Pi extensions (auto-discovered)
   agents/                          -- Agent definitions (YAML frontmatter)
   skills/                          -- Skill definitions (YAML frontmatter)
