@@ -47,6 +47,25 @@ skills:
 | `ocgs-question` | Registers the `question` tool (TUI picker, inactive by default on omp). Also logs omp `ask` answers to `agent-decisions.jsonl` through a `tool_result` hook | Row 10 (decision append, `rpc-ui`) |
 | `ocgs-validate` | Validates `.agents/` content on startup and after writes | Rows 7, 8 |
 
+## MCP Servers
+
+omp reads MCP servers from `mcpServers` in `.omp/mcp.json` (project) and `~/.omp/agent/mcp.json` (user). This repository ships one entry, `autopilot`, disabled:
+
+```json
+{
+  "mcpServers": {
+    "autopilot": {
+      "type": "stdio",
+      "command": "autopilot",
+      "args": ["mcp"],
+      "enabled": false
+    }
+  }
+}
+```
+
+To run `/autopilot-playtest`, set `enabled` to `true` and restart omp. Its tools are named `mcp__autopilot_<tool>`, for example `mcp__autopilot_start_run`. The `autopilot` command must be on PATH. In our test, the OpenCode V2 `mcp.servers` entry in `opencode.json` gave omp no Autopilot tools, so `.omp/mcp.json` is the entry that applies.
+
 ## What Does Not Carry Over
 
 | Item | On Pi | On omp | Reason |
@@ -138,6 +157,7 @@ These were found while running the Pi baseline. They are Pi 0.85.1 behavior, not
 - `ocgs-hooks` loads on omp: `omp --mode rpc` with no prompt exits 0 with empty stderr, the factory's `Plugin loaded` audit line appears, and the `session_start` summary is notified. Model-driven behavior (compaction injection, notification UI) was not run.
 - `npm run test:framework` passes.
 - The acceptance runs use `--max-cost 0.10` on every omp model call. The `ocgs-verify` profile is not used; see [Deviations](#deviations-from-the-plan).
+- MCP (Autopilot): with omp's default agent directory and model, `mcp__autopilot_start_run` ran with `enabled: true` and returned the real server's not-running answer, and with `enabled: false` the model reported no such tool. A minimal stdio probe server also ran as `mcp__probe_ping` in the same setup. An isolated `PI_CODING_AGENT_DIR` connected the server but offered no MCP tools to the model, so these checks use the default directory.
 
 ## Tested Versions
 

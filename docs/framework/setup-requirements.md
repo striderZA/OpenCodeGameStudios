@@ -120,17 +120,17 @@ Then click **Window → MCP for Unity → "Configure All Detected Clients"** to 
 
 **Configuration:**
 
-Add this block to the `mcp` object in your `opencode.json` (the wizard may auto-configure, but manual is the reliable fallback):
+Add this block to `mcp.servers` in your `opencode.json` (the wizard may auto-configure, but manual is the reliable fallback):
 
 ```json
 "unity": {
-  "type": "local",
+  "type": "remote",
   "url": "http://localhost:8080/mcp",
-  "enabled": false
+  "disabled": true
 }
 ```
 
-Flip `enabled` to `true` once Unity Editor is running.
+Set `disabled` to `false` once Unity Editor is running.
 
 > ⚠ **Unity Editor must be running** before OCGS agents can use unity-mcp tools. If the Editor is closed, MCP calls will fail with a connection error. Open your project in Unity, then continue.
 
@@ -142,3 +142,26 @@ Flip `enabled` to `true` once Unity Editor is running.
 - `read_console` — Editor console output (errors, warnings, compile status)
 - `run_tests` — async test execution (EditMode / PlayMode)
 - `batch_execute` — multiple MCP commands in a single batch (10-100x faster)
+
+### Autopilot (Optional — Godot 4.7+ Only)
+
+The [Autopilot](https://github.com/ramenvr/autopilot) addon, by the developers of Aura (Apache-2.0), plays your game open in the Godot editor and reports what it finds. Its results are automated evidence, never a human playtest.
+
+**Requirements:**
+- Godot 4.7 or later. Autopilot's addon README documents this and tests on 4.7.2. The addon has no runtime version check.
+- OpenCode 2.2.5, Pi 1.x or omp 18.16.0. Autopilot's MCP wiring is verified on all three. Other harnesses are not verified.
+- Autopilot's agent service and Bun.
+- Your own keys: a TypeSafe decision key and an LLM key, in Autopilot's `autopilot.env`.
+
+**Installation:**
+- Install the addon from Autopilot's download into your game project's `addons/autopilot/`. Do not copy it into this repository.
+- Enable it in Project > Project Settings > Plugins, then commit the `project.godot` changes it makes.
+
+**Configuration:**
+- Add the `autopilot` server to your harness's MCP config, disabled by default. OpenCode: `opencode.json`. Pi: your user-level `~/.pi/agent/mcp.json`, with `exposure` set to `direct`. omp: `.omp/mcp.json` in the project. `/setup-engine` shows the block for your harness. Enable it for a session when you want to run `/autopilot-playtest`, then restart omp if you use it.
+- In the Autopilot dock's Privacy step, turn sharing off. It is on by default.
+- Exclude `addons/autopilot/*` from export presets.
+
+**Notes:**
+- The editor must be open with the Autopilot dock connected, so runs are not CI-ready.
+- Full steps: the Setup section of `/autopilot-playtest`.

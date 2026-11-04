@@ -9,7 +9,7 @@
       "-m",
       "aseprite_mcp"
     ],
-    "enabled": true,
+    "codemode": false,
     "environment": {
       "ASEPRITE_PATH": "{env:ASEPRITE_PATH}"
     }

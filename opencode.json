@@ -5,7 +5,7 @@
     "./.opencode/plugins/drift-detector.ts",
     "./.opencode/plugins/changelog-generator.ts"
   ],
-  "command": {
+  "commands": {
     "hybrid-prototype": {
       "template": "Run the hybrid-prototype skill: load .agents/skills/hybrid-prototype/SKILL.md and follow the fast-lane prototype workflow. Concept: $ARGUMENTS",
       "description": "Fast-lane prototype for discovery phase — build a playable prototype in 2-3 days with minimal process overhead.",
@@ -13,54 +13,60 @@
     }
   },
   "mcp": {
-    "aseprite": {
-      "type": "local",
-      "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"],
-      "enabled": true,
-      "environment": {
-        "ASEPRITE_PATH": "{env:ASEPRITE_PATH}"
+    "servers": {
+      "autopilot": {
+        "type": "local",
+        "command": ["autopilot", "mcp"],
+        "disabled": true,
+        "codemode": false
+      },
+      "aseprite": {
+        "type": "local",
+        "command": ["uv", "--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"],
+        "codemode": false,
+        "environment": {
+          "ASEPRITE_PATH": "{env:ASEPRITE_PATH}"
+        }
+      },
+      "godot": {
+        "type": "local",
+        "command": ["npx", "@coding-solo/godot-mcp"],
+        "disabled": true,
+        "codemode": false,
+        "environment": {
+          "GODOT_PATH": "{env:GODOT_PATH}",
+          "DEBUG": "{env:DEBUG}"
+        }
+      },
+      "unity": {
+        "type": "remote",
+        "url": "http://localhost:8080/mcp",
+        "disabled": true,
+        "codemode": false
       }
-    },
-    "godot": {
-      "type": "local",
-      "command": ["npx", "@coding-solo/godot-mcp"],
-      "enabled": false,
-      "environment": {
-        "GODOT_PATH": "{env:GODOT_PATH}",
-        "DEBUG": "{env:DEBUG}"
-      }
-    },
-    "unity": {
-      "type": "local",
-      "url": "http://localhost:8080/mcp",
-      "enabled": false
     }
   },
-  "permission": {
-    "bash": {
-      "git status*": "allow",
-      "git diff*": "allow",
-      "git log*": "allow",
-      "git branch*": "allow",
-      "git rev-parse*": "allow",
-      "ls *": "allow",
-      "dir *": "allow",
-      "python -m json.tool*": "allow",
-      "python -m pytest*": "allow",
-      "py -m pytest*": "allow",
-      "rm -rf *": "deny",
-      "git push --force*": "deny",
-      "git push -f *": "deny",
-      "git reset --hard*": "deny",
-      "git clean -f*": "deny",
-      "sudo *": "deny",
-      "chmod 777*": "deny",
-      "*>.env*": "deny",
-      "cat *.env*": "deny",
-      "type *.env*": "deny"
-    },
-    "read": {
-      "**/.env*": "deny"
-    }
-  }
+  "permissions": [
+    { "action": "shell", "resource": "git status *", "effect": "allow" },
+    { "action": "shell", "resource": "git diff *", "effect": "allow" },
+    { "action": "shell", "resource": "git log *", "effect": "allow" },
+    { "action": "shell", "resource": "git branch *", "effect": "allow" },
+    { "action": "shell", "resource": "git rev-parse *", "effect": "allow" },
+    { "action": "shell", "resource": "ls *", "effect": "allow" },
+    { "action": "shell", "resource": "dir *", "effect": "allow" },
+    { "action": "shell", "resource": "python -m json.tool *", "effect": "allow" },
+    { "action": "shell", "resource": "python -m pytest *", "effect": "allow" },
+    { "action": "shell", "resource": "py -m pytest *", "effect": "allow" },
+    { "action": "shell", "resource": "rm -rf *", "effect": "deny" },
+    { "action": "shell", "resource": "git push --force *", "effect": "deny" },
+    { "action": "shell", "resource": "git push -f *", "effect": "deny" },
+    { "action": "shell", "resource": "git reset --hard *", "effect": "deny" },
+    { "action": "shell", "resource": "git clean -f *", "effect": "deny" },
+    { "action": "shell", "resource": "sudo *", "effect": "deny" },
+    { "action": "shell", "resource": "chmod 777 *", "effect": "deny" },
+    { "action": "shell", "resource": "*>.env*", "effect": "deny" },
+    { "action": "shell", "resource": "cat *.env*", "effect": "deny" },
+    { "action": "shell", "resource": "type *.env*", "effect": "deny" },
+    { "action": "read", "resource": "*.env*", "effect": "deny" }
+  ]
 }

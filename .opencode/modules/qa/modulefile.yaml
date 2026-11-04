@@ -7,10 +7,10 @@ provides:
   skills: [team-qa, qa-plan, smoke-check, soak-test, regression-suite, test-setup,
            test-helpers, test-flakiness, test-evidence-review, automated-smoke-test,
            bug-report, bug-triage, security-audit, perf-profile, team-polish,
-           skill-test, skill-improve]
+           skill-test, skill-improve, autopilot-playtest]
   commands: [team-qa, qa-plan, smoke-check, soak-test, regression-suite, test-setup,
              test-helpers, test-flakiness, test-evidence-review, bug-report, bug-triage,
-             security-audit, team-polish]
+             security-audit, team-polish, autopilot-playtest]
   rules: [test-standards]
 plugged-into:
   engines: []

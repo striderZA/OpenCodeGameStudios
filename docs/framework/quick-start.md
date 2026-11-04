@@ -143,6 +143,7 @@ Ask yourself: "What department would handle this in a real studio?"
 | `/bug-triage` | Re-prioritize open bugs, assign to sprints, surface systemic trends |
 | `/smoke-check` | Run critical path smoke test gate before QA hand-off (PASS/FAIL) |
 | `/automated-smoke-test` | Launch the project via godot-mcp and check for startup errors |
+| `/autopilot-playtest` | Playtest the open Godot game with Autopilot (optional; the server is disabled by default) |
 | `/soak-test` | Generate a soak test protocol for extended play sessions |
 | `/regression-suite` | Map coverage to GDD critical paths, flag gaps, maintain regression suite |
 | `/test-setup` | Scaffold test framework + CI pipeline for the project's engine (run once) |
@@ -238,9 +239,10 @@ If you already know what you need, jump directly to the relevant path:
     # In Unity: Window → Package Manager → + → Add package from git URL
     # Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
     ```
-    Then add the `mcp.unity` block to your MCP config (`opencode.json` for OpenCode, `pi.json` for Pi) and set
-    `enabled: true` once Unity Editor is running. See `/setup-engine` §7.4
+    Then add the `mcp.servers.unity` block to your MCP config (`opencode.json` for OpenCode, `pi.json` for Pi) and set
+    `disabled` to `false` once Unity Editor is running. See `/setup-engine` §7.4
     for full details.
+4c. **Optional: Autopilot playtesting (Godot 4.7+, OpenCode, Pi or omp)** — Autopilot plays your game open in the Godot editor and reports what it finds. Its results are automated evidence, never a human playtest. Set it up in the Autopilot section of `/setup-engine` (OpenCode, Pi or omp; other harnesses are not verified), or follow the Setup section of `/autopilot-playtest`. It needs the Autopilot addon, its agent service, and your own keys.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
 6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies
 7. **Design each system** — Run `/design-system [system-name]` (or `/map-systems next`)

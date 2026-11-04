@@ -1,6 +1,6 @@
 # Available Skills (Slash Commands)
 
-77 slash commands organized by phase. Each skill belongs to a **module** under
+78 slash commands organized by phase. Each skill belongs to a **module** under
 `.agents/modules/<name>/skills/`. Install only the modules you need:
 `node .opencode/modules/install.mjs add <name>`. Type `/` in OpenCode to access
 any available command.
@@ -85,6 +85,7 @@ any available command.
 | Command | Purpose |
 |---------|---------|
 | `/automated-smoke-test` | Run an automated smoke test using the godot-mcp server. Launches the project, captures debug output, and checks for errors or crashes. |
+| `/autopilot-playtest` | Playtest the open Godot game with Autopilot's MCP server. Optional: the server is disabled by default. Writes a report to `production/qa/playtests/`. Automated runs never count as human playtest sessions. |
 | `/qa-plan` | Generate a QA test plan for a sprint or feature |
 | `/smoke-check` | Run critical path smoke test gate before QA hand-off |
 | `/soak-test` | Generate a soak test protocol for extended play sessions |
