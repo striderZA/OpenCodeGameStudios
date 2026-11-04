@@ -2,6 +2,7 @@ extensions:
   - ./.pi/extensions/ocgs-audit
   - ./.pi/extensions/ocgs-changelog
   - ./.pi/extensions/ocgs-drift-detector
+  - ./.pi/extensions/ocgs-hooks
   - ./.pi/extensions/ocgs-path-guard
   - ./.pi/extensions/ocgs-question
   - ./.pi/extensions/ocgs-validate
