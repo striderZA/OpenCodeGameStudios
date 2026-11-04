@@ -155,24 +155,27 @@ export default function (pi: ExtensionAPI) {
 	const recentPaths: string[] = [];
 
 	pi.on("tool_call", async (event: ToolCallEvent, _ctx) => {
-		let filePath: string | null = null;
+		// omp can pass a missing or non-object input; an exception here would block the tool.
+		const input = (event.input ?? {}) as Record<string, unknown>;
+		const filePaths: string[] = [];
 
-		if (
-			(event.toolName === "read" ||
-				event.toolName === "edit" ||
-				event.toolName === "write") &&
-			event.input.path
-		) {
-			filePath = event.input.path as string;
-		} else if (
-			event.toolName === "bash" &&
-			typeof event.input.command === "string"
-		) {
-			const match = event.input.command.match(/(?:^|\s)([a-z_][\w\-./]+)/);
-			if (match) filePath = match[1];
+		if (event.toolName === "read" || event.toolName === "write") {
+			if (typeof input.path === "string" && input.path) filePaths.push(input.path);
+		} else if (event.toolName === "edit") {
+			if (typeof input.path === "string" && input.path) {
+				filePaths.push(input.path);
+			} else if (typeof input.input === "string") {
+				// omp's hashline edit has no path field; each edited file starts with a [PATH#TAG] header.
+				for (const match of input.input.matchAll(/^\[([^\]\n#]+)#[0-9A-Fa-f]{4}\]/gm)) {
+					filePaths.push(match[1]);
+				}
+			}
+		} else if (event.toolName === "bash" && typeof input.command === "string") {
+			const match = input.command.match(/(?:^|\s)([a-z_][\w\-./]+)/);
+			if (match) filePaths.push(match[1]);
 		}
 
-		if (filePath) {
+		for (const filePath of filePaths) {
 			recentPaths.push(filePath);
 			if (recentPaths.length > MAX_TRACKED_PATHS) recentPaths.shift();
 		}
@@ -189,6 +192,17 @@ export default function (pi: ExtensionAPI) {
 				"ocgs-rules",
 				`rules: ${matched.map((r) => r.name).join(", ")}`,
 			);
+		}
+
+		// Pi passes systemPrompt as a string; omp passes string[] and expects string[] back.
+		const systemPrompt: unknown = event.systemPrompt;
+		if (Array.isArray(systemPrompt)) {
+			return {
+				systemPrompt: [
+					...systemPrompt,
+					"## Active OCGS Path-Scoped Rules\n\n" + augmentation,
+				],
+			};
 		}
 
 		return {

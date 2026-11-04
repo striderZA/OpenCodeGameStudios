@@ -49,6 +49,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 │   ├── pi-compatibility.md      # Pi setup guide
 │   ├── pi-extensions.md         # Pi extension reference
 │   ├── pi-workflow.md           # Pi workflow differences
+│   ├── omp-compatibility.md     # oh-my-pi (omp) setup guide
 │   ├── authoring-agents.md      # Agent creation guide
 │   ├── authoring-skills.md      # Skill creation guide
 │   ├── hybrid-workflow.md       # Hybrid workflow reference
@@ -182,14 +183,23 @@ See [docs/pi-compatibility.md](docs/pi-compatibility.md) for the full Pi setup g
 [docs/pi-extensions.md](docs/pi-extensions.md) for the extension reference, and
 [docs/pi-workflow.md](docs/pi-workflow.md) for workflow differences.
 
-### Key commands in both harnesses
+### oh-my-pi (omp)
 
-| Command | OpenCode | Pi |
-|---------|----------|----|
-| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) |
-| Peer review | — | `/consult <agent>` (ocgs-delegation extension) |
-| Decision capture | question tool | question tool (ocgs-question with TUI) |
-| Skill invocation | `/command-name` | `/command-name` (via prompt templates) |
+Start omp from the project root:
+```bash
+omp
+```
+
+See [docs/omp-compatibility.md](docs/omp-compatibility.md) for omp setup, extension wiring, and known gaps versus Pi.
+
+### Key commands by harness
+
+| Command | OpenCode | Pi | oh-my-pi (omp) |
+|---------|----------|----|----------------|
+| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) | omp's built-in task tool; OCGS roster not loaded |
+| Peer review | — | `/consult <agent>` (ocgs-delegation extension) | — (ocgs-delegation not wired) |
+| Decision capture | question tool | question tool (ocgs-question with TUI) | ask (omp built-in); answers logged to `agent-decisions.jsonl` by ocgs-question |
+| Skill invocation | `/command-name` | `/command-name` (via prompt templates) | `/skill:<name>` (`skills.enableSkillCommands`) |
 
 ## Available Commands
 
