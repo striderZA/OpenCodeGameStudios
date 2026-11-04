@@ -177,16 +177,52 @@ for (const d of coreDocs) {
 }
 console.log(`  docs: ${coreDocs.length}`);
 
-console.log("\n=== Creating MCP Fragment ===");
-const mcpDst = join(DST, "art", "mcp", "aseprite.json");
-writeFileSync(mcpDst, JSON.stringify({
-  aseprite: {
-    type: "local",
-    command: ["uv", "--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"],
-    enabled: true,
-    environment: { ASEPRITE_PATH: "{env:ASEPRITE_PATH}" },
+console.log("\n=== Creating MCP Fragments ===");
+const ASEPRITE_ARGS = ["--directory", "tools/aseprite-mcp", "run", "-m", "aseprite_mcp"];
+const MCP_FRAGMENTS = {
+  "opencode.json": {
+    aseprite: {
+      type: "local",
+      command: ["uv", ...ASEPRITE_ARGS],
+      codemode: false,
+      environment: { ASEPRITE_PATH: "{env:ASEPRITE_PATH}" },
+    },
   },
-}, null, 2) + "\n");
-console.log("  art/mcp/aseprite.json created");
+  "pi.json": {
+    aseprite: {
+      command: "uv",
+      args: ASEPRITE_ARGS,
+      env: { ASEPRITE_PATH: "${ASEPRITE_PATH}" },
+      exposure: "direct",
+    },
+  },
+  "omp.json": {
+    aseprite: {
+      type: "stdio",
+      command: "uv",
+      args: ASEPRITE_ARGS,
+      env: { ASEPRITE_PATH: "${ASEPRITE_PATH}" },
+    },
+  },
+  "claude.json": {
+    aseprite: {
+      command: "uv",
+      args: ASEPRITE_ARGS,
+      env: { ASEPRITE_PATH: "${ASEPRITE_PATH}" },
+    },
+  },
+  "codex.json": {
+    aseprite: {
+      command: "uv",
+      args: ASEPRITE_ARGS,
+      env_vars: ["ASEPRITE_PATH"],
+      enabled: true,
+    },
+  },
+};
+for (const [file, fragment] of Object.entries(MCP_FRAGMENTS)) {
+  writeFileSync(join(DST, "art", "mcp", file), JSON.stringify(fragment, null, 2) + "\n");
+  console.log(`  art/mcp/${file} created`);
+}
 
 console.log(`\nTotal: ${totalCopied} files migrated.`);

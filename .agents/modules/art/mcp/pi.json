@@ -1,0 +1,16 @@
+{
+  "aseprite": {
+    "command": "uv",
+    "args": [
+      "--directory",
+      "tools/aseprite-mcp",
+      "run",
+      "-m",
+      "aseprite_mcp"
+    ],
+    "env": {
+      "ASEPRITE_PATH": "${ASEPRITE_PATH}"
+    },
+    "exposure": "direct"
+  }
+}
