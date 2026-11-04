@@ -1,6 +1,6 @@
 # Pi Compatibility Guide
 
-OpenCode Game Studios (OCGS) supports the [Pi coding agent harness](https://pi.dev/) alongside OpenCode.
+OpenCode Game Studios (OCGS) supports the [Pi coding agent harness](https://pi.dev/) alongside OpenCode and oh-my-pi (`omp`).
 
 ## Quick Start
 
@@ -8,7 +8,10 @@ OpenCode Game Studios (OCGS) supports the [Pi coding agent harness](https://pi.d
 2. Clone this project: `git clone <repo> && cd <project>`
 3. Start Pi: `pi`
 
-All OCGS skills, commands, and agents are available automatically through the `.agents/` directory.
+All OCGS skills and commands are available through `.agents/`. The 52 agent
+definitions are present, but the `Task` delegation path has a known defect (see
+[Delegation](#delegation)); treat agent definitions as prompts until it is fixed.
+Tested baseline: Pi 0.85.1. Autopilot MCP wiring was separately verified on Pi 1.5.0.
 
 ## Project Structure
 
@@ -21,26 +24,28 @@ All OCGS skills, commands, and agents are available automatically through the `.
   modules/                   ← 22 installable modules
 .opencode/                   ← OpenCode-specific plugins & config
 .pi/                         ← Pi-specific extensions & settings
+.omp/                        ← oh-my-pi config and MCP
 ```
 
 ## Available Pi Extensions
 
 | Extension | Purpose |
 |---|---|
-| `ocgs-core` | Barrel: loads all OCGS extensions; discovers `.agents/` skills and commands |
-| `ocgs-delegation` | `Task` tool for agent delegation, `/consult` for peer review |
-| `ocgs-question` | Strategic decision capture with TUI picker |
+| `ocgs-core` | Discovers `.agents/` skills and commands via `resources_discover` |
+| `ocgs-delegation` | `Task` tool for agent delegation, `/consult` for peer review (known defect; see below) |
+| `ocgs-question` | Strategic decision capture with TUI picker; logs omp `ask` answers |
 | `ocgs-path-guard` | Path-scoped rules injected dynamically into system prompt |
 | `ocgs-audit` | Session and tool audit logging |
 | `ocgs-drift-detector` | Detects skill/agent structural drift |
-| `ocgs-changelog` | Conventional-commit changelog generation |
+| `ocgs-changelog` | Conventional-commit changelog generation (`/generate-changelog`) |
 | `ocgs-validate` | `.agents/` content validation |
+| `ocgs-hooks` | The 12 CCGS lifecycle hooks, shared with omp |
 
 ## Key Concepts
 
 - **`.agents/`** — canonical source of all agents, skills, commands, rules, and modules. Harness-neutral frontmatter.
 - **`.pi/extensions/`** — Pi-specific extension implementations using `@earendil-works/pi-coding-agent` API.
-- **Cross-harness names** — `Task`, `question`, and `/consult` work identically in OpenCode and Pi. Agent prompts are written once.
+- **Cross-harness names** — `Task`, `question`, and `/consult` are intended to work identically in OpenCode and Pi. omp exposes `ask` instead of `question` and does not wire `ocgs-delegation`; see the omp guide.
 
 ## Detailed Documentation
 
@@ -57,6 +62,13 @@ OCGS uses two delegation primitives:
 
 1. **`Task` tool** — vertical delegation (Director → Lead → Specialist). Use `Task` when you need another agent to do work.
 2. **`/consult <agent> [question]`** — horizontal peer review. Use `/consult` when you need a second opinion without delegating work.
+
+**Known defect:** `ocgs-delegation` calls `ctx.sessionManager.inMemory(...)`. In
+the Pi 0.85.1 types, `ctx.sessionManager` is a read-only `Pick` with no
+`inMemory`, so the call is expected to throw before a subagent starts. This is
+documented in `docs/omp-compatibility.md`; it has not been reproduced at runtime.
+Until it is fixed, use `question`/`ask` for decisions and direct file reads for
+specialist context instead of relying on `Task` or `/consult`.
 
 ## Path-Guard Rules
 

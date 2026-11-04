@@ -4,21 +4,18 @@ Detailed reference for every OCGS Pi extension — tools, commands, events, and 
 
 ---
 
-## ocgs-core (Barrel)
+## ocgs-core (content discovery)
 
 **File:** `.pi/extensions/ocgs-core/index.ts`
 
-The central barrel extension. Loads all other OCGS extensions and discovers `.agents/` content.
+Registers `.agents/` content with Pi's resource system. It does not import the
+other extensions; Pi auto-discovers each `.pi/extensions/*/index.ts` module.
 
 ### Events
 
 | Event | Purpose |
 |---|---|
 | `resources_discover` | Registers `.agents/skills/` as Pi skill paths and `.agents/commands/` as Pi prompt template paths |
-
-### Dependencies
-
-Dynamically imports and registers: `ocgs-delegation`, `ocgs-question`, `ocgs-path-guard`, `ocgs-audit`, `ocgs-drift-detector`, `ocgs-changelog`, `ocgs-validate`.
 
 ---
 
@@ -27,6 +24,10 @@ Dynamically imports and registers: `ocgs-delegation`, `ocgs-question`, `ocgs-pat
 **File:** `.pi/extensions/ocgs-delegation/index.ts`
 
 Two cross-harness delegation primitives: `Task` tool (vertical execution) and `/consult` command (horizontal review).
+
+**Known defect:** the implementation calls `ctx.sessionManager.inMemory(...)`,
+which is absent from the Pi 0.85.1 types. The call is expected to throw before a
+subagent starts (unverified at runtime). See `docs/pi-compatibility.md#delegation`.
 
 ### Task tool
 
@@ -102,7 +103,7 @@ pi.registerTool({
 ## ocgs-path-guard
 
 **File:** `.pi/extensions/ocgs-path-guard/index.ts`
-**Dep:** `minimatch` (bundled via `package.json`)
+**Dep:** none — uses its own glob matcher
 
 Dynamically injects path-scoped rules from `.agents/rules/` into the system prompt when the LLM works in matching paths.
 
@@ -110,7 +111,7 @@ Dynamically injects path-scoped rules from `.agents/rules/` into the system prom
 
 1. **On startup:** Reads all `.agents/rules/*.md` files, parses their `paths:` frontmatter and body
 2. **On `tool_call`:** Tracks the last 20 file paths the LLM has touched (via `read`, `write`, `edit`, and `bash` path extraction)
-3. **On `before_agent_start`:** Matches recent paths against rule globs using `minimatch`. Injects matching rules as:
+3. **On `before_agent_start`:** Matches recent paths against rule globs using its own matcher. Injects matching rules as:
 
 ```
 <ocgs-rule name="ai-code" source=".agents/rules/ai-code.md">
@@ -178,7 +179,7 @@ Detects structural drift in OCGS content files when they are written or edited.
 
 ### Startup scan
 
-On `resources_discover` with `reason: "startup"`, scans:
+On `session_start` and on `resources_discover` with `reason: "startup"`, scans:
 - `.agents/agents/` — checks required frontmatter fields (`description`, `maxTurns`)
 - `.agents/skills/` — checks required sections per Agent Skills spec
 
@@ -231,7 +232,7 @@ Validates `.agents/` content for structural conformance.
 
 ### Startup scan
 
-On `resources_discover`, validates all files in `.agents/{agents,skills,rules}/`:
+On `session_start` and on `resources_discover`, validates all files in `.agents/{agents,skills,rules}/`:
 - Valid YAML frontmatter
 - No harness-specific fields (`model:`, `mode:`, `permission:`, etc.)
 - Non-empty body
@@ -287,7 +288,7 @@ Writes to `production/session-logs/agent-audit.log`, `session-log.md`, and `comp
 
 | Term | Definition |
 |---|---|
-| **Barrel** | An extension that imports and registers other extensions. `ocgs-core` is the barrel. |
+| **Barrel** | An extension that imports and registers other extensions. OCGS no longer uses one; `ocgs-core` only registers content paths. |
 | **In-memory subagent** | A subagent whose session is ephemeral — not persisted in the session tree. Used by `Task` tool and `/consult`. |
-| **Harness-neutral frontmatter** | Agent frontmatter without `model:`, `mode:`, or `permission:` fields. These are configured in harness-specific config (`.pi/settings.json` for Pi). |
-| **cross-harness name** | A tool or command name that is identical in OpenCode and Pi. `Task`, `question`, and `consult` are cross-harness names. |
+| **Harness-neutral frontmatter** | Agent frontmatter without `model:`, `mode:`, or `permission:` fields. Model choice and tool permissions belong to the harness; this repository does not assign models. |
+| **cross-harness name** | A tool or command name that is identical in OpenCode and Pi. `Task`, `question`, and `consult` are cross-harness names. omp exposes `ask` instead of `question`. |
