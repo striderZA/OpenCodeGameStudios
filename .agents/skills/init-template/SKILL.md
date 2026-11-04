@@ -36,12 +36,16 @@ Otherwise, use `question` to gather missing details:
 After setting project identity, install the desired framework modules:
 
 ```bash
-node .agents/modules/install.mjs add core
-node .agents/modules/install.mjs add engine-godot
-node .agents/modules/install.mjs add art design ui qa release prototyping
+# OpenCode target (default): .opencode/
+node .opencode/modules/install.mjs add core
+node .opencode/modules/install.mjs add engine-godot
+node .opencode/modules/install.mjs add art design ui qa release prototyping
+
+# Pi target: add --pi to install into .agents/
+node .opencode/modules/install.mjs add core --pi
 ```
 
-Available modules (run `node .agents/modules/install.mjs list` to see all):
+Available modules (run `node .opencode/modules/install.mjs list` to see all):
 
 | Module | Description |
 |--------|-------------|
@@ -63,6 +67,8 @@ Available modules (run `node .agents/modules/install.mjs list` to see all):
 | `engine-godot` | Godot 4 specialists |
 | `engine-unity` | Unity specialists |
 | `engine-unreal` | Unreal Engine 5 specialists |
+| `engine-sfml3` | SFML 3 specialist |
+| `engine-raylib` | Raylib specialist |
 | `engine-bevy` | Bevy specialists |
 | `data` | Data file conventions |
 

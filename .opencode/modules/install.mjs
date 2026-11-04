@@ -433,7 +433,7 @@ function main() {
   }
 
   if (args.length === 0) {
-    const scriptPath = HARNESS === 'pi' ? '.agents/modules/install.mjs' : '.opencode/modules/install.mjs';
+    const scriptPath = '.opencode/modules/install.mjs';
     console.log('Usage:');
     console.log(`  node ${scriptPath} list [--pi]`);
     console.log(`  node ${scriptPath} info <name> [--pi]`);

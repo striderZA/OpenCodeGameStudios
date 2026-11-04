@@ -31,6 +31,47 @@ Otherwise, use `question` to gather missing details:
 ### Tab 3: Team
 - **Team size** (solo / small 2-5 / medium 6-15 / large 16+)
 
+### Modular Installation
+
+After setting project identity, install the desired framework modules:
+
+```bash
+# OpenCode target (default): .opencode/
+node .opencode/modules/install.mjs add core
+node .opencode/modules/install.mjs add engine-godot
+node .opencode/modules/install.mjs add art design ui qa release prototyping
+
+# Pi target: add --pi to install into .agents/
+node .opencode/modules/install.mjs add core --pi
+```
+
+Available modules (run `node .opencode/modules/install.mjs list` to see all):
+
+| Module | Description |
+|--------|-------------|
+| `core` | Framework skeleton (required) |
+| `art` | Aseprite MCP, art generation, art bible |
+| `design` | Game mechanics, systems design, combat |
+| `architecture` | Technical planning, ADRs |
+| `stories` | Epics, stories, dev workflow, code review |
+| `programming` | Gameplay, AI, engine, network agents + rules |
+| `ui` | UX design, UI programming, accessibility |
+| `audio` | Audio direction, sound design |
+| `narrative` | Story, world-building, dialogue |
+| `level-design` | Level layout, encounter design |
+| `qa` | Testing strategy, bug tracking, profiling |
+| `release` | Release management, sprints, changelogs |
+| `prototyping` | Rapid prototyping, exploration |
+| `live-ops` | Post-launch content, community |
+| `localization` | i18n, translation pipeline |
+| `engine-godot` | Godot 4 specialists |
+| `engine-unity` | Unity specialists |
+| `engine-unreal` | Unreal Engine 5 specialists |
+| `engine-sfml3` | SFML 3 specialist |
+| `engine-raylib` | Raylib specialist |
+| `engine-bevy` | Bevy specialists |
+| `data` | Data file conventions |
+
 ## Phase 2: Replace README.md
 
 Write a fresh README.md to the project root. Use a template structure like:
