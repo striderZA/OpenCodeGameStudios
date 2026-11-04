@@ -619,7 +619,8 @@ Agent: `art-director` | Domain: Visual identity, art bible, visual production re
 ## Tier 2 — Lead Gates
 
 These gates are invoked by orchestration skills and senior skills when a domain
-specialist's feasibility sign-off is needed. Tier 2 leads use Sonnet (default).
+specialist's feasibility sign-off is needed. Tier 2 leads own their domain;
+model selection is harness-specific.
 
 ---
 
