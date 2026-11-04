@@ -470,23 +470,23 @@ After the package imports, MCP for Unity opens a **setup wizard** automatically:
 
 #### Manual MCP config (reliable fallback)
 
-Add this block to the `mcp` object in your harness config (`opencode.json` for OpenCode, `pi.json` for Pi):
+Add this block to `mcp.servers` in your harness config (`opencode.json` for OpenCode, `pi.json` for Pi):
 
 ```json
 "unity": {
-  "type": "local",
+  "type": "remote",
   "url": "http://localhost:8080/mcp",
-  "enabled": false
+  "disabled": true
 }
 ```
 
-`enabled: false` is the default. Flip to `true` once Unity Editor is running and you want OCGS agents to use unity-mcp tools.
+`disabled: true` keeps it off (servers connect automatically otherwise). Set `disabled` to `false` once Unity Editor is running and you want OCGS agents to use unity-mcp tools.
 
 > ⚠ **Unity Editor must be running** before OCGS agents can use unity-mcp tools. If the Editor is closed, MCP calls will fail with a connection error. Open your project in Unity, then continue.
 
 #### Verify
 
-In a session where `enabled: true`, call any unity-mcp tool (e.g. `list_scenes`) via OCGS. Expect a list of scenes from your open Unity project.
+In a session where `disabled` is `false`, call any unity-mcp tool (e.g. `list_scenes`) via OCGS. Expect a list of scenes from your open Unity project.
 
 #### Troubleshooting
 

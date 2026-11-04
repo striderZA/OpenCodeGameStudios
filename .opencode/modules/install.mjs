@@ -204,13 +204,14 @@ function cmdAdd(args) {
           }
           const ocfg = readJSON(OPENCODE_JSON) || {};
           if (!ocfg.mcp) ocfg.mcp = {};
+          if (!ocfg.mcp.servers) ocfg.mcp.servers = {};
           let merged = false;
           for (const serverName of Object.keys(fragment)) {
-            if (ocfg.mcp[serverName]) {
+            if (ocfg.mcp.servers[serverName]) {
               log('WARN', `MCP server '${serverName}' already exists in opencode.json — skipped`);
               summary.mcpSkipped++;
             } else {
-              ocfg.mcp[serverName] = fragment[serverName];
+              ocfg.mcp.servers[serverName] = fragment[serverName];
               log('ADD', `MCP server '${serverName}' merged into opencode.json`);
               mcpServers.push(serverName);
               summary.mcpAdded++;
@@ -376,14 +377,15 @@ function cmdRemove(name) {
     // Remove MCP servers from opencode.json (OpenCode-only)
     if (mcpServers.length > 0 && HARNESS !== 'pi') {
       const ocfg = readJSON(OPENCODE_JSON);
-      if (ocfg && ocfg.mcp) {
+      if (ocfg && ocfg.mcp && ocfg.mcp.servers) {
         for (const serverName of mcpServers) {
-          if (ocfg.mcp[serverName]) {
-            delete ocfg.mcp[serverName];
+          if (ocfg.mcp.servers[serverName]) {
+            delete ocfg.mcp.servers[serverName];
             log('DEL', `MCP server '${serverName}' from opencode.json`);
           }
         }
-        // Clean up empty mcp section
+        // Clean up empty servers and mcp sections
+        if (Object.keys(ocfg.mcp.servers).length === 0) delete ocfg.mcp.servers;
         if (Object.keys(ocfg.mcp).length === 0) delete ocfg.mcp;
         writeJSON(OPENCODE_JSON, ocfg);
       }
