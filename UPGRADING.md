@@ -93,16 +93,23 @@ Keep your previous `.opencode/` content only until you have verified the migrati
 ### 2. Modular install
 
 The framework is partitioned into 22 theme modules. The installer reads
-`.opencode/modules/` for the OpenCode target and `.agents/modules/` for the Pi
-target:
+`.opencode/modules/` for the OpenCode target and `.agents/modules/` for every
+other target:
 
 ```shell
 node .opencode/modules/install.mjs add core engine-godot art design qa
 node .opencode/modules/install.mjs list
 
-# Pi target
-node .opencode/modules/install.mjs add core --pi
+# Other targets
+node .opencode/modules/install.mjs add core --harness pi
+node .opencode/modules/install.mjs add core --harness omp
+node .opencode/modules/install.mjs add core --harness claude
+node .opencode/modules/install.mjs add core --harness codex
 ```
+
+`--harness` selects the content target, the install manifest, and the MCP file.
+`--pi` remains as an alias. `/init-template` asks for the harness and passes it
+through.
 
 ### 3. OpenCode V2 configuration
 
@@ -121,6 +128,18 @@ agent files in `.agents/agents/`.
 - **OpenCode 2.x** — V2 config, plugins under `.opencode/plugins/`
 - **Pi 1.x** — extensions under `.pi/extensions/`
 - **omp 18.16.0+** — `.omp/config.yml` loads the shared Pi extensions
+- **Claude Code 2.1.277+** — `.claude/` content, `.mcp.json`, native `AGENTS.md`
+- **Codex** — `.agents/skills` and `AGENTS.md` native; `.codex/agents/*.toml`
+
+Module installs are harness-aware:
+
+| Harness | `--harness` | Content target | MCP file |
+|---------|-------------|----------------|----------|
+| OpenCode | `opencode` (default) | `.opencode/{agents,skills,commands,rules}` | `opencode.json` |
+| Pi | `pi` / `--pi` | `.agents/{agents,skills,commands,rules}` | `.pi/mcp.json` |
+| oh-my-pi | `omp` / `--omp` | `.omp/agents` + `.agents/{skills,commands,rules}` | `.omp/mcp.json` |
+| Claude Code | `claude` / `--claude` | `.claude/{agents,skills,commands,rules}` | `.mcp.json` |
+| Codex | `codex` / `--codex` | `.codex/agents` + `.agents/skills` | `.codex/config.toml` |
 
 ### 6. Engine reference
 

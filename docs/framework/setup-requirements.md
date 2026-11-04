@@ -5,7 +5,7 @@ Validation hooks run inside your harness and require Node.js. If Node.js or an
 optional engine tool is missing, that validation is unavailable; the rest of the
 framework still works.
 
-> **New projects:** After cloning this template, run `/init-template` before anything else. It customizes the template with your game name, engine choice, and team preferences, and cleans out example files.
+> **New projects:** After cloning this template, run `/init-template` before anything else. It customizes the template with your game name, engine choice, agent harness, and team preferences, and cleans out example files.
 
 ## Required
 
@@ -13,7 +13,7 @@ framework still works.
 | ---- | ---- | ---- |
 | **Git** | Version control, branch management | [git-scm.com](https://git-scm.com/) |
 | **Node.js 18+** | Module CLI + hooks | Runtime for `install.mjs` and the CCGS TypeScript hooks plugin | [nodejs.org](https://nodejs.org/) |
-| **One agent harness** | AI agent CLI | Choose **one**: OpenCode 2.x (tested 2.2.5), Pi 1.x, or oh-my-pi 18.16.0+ |
+| **One agent harness** | AI agent CLI | Choose **one**: OpenCode 2.x (tested 2.2.5), Pi 1.x, oh-my-pi 18.16.0+, Claude Code 2.1.277+ (for native `AGENTS.md`), or Codex |
 
 ### Install the harness you use
 
@@ -22,8 +22,24 @@ framework still works.
 | **OpenCode 2.x** | `npm install -g @opencode/cli` | `opencode --version` (expect 2.x) |
 | **Pi 1.x** | `npm install -g @earendil-works/pi-coding-agent` | `pi --version` |
 | **oh-my-pi 18.16.0+** | See [omp.sh](https://omp.sh/) | `omp --version` |
+| **Claude Code** | See [code.claude.com](https://code.claude.com/docs/en/setup) | `claude --version` (expect 2.1.277+ for `AGENTS.md`) |
+| **Codex** | See [developers.openai.com/codex](https://developers.openai.com/codex/) | `codex --version` |
 
-The framework does not require all three. Install one harness and run `opencode`, `pi`, or `omp` from the repository root.
+The framework does not require all five. Install one harness and run `opencode`, `pi`, `omp`, `claude`, or `codex` from the repository root.
+
+### Module install target
+
+`/init-template` asks which harness the project uses, and the module CLI takes `--harness`:
+
+| Harness | `--harness` | Content target | MCP file |
+| ---- | ---- | ---- | ---- |
+| OpenCode | `opencode` (default) | `.opencode/{agents,skills,commands,rules}` | `opencode.json` → `mcp.servers` |
+| Pi | `pi` (or `--pi`) | `.agents/{agents,skills,commands,rules}` | `.pi/mcp.json` → `mcpServers` |
+| oh-my-pi | `omp` (or `--omp`) | `.omp/agents` + `.agents/{skills,commands,rules}` | `.omp/mcp.json` → `mcpServers` |
+| Claude Code | `claude` (or `--claude`) | `.claude/{agents,skills,commands,rules}` | `.mcp.json` → `mcpServers` |
+| Codex | `codex` (or `--codex`) | `.codex/agents` + `.agents/skills` | `.codex/config.toml` → `[mcp_servers.*]` |
+
+Shorthands (`--pi`, `--omp`, `--claude`, `--codex`) remain available. The installer writes MCP fragments only for the selected harness; entries that already exist are left untouched.
 
 ## Recommended
 

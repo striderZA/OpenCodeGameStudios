@@ -3,8 +3,9 @@
 ## What Is This?
 
 This is a complete agent architecture for game development, supporting
-[OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent), and
-[oh-my-pi](https://omp.sh/) (`omp`). It
+[OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent),
+[oh-my-pi](https://omp.sh/) (`omp`), [Claude Code](https://code.claude.com/docs/), and
+[Codex](https://developers.openai.com/codex/). It
 organizes 52 specialized AI agents into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
@@ -314,21 +315,41 @@ definitions are present, but `Task` delegation has a known defect (see
 omp
 ```
 omp reads `.agents/` skills, commands, and rules natively and loads the shared
-Pi extensions through `.omp/config.yml`. See `docs/omp-compatibility.md` for
-setup and known gaps.
+Pi extensions through `.omp/config.yml`. Run `add core --harness omp` (or
+`/init-template --harness omp`) to generate `.omp/agents/` from `.agents/agents/`.
+See `docs/omp-compatibility.md` for setup and known gaps.
+
+#### Claude Code
+```bash
+claude
+```
+Claude Code reads `AGENTS.md` natively and `.claude/rules/` with `paths`
+frontmatter. Install agents, skills, and commands into `.claude/` with
+`--harness claude`; the installer adds the required `name:` frontmatter to
+agents. MCP servers live in `.mcp.json`.
+
+#### Codex
+```bash
+codex
+```
+Codex reads `.agents/skills` and `AGENTS.md` natively. Install with
+`--harness codex` to generate `.codex/agents/*.toml`. Codex has no project-level
+slash commands, and its `.codex/config.toml` MCP entries load only in trusted
+projects.
 
 #### Install Modules
 
 ```bash
-node .opencode/modules/install.mjs add core          # Required: directors, /start, /help
-node .opencode/modules/install.mjs add engine-godot  # Engine specialists (or engine-unity/engine-unreal)
-node .opencode/modules/install.mjs add art           # Aseprite MCP, art bible, asset specs
-node .opencode/modules/install.mjs add design        # Game mechanics, systems, combat
-node .opencode/modules/install.mjs add qa            # QA pipeline, test setup, profiling
-node .opencode/modules/install.mjs list              # See all available + installed
+HARNESS=opencode   # opencode | pi | omp | claude | codex
 
-# Pi target: add --pi to install into .agents/ instead of .opencode/
-node .opencode/modules/install.mjs add core --pi
+node .opencode/modules/install.mjs add core --harness "$HARNESS"          # Required: directors, /start, /help
+node .opencode/modules/install.mjs add engine-godot --harness "$HARNESS"  # Engine specialists
+node .opencode/modules/install.mjs add art --harness "$HARNESS"           # Aseprite MCP, art bible, asset specs
+node .opencode/modules/install.mjs add design --harness "$HARNESS"        # Game mechanics, systems, combat
+node .opencode/modules/install.mjs add qa --harness "$HARNESS"            # QA pipeline, test setup, profiling
+node .opencode/modules/install.mjs list --harness "$HARNESS"              # See all available + installed
+
+# Shorthands: --pi, --omp, --claude, --codex
 ```
 
 Available modules: core, art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib, engine-bevy.
@@ -343,18 +364,30 @@ opencode.json                      -- OpenCode V2 config (plugins, MCP, permissi
   skills/                          -- 78 skill workflows
   commands/                        -- 78 slash commands
   rules/                           -- 11 path-scoped rule files
-  modules/                         -- 22 Pi-target module mirrors
+  modules/                         -- Module sources for non-OpenCode targets
 .opencode/                         -- OpenCode-specific
+  agents|skills|commands|rules/    -- Symlinks to .agents/ (Windows: run tools/fix-opencode-symlinks.mjs)
   plugins/                         -- TypeScript plugins (ccgs-hooks, drift, changelog)
-  modules/                         -- Module CLI + 22 OpenCode-target module mirrors
-    install.mjs                    -- Module CLI: add/remove/list [--pi]
-    installed.json                 -- Installed module manifest
+  modules/                         -- Module CLI + OpenCode module sources
+    install.mjs                    -- Module CLI: add/remove/list [--harness <id>]
+    installed.json                 -- OpenCode install manifest
 .pi/                               -- Pi-specific
   settings.json                    -- Pi settings
-  extensions/                      -- 9 Pi extensions (auto-discovered)
+  extensions/                      -- 9 Pi extensions (shared with omp)
+  mcp.json                         -- Project MCP servers (created by module install)
 .omp/                              -- oh-my-pi-specific
+  agents/                          -- Generated agent definitions for the task tool
   config.yml                       -- Extension wiring
-  mcp.json                         -- Project MCP servers (disabled by default)
+  mcp.json                         -- Project MCP servers
+.claude/                           -- Claude Code target (created by --harness claude)
+  agents/ skills/ commands/ rules/
+  modules/installed.json           -- Claude install manifest
+.mcp.json                          -- Claude Code project MCP servers
+.codex/                            -- Codex target (created by --harness codex)
+  agents/                          -- TOML agents generated from .agents/agents/
+  config.toml                      -- MCP servers under [mcp_servers.*]
+  modules/installed.json           -- Codex install manifest
+CLAUDE.md                          -- Optional @AGENTS.md fallback for Claude Code < 2.1.277
 docs/                              -- Framework and project documentation
   architecture/                    -- ADRs (created during architecture phase)
   engine-reference/                -- Version-pinned engine API snapshots

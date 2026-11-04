@@ -10,7 +10,7 @@
 │   ├── skills/                  # 78 skill workflows
 │   ├── commands/                # 78 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
-│   └── modules/                 # 22 Pi-target module mirrors
+│   └── modules/                 # 22 module sources for non-OpenCode targets
 │       ├── installed.json       # Manifest of installed modules
 │       ├── core/                # Core module (always installed)
 │       ├── art/                 # Art module (aseprite MCP, art bible)
@@ -33,15 +33,29 @@
 │   │   ├── drift-detector.ts   # Template drift detection
 │   │   ├── changelog-generator.ts
 │   │   └── tests/              # 19 test suites (177 tests)
-│   └── modules/                 # Module CLI + 22 OpenCode-target mirrors
-│       ├── install.mjs          # CLI: add/remove/list modules (--pi for Pi target)
+│   └── modules/                 # Module CLI + 22 OpenCode-target module sources
+│       ├── install.mjs          # CLI: add/remove/list (--harness <id>)
 │       └── installed.json       # Module manifest
 ├── .pi/                         # Pi-specific extensions & settings
-│   ├── extensions/              # 9 Pi extensions (ocgs-core, delegation, question, etc.)
+│   ├── extensions/              # 9 Pi extensions (shared with omp)
 │   └── settings.json            # Pi configuration
 ├── .omp/                        # oh-my-pi config
+│   ├── agents/                  # Generated agents for the task tool
 │   ├── config.yml               # Shared extension wiring
+│   ├── modules/installed.json   # omp install manifest
 │   └── mcp.json                 # Project MCP servers (disabled by default)
+├── .claude/                     # Claude Code target (created by --harness claude)
+│   ├── agents/                  # Subagents (name: frontmatter injected)
+│   ├── skills/                  # Skills
+│   ├── commands/                # Slash commands
+│   ├── rules/                   # Path-scoped rules (paths: frontmatter)
+│   └── modules/installed.json   # Claude install manifest
+├── .mcp.json                    # Claude Code project MCP servers
+├── .codex/                      # Codex target (created by --harness codex)
+│   ├── agents/                  # TOML agents generated from .agents/agents/
+│   ├── config.toml              # MCP servers under [mcp_servers.*]
+│   └── modules/installed.json   # Codex install manifest
+├── CLAUDE.md                    # Optional @AGENTS.md fallback for Claude Code < 2.1.277
 ├── src/                         # Game source code (core, gameplay, ai, networking, ui, tools)
 ├── assets/                      # Game assets (art, audio, vfx, shaders, data)
 ├── design/                      # Game design documents (gdd, narrative, levels, balance)
@@ -88,14 +102,14 @@
 1. **`.agents/` is canonical**: Agent definitions, skills, commands, and rules
    live here. This directory is harness-agnostic.
 
-2. **`.opencode/`, `.pi/`, and `.omp/` are harness-specific**: They contain
-   symlinks to `.agents/` content plus harness-specific plugins, extensions, and
-   configuration.
+2. **`.opencode/`, `.pi/`, `.omp/`, `.claude/`, and `.codex/` are harness-specific**:
+   They contain symlinks or installed copies of `.agents/` content plus
+   harness-specific plugins, extensions, and configuration.
 
 3. **Modules are installable**: Theme modules are mirrored under
-   `.opencode/modules/` (OpenCode target) and `.agents/modules/` (Pi target).
-   Install with `node .opencode/modules/install.mjs add <name>`, or add `--pi`
-   to install into `.agents/`. Keep the two mirrors in sync when editing a module.
+   `.opencode/modules/` (OpenCode target) and `.agents/modules/` (every other
+   target). Install with `node .opencode/modules/install.mjs add <name>
+   --harness <id>`. Keep the two source mirrors in sync when editing a module.
 
 4. **22 modules available**: core, art, design, architecture, stories, programming,
    ui, audio, narrative, level-design, qa, release, prototyping, live-ops,

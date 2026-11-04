@@ -167,18 +167,31 @@ console.log('\n=== Cross-Cutting Invariants ===\n');
   });
 }
 
-{ // I5: All AGENTS.md and other root agent files reference only existing agents
+{ // I5: The Studio Hierarchy roster references only existing agent files
   const agentDocPath = join(ROOT, 'AGENTS.md');
   if (existsSync(agentDocPath)) {
     const content = readFileSync(agentDocPath, 'utf-8');
-    const agentRefs = [...content.matchAll(/`([a-z][\w-]+)`/g)].map(m => m[1]);
-    const unique = [...new Set(agentRefs)];
     const agentNames = existsSync(AGENTS_DIR)
       ? new Set(readdirSync(AGENTS_DIR).filter(f => f.endsWith('.md')).map(f => f.replace('.md', '')))
       : new Set();
-    const developmentRelated = new Set(['development']);
-    const unknown = unique.filter(r => !agentNames.has(r) && !developmentRelated.has(r));
-    run('I5: AGENTS.md references only existing agent files', () => {
+
+    const start = content.indexOf('## Studio Hierarchy');
+    const end = start === -1 ? -1 : content.indexOf('\n## ', start + 1);
+    const hierarchy = start === -1
+      ? ''
+      : content.slice(start, end === -1 ? content.length : end);
+
+    const roster = [];
+    for (const line of hierarchy.split('\n')) {
+      if (!/^  \S/.test(line)) continue;
+      for (const token of line.trim().split(/\s+/)) {
+        if (/^[a-z][a-z0-9-]+$/.test(token)) roster.push(token);
+      }
+    }
+
+    const unknown = [...new Set(roster)].filter(r => !agentNames.has(r));
+    run('I5: AGENTS.md studio hierarchy lists only existing agent files', () => {
+      if (!hierarchy) throw new Error('Studio Hierarchy section not found in AGENTS.md');
       if (unknown.length > 0) {
         throw new Error(`Unknown agents referenced: ${unknown.join(', ')}`);
       }

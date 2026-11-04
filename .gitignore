@@ -14,7 +14,7 @@ production/session-state/
 # Superpowers SDK design docs (not part of OCGS)
 .superpowers/
 docs/superpowers/
-framework/
+/framework/
 
 # Git worktrees
 .worktrees/

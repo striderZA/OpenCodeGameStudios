@@ -16,6 +16,7 @@
     "test:omp": "node --import tsx --test tests/omp/*.mjs",
     "test:hooks": "node --test tests/git-hooks/test-commit-msg.mjs tests/git-hooks/test-pre-commit.mjs",
     "test:framework": "node tests/agents/validate.mjs",
+    "test:modules": "node --test tests/modules/test-install-harness.mjs",
     "test:parity": "node --import tsx --test tests/e2e/test-parity.test.ts"
   },
   "repository": {
