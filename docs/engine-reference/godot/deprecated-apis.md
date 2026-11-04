@@ -1,6 +1,6 @@
 # Godot — Deprecated APIs
 
-Last verified: 2026-02-12
+Last verified: 2026-11-04
 
 If an agent suggests any API in the "Deprecated" column, it MUST be replaced
 with the "Use Instead" column.
@@ -30,6 +30,11 @@ with the "Use Instead" column.
 | `Skeleton3D` signal `bone_pose_updated` | `skeleton_updated` | 4.3 | Renamed |
 | `AnimationPlayer.method_call_mode` | `AnimationMixer.callback_mode_method` | 4.3 | Moved to base class |
 | `AnimationPlayer.playback_active` | `AnimationMixer.active` | 4.3 | Moved to base class |
+| `AnimationNodeBlendSpace1D.sync` / `AnimationNodeBlendSpace2D.sync` (bool) | `sync_mode` (enum) | 4.7 | Replaced by a `SyncMode` enum |
+| `RichTextLabel.ImageUpdateMask.UPDATE_WIDTH_IN_PERCENT` | `RichTextLabel.ImageUpdateMask.UPDATE_WIDTH_UNIT` | 4.7 | Renamed |
+| `RichTextLabel.add_image` / `update_image`: `width_in_percent`, `height_in_percent` (bool) | `width_unit`, `height_unit` (`RichTextLabel.ImageUnit`) | 4.7 | Type changed; default is `0` |
+| `RenderingServer.particles_request_process_time(time)` | `process_time` parameter | 4.7 | Renamed |
+| `AudioEffectSpectrumAnalyzer.tap_back_pos` | None: removed. Do not use. | 4.7 | No replacement is listed in the 4.7 guide |
 
 ## Patterns (Not Just APIs)
 
