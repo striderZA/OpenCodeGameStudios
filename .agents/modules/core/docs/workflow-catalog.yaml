@@ -228,7 +228,7 @@ phases:
         command: /playtest-report
         required: true
         artifact:
-          glob: "production/playtests/*.md"
+          glob: "production/qa/playtests/*.md"
           min_count: 1
         description: "Document vertical slice playtest sessions using /playtest-report. Run at least once here (≥1 session required before Production; ≥3 required before Polish). Each session should cover one complete run-through of the core loop."
 
@@ -346,7 +346,7 @@ phases:
         command: /playtest-report
         required: true
         artifact:
-          glob: "production/playtests/*.md"
+          glob: "production/qa/playtests/*.md"
           min_count: 3
         description: "Cover: new player experience, mid-game systems, difficulty curve"
 

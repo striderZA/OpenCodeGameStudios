@@ -49,7 +49,7 @@ PHASE 4: PRE-PRODUCTION
   /create-epics [layer] ───────────────────────────────────────► production/epics/*/EPIC.md
   /create-stories [epic-slug] ─────────────────────────────────► production/epics/*/story-*.md
   /prototype [core-mechanic] ──────────────────────────────────► prototypes/[name]/
-  /playtest-report ────────────────────────────────────────────► tests/playtest/vertical-slice.md
+  /playtest-report ────────────────────────────────────────────► production/qa/playtests/playtest-[date]-[tester].md
   /sprint-plan new ────────────────────────────────────────────► production/sprints/sprint-01.md
   /gate-check ─────────────────────────────────────────────────► PASS → advance to production
         │

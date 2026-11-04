@@ -56,7 +56,7 @@ Read:
   monitoring guidance), performance budgets (memory ceiling, target FPS)
 - `design/gdd/game-concept.md` — intended session length (for comparison against
   soak duration), core loop description
-- Most recent file in `production/playtests/` — prior playtest findings
+- Most recent file in `production/qa/playtests/` — prior playtest findings
   (to avoid re-documenting known issues)
 - Most recent file in `production/qa/qa-plan-*.md` — current sprint test coverage
   (to understand what has been formally tested vs. what the soak covers)

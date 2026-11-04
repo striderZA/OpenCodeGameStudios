@@ -65,7 +65,7 @@ if (gate) {
       'production/qa/',
       'production/sprints/',
       'production/epics/',
-      'production/playtests/',
+      'production/qa/playtests/',
       'production/session-logs/',
       'prototypes/explore/',
       'design/difficulty-curve.md',
@@ -143,7 +143,7 @@ if (gate) {
       'production/qa/',
       'production/qa/bugs/',
       'production/qa/evidence/',
-      'production/playtests/',
+      'production/qa/playtests/',
       'production/gate-checks/',
       'prototypes/explore/',
     ];
