@@ -98,6 +98,6 @@ that influenced changes in this release if applicable.]
 
 ---
 
-*For the full changelog with technical details, see the [developer changelog](link).*
-*Report bugs: [link to bug report channel/form]*
-*Join the community: [link to Discord/forum]*
+*For the full changelog with technical details, see [developer changelog URL].*
+*Report bugs: [bug report channel/form URL]*
+*Join the community: [Discord/forum URL]*

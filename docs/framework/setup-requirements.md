@@ -1,8 +1,9 @@
 # Setup Requirements
 
 This template requires a few tools to be installed for full functionality.
-All hooks fail gracefully if tools are missing — nothing will break, but
-you'll lose validation features.
+Validation hooks run inside your harness and require Node.js. If Node.js or an
+optional engine tool is missing, that validation is unavailable; the rest of the
+framework still works.
 
 > **New projects:** After cloning this template, run `/init-template` before anything else. It customizes the template with your game name, engine choice, and team preferences, and cleans out example files.
 
@@ -11,9 +12,18 @@ you'll lose validation features.
 | Tool | Purpose | Install |
 | ---- | ---- | ---- |
 | **Git** | Version control, branch management | [git-scm.com](https://git-scm.com/) |
-| **OpenCode** | AI agent CLI (via OpenCode) | `npm install -g opencode` |
-| **Pi** | AI agent CLI (via Pi) | `npm install -g @earendil-works/pi-coding-agent` |
 | **Node.js 18+** | Module CLI + hooks | Runtime for `install.mjs` and the CCGS TypeScript hooks plugin | [nodejs.org](https://nodejs.org/) |
+| **One agent harness** | AI agent CLI | Choose **one**: OpenCode 2.x (tested 2.2.5), Pi 1.x, or oh-my-pi 18.16.0+ |
+
+### Install the harness you use
+
+| Harness | Install | Verify |
+| ---- | ---- | ---- |
+| **OpenCode 2.x** | `npm install -g @opencode/cli` | `opencode --version` (expect 2.x) |
+| **Pi 1.x** | `npm install -g @earendil-works/pi-coding-agent` | `pi --version` |
+| **oh-my-pi 18.16.0+** | See [omp.sh](https://omp.sh/) | `omp --version` |
+
+The framework does not require all three. Install one harness and run `opencode`, `pi`, or `omp` from the repository root.
 
 ## Recommended
 
@@ -47,11 +57,11 @@ sudo pacman -S nodejs npm       # Arch
 ### Windows
 - Git for Windows includes **Git Bash**, which provides `bash`
 - Ensure Git Bash is on your PATH (default if installed via the Git installer)
-- OpenCode runs natively in PowerShell, CMD, Git Bash, and Windows Terminal
+- Each harness runs natively in PowerShell, CMD, Git Bash, and Windows Terminal
 
 ### macOS / Linux
 - Node.js and npm are available via your package manager
-- OpenCode works in any standard terminal
+- Each harness works in any standard terminal
 
 ## Verifying Your Setup
 
@@ -60,7 +70,9 @@ Run these commands to check prerequisites:
 ```bash
 git --version          # Should show git version
 node --version         # Should show Node.js 18+
-npx opencode --version # Should show OpenCode version
+opencode --version     # OpenCode 2.x (if using OpenCode)
+pi --version           # Pi 1.x (if using Pi)
+omp --version          # omp 18.16.0+ (if using omp)
 ```
 
 ## What Happens Without Required Tools
@@ -68,15 +80,15 @@ npx opencode --version # Should show OpenCode version
 | Missing Tool | Effect |
 | ---- | ---- |
 | **Git** | No version control — all / commands, hooks, and template tooling assume a git repository. |
-| **OpenCode** | The framework cannot run — agents, skills, and commands are all OpenCode-native. |
+| **All agent harnesses** | The framework cannot run. Install OpenCode 2.x, Pi 1.x, or omp 18.16.0+ and launch it from the repository root. |
 | **Node.js** | The module CLI (`install.mjs`) and hooks plugin cannot execute. Without Node.js, module installation and commit/push validation are unavailable. |
 
 ## Recommended IDE
 
-OpenCode works with any editor:
-- **VS Code** with the OpenCode CLI
-- **Cursor** (OpenCode compatible)
-- **Terminal** — `opencode` CLI directly in any shell
+Any editor supported by your chosen harness works:
+- **VS Code** with the OpenCode CLI, Pi, or omp
+- **Cursor**
+- **Terminal** — run the harness directly in any shell
 - **JetBrains IDEs** — via the terminal
 
 ## Optional Engine Dependencies

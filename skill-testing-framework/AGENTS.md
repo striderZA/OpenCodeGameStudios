@@ -7,7 +7,7 @@ framework. It is self-contained and separate from any game project.
 
 | File | Purpose |
 |------|---------|
-| `catalog.yaml` | Master registry for all 72 skills and 49 agents. Contains category, spec path, and last-test tracking fields. Always read this first when running any test command. |
+| `catalog.yaml` | Master registry for all 78 skills and 52 agents. Contains category, spec path, and last-test tracking fields. Always read this first when running any test command. |
 | `quality-rubric.md` | Category-specific pass/fail metrics. Read the matching `###` section for the skill's category when running `/skill-test category`. |
 | `skills/[category]/[name].md` | Behavioral spec for a skill — 5 test cases + protocol compliance assertions. |
 | `agents/[tier]/[name].md` | Behavioral spec for an agent — 5 test cases + protocol compliance assertions. |
@@ -17,10 +17,10 @@ framework. It is self-contained and separate from any game project.
 
 ## Path conventions
 
-- Skill specs: `CCGS Skill Testing Framework/skills/[category]/[name].md`
-- Agent specs: `CCGS Skill Testing Framework/agents/[tier]/[name].md`
-- Catalog: `CCGS Skill Testing Framework/catalog.yaml`
-- Rubric: `CCGS Skill Testing Framework/quality-rubric.md`
+- Skill specs: `skill-testing-framework/skills/[category]/[name].md`
+- Agent specs: `skill-testing-framework/agents/[tier]/[name].md`
+- Catalog: `skill-testing-framework/catalog.yaml`
+- Rubric: `skill-testing-framework/quality-rubric.md`
 
 The `spec:` field in `catalog.yaml` is the authoritative path for each skill/agent spec.
 Always read it rather than guessing the path.

@@ -14,23 +14,23 @@ via OpenCode's plugin event system:
 | 6 | `validate-assets.sh` | `tool.execute.after` | **16** |
 | 7 | `validate-commit.sh` | `tool.execute.before` (git commit) | **17** |
 | 8 | `validate-push.sh` | `tool.execute.before` (git push) | **13** |
-| 9 | `validate-skill-change.sh` | `tool.execute.after` | **12** |
+| 9 | `validate-skill-change.sh` | `tool.execute.after` | **13** |
 | 10 | `pre-compact.sh` | `experimental.session.compacting` | **14** |
 | 11 | `post-compact.sh` | `experimental.compaction.autocontinue` | **5** |
 | 12 | `notify.sh` | Utility (`showNotification`) | — |
 
 ## Running Tests
 
-Run a test suite against the hooks plugin:
+Run the full plugin suite with the `tsx` loader (the tests import `.ts` sources):
 
 ```bash
-node .opencode/plugins/tests/test-<name>.mjs
+npm run test:plugins
 ```
 
-For example, to run the commit validation tests:
+To run one suite, keep the loader:
 
 ```bash
-node .opencode/plugins/tests/test-validate-commit.mjs
+node --import tsx --test .opencode/plugins/tests/test-validate-commit.mjs
 ```
 
-For a complete list of test suites, see the [README](/README.md#-hooks-plugin) Hooks Plugin section.
+For a complete list of test suites, see the [README Hooks Mapping table](../../README.md#hooks-mapping).

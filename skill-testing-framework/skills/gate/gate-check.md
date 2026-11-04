@@ -172,7 +172,7 @@ Verified automatically by `/skill-test static` — no fixture needed.
 **Note on Case 3 correction:**
 The Case 3 assertions previously stated "Skill does not ask the user which gate to check
 if current stage is determinable." This is correct. However, the skill DOES use
-AskUserQuestion to confirm the auto-detected transition before running full checks —
+question to confirm the auto-detected transition before running full checks —
 this is a confirmation step, not a gate selection. Assertions for Case 3 should not
 treat this confirmation as a failure.
 

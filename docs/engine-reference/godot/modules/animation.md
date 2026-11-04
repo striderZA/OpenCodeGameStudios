@@ -1,6 +1,6 @@
 # Godot Animation — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-11-04 | Engine: Godot 4.7.2
 
 ## What Changed Since ~4.3 (LLM Cutoff)
 
@@ -9,6 +9,13 @@ Last verified: 2026-02-12 | Engine: Godot 4.6
   - CCDIK, FABRIK, Jacobian IK, Spline IK, TwoBoneIK
   - Applied via `SkeletonModifier3D` nodes (not the old IK approach)
 - **Animation editor QoL**: Solo/hide/lock/delete for Bezier node groups; draggable timeline
+
+### 4.7 Changes
+- **BlendSpace sync**: `AnimationNodeBlendSpace1D` and `AnimationNodeBlendSpace2D`
+  replace the `sync` boolean with a `sync_mode` enum. Set it if transitions break.
+- **`Animation.length`**: Type changed from `float` to `double`; this is not
+  C# binary or source compatible.
+- **`LookAtModifier3D`**: Default `relative` changed from `true` to `false`.
 
 ### 4.5 Changes
 - **BoneConstraint3D**: Bind bones to other bones with modifiers

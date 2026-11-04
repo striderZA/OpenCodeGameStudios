@@ -10,19 +10,22 @@ Pi discovers `.agents/` content through the `ocgs-core` extension's `resources_d
 
 | Directory | Registration | Purpose |
 |-----------|-------------|---------|
-| `ocgs-core` | `resources_discover` | Barrel: loads all extensions, discovers `.agents/` skills/commands |
-| `ocgs-delegation` | `registerTool` + `registerCommand` | `Task` tool + `/consult` command for agent delegation |
+| `ocgs-core` | `resources_discover` | Discovers `.agents/` skills and commands; does not load other extensions |
+| `ocgs-delegation` | `registerTool` + `registerCommand` | `Task` tool + `/consult` command for agent delegation (known defect; see `docs/pi-compatibility.md#delegation`) |
 | `ocgs-question` | `registerTool` + `tool_result` | `question` tool with TUI for strategic decision capture; logs omp `ask` answers to `agent-decisions.jsonl` |
-| `ocgs-path-guard` | `tool_call` + `before_agent_start` | Dynamic injection of path-scoped rules from `.agents/rules/` |
+| `ocgs-path-guard` | `tool_call` + `before_agent_start` | Dynamic injection of path-scoped rules from `.agents/rules/` (own matcher; no external dependency) |
 | `ocgs-audit` | `session_start` + `tool_call` + `tool_result` + `agent_end` | Session/tool audit logging to `production/session-logs/` |
-| `ocgs-drift-detector` | `resources_discover` + `tool_result` | Detects structural drift in `.agents/` files after writes |
-| `ocgs-changelog` | `registerCommand` | `/changelog` command with TUI for conventional-commit changelogs |
-| `ocgs-validate` | `resources_discover` + `tool_result` | Validates `.agents/` content for harness-neutral conformance |
+| `ocgs-drift-detector` | `session_start` + `resources_discover` + `tool_result` | Detects structural drift in `.agents/` files after writes |
+| `ocgs-changelog` | `registerCommand` | `/generate-changelog` command with TUI for conventional-commit changelogs |
+| `ocgs-validate` | `session_start` + `resources_discover` + `tool_result` | Validates `.agents/` content for harness-neutral conformance |
 | `ocgs-hooks` | `session_start` + `agent_settled` + `session_compact` + `tool_call` + `tool_result` + `ui_prompt_start` | The 12 CCGS hooks: session context, commit and push guards, asset and skill checks, agent audit, compaction context, notifications. See `docs/pi-extensions.md` |
 
 ## How Extensions Load
 
-Pi auto-discovers extensions in `.pi/extensions/` at startup. The `ocgs-core/index.ts` barrel imports and registers all other extensions. Individual extension failures are caught and logged — no single failure blocks the rest.
+Pi auto-discovers each `.pi/extensions/*/index.ts` module at startup. `ocgs-core`
+only registers `.agents/` content paths; it is not a barrel. On Pi 0.85.1 a
+module with a broken import aborts startup before any frame is sent. omp logs
+the same failure and continues.
 
 ## Dependencies
 

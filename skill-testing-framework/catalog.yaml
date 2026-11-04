@@ -3,7 +3,7 @@ last_updated: ""
 skills:
   # Critical — gate skills that control phase transitions
   - name: gate-check
-    spec: CCGS Skill Testing Framework/skills/gate/gate-check.md
+    spec: skill-testing-framework/skills/gate/gate-check.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -14,7 +14,7 @@ skills:
     category: gate
 
   - name: design-review
-    spec: CCGS Skill Testing Framework/skills/review/design-review.md
+    spec: skill-testing-framework/skills/review/design-review.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -25,7 +25,7 @@ skills:
     category: review
 
   - name: story-readiness
-    spec: CCGS Skill Testing Framework/skills/readiness/story-readiness.md
+    spec: skill-testing-framework/skills/readiness/story-readiness.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -36,7 +36,7 @@ skills:
     category: readiness
 
   - name: story-done
-    spec: CCGS Skill Testing Framework/skills/readiness/story-done.md
+    spec: skill-testing-framework/skills/readiness/story-done.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -47,7 +47,7 @@ skills:
     category: readiness
 
   - name: review-all-gdds
-    spec: CCGS Skill Testing Framework/skills/review/review-all-gdds.md
+    spec: skill-testing-framework/skills/review/review-all-gdds.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -58,7 +58,7 @@ skills:
     category: review
 
   - name: architecture-review
-    spec: CCGS Skill Testing Framework/skills/review/architecture-review.md
+    spec: skill-testing-framework/skills/review/architecture-review.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -70,7 +70,7 @@ skills:
 
   # High — pipeline-critical skills
   - name: create-epics
-    spec: CCGS Skill Testing Framework/skills/pipeline/create-epics.md
+    spec: skill-testing-framework/skills/pipeline/create-epics.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -81,7 +81,7 @@ skills:
     category: pipeline
 
   - name: create-stories
-    spec: CCGS Skill Testing Framework/skills/pipeline/create-stories.md
+    spec: skill-testing-framework/skills/pipeline/create-stories.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -92,7 +92,7 @@ skills:
     category: pipeline
 
   - name: dev-story
-    spec: CCGS Skill Testing Framework/skills/pipeline/dev-story.md
+    spec: skill-testing-framework/skills/pipeline/dev-story.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -103,7 +103,7 @@ skills:
     category: pipeline
 
   - name: create-control-manifest
-    spec: CCGS Skill Testing Framework/skills/pipeline/create-control-manifest.md
+    spec: skill-testing-framework/skills/pipeline/create-control-manifest.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -114,7 +114,7 @@ skills:
     category: pipeline
 
   - name: propagate-design-change
-    spec: CCGS Skill Testing Framework/skills/pipeline/propagate-design-change.md
+    spec: skill-testing-framework/skills/pipeline/propagate-design-change.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -125,7 +125,7 @@ skills:
     category: pipeline
 
   - name: architecture-decision
-    spec: CCGS Skill Testing Framework/skills/authoring/architecture-decision.md
+    spec: skill-testing-framework/skills/authoring/architecture-decision.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -136,7 +136,7 @@ skills:
     category: authoring
 
   - name: map-systems
-    spec: CCGS Skill Testing Framework/skills/pipeline/map-systems.md
+    spec: skill-testing-framework/skills/pipeline/map-systems.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -147,7 +147,7 @@ skills:
     category: pipeline
 
   - name: design-system
-    spec: CCGS Skill Testing Framework/skills/authoring/design-system.md
+    spec: skill-testing-framework/skills/authoring/design-system.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -158,7 +158,7 @@ skills:
     category: authoring
 
   - name: consistency-check
-    spec: CCGS Skill Testing Framework/skills/analysis/consistency-check.md
+    spec: skill-testing-framework/skills/analysis/consistency-check.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -170,7 +170,7 @@ skills:
 
   # Medium — team and sprint management skills
   - name: sprint-plan
-    spec: CCGS Skill Testing Framework/skills/sprint/sprint-plan.md
+    spec: skill-testing-framework/skills/sprint/sprint-plan.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -181,7 +181,7 @@ skills:
     category: sprint
 
   - name: sprint-status
-    spec: CCGS Skill Testing Framework/skills/sprint/sprint-status.md
+    spec: skill-testing-framework/skills/sprint/sprint-status.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -192,7 +192,7 @@ skills:
     category: sprint
 
   - name: team-ui
-    spec: CCGS Skill Testing Framework/skills/team/team-ui.md
+    spec: skill-testing-framework/skills/team/team-ui.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -203,7 +203,7 @@ skills:
     category: team
 
   - name: team-combat
-    spec: CCGS Skill Testing Framework/skills/team/team-combat.md
+    spec: skill-testing-framework/skills/team/team-combat.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -214,7 +214,7 @@ skills:
     category: team
 
   - name: team-narrative
-    spec: CCGS Skill Testing Framework/skills/team/team-narrative.md
+    spec: skill-testing-framework/skills/team/team-narrative.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -225,7 +225,7 @@ skills:
     category: team
 
   - name: team-audio
-    spec: CCGS Skill Testing Framework/skills/team/team-audio.md
+    spec: skill-testing-framework/skills/team/team-audio.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -236,7 +236,7 @@ skills:
     category: team
 
   - name: team-level
-    spec: CCGS Skill Testing Framework/skills/team/team-level.md
+    spec: skill-testing-framework/skills/team/team-level.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -247,7 +247,7 @@ skills:
     category: team
 
   - name: team-polish
-    spec: CCGS Skill Testing Framework/skills/team/team-polish.md
+    spec: skill-testing-framework/skills/team/team-polish.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -258,7 +258,7 @@ skills:
     category: team
 
   - name: team-release
-    spec: CCGS Skill Testing Framework/skills/team/team-release.md
+    spec: skill-testing-framework/skills/team/team-release.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -269,7 +269,7 @@ skills:
     category: team
 
   - name: team-live-ops
-    spec: CCGS Skill Testing Framework/skills/team/team-live-ops.md
+    spec: skill-testing-framework/skills/team/team-live-ops.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -280,7 +280,7 @@ skills:
     category: team
 
   - name: team-qa
-    spec: CCGS Skill Testing Framework/skills/team/team-qa.md
+    spec: skill-testing-framework/skills/team/team-qa.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -292,7 +292,7 @@ skills:
 
   # Low — analysis, reporting, utility skills
   - name: skill-test
-    spec: CCGS Skill Testing Framework/skills/utility/skill-test.md
+    spec: skill-testing-framework/skills/utility/skill-test.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -303,7 +303,7 @@ skills:
     category: utility
 
   - name: skill-improve
-    spec: CCGS Skill Testing Framework/skills/utility/skill-improve.md
+    spec: skill-testing-framework/skills/utility/skill-improve.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -314,7 +314,7 @@ skills:
     category: utility
 
   - name: start
-    spec: CCGS Skill Testing Framework/skills/utility/start.md
+    spec: skill-testing-framework/skills/utility/start.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -325,7 +325,7 @@ skills:
     category: utility
 
   - name: help
-    spec: CCGS Skill Testing Framework/skills/utility/help.md
+    spec: skill-testing-framework/skills/utility/help.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -336,7 +336,7 @@ skills:
     category: utility
 
   - name: concept-brainstorm
-    spec: CCGS Skill Testing Framework/skills/utility/concept-brainstorm.md
+    spec: skill-testing-framework/skills/utility/concept-brainstorm.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -347,7 +347,7 @@ skills:
     category: utility
 
   - name: project-stage-detect
-    spec: CCGS Skill Testing Framework/skills/utility/project-stage-detect.md
+    spec: skill-testing-framework/skills/utility/project-stage-detect.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -358,7 +358,7 @@ skills:
     category: utility
 
   - name: setup-engine
-    spec: CCGS Skill Testing Framework/skills/utility/setup-engine.md
+    spec: skill-testing-framework/skills/utility/setup-engine.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -369,7 +369,7 @@ skills:
     category: utility
 
   - name: quick-design
-    spec: CCGS Skill Testing Framework/skills/authoring/quick-design.md
+    spec: skill-testing-framework/skills/authoring/quick-design.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -380,7 +380,7 @@ skills:
     category: authoring
 
   - name: ux-design
-    spec: CCGS Skill Testing Framework/skills/authoring/ux-design.md
+    spec: skill-testing-framework/skills/authoring/ux-design.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -391,7 +391,7 @@ skills:
     category: authoring
 
   - name: ux-review
-    spec: CCGS Skill Testing Framework/skills/authoring/ux-review.md
+    spec: skill-testing-framework/skills/authoring/ux-review.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -402,7 +402,7 @@ skills:
     category: authoring
 
   - name: art-bible
-    spec: CCGS Skill Testing Framework/skills/authoring/art-bible.md
+    spec: skill-testing-framework/skills/authoring/art-bible.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -413,7 +413,7 @@ skills:
     category: authoring
 
   - name: create-architecture
-    spec: CCGS Skill Testing Framework/skills/authoring/create-architecture.md
+    spec: skill-testing-framework/skills/authoring/create-architecture.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -424,7 +424,7 @@ skills:
     category: authoring
 
   - name: code-review
-    spec: CCGS Skill Testing Framework/skills/analysis/code-review.md
+    spec: skill-testing-framework/skills/analysis/code-review.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -435,7 +435,7 @@ skills:
     category: analysis
 
   - name: balance-check
-    spec: CCGS Skill Testing Framework/skills/analysis/balance-check.md
+    spec: skill-testing-framework/skills/analysis/balance-check.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -446,7 +446,7 @@ skills:
     category: analysis
 
   - name: asset-audit
-    spec: CCGS Skill Testing Framework/skills/analysis/asset-audit.md
+    spec: skill-testing-framework/skills/analysis/asset-audit.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -457,7 +457,7 @@ skills:
     category: analysis
 
   - name: content-audit
-    spec: CCGS Skill Testing Framework/skills/analysis/content-audit.md
+    spec: skill-testing-framework/skills/analysis/content-audit.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -468,7 +468,7 @@ skills:
     category: analysis
 
   - name: tech-debt
-    spec: CCGS Skill Testing Framework/skills/analysis/tech-debt.md
+    spec: skill-testing-framework/skills/analysis/tech-debt.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -479,7 +479,7 @@ skills:
     category: analysis
 
   - name: scope-check
-    spec: CCGS Skill Testing Framework/skills/analysis/scope-check.md
+    spec: skill-testing-framework/skills/analysis/scope-check.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -490,7 +490,7 @@ skills:
     category: analysis
 
   - name: estimate
-    spec: CCGS Skill Testing Framework/skills/analysis/estimate.md
+    spec: skill-testing-framework/skills/analysis/estimate.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -501,7 +501,7 @@ skills:
     category: analysis
 
   - name: perf-profile
-    spec: CCGS Skill Testing Framework/skills/analysis/perf-profile.md
+    spec: skill-testing-framework/skills/analysis/perf-profile.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -512,7 +512,7 @@ skills:
     category: analysis
 
   - name: security-audit
-    spec: CCGS Skill Testing Framework/skills/analysis/security-audit.md
+    spec: skill-testing-framework/skills/analysis/security-audit.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -523,7 +523,7 @@ skills:
     category: analysis
 
   - name: test-evidence-review
-    spec: CCGS Skill Testing Framework/skills/analysis/test-evidence-review.md
+    spec: skill-testing-framework/skills/analysis/test-evidence-review.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -534,7 +534,7 @@ skills:
     category: analysis
 
   - name: test-flakiness
-    spec: CCGS Skill Testing Framework/skills/analysis/test-flakiness.md
+    spec: skill-testing-framework/skills/analysis/test-flakiness.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -545,7 +545,7 @@ skills:
     category: analysis
 
   - name: reverse-document
-    spec: CCGS Skill Testing Framework/skills/utility/reverse-document.md
+    spec: skill-testing-framework/skills/utility/reverse-document.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -556,7 +556,7 @@ skills:
     category: utility
 
   - name: bug-report
-    spec: CCGS Skill Testing Framework/skills/utility/bug-report.md
+    spec: skill-testing-framework/skills/utility/bug-report.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -567,7 +567,7 @@ skills:
     category: utility
 
   - name: hotfix
-    spec: CCGS Skill Testing Framework/skills/utility/hotfix.md
+    spec: skill-testing-framework/skills/utility/hotfix.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -578,7 +578,7 @@ skills:
     category: utility
 
   - name: prototype
-    spec: CCGS Skill Testing Framework/skills/utility/prototype.md
+    spec: skill-testing-framework/skills/utility/prototype.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -589,7 +589,7 @@ skills:
     category: utility
 
   - name: playtest-report
-    spec: CCGS Skill Testing Framework/skills/utility/playtest-report.md
+    spec: skill-testing-framework/skills/utility/playtest-report.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -600,7 +600,7 @@ skills:
     category: utility
 
   - name: milestone-review
-    spec: CCGS Skill Testing Framework/skills/sprint/milestone-review.md
+    spec: skill-testing-framework/skills/sprint/milestone-review.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -611,7 +611,7 @@ skills:
     category: sprint
 
   - name: retrospective
-    spec: CCGS Skill Testing Framework/skills/sprint/retrospective.md
+    spec: skill-testing-framework/skills/sprint/retrospective.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -622,7 +622,7 @@ skills:
     category: sprint
 
   - name: changelog
-    spec: CCGS Skill Testing Framework/skills/sprint/changelog.md
+    spec: skill-testing-framework/skills/sprint/changelog.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -633,7 +633,7 @@ skills:
     category: sprint
 
   - name: patch-notes
-    spec: CCGS Skill Testing Framework/skills/sprint/patch-notes.md
+    spec: skill-testing-framework/skills/sprint/patch-notes.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -644,7 +644,7 @@ skills:
     category: sprint
 
   - name: onboard
-    spec: CCGS Skill Testing Framework/skills/utility/onboard.md
+    spec: skill-testing-framework/skills/utility/onboard.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -655,7 +655,7 @@ skills:
     category: utility
 
   - name: localize
-    spec: CCGS Skill Testing Framework/skills/utility/localize.md
+    spec: skill-testing-framework/skills/utility/localize.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -666,7 +666,7 @@ skills:
     category: utility
 
   - name: launch-checklist
-    spec: CCGS Skill Testing Framework/skills/utility/launch-checklist.md
+    spec: skill-testing-framework/skills/utility/launch-checklist.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -677,7 +677,7 @@ skills:
     category: utility
 
   - name: release-checklist
-    spec: CCGS Skill Testing Framework/skills/utility/release-checklist.md
+    spec: skill-testing-framework/skills/utility/release-checklist.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -688,7 +688,7 @@ skills:
     category: utility
 
   - name: adopt
-    spec: CCGS Skill Testing Framework/skills/utility/adopt.md
+    spec: skill-testing-framework/skills/utility/adopt.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -699,7 +699,7 @@ skills:
     category: utility
 
   - name: smoke-check
-    spec: CCGS Skill Testing Framework/skills/utility/smoke-check.md
+    spec: skill-testing-framework/skills/utility/smoke-check.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -710,7 +710,7 @@ skills:
     category: utility
 
   - name: soak-test
-    spec: CCGS Skill Testing Framework/skills/utility/soak-test.md
+    spec: skill-testing-framework/skills/utility/soak-test.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -721,7 +721,7 @@ skills:
     category: utility
 
   - name: test-setup
-    spec: CCGS Skill Testing Framework/skills/utility/test-setup.md
+    spec: skill-testing-framework/skills/utility/test-setup.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -732,7 +732,7 @@ skills:
     category: utility
 
   - name: test-helpers
-    spec: CCGS Skill Testing Framework/skills/utility/test-helpers.md
+    spec: skill-testing-framework/skills/utility/test-helpers.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -743,7 +743,7 @@ skills:
     category: utility
 
   - name: regression-suite
-    spec: CCGS Skill Testing Framework/skills/utility/regression-suite.md
+    spec: skill-testing-framework/skills/utility/regression-suite.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -754,7 +754,7 @@ skills:
     category: utility
 
   - name: qa-plan
-    spec: CCGS Skill Testing Framework/skills/utility/qa-plan.md
+    spec: skill-testing-framework/skills/utility/qa-plan.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -765,7 +765,7 @@ skills:
     category: utility
 
   - name: bug-triage
-    spec: CCGS Skill Testing Framework/skills/utility/bug-triage.md
+    spec: skill-testing-framework/skills/utility/bug-triage.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -776,7 +776,7 @@ skills:
     category: utility
 
   - name: asset-spec
-    spec: CCGS Skill Testing Framework/skills/utility/asset-spec.md
+    spec: skill-testing-framework/skills/utility/asset-spec.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -787,7 +787,7 @@ skills:
     category: utility
 
   - name: art-generate
-    spec: ""
+    spec: skill-testing-framework/skills/utility/art-generate.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -798,7 +798,7 @@ skills:
     category: utility
 
   - name: day-one-patch
-    spec: CCGS Skill Testing Framework/skills/utility/day-one-patch.md
+    spec: skill-testing-framework/skills/utility/day-one-patch.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -809,7 +809,7 @@ skills:
     category: utility
 
   - name: explore
-    spec: ""
+    spec: skill-testing-framework/skills/utility/explore.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -820,7 +820,7 @@ skills:
     category: utility
 
   - name: hybrid-prototype
-    spec: ""
+    spec: skill-testing-framework/skills/utility/hybrid-prototype.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -831,7 +831,7 @@ skills:
     category: utility
 
   - name: automated-smoke-test
-    spec: ""
+    spec: skill-testing-framework/skills/utility/automated-smoke-test.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -842,7 +842,7 @@ skills:
     category: utility
 
   - name: autopilot-playtest
-    spec: ""
+    spec: skill-testing-framework/skills/utility/autopilot-playtest.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -853,7 +853,7 @@ skills:
     category: utility
 
   - name: init-template
-    spec: ""
+    spec: skill-testing-framework/skills/utility/init-template.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
@@ -866,302 +866,321 @@ skills:
 agents:
   # Tier 1 Directors
   - name: creative-director
-    spec: CCGS Skill Testing Framework/agents/directors/creative-director.md
+    spec: skill-testing-framework/agents/directors/creative-director.md
     last_spec: ""
     last_spec_result: ""
     category: director
 
   - name: technical-director
-    spec: CCGS Skill Testing Framework/agents/directors/technical-director.md
+    spec: skill-testing-framework/agents/directors/technical-director.md
     last_spec: ""
     last_spec_result: ""
     category: director
 
   - name: producer
-    spec: CCGS Skill Testing Framework/agents/directors/producer.md
+    spec: skill-testing-framework/agents/directors/producer.md
     last_spec: ""
     last_spec_result: ""
     category: director
 
   - name: art-director
-    spec: CCGS Skill Testing Framework/agents/directors/art-director.md
+    spec: skill-testing-framework/agents/directors/art-director.md
     last_spec: ""
     last_spec_result: ""
     category: director
 
   # Tier 2 Leads
   - name: lead-programmer
-    spec: CCGS Skill Testing Framework/agents/leads/lead-programmer.md
+    spec: skill-testing-framework/agents/leads/lead-programmer.md
     last_spec: ""
     last_spec_result: ""
     category: lead
 
   - name: qa-lead
-    spec: CCGS Skill Testing Framework/agents/leads/qa-lead.md
+    spec: skill-testing-framework/agents/leads/qa-lead.md
     last_spec: ""
     last_spec_result: ""
     category: lead
 
   - name: narrative-director
-    spec: CCGS Skill Testing Framework/agents/leads/narrative-director.md
+    spec: skill-testing-framework/agents/leads/narrative-director.md
     last_spec: ""
     last_spec_result: ""
     category: lead
 
   - name: audio-director
-    spec: CCGS Skill Testing Framework/agents/leads/audio-director.md
+    spec: skill-testing-framework/agents/leads/audio-director.md
     last_spec: ""
     last_spec_result: ""
     category: lead
 
   - name: game-designer
-    spec: CCGS Skill Testing Framework/agents/leads/game-designer.md
+    spec: skill-testing-framework/agents/leads/game-designer.md
     last_spec: ""
     last_spec_result: ""
     category: lead
 
   - name: systems-designer
-    spec: CCGS Skill Testing Framework/agents/leads/systems-designer.md
+    spec: skill-testing-framework/agents/leads/systems-designer.md
     last_spec: ""
     last_spec_result: ""
     category: lead
 
   - name: level-designer
-    spec: CCGS Skill Testing Framework/agents/leads/level-designer.md
+    spec: skill-testing-framework/agents/leads/level-designer.md
     last_spec: ""
     last_spec_result: ""
     category: lead
 
   # Core Specialists
   - name: gameplay-programmer
-    spec: CCGS Skill Testing Framework/agents/specialists/gameplay-programmer.md
+    spec: skill-testing-framework/agents/specialists/gameplay-programmer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: ai-programmer
-    spec: CCGS Skill Testing Framework/agents/specialists/ai-programmer.md
+    spec: skill-testing-framework/agents/specialists/ai-programmer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: technical-artist
-    spec: CCGS Skill Testing Framework/agents/specialists/technical-artist.md
+    spec: skill-testing-framework/agents/specialists/technical-artist.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: sound-designer
-    spec: CCGS Skill Testing Framework/agents/specialists/sound-designer.md
+    spec: skill-testing-framework/agents/specialists/sound-designer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: engine-programmer
-    spec: CCGS Skill Testing Framework/agents/specialists/engine-programmer.md
+    spec: skill-testing-framework/agents/specialists/engine-programmer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: tools-programmer
-    spec: CCGS Skill Testing Framework/agents/specialists/tools-programmer.md
+    spec: skill-testing-framework/agents/specialists/tools-programmer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: network-programmer
-    spec: CCGS Skill Testing Framework/agents/specialists/network-programmer.md
+    spec: skill-testing-framework/agents/specialists/network-programmer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: security-engineer
-    spec: CCGS Skill Testing Framework/agents/qa/security-engineer.md
+    spec: skill-testing-framework/agents/qa/security-engineer.md
     last_spec: ""
     last_spec_result: ""
     category: qa
 
   - name: accessibility-specialist
-    spec: CCGS Skill Testing Framework/agents/qa/accessibility-specialist.md
+    spec: skill-testing-framework/agents/qa/accessibility-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: qa
 
   - name: ux-designer
-    spec: CCGS Skill Testing Framework/agents/specialists/ux-designer.md
+    spec: skill-testing-framework/agents/specialists/ux-designer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: ui-programmer
-    spec: CCGS Skill Testing Framework/agents/specialists/ui-programmer.md
+    spec: skill-testing-framework/agents/specialists/ui-programmer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: performance-analyst
-    spec: CCGS Skill Testing Framework/agents/specialists/performance-analyst.md
+    spec: skill-testing-framework/agents/specialists/performance-analyst.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   # Engine Specialists — Godot
   - name: godot-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/godot/godot-specialist.md
+    spec: skill-testing-framework/agents/engine/godot/godot-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: godot-gdscript-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/godot/godot-gdscript-specialist.md
+    spec: skill-testing-framework/agents/engine/godot/godot-gdscript-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: godot-csharp-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/godot/godot-csharp-specialist.md
+    spec: skill-testing-framework/agents/engine/godot/godot-csharp-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: godot-shader-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/godot/godot-shader-specialist.md
+    spec: skill-testing-framework/agents/engine/godot/godot-shader-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: godot-gdextension-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/godot/godot-gdextension-specialist.md
+    spec: skill-testing-framework/agents/engine/godot/godot-gdextension-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   # Engine Specialists — Unity
   - name: unity-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unity/unity-specialist.md
+    spec: skill-testing-framework/agents/engine/unity/unity-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: unity-ui-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unity/unity-ui-specialist.md
+    spec: skill-testing-framework/agents/engine/unity/unity-ui-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: unity-shader-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unity/unity-shader-specialist.md
+    spec: skill-testing-framework/agents/engine/unity/unity-shader-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: unity-dots-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unity/unity-dots-specialist.md
+    spec: skill-testing-framework/agents/engine/unity/unity-dots-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: unity-addressables-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unity/unity-addressables-specialist.md
+    spec: skill-testing-framework/agents/engine/unity/unity-addressables-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   # Engine Specialists — Unreal
   - name: unreal-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unreal/unreal-specialist.md
+    spec: skill-testing-framework/agents/engine/unreal/unreal-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: ue-blueprint-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unreal/ue-blueprint-specialist.md
+    spec: skill-testing-framework/agents/engine/unreal/ue-blueprint-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: ue-gas-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unreal/ue-gas-specialist.md
+    spec: skill-testing-framework/agents/engine/unreal/ue-gas-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: ue-umg-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unreal/ue-umg-specialist.md
+    spec: skill-testing-framework/agents/engine/unreal/ue-umg-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   - name: ue-replication-specialist
-    spec: CCGS Skill Testing Framework/agents/engine/unreal/ue-replication-specialist.md
+    spec: skill-testing-framework/agents/engine/unreal/ue-replication-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  # Engine Specialists — Single-Agent Engines
+  - name: bevy-specialist
+    spec: skill-testing-framework/agents/engine/bevy-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  - name: raylib-specialist
+    spec: skill-testing-framework/agents/engine/raylib-specialist.md
+    last_spec: ""
+    last_spec_result: ""
+    category: engine
+
+  - name: sfml-specialist
+    spec: skill-testing-framework/agents/engine/sfml-specialist.md
     last_spec: ""
     last_spec_result: ""
     category: engine
 
   # Operations
   - name: devops-engineer
-    spec: CCGS Skill Testing Framework/agents/operations/devops-engineer.md
+    spec: skill-testing-framework/agents/operations/devops-engineer.md
     last_spec: ""
     last_spec_result: ""
     category: operations
 
   - name: release-manager
-    spec: CCGS Skill Testing Framework/agents/operations/release-manager.md
+    spec: skill-testing-framework/agents/operations/release-manager.md
     last_spec: ""
     last_spec_result: ""
     category: operations
 
   - name: live-ops-designer
-    spec: CCGS Skill Testing Framework/agents/operations/live-ops-designer.md
+    spec: skill-testing-framework/agents/operations/live-ops-designer.md
     last_spec: ""
     last_spec_result: ""
     category: operations
 
   - name: community-manager
-    spec: CCGS Skill Testing Framework/agents/operations/community-manager.md
+    spec: skill-testing-framework/agents/operations/community-manager.md
     last_spec: ""
     last_spec_result: ""
     category: operations
 
   - name: analytics-engineer
-    spec: CCGS Skill Testing Framework/agents/operations/analytics-engineer.md
+    spec: skill-testing-framework/agents/operations/analytics-engineer.md
     last_spec: ""
     last_spec_result: ""
     category: operations
 
   - name: economy-designer
-    spec: CCGS Skill Testing Framework/agents/operations/economy-designer.md
+    spec: skill-testing-framework/agents/operations/economy-designer.md
     last_spec: ""
     last_spec_result: ""
     category: operations
 
   - name: localization-lead
-    spec: CCGS Skill Testing Framework/agents/operations/localization-lead.md
+    spec: skill-testing-framework/agents/operations/localization-lead.md
     last_spec: ""
     last_spec_result: ""
     category: operations
 
   # QA & Creative
   - name: qa-tester
-    spec: CCGS Skill Testing Framework/agents/qa/qa-tester.md
+    spec: skill-testing-framework/agents/qa/qa-tester.md
     last_spec: ""
     last_spec_result: ""
     category: qa
 
   - name: prototyper
-    spec: CCGS Skill Testing Framework/agents/specialists/prototyper.md
+    spec: skill-testing-framework/agents/specialists/prototyper.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: writer
-    spec: CCGS Skill Testing Framework/agents/specialists/writer.md
+    spec: skill-testing-framework/agents/specialists/writer.md
     last_spec: ""
     last_spec_result: ""
     category: specialist
 
   - name: world-builder
-    spec: CCGS Skill Testing Framework/agents/specialists/world-builder.md
+    spec: skill-testing-framework/agents/specialists/world-builder.md
     last_spec: ""
     last_spec_result: ""
     category: specialist

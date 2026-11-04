@@ -26,7 +26,7 @@
 - [🔌 Recommended Plugins](#-recommended-plugins)
 - [🗺️ Key Mappings](#️-key-mappings)
 - [📁 Directory Tree](#-directory-tree)
-- [🔗 Hooks Plugin](#-hooks-plugin)
+- [🔌 Plugin Architecture](#-plugin-architecture)
 - [🏗️ Studio Hierarchy](#️-studio-hierarchy)
 - [🐛 Known Issues](#-known-issues)
 - [📄 License](#-license)
@@ -70,7 +70,7 @@ and [oh-my-pi](https://omp.sh/).
 
 | Component | CCGS (Claude Code) | OpenCode | Pi | omp | Status |
 |-----------|-------------------|----------|-----|-----|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (read natively) | ✅ |
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | Not loaded — omp's task tool reads `.omp/agents/` | ✅ |
 | ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`/skill:<name>`) | ✅ +6 |
 | ⌨️ **Commands** | — | 78 commands (`.agents/commands/`) | → prompt templates | → slash commands | ✅ New |
 | 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 9 Pi extensions (`.pi/extensions/`) | 7 shared via config | ✅ **177 plugin + 54 hook tests** |
@@ -93,14 +93,15 @@ Type `/` to browse all 78 skills and 78 commands, or `/start` for onboarding.
 ```bash
 pi
 ```
-All OCGS skills, commands, and agents load automatically through Pi extensions.
-See [docs/pi-compatibility.md](docs/pi-compatibility.md) for setup details.
+All OCGS skills and commands load automatically through Pi extensions. The 52 agent
+definitions are present, but `Task` delegation has a known defect — see
+[docs/pi-compatibility.md#delegation](docs/pi-compatibility.md#delegation).
 
 ### oh-my-pi (omp)
 ```bash
 omp
 ```
-omp reads `.agents/` natively and loads the shared Pi extensions through `.omp/config.yml`.
+omp reads `.agents/` skills, commands, and rules natively and loads the shared Pi extensions through `.omp/config.yml`. It does not load `.agents/agents/`; its task tool uses `.omp/agents/`.
 See [docs/omp-compatibility.md](docs/omp-compatibility.md) for setup details and known gaps.
 
 ### 🎮 Demo Game
@@ -153,9 +154,10 @@ node .opencode/modules/install.mjs info core
 node .opencode/modules/install.mjs remove art
 ```
 
-Module sources live in `.agents/modules/<name>/` and are copied into the
-framework directories on install. User-modified files are detected during
-removal and left in place.
+Module sources are mirrored: `.opencode/modules/` feeds the OpenCode target (the
+default) and `.agents/modules/` feeds the Pi target (`--pi`). Both trees are
+tracked; keep them in sync when changing a module. User-modified files are
+detected during removal and left in place.
 
 ---
 
@@ -172,7 +174,7 @@ all game development sessions:
 **OpenCode:** Add to your `opencode.json`:
 ```json
 {
-  "plugin": [
+  "plugins": [
     "./.opencode/plugins/ccgs-hooks.ts",
     "PLUGIN_NAME"
   ]
@@ -189,7 +191,7 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 | CCGS (Claude Code) | OpenCode | Pi | omp |
 |--------------------|----------|-----|-----|
 | `.claude/skills/*.md` → | `.agents/skills/*.md` | `.agents/skills/*.md` | `.agents/skills/*.md` |
-| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` | `.agents/agents/*.md` |
+| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` | Not loaded — task tool reads `.omp/agents/` |
 | `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` | `.pi/extensions/` | `.pi/extensions/` (via `.omp/config.yml`) |
 | `.claude/rules/*.md` → | `.agents/rules/*.md` | `.agents/rules/*.md` | `.agents/rules/*.md` |
 | `CLAUDE.md` → | `AGENTS.md` | `AGENTS.md` | `AGENTS.md` |
@@ -204,13 +206,14 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 ├── AGENTS.md                  📋 Project configuration
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .pi/                       ⚙️ Pi config (extensions, settings)
+│   └── extensions/            🧩 Pi extensions (ocgs-core, delegation, question, etc.)
 ├── .omp/                      ⚙️ oh-my-pi config (extensions, MCP)
 ├── .agents/                   📦 Canonical content (harness-agnostic)
 │   ├── agents/                🤖 52 agent definitions
 │   ├── skills/                🛠️ 78 skill workflows
 │   ├── commands/              ⌨️ 78 slash commands
 │   ├── rules/                 📏 11 coding standards
-│   └── modules/               🧩 22 pluggable theme modules
+│   └── modules/               🧩 22 Pi-target module mirrors
 │       ├── ...                22 modules total
 ├── .opencode/                 ⚙️ OpenCode-specific (plugins, config)
 │   ├── commands/ → .agents/commands/ (symlink)
@@ -225,10 +228,8 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 │   └── modules/
 │       ├── install.mjs        CLI: add/remove/list modules
 │       ├── installed.json     Module manifest
-│       └── ...                22 module sources
+│       └── ...                22 OpenCode-target module mirrors
 ├── design/                    🎨 Game design documents
-├── .pi/                        ⚙️ Pi-specific extensions & settings
-│   └── extensions/            🧩 Pi extensions (ocgs-core, delegation, question, etc.)
 ├── docs/
 │   ├── CONTRIBUTING.md        📖 Framework contribution guide
 │   ├── authoring-agents.md    🤖 Agent authoring guide
@@ -277,7 +278,7 @@ All 12 bash hooks from CCGS ported to `ccgs-hooks.ts`:
 | 6 | `validate-assets.sh` | `tool.execute.after` | **16** |
 | 7 | `validate-commit.sh` | `tool.execute.before` (git commit) | **17** |
 | 8 | `validate-push.sh` | `tool.execute.before` (git push) | **13** |
-| 9 | `validate-skill-change.sh` | `tool.execute.after` | **12** |
+| 9 | `validate-skill-change.sh` | `tool.execute.after` | **13** |
 | 10 | `pre-compact.sh` | `experimental.session.compacting` | **14** |
 | 11 | `post-compact.sh` | `experimental.compaction.autocontinue` | **5** |
 | 12 | `notify.sh` | Utility (`showNotification`) | — |

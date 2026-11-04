@@ -3,13 +3,14 @@
 ```text
 /
 ├── AGENTS.md                    # Master configuration
-├── opencode.json                # OpenCode config (permissions, plugins)
+├── opencode.json                # OpenCode V2 config (plugins, MCP, permissions)
+├── .githooks/                   # Tracked commit-msg and pre-commit hooks
 ├── .agents/                     # Canonical content (harness-agnostic)
 │   ├── agents/                  # 52 agent definitions
 │   ├── skills/                  # 78 skill workflows
 │   ├── commands/                # 78 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
-│   └── modules/                 # 22 theme modules (source of truth)
+│   └── modules/                 # 22 Pi-target module mirrors
 │       ├── installed.json       # Manifest of installed modules
 │       ├── core/                # Core module (always installed)
 │       ├── art/                 # Art module (aseprite MCP, art bible)
@@ -32,12 +33,15 @@
 │   │   ├── drift-detector.ts   # Template drift detection
 │   │   ├── changelog-generator.ts
 │   │   └── tests/              # 19 test suites (177 tests)
-│   └── modules/
-│       ├── install.mjs          # CLI: add/remove/list modules
+│   └── modules/                 # Module CLI + 22 OpenCode-target mirrors
+│       ├── install.mjs          # CLI: add/remove/list modules (--pi for Pi target)
 │       └── installed.json       # Module manifest
 ├── .pi/                         # Pi-specific extensions & settings
-│   ├── extensions/              # Pi extensions (ocgs-core, delegation, question, etc.)
+│   ├── extensions/              # 9 Pi extensions (ocgs-core, delegation, question, etc.)
 │   └── settings.json            # Pi configuration
+├── .omp/                        # oh-my-pi config
+│   ├── config.yml               # Shared extension wiring
+│   └── mcp.json                 # Project MCP servers (disabled by default)
 ├── src/                         # Game source code (core, gameplay, ai, networking, ui, tools)
 ├── assets/                      # Game assets (art, audio, vfx, shaders, data)
 ├── design/                      # Game design documents (gdd, narrative, levels, balance)
@@ -55,6 +59,9 @@
 │   ├── pi-compatibility.md      # Pi setup guide
 │   ├── pi-extensions.md         # Pi extension reference
 │   ├── pi-workflow.md           # Pi workflow differences
+│   ├── omp-compatibility.md     # oh-my-pi setup and known gaps
+│   ├── WORKFLOW-GUIDE.md        # End-to-end workflow guide
+│   ├── examples/                # Worked session examples
 │   ├── authoring-agents.md      # Agent creation guide
 │   ├── authoring-skills.md      # Skill creation guide
 │   ├── hybrid-workflow.md       # Hybrid workflow reference
@@ -78,15 +85,17 @@
 
 ## Key Principles
 
-1. **`.agents/` is canonical**: All agent definitions, skills, commands, rules, and
-   module sources live here. This directory is harness-agnostic.
+1. **`.agents/` is canonical**: Agent definitions, skills, commands, and rules
+   live here. This directory is harness-agnostic.
 
-2. **`.opencode/` and `.pi/` are harness-specific**: They contain symlinks to `.agents/`
-   content plus harness-specific plugins, extensions, and configuration.
+2. **`.opencode/`, `.pi/`, and `.omp/` are harness-specific**: They contain
+   symlinks to `.agents/` content plus harness-specific plugins, extensions, and
+   configuration.
 
-3. **Modules are installable**: Each theme module under `.agents/modules/<name>/`
-   contains agents, skills, commands, and rules for a domain. Install with
-   `node .opencode/modules/install.mjs add <name>`.
+3. **Modules are installable**: Theme modules are mirrored under
+   `.opencode/modules/` (OpenCode target) and `.agents/modules/` (Pi target).
+   Install with `node .opencode/modules/install.mjs add <name>`, or add `--pi`
+   to install into `.agents/`. Keep the two mirrors in sync when editing a module.
 
 4. **22 modules available**: core, art, design, architecture, stories, programming,
    ui, audio, narrative, level-design, qa, release, prototyping, live-ops,

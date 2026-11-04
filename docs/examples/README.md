@@ -25,6 +25,15 @@ design-system, story lifecycle, UX pipeline, and brownfield onboarding.
 
 ---
 
+### [Workflow Selection Case Studies](workflow-selection-case-studies.md)
+**Type:** Workflow Selection
+**Complexity:** All levels
+
+Three end-to-end case studies showing `/explore` → `/gate-check workflow-selection`
+and when to choose Hybrid versus Full OCGS.
+
+---
+
 ### [Session: Authoring a GDD with /design-system](session-design-system-skill.md)
 **Type:** Design (skill-driven)
 **Skill:** `/design-system`
@@ -244,10 +253,11 @@ Question → Options → Decision → Draft → Approval
 ```
 
 > **Note:** These examples show the collaborative pattern as conversational text.
-> In practice, agents now use the `AskUserQuestion` tool at decision points to
+> In practice, agents now use the `question` tool at decision points to
 > present structured option pickers (with labels, descriptions, and multi-select).
-> The pattern is **Explain → Capture**: agents explain their analysis in
-> conversation first, then present a structured UI picker for the user's decision.
+> omp exposes the equivalent `ask` tool. The pattern is **Explain → Capture**:
+> agents explain their analysis in conversation first, then present a structured
+> UI picker for the user's decision.
 
 ### ✅ **Collaborative Behaviors Shown:**
 
@@ -346,6 +356,10 @@ After reading these examples, try this exercise:
 
 If the agent skips any of these, remind it:
 > "Please follow the collaborative protocol from docs/COLLABORATIVE-DESIGN-PRINCIPLE.md"
+
+> **Engine version note:** These transcripts were written against Godot 4.6.
+> The framework reference is now pinned to Godot 4.7.2; substitute 4.7 where the
+> example is teaching current setup rather than recording a historical change.
 
 ---
 

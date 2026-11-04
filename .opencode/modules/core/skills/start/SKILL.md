@@ -36,7 +36,7 @@ Store these findings internally to validate the user's self-assessment and tailo
 
 This is the first thing the user sees. Use `question` with these exact options so the user can click rather than type:
 
-- **Prompt**: "Welcome to Claude Code Game Studios! Before I suggest anything, I'd like to understand where you're starting from. Where are you at with your game idea right now?"
+- **Prompt**: "Welcome to OpenCode Game Studios! Before I suggest anything, I'd like to understand where you're starting from. Where are you at with your game idea right now?"
 - **Options**:
   - `A) No idea yet` — I don't have a game concept at all. I want to explore and figure out what to make.
   - `B) Vague idea` — I have a rough theme, feeling, or genre in mind (e.g., "something with space" or "a cozy farming game") but nothing concrete.

@@ -1,6 +1,6 @@
 # Godot Physics — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-11-04 | Engine: Godot 4.7.2
 
 ## What Changed Since ~4.3 (LLM Cutoff)
 
@@ -11,6 +11,15 @@ Last verified: 2026-02-12 | Engine: Godot 4.6
   - Some HingeJoint3D properties (`damp`) only work with GodotPhysics3D
   - 2D physics UNCHANGED (still Godot Physics 2D)
 
+
+### 4.7 Changes
+- **Jolt `WorldBoundaryShape3D`**: `plane.d` is interpreted with the opposite
+  sign from 4.6; flip its sign to preserve 4.6 behavior.
+- **Jolt `SoftBody3D`**: Default mass is 1 kg for the whole body (was per
+  point). `linear_stiffness` applies differently; re-tune it and
+  `damping_coefficient`.
+- **Jolt `Area3D` and `SoftBody3D` overlaps**: `Area3D` now reports overlaps
+  with `SoftBody3D`; use collision layers and masks to ignore unwanted pairs.
 ### 4.5 Changes
 - **3D physics interpolation rearchitected**: Moved from RenderingServer to SceneTree
   - User-facing API unchanged, but internal behavior may differ in edge cases

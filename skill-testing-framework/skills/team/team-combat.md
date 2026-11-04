@@ -6,7 +6,7 @@ Orchestrates the full combat team pipeline end-to-end for a single combat featur
 Coordinates game-designer, gameplay-programmer, ai-programmer, technical-artist,
 sound-designer, the primary engine specialist, and qa-tester through six structured
 phases: Design → Architecture (with engine specialist validation) → Implementation
-(parallel) → Integration → Validation → Sign-off. Uses `AskUserQuestion` at each
+(parallel) → Integration → Validation → Sign-off. Uses `question` at each
 phase transition. Delegates all file writes to sub-agents. Produces a summary report
 with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 `/balance-check`, and `/team-polish`.
@@ -21,7 +21,7 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 - [ ] Contains "May I write" or "File Write Protocol" — writes delegated to sub-agents, orchestrator does not write files directly
 - [ ] Has a next-step handoff at the end (references `/code-review`, `/balance-check`, `/team-polish`)
 - [ ] Error Recovery Protocol section is present with all four recovery steps
-- [ ] Uses `AskUserQuestion` at phase transitions for user approval before proceeding
+- [ ] Uses `question` at phase transitions for user approval before proceeding
 - [ ] Phase 3 is explicitly marked as parallel (gameplay-programmer, ai-programmer, technical-artist, sound-designer)
 - [ ] Phase 2 includes spawning the primary engine specialist (read from `docs/framework/technical-preferences.md`)
 - [ ] Team Composition lists all seven roles (game-designer, gameplay-programmer, ai-programmer, technical-artist, sound-designer, engine specialist, qa-tester)
@@ -41,15 +41,15 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 
 **Expected behavior:**
 1. Phase 1 — game-designer spawned; produces `design/gdd/parry-riposte.md` covering all 8 required sections (overview, player fantasy, rules, formulas, edge cases, dependencies, tuning knobs, acceptance criteria); asks user to approve design doc
-2. Phase 2 — gameplay-programmer + ai-programmer spawned; produce architecture sketch with class structure, interfaces, and file list; then primary engine specialist is spawned to validate idioms; engine specialist output incorporated; `AskUserQuestion` presented with architecture options before Phase 3 begins
+2. Phase 2 — gameplay-programmer + ai-programmer spawned; produce architecture sketch with class structure, interfaces, and file list; then primary engine specialist is spawned to validate idioms; engine specialist output incorporated; `question` presented with architecture options before Phase 3 begins
 3. Phase 3 — gameplay-programmer, ai-programmer, technical-artist, sound-designer spawned in parallel; all four return outputs before Phase 4 begins
-4. Phase 4 — integration wires together all Phase 3 outputs; tuning knobs verified as data-driven; `AskUserQuestion` confirms integration before Phase 5
+4. Phase 4 — integration wires together all Phase 3 outputs; tuning knobs verified as data-driven; `question` confirms integration before Phase 5
 5. Phase 5 — qa-tester spawned; writes test cases from acceptance criteria; verifies edge cases; performance impact checked against budget
 6. Phase 6 — summary report produced: design COMPLETE, all team members COMPLETE, test cases listed, verdict: COMPLETE
 7. Next steps listed: `/code-review`, `/balance-check`, `/team-polish`
 
 **Assertions:**
-- [ ] `AskUserQuestion` called at each phase gate (at minimum before Phase 3 and before Phase 5)
+- [ ] `question` called at each phase gate (at minimum before Phase 3 and before Phase 5)
 - [ ] Phase 3 agents launched simultaneously — no sequential dependency between gameplay-programmer, ai-programmer, technical-artist, sound-designer
 - [ ] Engine specialist runs in Phase 2 before Phase 3 begins (output incorporated into architecture)
 - [ ] All file writes delegated to sub-agents (orchestrator never calls Write/Edit directly)
@@ -71,13 +71,13 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 1. Phase 1 — design doc found; game-designer confirms it is valid; phase approved
 2. Phase 2 — gameplay-programmer completes architecture sketch; ai-programmer returns BLOCKED: "ADR for AI behavior system is Proposed — cannot implement until ADR is Accepted"
 3. Error Recovery Protocol triggered: "ai-programmer: BLOCKED — AI behavior ADR is Proposed"
-4. `AskUserQuestion` presented with options: (a) Skip ai-programmer and note the gap; (b) Retry with narrower scope; (c) Stop here and run `/architecture-decision` first
+4. `question` presented with options: (a) Skip ai-programmer and note the gap; (b) Retry with narrower scope; (c) Stop here and run `/architecture-decision` first
 5. If user chooses (a): Phase 3 proceeds with gameplay-programmer, technical-artist, sound-designer only; ai-programmer gap noted in partial report
 6. Final report produced: partial implementation documented, ai-programmer section marked BLOCKED, overall verdict: BLOCKED
 
 **Assertions:**
 - [ ] BLOCKED surface message appears before any dependent phase continues
-- [ ] `AskUserQuestion` offers at minimum three options: skip / retry / stop
+- [ ] `question` offers at minimum three options: skip / retry / stop
 - [ ] Partial report produced — completed agents' work is not discarded
 - [ ] Overall verdict is BLOCKED (not COMPLETE) when any agent is unresolved
 - [ ] Blocked reason references the ADR and suggests `/architecture-decision`
@@ -145,7 +145,7 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 3. Engine specialist is spawned with: the architecture sketch, the GDD path, the engine version from `VERSION.md`, and explicit instructions to check for deprecated APIs
 4. Engine specialist output (idiom notes, deprecated API warnings, native system recommendations) is returned to orchestrator
 5. Orchestrator incorporates engine notes into the architecture before presenting Phase 2 results to user
-6. `AskUserQuestion` includes engine specialist's notes alongside the architecture sketch
+6. `question` includes engine specialist's notes alongside the architecture sketch
 
 **Assertions:**
 - [ ] Engine specialist agent type is read from `docs/framework/technical-preferences.md` — not hardcoded
@@ -158,7 +158,7 @@ with verdict COMPLETE / NEEDS WORK / BLOCKED and handoffs to `/code-review`,
 
 ## Protocol Compliance
 
-- [ ] `AskUserQuestion` used at each phase transition — user approves before pipeline advances
+- [ ] `question` used at each phase transition — user approves before pipeline advances
 - [ ] All file writes delegated to sub-agents via Task — orchestrator does not call Write or Edit directly
 - [ ] Error Recovery Protocol followed: surface → assess → offer options → partial report
 - [ ] Phase 3 agents launched in parallel per skill spec

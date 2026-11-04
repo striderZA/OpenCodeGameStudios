@@ -1,7 +1,7 @@
 # Commands
 
-Slash commands available in OpenCode. Each command is a thin routing file that
-maps to the corresponding skill in `.agents/skills/`.
+Slash commands available in OpenCode, Pi, and oh-my-pi (omp). Each command is a
+thin routing file that maps to the corresponding skill in `.agents/skills/`.
 
 ## Adding a Command
 

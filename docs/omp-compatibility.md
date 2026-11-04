@@ -101,7 +101,7 @@ Run on 2026-11-03 and 2026-11-04. The matrix is run headlessly through `omp --mo
 
 | # | Scenario | Pass means | omp 18.16.0 | Pi 0.85.1 |
 |---|---|---|---|---|
-| 1 | Startup load | Gate passes; all six extensions bind | PASS. All six act in a default session: validate and drift status (rows 7, 8), path-guard `rules:` status (rows 4, 5), audit lines (row 6), changelog widget (row 9), and the `ocgs-question` decision hook (row 10). The `question` tool itself stays inactive by default | PARTIAL. Trusted discovery (`-a`) binds OCGS; validate and drift status observed, and the changelog widget in row 9. Audit, path-guard, and question not individually observed at startup |
+| 1 | Startup load | Gate passes; all six observed extensions bind (hooks verified separately) | PASS. All six act in a default session: validate and drift status (rows 7, 8), path-guard `rules:` status (rows 4, 5), audit lines (row 6), changelog widget (row 9), and the `ocgs-question` decision hook (row 10). The `question` tool itself stays inactive by default | PARTIAL. Trusted discovery (`-a`) binds OCGS; validate and drift status observed, and the changelog widget in row 9. Audit, path-guard, and question not individually observed at startup |
 | 2 | Skill command | `/skill:help` runs | PASS. Output is the OCGS help workflow | BLOCKED: model unavailable (see [Pi Notes](#pi-notes)) |
 | 3 | Slash command | `/help` from `.agents/commands` runs | PASS. Reads `skill://help` | BLOCKED: model unavailable |
 | 4 | Path-guard, read/write | `read` or `write` of `src/ai/x.gd` injects `ai-code` | PASS. `rules: ai-code` on the turn after a read, and again after a write | BLOCKED: needs model tool calls |
@@ -116,7 +116,7 @@ Run on 2026-11-03 and 2026-11-04. The matrix is run headlessly through `omp --mo
 
 **Status key:** PASS = criterion observed. PARTIAL = some criteria observed, others not. FAIL = criterion contradicted by a run. BLOCKED = not run. OBSERVED = no pass/fail criterion; behavior recorded.
 
-**Counts (12 rows).** omp: 11 PASS, 1 OBSERVED (row 12). This changed from 9 PASS, 1 PARTIAL, 1 FAIL on new evidence: row 10 now passes through `ask` in `rpc-ui`, and the `ocgs-question` hook firing in a default-config run shows all six extensions act, so row 1 is PASS. Pi: 2 PASS (rows 8, 9), 1 PARTIAL (row 1), 1 FAIL (row 11), 7 BLOCKED (rows 2–7, 10), 1 OBSERVED (row 12). The Pi row 11 FAIL is Pi-only; omp passes row 11.
+**Counts (12 rows).** omp: 11 PASS, 1 OBSERVED (row 12). This changed from 9 PASS, 1 PARTIAL, 1 FAIL on new evidence: row 10 now passes through `ask` in `rpc-ui`, and the `ocgs-question` hook firing in a default-config run shows all six observed extensions act, so row 1 is PASS. `ocgs-hooks` load is verified separately in [Verification](#verification). Pi: 2 PASS (rows 8, 9), 1 PARTIAL (row 1), 1 FAIL (row 11), 7 BLOCKED (rows 2–7, 10), 1 OBSERVED (row 12). The Pi row 11 FAIL is Pi-only; omp passes row 11.
 
 ### Deviations from the plan
 
@@ -164,4 +164,4 @@ These were found while running the Pi baseline. They are Pi 0.85.1 behavior, not
 | Harness | Version | Host |
 |---|---|---|
 | oh-my-pi | 18.16.0 | Windows 11 (26200) |
-| Pi | 0.85.1 (`@earendil-works/pi-coding-agent`) | Windows 11 (26200) |
+| Pi | 0.85.1 (`@earendil-works/pi-coding-agent`) — baseline for this matrix; Autopilot MCP was separately verified on Pi 1.5.0 | Windows 11 (26200) |

@@ -2,12 +2,9 @@
 
 ## What Is This?
 
-# Game Studio Agent Architecture -- Quick Start Guide
-
-## What Is This?
-
-This is a complete agent architecture for game development, supporting both
-[OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent). It
+This is a complete agent architecture for game development, supporting
+[OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent), and
+[oh-my-pi](https://omp.sh/) (`omp`). It
 organizes 52 specialized AI agents into a studio hierarchy that mirrors
 real game development teams, with defined responsibilities, delegation
 rules, and coordination protocols. It includes engine-specialist agents
@@ -23,16 +20,16 @@ Flow State, Bartle Player Types). Use whichever engine set matches your project.
 
 There are three tiers of agents:
 
-- **Tier 1 (Opus)**: Directors who make high-level decisions
+- **Tier 1**: Directors who make high-level decisions
   - `creative-director` -- vision and creative conflict resolution
   - `technical-director` -- architecture and technology decisions
   - `producer` -- scheduling, coordination, and risk management
 
-- **Tier 2 (Sonnet)**: Department leads who own their domain
+- **Tier 2**: Department leads who own their domain
   - `game-designer`, `lead-programmer`, `art-director`, `audio-director`,
     `narrative-director`, `qa-lead`, `release-manager`, `localization-lead`
 
-- **Tier 3 (Sonnet/Haiku)**: Specialists who execute within their domain
+- **Tier 3**: Specialists who execute within their domain
   - Designers, programmers, artists, writers, testers, engineers
 
 ### 2. Pick the Right Agent for the Job
@@ -190,6 +187,7 @@ Templates are in `docs/framework/templates/`:
 - `player-journey.md` -- for 6-phase emotional arc and retention hooks by time scale
 - `difficulty-curve.md` -- for difficulty axes, onboarding ramp, and cross-system interactions
 - `test-evidence.md` -- template for recording manual test evidence (screenshots, walkthrough notes)
+- `skill-test-spec.md` -- behavioral spec template for `/skill-test`
 
 Also in `docs/framework/templates/collaborative-protocols/` (used by agents, not typically edited directly):
 
@@ -262,7 +260,7 @@ If you already know what you need, jump directly to the relevant path:
 If you already have a game concept and engine choice:
 
 1. **Set up the engine** — Run `/setup-engine [engine] [version]`
-   (e.g., `/setup-engine godot 4.6`) — also creates technical preferences
+   (e.g., `/setup-engine godot 4.7`) — also creates technical preferences
 2. **Write the Game Pillars** — delegate to `creative-director`
 3. **Decompose into systems** — Run `/map-systems` to enumerate systems and dependencies
 4. **Design each system** — Run `/design-system [system-name]` for GDDs in dependency order
@@ -293,64 +291,82 @@ If you have design docs, prototypes, or code already:
 4. **Validate phase readiness** — Run `/gate-check` to see where you stand
 5. **Plan the next sprint** — Run `/sprint-plan new`
 
-### 6. Use Modules (Optional)
+### Install and Launch
 
-The framework is partitioned into **theme modules**. Only install what you need:
+The framework is partitioned into **theme modules**. Only install what you need.
 
-```bash
-## Installation
-
-### OpenCode
+#### OpenCode
 ```bash
 opencode
 ```
 Type `/` to browse all skills and commands, or `/start` for onboarding.
 
-### Pi
+#### Pi
 ```bash
 pi
 ```
-All OCGS skills, commands, and agents load automatically through Pi extensions.
-See `docs/pi-compatibility.md` for full setup.
+All OCGS skills and commands load through Pi extensions; the 52 agent
+definitions are present, but `Task` delegation has a known defect (see
+`docs/pi-compatibility.md#delegation`).
 
-### Install Modules
+#### oh-my-pi (omp)
+```bash
+omp
+```
+omp reads `.agents/` skills, commands, and rules natively and loads the shared
+Pi extensions through `.omp/config.yml`. See `docs/omp-compatibility.md` for
+setup and known gaps.
+
+#### Install Modules
 
 ```bash
 node .opencode/modules/install.mjs add core          # Required: directors, /start, /help
 node .opencode/modules/install.mjs add engine-godot  # Engine specialists (or engine-unity/engine-unreal)
 node .opencode/modules/install.mjs add art           # Aseprite MCP, art bible, asset specs
 node .opencode/modules/install.mjs add design        # Game mechanics, systems, combat
-node .opencode/modules/install.mjs add qa           # QA pipeline, test setup, profiling
+node .opencode/modules/install.mjs add qa            # QA pipeline, test setup, profiling
 node .opencode/modules/install.mjs list              # See all available + installed
+
+# Pi target: add --pi to install into .agents/ instead of .opencode/
+node .opencode/modules/install.mjs add core --pi
 ```
 
-Available modules: art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, engine-godot, engine-unity, engine-unreal, data.
+Available modules: core, art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib, engine-bevy.
 
 ## File Structure Reference
 
 ```
 AGENTS.md                          -- Master config (read this first)
-.opencode/  (opencode.json at root) -- OpenCode settings & plugin config
-.pi/           (settings, extensions; MCP at ~/.pi/agent/mcp.json) -- Pi settings
-  extensions/                         -- 7 Pi extensions (auto-discovered)
-  agents/                          -- Agent definitions (YAML frontmatter)
-  skills/                          -- Skill definitions (YAML frontmatter)
-  plugins/                         -- TypeScript hooks plugin (ccgs-hooks.ts)
-  rules/                           -- Path-specific rule files
-  modules/                         -- Theme modules (install.mjs CLI + module sources)
-    install.mjs                    -- Module CLI: add/remove/list
+opencode.json                      -- OpenCode V2 config (plugins, MCP, permissions)
+.agents/                           -- Canonical, harness-agnostic content
+  agents/                          -- 52 agent definitions (YAML frontmatter)
+  skills/                          -- 78 skill workflows
+  commands/                        -- 78 slash commands
+  rules/                           -- 11 path-scoped rule files
+  modules/                         -- 22 Pi-target module mirrors
+.opencode/                         -- OpenCode-specific
+  plugins/                         -- TypeScript plugins (ccgs-hooks, drift, changelog)
+  modules/                         -- Module CLI + 22 OpenCode-target module mirrors
+    install.mjs                    -- Module CLI: add/remove/list [--pi]
     installed.json                 -- Installed module manifest
-    art/                           -- Art module source files
-    design/                        -- Design module source files
-    ...
-  docs/
+.pi/                               -- Pi-specific
+  settings.json                    -- Pi settings
+  extensions/                      -- 9 Pi extensions (auto-discovered)
+.omp/                              -- oh-my-pi-specific
+  config.yml                       -- Extension wiring
+  mcp.json                         -- Project MCP servers (disabled by default)
+docs/                              -- Framework and project documentation
+  architecture/                    -- ADRs (created during architecture phase)
+  engine-reference/                -- Version-pinned engine API snapshots
+  examples/                        -- Worked session examples
+  framework/                       -- Framework reference docs & templates
     quick-start.md                 -- This file
     technical-preferences.md       -- Project-specific standards (populated by /setup-engine)
     coding-standards.md            -- Coding and design doc standards
     coordination-rules.md          -- Agent coordination rules
     context-management.md          -- Context budgets and compaction instructions
     directory-structure.md         -- Project directory layout
-    workflow-catalog.yaml          -- 7-phase pipeline definition (read by /help)
-    setup-requirements.md          -- System prerequisites (Git, Node.js, OpenCode CLI)
-    templates/                     -- 37 document templates
+    workflow-catalog.yaml           -- 7-phase pipeline definition (read by /help)
+    setup-requirements.md          -- System prerequisites
+    templates/                     -- 35 document templates + 3 collaborative protocols
 ```

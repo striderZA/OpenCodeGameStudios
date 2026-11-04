@@ -20,7 +20,7 @@ independent stories.
 - [ ] Contains verdict keywords for sign-off report: APPROVED, APPROVED WITH CONDITIONS, NOT APPROVED
 - [ ] Contains "May I write" language for both the QA plan and the sign-off report
 - [ ] Has an Error Recovery Protocol section
-- [ ] Uses `AskUserQuestion` at phase transitions to capture user approval before proceeding
+- [ ] Uses `question` at phase transitions to capture user approval before proceeding
 - [ ] Phase 4 (smoke check) is a hard gate: FAIL stops the cycle
 - [ ] Bug reports are written to `production/qa/bugs/` with `BUG-[NNN]-[short-slug].md` naming
 - [ ] Next-step guidance differs by verdict (APPROVED / APPROVED WITH CONDITIONS / NOT APPROVED)
@@ -43,10 +43,10 @@ independent stories.
 
 **Expected behavior:**
 1. Phase 1: Reads all story files in `production/sprints/sprint-03/`; reads `production/stage.txt`; reports "Found 4 stories. Current stage: [stage]. Ready to begin QA strategy?"
-2. Phase 2: Spawns `qa-lead` via Task; produces strategy table classifying all 4 stories; no blockers flagged; presents to user; AskUserQuestion: user selects "Looks good — proceed to test plan"
+2. Phase 2: Spawns `qa-lead` via Task; produces strategy table classifying all 4 stories; no blockers flagged; presents to user; question: user selects "Looks good — proceed to test plan"
 3. Phase 3: Produces QA plan document; asks "May I write the QA plan to `production/qa/qa-plan-sprint-03-[date].md`?"; writes after approval
 4. Phase 4: Spawns `qa-lead` via Task; reviews `tests/smoke/`; returns PASS; reports "Smoke check passed. Proceeding to test case writing."
-5. Phase 5: Spawns `qa-tester` via Task for each Visual/Feel and Integration story (2–3 stories); run in parallel; presents test cases grouped by story; AskUserQuestion per group; user approves
+5. Phase 5: Spawns `qa-tester` via Task for each Visual/Feel and Integration story (2–3 stories); run in parallel; presents test cases grouped by story; question per group; user approves
 6. Phase 6: Walks through each approved story; user marks all as PASS; result summary: "Stories PASS: 4, FAIL: 0, BLOCKED: 0"
 7. Phase 7: Spawns `qa-lead` via Task to produce sign-off report; report shows all stories PASS; no bugs filed; Verdict: APPROVED; asks "May I write this QA sign-off report to `production/qa/qa-signoff-sprint-03-[date].md`?"; writes after approval
 8. Verdict: COMPLETE — QA cycle finished
@@ -101,7 +101,7 @@ independent stories.
 
 **Expected behavior:**
 1. Phases 1–5 complete normally; test cases are written for the Visual/Feel story
-2. Phase 6: User marks Visual/Feel story as FAIL; AskUserQuestion collects failure description: "Animation plays at 2x speed — jitter visible on every loop"
+2. Phase 6: User marks Visual/Feel story as FAIL; question collects failure description: "Animation plays at 2x speed — jitter visible on every loop"
 3. Phase 6: Spawns `qa-tester` via Task to write a formal bug report; bug report written to `production/qa/bugs/BUG-001-animation-speed-jitter.md` (or next increment if bugs exist); report includes severity field
 4. Result summary: "Stories PASS: 1, FAIL: 1 — bugs filed: BUG-001"
 5. Phase 7: Spawns `qa-lead` to produce sign-off report; Bugs Found table lists BUG-001 with severity and status Open; Verdict: NOT APPROVED (S1/S2 bug open, or FAIL without documented workaround)
@@ -109,7 +109,7 @@ independent stories.
 7. Next step: "Resolve S1/S2 bugs and re-run `/team-qa` or targeted manual QA before advancing."
 
 **Assertions:**
-- [ ] FAIL result in Phase 6 triggers AskUserQuestion to collect the failure description before the bug report is written
+- [ ] FAIL result in Phase 6 triggers question to collect the failure description before the bug report is written
 - [ ] `qa-tester` is spawned via Task to write the bug report — orchestrator does not write it directly
 - [ ] Bug report follows naming convention: `BUG-[NNN]-[short-slug].md` in `production/qa/bugs/`
 - [ ] Bug report NNN is incremented correctly from existing bugs in the directory
@@ -139,12 +139,12 @@ independent stories.
 
 **Expected behavior (variant B):**
 1. Phase 1: No argument provided; attempts to read `production/session-state/active.md` — file missing; attempts to read `production/sprint-status.yaml` — file missing
-2. Cannot infer sprint; uses AskUserQuestion: "Which sprint or feature should QA cover?" with options to type a sprint identifier or cancel
+2. Cannot infer sprint; uses question: "Which sprint or feature should QA cover?" with options to type a sprint identifier or cancel
 
 **Assertions:**
 - [ ] Skill does NOT default to a hardcoded sprint name when no argument is provided
 - [ ] Skill reads both `production/session-state/active.md` AND `production/sprint-status.yaml` before asking the user (variant A)
-- [ ] When both state files are absent, skill uses AskUserQuestion rather than guessing (variant B)
+- [ ] When both state files are absent, skill uses question rather than guessing (variant B)
 - [ ] Inferred sprint is reported to the user before proceeding (variant A transparency)
 - [ ] Skill does NOT error out when state files are missing — it falls back to asking (variant B)
 
@@ -184,12 +184,12 @@ independent stories.
 
 ## Protocol Compliance
 
-- [ ] `AskUserQuestion` used at Phase 2 (strategy review), Phase 5 (test case approval per group), and Phase 6 (per-story manual QA result)
+- [ ] `question` used at Phase 2 (strategy review), Phase 5 (test case approval per group), and Phase 6 (per-story manual QA result)
 - [ ] Phase 4 smoke check is a hard gate: FAIL halts the pipeline at Phase 4 with no exceptions
 - [ ] "May I write?" asked separately for QA plan (Phase 3) and sign-off report (Phase 7)
 - [ ] Bug reports are always written by `qa-tester` via Task — orchestrator does not write directly
 - [ ] Phase 5 qa-tester tasks for independent stories are issued in parallel where possible
-- [ ] Error recovery: any BLOCKED agent is surfaced immediately with AskUserQuestion options
+- [ ] Error recovery: any BLOCKED agent is surfaced immediately with question options
 - [ ] Partial report always produced — no work is discarded because one story failed or blocked
 - [ ] Sign-off verdict rules are strictly applied: any S1/S2 bug open = NOT APPROVED; no exceptions
 - [ ] Orchestrator-level Verdict: COMPLETE is distinct from the sign-off report's APPROVED/NOT APPROVED verdict

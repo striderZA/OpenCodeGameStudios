@@ -12,9 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **oh-my-pi (`omp`) harness support** — a project-scoped `.omp/config.yml` loads the
-  shared `.pi/extensions` under `omp` 18.16.0, while `omp` reads `.agents/` natively
-  (agents, skills, commands, rules). New `docs/omp-compatibility.md` documents what
-  loads, the acceptance matrix, and the open gaps (#112)
+  shared `.pi/extensions` under `omp` 18.16.0, while `omp` reads `.agents/` skills,
+  commands, and rules natively. It does not load `.agents/agents/`; its task tool
+  uses `.omp/agents/`. New `docs/omp-compatibility.md` documents what loads, the
+  acceptance matrix, and the open gaps (#112)
 - **`ocgs-hooks` extension for Pi and `omp`** — the 12 CCGS bash hooks ported to one
   harness-neutral `core.ts` with per-harness event mapping: session context, commit and
   push guards, asset and skill checks, agent audit, compaction context, and

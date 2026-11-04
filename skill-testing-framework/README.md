@@ -5,17 +5,17 @@ Tests the skills and agents themselves — not any game built with them.
 
 > **This folder is self-contained and optional.**
 > Game developers using OCGS don't need it. To remove it entirely:
-> `rm -rf "OCGS Skill Testing Framework"` — nothing in `.opencode/` depends on it.
+> `rm -rf "skill-testing-framework"` — nothing in `.opencode/` depends on it.
 
 ---
 
 ## What's in here
 
 ```
-OCGS Skill Testing Framework/
+skill-testing-framework/
 ├── README.md              ← you are here
-├── AGENTS.md              ← tells Claude how to use this framework
-├── catalog.yaml           ← master registry: all 72 skills + 49 agents, coverage tracking
+├── AGENTS.md              ← tells the agent how to use this framework
+├── catalog.yaml           ← master registry: all 78 skills + 52 agents, coverage tracking
 ├── quality-rubric.md      ← category-specific pass/fail metrics for /skill-test category
 │
 ├── skills/                ← behavioral spec files for skills (one per skill)
@@ -56,7 +56,7 @@ All testing is driven by two skills already in the framework:
 
 ```
 /skill-test static [skill-name]     # Check one skill (7 checks)
-/skill-test static all              # Check all 72 skills
+/skill-test static all              # Check all 78 skills
 ```
 
 ### Run a behavioral spec test
@@ -142,7 +142,7 @@ All testing is driven by two skills already in the framework:
 This folder has no hooks into the main project. To remove:
 
 ```bash
-rm -rf "OCGS Skill Testing Framework"
+rm -rf "skill-testing-framework"
 ```
 
 The skills `/skill-test` and `/skill-improve` will still function — they'll simply
