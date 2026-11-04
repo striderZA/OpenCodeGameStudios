@@ -1,32 +1,28 @@
 #!/usr/bin/env node
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync, copyFileSync, unlinkSync, rmSync } from 'fs';
-import { join, resolve, dirname, relative, sep } from 'path';
+import { join, resolve, dirname, relative, sep, basename } from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
-import { parseModulefile, parseFlowList } from '../../tools/lib/parse-modulefile.mjs';
+import { parseModulefile } from '../../tools/lib/parse-modulefile.mjs';
+import { HARNESS_IDS, HARNESS_TARGETS, parseHarnessArgs, resolveHarness } from '../../tools/lib/harness-targets.mjs';
+import { loadMcpTarget } from '../../tools/lib/mcp-targets.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 
-// Harness target: 'opencode' (default) or 'pi' (--pi flag)
-// Controls where module files are installed and where installed.json lives.
+// Harness target controls where module files are installed, where install state
+// lives, and which file receives MCP fragments. See tools/lib/harness-targets.mjs.
 let HARNESS = 'opencode';
-let MODULES_DIR = join(ROOT, '.opencode', 'modules');
-let INSTALLED_PATH = join(MODULES_DIR, 'installed.json');
-let HARNESS_TARGET = '.opencode';
-const OPENCODE_JSON = join(ROOT, 'opencode.json');
+let TARGET = HARNESS_TARGETS[HARNESS];
+let MODULES_DIR = join(ROOT, TARGET.sourceRoot);
+let INSTALLED_PATH = join(ROOT, TARGET.stateFile);
 
 function setHarness(mode) {
-  HARNESS = mode;
-  if (mode === 'pi') {
-    MODULES_DIR = join(ROOT, '.agents', 'modules');
-    HARNESS_TARGET = '.agents';
-  } else {
-    MODULES_DIR = join(ROOT, '.opencode', 'modules');
-    HARNESS_TARGET = '.opencode';
-  }
-  INSTALLED_PATH = join(MODULES_DIR, 'installed.json');
+  TARGET = resolveHarness(mode);
+  HARNESS = TARGET.id;
+  MODULES_DIR = join(ROOT, TARGET.sourceRoot);
+  INSTALLED_PATH = join(ROOT, TARGET.stateFile);
 }
 
 // ── Logging ────────────────────────────────────────────────────────────────
@@ -39,7 +35,7 @@ function log(prefix, msg) {
 }
 
 function wrapWithHeader(label, fn) {
-  console.log(`\n── ${label} ─${''.padEnd(60 - label.length, '─')}\n`);
+  console.log(`\n── ${label} ─${''.padEnd(Math.max(0, 60 - label.length), '─')}\n`);
   const result = fn();
   console.log(`\n${''.padEnd(64, '─')}\n`);
   return result;
@@ -57,6 +53,13 @@ function readJSON(p) {
   if (!existsSync(p)) return null;
   try { return JSON.parse(readFileSync(p, 'utf-8')); }
   catch { return null; }
+}
+
+function readJSONStrict(p) {
+  try { return JSON.parse(readFileSync(p, 'utf-8')); }
+  catch (error) {
+    throw new Error(`Invalid JSON in ${toForward(relative(ROOT, p))}: ${error.message}`);
+  }
 }
 
 function writeJSON(p, data) {
@@ -79,6 +82,17 @@ function toForward(p) {
   return p.split(sep).join('/');
 }
 
+function installedRecordTarget(record) {
+  if (typeof record !== 'string') return record.target;
+  const [top, ...rest] = record.split('/');
+  const base = TARGET.dirs[top];
+  return base ? join(base, ...rest) : join(TARGET.contentRoot, record);
+}
+
+function installedRecordSource(record) {
+  return typeof record === 'string' ? record : record.source;
+}
+
 // ── list command ───────────────────────────────────────────────────────────
 
 function cmdList() {
@@ -98,6 +112,8 @@ function cmdList() {
     const status = entry ? (entry.status || 'unknown') : 'uninstalled';
     rows.push({ name, version, status });
   }
+
+  console.log(`  Harness: ${TARGET.label}  (${TARGET.sourceRoot} → ${TARGET.stateFile})`);
 
   const nameW = Math.max(...rows.map(r => r.name.length), 6);
   const verW = Math.max(...rows.map(r => r.version.length), 7);
@@ -124,9 +140,6 @@ function cmdInfo(name) {
 
 // ── add command ────────────────────────────────────────────────────────────
 
-const INSTALL_SUBDIRS = ['agents', 'skills', 'commands', 'rules', 'plugins', 'docs'];
-const SKIP_DIRS = new Set(['mcp']);
-
 function cmdAdd(args) {
   const force = args.includes('--force');
   const names = args.filter(a => a !== '--force');
@@ -137,106 +150,13 @@ function cmdAdd(args) {
   for (const rawName of names) {
     const name = rawName.toLowerCase();
 
-    wrapWithHeader(`Installing module: ${name}`, () => {
-      const mf = readModulefile(name);
-      if (!mf) {
-        log('ERR', `Module '${name}' not found (no modulefile.yaml)`);
+    wrapWithHeader(`Installing module: ${name} (${TARGET.label})`, () => {
+      try {
+        if (installOne(name, names, force, installed, summary)) processedNames.push(name);
+      } catch (error) {
+        log('ERR', error.message);
         summary.errors++;
-        return;
       }
-
-      if (installed[name] && installed[name].status === 'installed' && !force) {
-        log('SKIP', `Module '${name}' is already installed`);
-        summary.skipped++;
-        return;
-      }
-
-      // Check dependencies (future-proofing)
-      if (mf.depends && mf.depends.length > 0) {
-        for (const dep of mf.depends) {
-          const depName = dep.split('>=')[0].split('=')[0].trim();
-          const depInstalled = installed[depName] && installed[depName].status === 'installed';
-          const beingInstalled = names.includes(depName);
-          if (!depInstalled && !beingInstalled) {
-            if (depName === name) continue;
-            log('WARN', `Dependency '${dep}' is not installed — installing anyway`);
-          }
-        }
-      }
-
-      // Copy files from module subdirectories
-      const moduleDir = join(MODULES_DIR, name);
-      const entries = readdirSync(moduleDir);
-      const addedFiles = [];
-
-      for (const entry of entries) {
-        if (entry === 'modulefile.yaml') continue;
-        if (SKIP_DIRS.has(entry)) continue;
-
-        const entryPath = join(moduleDir, entry);
-        if (!statSync(entryPath).isDirectory()) continue;
-        if (!INSTALL_SUBDIRS.includes(entry)) {
-          log('SKIP', `Unknown subdirectory '${entry}' — skipped`);
-          continue;
-        }
-
-        walkAndCopy(entryPath, join(ROOT, HARNESS_TARGET, entry), addedFiles, force);
-      }
-
-      // Handle MCP fragments
-      const mcpDir = join(moduleDir, 'mcp');
-      const mcpServers = [];
-      if (existsSync(mcpDir) && statSync(mcpDir).isDirectory()) {
-        const mcpFiles = readdirSync(mcpDir).filter(f => f.endsWith('.json'));
-        for (const mcpFile of mcpFiles) {
-          const mcpPath = join(mcpDir, mcpFile);
-          const fragment = readJSON(mcpPath);
-          if (!fragment) {
-            log('WARN', `MCP fragment '${mcpFile}' is not valid JSON — skipped`);
-            continue;
-          }
-          // MCP fragments are only merged into opencode.json (OpenCode harness).
-          // Pi harness manages MCP separately — skip with a warning.
-          if (HARNESS === 'pi') {
-            log('WARN', `MCP fragment '${mcpFile}' — Pi harness does not merge MCP via installer (skipped)`);
-            summary.mcpSkipped++;
-            continue;
-          }
-          const ocfg = readJSON(OPENCODE_JSON) || {};
-          if (!ocfg.mcp) ocfg.mcp = {};
-          if (!ocfg.mcp.servers) ocfg.mcp.servers = {};
-          let merged = false;
-          for (const serverName of Object.keys(fragment)) {
-            if (ocfg.mcp.servers[serverName]) {
-              log('WARN', `MCP server '${serverName}' already exists in opencode.json — skipped`);
-              summary.mcpSkipped++;
-            } else {
-              ocfg.mcp.servers[serverName] = fragment[serverName];
-              log('ADD', `MCP server '${serverName}' merged into opencode.json`);
-              mcpServers.push(serverName);
-              summary.mcpAdded++;
-              merged = true;
-            }
-          }
-          if (merged) writeJSON(OPENCODE_JSON, ocfg);
-        }
-      }
-
-      // Record in installed.json
-      const timestamp = new Date().toISOString();
-      installed[name] = {
-        version: mf.version || '0.1.0',
-        status: 'installed',
-        timestamp,
-        files: addedFiles,
-        mcp: mcpServers,
-      };
-      writeInstalled(installed);
-      processedNames.push(name);
-
-      summary.added++;
-
-      log('OK', `Module '${name}' v${installed[name].version} installed (${addedFiles.length} files, ${mcpServers.length} MCP servers)`);
     });
   }
 
@@ -247,44 +167,205 @@ function cmdAdd(args) {
 
   // Summary
   console.log('');
+  console.log(`  Harness: ${TARGET.label}`);
   console.log(`  Added: ${summary.added}, Skipped: ${summary.skipped}, Errors: ${summary.errors}`);
   console.log(`  MCP merged: ${summary.mcpAdded}, MCP skipped: ${summary.mcpSkipped}`);
 }
 
-function walkAndCopy(srcDir, destDir, fileList, force = false) {
+function installOne(name, names, force, installed, summary) {
+  const mf = readModulefile(name);
+  if (!mf) {
+    log('ERR', `Module '${name}' not found (no modulefile.yaml)`);
+    summary.errors++;
+    return false;
+  }
+
+  if (installed[name] && installed[name].status === 'installed' && !force) {
+    log('SKIP', `Module '${name}' is already installed`);
+    summary.skipped++;
+    return false;
+  }
+
+  // Check dependencies (future-proofing)
+  if (mf.depends && mf.depends.length > 0) {
+    for (const dep of mf.depends) {
+      const depName = dep.split('>=')[0].split('=')[0].trim();
+      const depInstalled = installed[depName] && installed[depName].status === 'installed';
+      const beingInstalled = names.includes(depName);
+      if (!depInstalled && !beingInstalled) {
+        if (depName === name) continue;
+        log('WARN', `Dependency '${dep}' is not installed — installing anyway`);
+      }
+    }
+  }
+
+  const moduleDir = join(MODULES_DIR, name);
+
+  // Validate the MCP fragment before copying anything, so a malformed
+  // fragment cannot leave an untracked partial install.
+  const fragmentPath = findMcpFragment(moduleDir);
+  const fragment = fragmentPath ? readJSONStrict(fragmentPath) : null;
+  if (fragment && (typeof fragment !== 'object' || Array.isArray(fragment))) {
+    throw new Error(`MCP fragment ${toForward(relative(ROOT, fragmentPath))} must be a JSON object of server entries`);
+  }
+
+  // Copy files from module subdirectories that this harness can consume.
+  const addedFiles = [];
+
+  for (const entry of readdirSync(moduleDir)) {
+    if (entry === 'modulefile.yaml' || entry === 'mcp') continue;
+
+    const entryPath = join(moduleDir, entry);
+    if (!statSync(entryPath).isDirectory()) continue;
+
+    const destination = TARGET.dirs[entry];
+    if (!destination) {
+      log('SKIP', `'${entry}' has no ${TARGET.label} target — skipped`);
+      continue;
+    }
+
+    walkAndCopy(
+      entryPath,
+      join(ROOT, destination),
+      moduleDir,
+      addedFiles,
+      force,
+      TARGET.transforms[entry],
+    );
+  }
+
+  // Merge MCP fragments authored for this harness.
+  const mcpServers = mergeMcpFragments(fragment, summary);
+
+  // Record in installed.json
+  const timestamp = new Date().toISOString();
+  const record = {
+    version: mf.version || '0.1.0',
+    status: 'installed',
+    timestamp,
+    files: addedFiles,
+    mcpByHarness: { ...(installed[name]?.mcpByHarness || {}), [HARNESS]: mcpServers },
+  };
+  if (HARNESS === 'opencode') record.mcp = mcpServers;
+
+  installed[name] = record;
+  writeInstalled(installed);
+
+  summary.added++;
+  log('OK', `Module '${name}' v${record.version} installed (${addedFiles.length} files, ${mcpServers.length} MCP servers)`);
+  return true;
+}
+
+function walkAndCopy(srcDir, destDir, moduleDir, fileList, force = false, spec = null) {
+  if (!existsSync(destDir)) mkdirSync(destDir, { recursive: true });
+
   const entries = readdirSync(srcDir);
   for (const entry of entries) {
     const srcPath = join(srcDir, entry);
-    const destPath = join(destDir, entry);
     const stat = statSync(srcPath);
 
     if (stat.isDirectory()) {
-      if (!existsSync(destPath)) mkdirSync(destPath, { recursive: true });
-      walkAndCopy(srcPath, destPath, fileList, force);
-    } else {
-      if (existsSync(destPath)) {
-        if (force) {
-          if (filesMatch(srcPath, destPath)) {
-            log('SAME', `${toForward(relative(MODULES_DIR, srcPath))}`);
-          } else {
-            copyFileSync(srcPath, destPath);
-            log('UPDATE', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
-          }
-          fileList.push(toForward(relative(join(ROOT, HARNESS_TARGET), destPath)));
-        } else {
-          log('SKIP', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
-        }
+      walkAndCopy(srcPath, join(destDir, entry), moduleDir, fileList, force, spec);
+      continue;
+    }
+
+    const source = toForward(relative(moduleDir, srcPath));
+    const outputName = spec?.extension
+      ? entry.replace(/\.[^.]+$/, spec.extension)
+      : entry;
+    const destPath = join(destDir, outputName);
+    const target = toForward(relative(ROOT, destPath));
+
+    let output = null;
+    if (spec?.transform) {
+      output = spec.transform(readFileSync(srcPath, 'utf-8'), entry);
+      if (output === null) {
+        log('SKIP', `${source} — not applicable to ${TARGET.label}`);
+        continue;
+      }
+    }
+
+    if (existsSync(destPath)) {
+      const same = output !== null
+        ? readFileSync(destPath, 'utf-8') === output
+        : filesMatch(srcPath, destPath);
+
+      if (!force) {
+        log('SKIP', `${source} → ${target}`);
+        continue;
+      }
+
+      if (same) {
+        log('SAME', source);
+      } else if (output !== null) {
+        writeFileSync(destPath, output);
+        log('UPDATE', `${source} → ${target}`);
       } else {
         copyFileSync(srcPath, destPath);
-        log('ADD', `${toForward(relative(MODULES_DIR, srcPath))} → ${toForward(relative(ROOT, destPath))}`);
-        fileList.push(toForward(relative(join(ROOT, HARNESS_TARGET), destPath)));
+        log('UPDATE', `${source} → ${target}`);
       }
+      fileList.push({ source, target });
+    } else {
+      if (output !== null) {
+        writeFileSync(destPath, output);
+      } else {
+        copyFileSync(srcPath, destPath);
+      }
+      log('ADD', `${source} → ${target}`);
+      fileList.push({ source, target });
     }
   }
 }
 
 function filesMatch(a, b) {
   return Buffer.compare(readFileSync(a), readFileSync(b)) === 0;
+}
+
+function findMcpFragment(moduleDir) {
+  const mcpDir = join(moduleDir, 'mcp');
+  if (!existsSync(mcpDir) || !statSync(mcpDir).isDirectory()) return null;
+
+  const perHarness = join(mcpDir, `${HARNESS}.json`);
+  if (existsSync(perHarness)) return perHarness;
+
+  // Legacy fragments (`mcp/<server>.json`) were OpenCode-only.
+  if (HARNESS === 'opencode') {
+    const legacy = readdirSync(mcpDir)
+      .filter(file => file.endsWith('.json') && file !== 'opencode.json')
+      .map(file => join(mcpDir, file));
+    if (legacy.length === 1) {
+      log('WARN', `Using legacy MCP fragment '${toForward(relative(ROOT, legacy[0]))}' for OpenCode`);
+      return legacy[0];
+    }
+    if (legacy.length > 1) {
+      log('WARN', `Multiple legacy MCP fragments in ${toForward(relative(ROOT, mcpDir))} — none used`);
+    }
+  }
+
+  return null;
+}
+
+function mergeMcpFragments(fragment, summary) {
+  if (!fragment) return [];
+
+  const targetPath = join(ROOT, TARGET.mcp.file);
+  const config = loadMcpTarget(TARGET.mcp.kind, targetPath);
+  const merged = [];
+
+  for (const [serverName, entry] of Object.entries(fragment)) {
+    if (config.has(serverName)) {
+      log('WARN', `MCP server '${serverName}' already exists in ${TARGET.mcp.file} — skipped`);
+      summary.mcpSkipped++;
+      continue;
+    }
+    config.merge(serverName, entry);
+    log('ADD', `MCP server '${serverName}' → ${TARGET.mcp.file}`);
+    merged.push(serverName);
+    summary.mcpAdded++;
+  }
+
+  if (merged.length > 0) config.save();
+  return merged;
 }
 
 // ── remove command ─────────────────────────────────────────────────────────
@@ -299,7 +380,7 @@ function cmdRemove(name) {
 
   const installed = readInstalled();
   if (!installed[name]) {
-    console.error(`Module '${name}' is not in installed.json. Nothing to remove.`);
+    console.error(`Module '${name}' is not in ${TARGET.stateFile}. Nothing to remove.`);
     process.exit(1);
   }
 
@@ -320,87 +401,105 @@ function cmdRemove(name) {
     process.exit(1);
   }
 
-  wrapWithHeader(`Removing module: ${name}`, () => {
-    const entry = installed[name];
-    const files = entry.files || [];
-    const mcpServers = entry.mcp || [];
-
-    let delCount = 0, keepCount = 0;
-
-    // Remove tracked files
-    for (const f of files) {
-      const installedPath = join(ROOT, HARNESS_TARGET, f);
-      const sourcePath = join(MODULES_DIR, name, f);
-
-      if (!existsSync(installedPath)) {
-        log('SKIP', `${f} — not found on disk`);
-        continue;
-      }
-
-      if (existsSync(sourcePath)) {
-        const installedContent = readFileSync(installedPath);
-        const sourceContent = readFileSync(sourcePath);
-        if (Buffer.compare(installedContent, sourceContent) === 0) {
-          unlinkSync(installedPath);
-          log('DEL', f);
-          delCount++;
-        } else {
-          log('KEEP', `${f} — modified by user`);
-          keepCount++;
-        }
-      } else {
-        log('KEEP', `${f} — source not found, keeping`);
-        keepCount++;
-      }
+  wrapWithHeader(`Removing module: ${name} (${TARGET.label})`, () => {
+    try {
+      removeOne(name, installed);
+    } catch (error) {
+      console.error(`  [ERR] ${error.message}`);
     }
-
-    // Clean up empty parent directories
-    const parentDirs = new Set();
-    for (const f of files) {
-      let dir = dirname(join(ROOT, HARNESS_TARGET, f));
-      while (dir.startsWith(join(ROOT, HARNESS_TARGET))) {
-        parentDirs.add(dir);
-        dir = dirname(dir);
-      }
-    }
-    const sortedDirs = [...parentDirs].sort((a, b) => b.length - a.length);
-    for (const d of sortedDirs) {
-      if (!existsSync(d)) continue;
-      try {
-        const remaining = readdirSync(d);
-        if (remaining.length === 0) {
-          rmSync(d, { force: true });
-        }
-      } catch { /* skip */ }
-    }
-
-    // Remove MCP servers from opencode.json (OpenCode-only)
-    if (mcpServers.length > 0 && HARNESS !== 'pi') {
-      const ocfg = readJSON(OPENCODE_JSON);
-      if (ocfg && ocfg.mcp && ocfg.mcp.servers) {
-        for (const serverName of mcpServers) {
-          if (ocfg.mcp.servers[serverName]) {
-            delete ocfg.mcp.servers[serverName];
-            log('DEL', `MCP server '${serverName}' from opencode.json`);
-          }
-        }
-        // Clean up empty servers and mcp sections
-        if (Object.keys(ocfg.mcp.servers).length === 0) delete ocfg.mcp.servers;
-        if (Object.keys(ocfg.mcp).length === 0) delete ocfg.mcp;
-        writeJSON(OPENCODE_JSON, ocfg);
-      }
-    }
-
-    // Remove from installed.json
-    delete installed[name];
-    writeInstalled(installed);
-    log('OK', `Module '${name}' removed from installed.json`);
-
-    console.log(`\n  Removed: ${delCount} files, Kept: ${keepCount} files, MCP removed: ${mcpServers.length}`);
   });
 
-  // Post-remove validation
   runValidation();
+}
+
+function removeOne(name, installed) {
+  const entry = installed[name];
+  const files = entry.files || [];
+  const mcpServers = entry.mcpByHarness?.[HARNESS]
+    ?? (HARNESS === 'opencode' ? entry.mcp || [] : []);
+  const moduleDir = join(MODULES_DIR, name);
+
+  // Parse the MCP config before deleting anything, so a malformed config
+  // aborts the removal instead of leaving tracked files deleted.
+  const mcpConfig = mcpServers.length > 0
+    ? loadMcpTarget(TARGET.mcp.kind, join(ROOT, TARGET.mcp.file))
+    : null;
+
+  let delCount = 0, keepCount = 0;
+
+  // Remove tracked files
+  for (const record of files) {
+    const target = installedRecordTarget(record);
+    const source = installedRecordSource(record);
+    const installedPath = join(ROOT, target);
+    const sourcePath = join(moduleDir, source);
+
+    if (!existsSync(installedPath)) {
+      log('SKIP', `${target} — not found on disk`);
+      continue;
+    }
+
+    if (existsSync(sourcePath)) {
+      const top = source.split('/')[0];
+      const spec = TARGET.transforms[top];
+      const sourceContent = readFileSync(sourcePath, 'utf-8');
+      const expected = spec?.transform
+        ? spec.transform(sourceContent, basename(sourcePath))
+        : null;
+      const unchanged = expected !== null
+        ? readFileSync(installedPath, 'utf-8') === expected
+        : Buffer.compare(readFileSync(installedPath), readFileSync(sourcePath)) === 0;
+
+      if (unchanged) {
+        unlinkSync(installedPath);
+        log('DEL', target);
+        delCount++;
+      } else {
+        log('KEEP', `${target} — modified by user`);
+        keepCount++;
+      }
+    } else {
+      log('KEEP', `${target} — source not found, keeping`);
+      keepCount++;
+    }
+  }
+
+  // Clean up empty parent directories
+  const parentDirs = new Set();
+  for (const record of files) {
+    const target = join(ROOT, installedRecordTarget(record));
+    let dir = dirname(target);
+    while (dir.startsWith(ROOT) && dir !== ROOT) {
+      parentDirs.add(dir);
+      dir = dirname(dir);
+    }
+  }
+  const sortedDirs = [...parentDirs].sort((a, b) => b.length - a.length);
+  for (const dir of sortedDirs) {
+    if (!existsSync(dir)) continue;
+    try {
+      const remaining = readdirSync(dir);
+      if (remaining.length === 0) rmSync(dir, { force: true });
+    } catch { /* skip */ }
+  }
+
+  // Remove MCP servers from this harness's config
+  let mcpRemoved = 0;
+  if (mcpConfig) {
+    for (const serverName of mcpServers) {
+      if (!mcpConfig.has(serverName)) continue;
+      mcpConfig.remove(serverName);
+      log('DEL', `MCP server '${serverName}' from ${TARGET.mcp.file}`);
+      mcpRemoved++;
+    }
+    mcpConfig.save();
+  }
+
+  delete installed[name];
+  writeInstalled(installed);
+  log('OK', `Module '${name}' removed from ${TARGET.stateFile}`);
+
+  console.log(`\n  Removed: ${delCount} files, Kept: ${keepCount} files, MCP removed: ${mcpRemoved}`);
 }
 
 // ── Validation ─────────────────────────────────────────────────────────────
@@ -423,25 +522,31 @@ function runValidation() {
 // ── Main dispatch ──────────────────────────────────────────────────────────
 
 function main() {
-  const args = process.argv.slice(2);
-
-  // Parse --pi flag (can appear anywhere in args)
-  const piIndex = args.indexOf('--pi');
-  if (piIndex !== -1) {
-    setHarness('pi');
-    args.splice(piIndex, 1);
+  let args;
+  try {
+    const parsed = parseHarnessArgs(process.argv.slice(2));
+    setHarness(parsed.harness);
+    args = parsed.rest;
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
   }
 
   if (args.length === 0) {
     const scriptPath = '.opencode/modules/install.mjs';
     console.log('Usage:');
-    console.log(`  node ${scriptPath} list [--pi]`);
-    console.log(`  node ${scriptPath} info <name> [--pi]`);
-    console.log(`  node ${scriptPath} add <name...> [--pi]`);
-    console.log(`  node ${scriptPath} remove <name> [--pi]`);
+    console.log(`  node ${scriptPath} list [--harness <id>]`);
+    console.log(`  node ${scriptPath} info <name> [--harness <id>]`);
+    console.log(`  node ${scriptPath} add <name...> [--harness <id>] [--force]`);
+    console.log(`  node ${scriptPath} remove <name> [--harness <id>]`);
     console.log('');
     console.log('Options:');
-    console.log('  --pi    Install to .agents/ instead of .opencode/ (Pi harness)');
+    console.log(`  --harness <id>   Target harness: ${HARNESS_IDS.join(', ')} (default: opencode)`);
+    console.log('  --pi             Shorthand for --harness pi');
+    console.log('  --omp            Shorthand for --harness omp');
+    console.log('  --claude         Shorthand for --harness claude');
+    console.log('  --codex          Shorthand for --harness codex');
+    console.log('  --force          Overwrite existing files and refresh the install record');
     process.exit(0);
   }
 
