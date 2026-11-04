@@ -20,7 +20,8 @@ Autopilot's own instructions (`INSTRUCTIONS.md`, named by `start_run`) are the d
 
 Rationale and verified behaviour: `docs/framework/autopilot-integration.md`.
 
-- **Godot 4.7 or later.** The addon is tested on 4.7.2. This framework's Godot reference is pinned to 4.6 until it is refreshed for 4.7.
+- **Harness.** OpenCode 2.2.5 and Pi 1.x are verified. Tool names differ by harness. In this skill, a bare name such as `start_run` means Autopilot's MCP tool of that name, shown as `autopilot_start_run` in OpenCode and `mcp__autopilot__start_run` in Pi. Other harnesses: stop and say so, and do not edit their config.
+- **Godot 4.7 or later.** Autopilot's addon README states this. The addon is tested on 4.7.2, which this framework's Godot reference is pinned to. The addon has no runtime version check, so Godot 4.6 is untested.
 - **Addon.** Install `addons/autopilot/` into the game project from Autopilot's download. Enable it in Project Settings > Plugins, then commit the `project.godot` changes it makes (autoload `AutopilotPlaytest`, and `autopilot/project_id`). Do not copy the addon into this repository.
 - **Agent service and Bun.** Install Autopilot's agent service, which provides the `autopilot` command that `opencode.json` runs. Install Bun, which Autopilot's default harness agent needs.
 - **Keys.** Bring your own keys: a TypeSafe decision key and an LLM key, both in Autopilot's `autopilot.env`. Do not sign in to Aura.
@@ -31,8 +32,8 @@ Rationale and verified behaviour: `docs/framework/autopilot-integration.md`.
 
 ## Phase 1: Preflight
 
-1. Confirm `opencode.json` → `mcp.servers.autopilot` has `disabled` set to `false` for this session. It ships with `disabled: true`. If it is `true`, ask the user whether to enable it for this session, then stop until they answer. Do not edit `opencode.json` yourself.
-2. Readiness. The Autopilot tools join your tool list only after the MCP server starts. That took about 5 seconds in testing and can take longer on a cold start. Check that `autopilot_start_run` is among your tools. If it is not, make one cheap read-only call (for example `glob` on `production/session-state/*.md`) so the next turn sees the tools, then check again. Make at most 20 such checks. If the tool is still missing, stop and tell the user: "Autopilot's MCP server did not start. Check that the `autopilot` command is on PATH, then run `opencode mcp list`. Send the request again once `autopilot` shows connected."
+1. Confirm the server is enabled for this session. In OpenCode, `opencode.json` → `mcp.servers.autopilot` must have `disabled` set to `false`. In Pi, the `autopilot` entry in your `mcp.json` must have `enabled` set to `true` and `exposure` set to `direct`. Pi's own MCP view can enable the server, and after editing the file, reconnect the server there or restart Pi. If it is off, ask the user whether to enable it for this session, then stop until they answer. If the entry is missing, stop and tell the user to add it from the Autopilot section of `/setup-engine`. Do not edit config files yourself.
+2. Readiness. The Autopilot tools join your tool list only after the MCP server starts. That took about 5 seconds in testing and can take longer on a cold start. Check that `autopilot_start_run` (OpenCode) or `mcp__autopilot__start_run` (Pi) is among your tools. If it is not, make one cheap read-only call (for example `read` on `AGENTS.md`) so the next turn sees the tools, then check again. Make at most 20 such checks. If the tool is still missing, stop and tell the user: "Autopilot's MCP server did not start. Check that the `autopilot` command is on PATH, then run `opencode mcp list` (OpenCode) or `pi mcp list` (Pi). Send the request again once `autopilot` shows connected."
 3. Confirm the game's project is open in the Godot editor with the Autopilot dock connected. If `start_run` says the agent service isn't running, relay its message and stop.
 4. Keys: never ask the user to paste a key into this chat. If a run asks for a key, tell the user where it goes (see Setup).
 5. Sharing: confirm the dock's Privacy step is off (see Setup). If the user has not confirmed this, ask before the first run.
@@ -53,14 +54,14 @@ Start one run per request unless the user asks for more. Each run costs model to
 
 1. Read the `INSTRUCTIONS.md` that `start_run` names, in full, with the MCP `read_file` tool. It is long: read it in parts. Follow it.
 2. Write the harness and notes with `write_file` or `edit_file`. Those tools reach only this run's folder, `notes.md` and `lib.py` in Autopilot's memory folder for the project. They cannot touch this repository.
-3. Read the game's scripts from this repository with Read, Glob and Grep as needed. Autopilot's own copy of the code is in its memory folder.
+3. Read the game's scripts from this repository with your read and search tools as needed (`read`, `glob` and `grep` in OpenCode; in Pi, `read` and `bash`). Autopilot's own copy of the code is in its memory folder.
 4. Never try to change game files. Autopilot acts on the game through play only.
 
 ## Phase 4: Run and wait
 
 - A call that answers "still going" has not finished. Call `wait` until it returns the result. Do not call other game tools in the meantime.
 - The user can watch, stop or steer the run in the Autopilot dock. Steering text arrives with a later tool result: follow it.
-- Pictures: `describe_frames` needs a vision model. Autopilot's guide assumes a frame-describer subagent, which only Claude Code and Codex get from `autopilot connect`. Under OpenCode, call `describe_frames` only if this session's model reads images. Otherwise say the run could not check visuals, and base the report on state data.
+- Pictures: `describe_frames` needs a vision model. Autopilot's guide assumes a frame-describer subagent, which only Claude Code and Codex get from `autopilot connect`. Call `describe_frames` only if this session's model reads images. Otherwise say the run could not check visuals, and base the report on state data.
 
 ## Phase 5: Report
 
