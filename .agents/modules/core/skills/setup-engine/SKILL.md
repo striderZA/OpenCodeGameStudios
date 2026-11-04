@@ -414,7 +414,7 @@ npx @coding-solo/godot-mcp@latest
 ```
 
 **MCP Configuration:**
-Add the following to your harness MCP config (`opencode.json` for OpenCode, `pi.json` for Pi):
+Add the following to your harness MCP config (`opencode.json` for OpenCode, `~/.pi/agent/mcp.json` for Pi):
 ```json
 {
   "mcpServers": {
@@ -472,8 +472,9 @@ OCGS agents run shell commands, so use the CLI directly. It exposes more Editor 
    unity command console get --project-path /path/to/MyProject
    unity command editor.playmode start --project-path /path/to/MyProject
    unity recompile --strict --project-path /path/to/MyProject
-   unity test --project-path /path/to/MyProject
    ```
+
+   `unity test` starts its own batch Editor and refuses a project that is already open in an Editor. To run EditMode/PlayMode tests, close the Editor and run `unity test /path/to/MyProject`, or run the Pipeline's test command in the open Editor (`unity command test.run --project-path /path/to/MyProject`; `run_tests` on older packages).
 
    Command names come from the project's Pipeline package. Use `unity command` rather than guessing, and `unity commands --grep <term>` to search the CLI, plugin and Editor command lists.
 
@@ -503,6 +504,8 @@ unity mcp configure claude-code     # also: cursor, vscode, windsurf, cline, cod
 ```bash
 unity mcp configure cursor --replace-legacy
 ```
+
+If you are upgrading from the framework's previous CoplayDev `unity-mcp` setup, delete the old `"unity"` entry that points at `http://localhost:8080/mcp` from your harness config — `opencode.json`, Pi's `~/.pi/agent/mcp.json` or `.pi/mcp.json`, or `.omp/mcp.json` — by hand before adding the block below. `--replace-legacy` only removes entries left by Unity's deprecated in-Editor AI Assistant relay, and `unity mcp configure` does not support OpenCode, Pi, or omp.
 
 Manual config for the harnesses OCGS documents:
 
@@ -562,7 +565,7 @@ Keep the entry disabled until you want a session to use MCP tools, then restart 
 - **No Editor found** — the project is not open in Unity 6+, the Pipeline package is missing (`unity pipeline install`), or the Editor is still loading. Check `unity status` and the Editor console.
 - **Safe Mode** — a compile error stops the Pipeline package from loading. `unity status` lists the errors; fix them, then retry `unity recompile`.
 - **MCP client shows only `unity-cli-status`** — no Editor is connected. Start Unity, open the project, then call `unity-cli-status` again; the client picks up the new tools through `tools/list_changed`.
-- **Two Unity servers / duplicate tools** — an old `unity-mcp` entry from the deprecated in-Editor server is still present. Run `unity mcp configure <client> --replace-legacy`.
+- **Two Unity servers / duplicate tools** — an old `unity` entry is still present. `unity mcp configure <client> --replace-legacy` removes a relay entry left by Unity's deprecated in-Editor server in the 16 clients it supports; for OpenCode, Pi, and omp, delete the old entry by hand.
 - **Pi shows no tools** — set `exposure: "direct"` in the Pi entry.
 
 > **Unity 2021.3–5.x:** the Unity CLI can only drive Unity 6.0+ Editors. On older projects, the community [MCP for Unity](https://github.com/CoplayDev/unity-mcp) package still works and is unaffected by Unity's deprecation, but it is no longer the framework default. Prefer upgrading to Unity 6 when you can.

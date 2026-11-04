@@ -121,7 +121,7 @@ Unity's official agent integration is the [Unity CLI](https://docs.unity.com/uni
 `unity mcp` (Unity CLI 0.1.0-beta.8 or later) is the CLI's built-in stdio MCP server. Use it only for clients that cannot run shell commands; the CLI itself exposes more commands than the MCP server. It replaces the deprecated in-Editor MCP server and does not use the old relay or port 8080.
 
 **Configure:**
-- `unity mcp configure --list` lists supported clients and config paths; `unity mcp configure <client>` writes the entry. Add `--replace-legacy` to remove an old relay entry.
+- `unity mcp configure --list` lists supported clients and config paths; `unity mcp configure <client>` writes the entry. Add `--replace-legacy` to remove an old relay entry, but note it only handles Unity's deprecated in-Editor AI Assistant relay and only in the 16 clients it supports. If you followed the framework's previous CoplayDev integration, delete the old `"unity"` entry pointing at `http://localhost:8080/mcp` from each harness config by hand.
 - OpenCode (`opencode.json`, `mcp.servers`):
 
   ```json

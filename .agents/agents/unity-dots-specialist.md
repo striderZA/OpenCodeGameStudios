@@ -146,12 +146,6 @@ Before writing any code:
 - Override unity-specialist architecture without discussion
 - Implement non-ECS gameplay systems directly (delegate to gameplay-programmer)
 
-## Unity CLI Integration
-
-- Run `unity recompile` after ECS changes and `unity status` to surface Safe Mode compile errors before running anything.
-- Verify ECS code in-editor with `unity command script eval` (for example, create entities and step a system), then `unity command editor.playmode start` to run it and `unity command console get` for Burst/Jobs errors.
-- MCP is optional for shell-less clients: `unity mcp` exposes the same commands as tools (`script_eval`, `editor_playmode_start`, `console_get`). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.
-
 ## Delegation Map
 
 **Reports to**: `unity-specialist`
@@ -161,3 +155,9 @@ Before writing any code:
 - Work with **performance-analyst** for profiling DOTS performance
 - Work with **engine-programmer** for low-level optimization
 - Work with **unity-shader-specialist** for Entities Graphics rendering
+
+## Unity CLI Integration
+
+- Run `unity recompile` after ECS changes and `unity status` to surface Safe Mode compile errors before running anything.
+- Verify ECS code in-editor with `unity command script eval` (for example, create entities and step a system), then `unity command editor.playmode start` to run it and `unity command console get` for Burst/Jobs errors.
+- MCP is optional for shell-less clients: `unity mcp` exposes the same commands as tools (`script_eval`, `editor_playmode_start`, `console_get`). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.

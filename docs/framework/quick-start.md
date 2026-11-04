@@ -244,7 +244,8 @@ If you already know what you need, jump directly to the relevant path:
     (Windows) or `curl -fsSL https://unity.com/install.sh | bash` (macOS/Linux).
     For OpenCode, `unity setup opencode` also installs Unity's skills.
     Agents that can run shell commands should use the CLI directly; MCP
-    (`unity mcp`) is only for clients without shell access. See `/setup-engine`
+    (`unity mcp`) is only needed for clients without shell access, or when you
+    prefer MCP tools. See `/setup-engine`
     §7.4 for the MCP fallback and harness-specific config.
 4c. **Optional: Autopilot playtesting (Godot 4.7+, OpenCode, Pi or omp)** — Autopilot plays your game open in the Godot editor and reports what it finds. Its results are automated evidence, never a human playtest. Set it up in the Autopilot section of `/setup-engine` (OpenCode, Pi or omp; other harnesses are not verified), or follow the Setup section of `/autopilot-playtest`. It needs the Autopilot addon, its agent service, and your own keys.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
