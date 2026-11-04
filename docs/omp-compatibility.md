@@ -29,6 +29,7 @@ extensions:
   - ./.pi/extensions/ocgs-audit
   - ./.pi/extensions/ocgs-changelog
   - ./.pi/extensions/ocgs-drift-detector
+  - ./.pi/extensions/ocgs-hooks
   - ./.pi/extensions/ocgs-path-guard
   - ./.pi/extensions/ocgs-question
   - ./.pi/extensions/ocgs-validate
@@ -41,6 +42,7 @@ skills:
 | `ocgs-audit` | Appends session and tool events to `production/session-logs/agent-audit.log` | `session_start` and `tool_call` lines (rows 6, startup) |
 | `ocgs-changelog` | Shows the `ocgs-changelog` widget on `agent_end` when there are unreleased commits and no `CHANGELOG.md` | Row 9 |
 | `ocgs-drift-detector` | Checks `.agents/` files for structural drift on startup and after writes | Row 8, row 7 |
+| `ocgs-hooks` | Runs the 12 CCGS hooks: session context, commit and push guards, asset and skill checks, agent audit, compaction context (omp `session.compacting`), notifications | Load verified headlessly (see Verification). Not in the acceptance matrix |
 | `ocgs-path-guard` | Injects path-scoped rules into the system prompt when a read, write, or edit matches a rule's `paths:` | Rows 4, 5 |
 | `ocgs-question` | Registers the `question` tool (TUI picker, inactive by default on omp). Also logs omp `ask` answers to `agent-decisions.jsonl` through a `tool_result` hook | Row 10 (decision append, `rpc-ui`) |
 | `ocgs-validate` | Validates `.agents/` content on startup and after writes | Rows 7, 8 |
@@ -131,8 +133,9 @@ These were found while running the Pi baseline. They are Pi 0.85.1 behavior, not
 
 ## Verification
 
-- `npm run test:extensions` covers the extension modules and the ask decision mapping: 25 tests pass (19 existing, 6 for ask decision logging).
+- `npm run test:extensions` covers the extension modules, the ask decision mapping, and the `ocgs-hooks` port: 61 tests pass (36 for `ocgs-hooks`, including the subagent stop regression).
 - `npm run test:omp` covers the omp config wiring: 3 tests pass.
+- `ocgs-hooks` loads on omp: `omp --mode rpc` with no prompt exits 0 with empty stderr, the factory's `Plugin loaded` audit line appears, and the `session_start` summary is notified. Model-driven behavior (compaction injection, notification UI) was not run.
 - `npm run test:framework` passes.
 - The acceptance runs use `--max-cost 0.10` on every omp model call. The `ocgs-verify` profile is not used; see [Deviations](#deviations-from-the-plan).
 

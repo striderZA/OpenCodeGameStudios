@@ -13,6 +13,7 @@ This guide covers the day-to-day workflow differences between using OCGS with Op
 | **Decision capture** | OCGS plugin (`question` tool) | `ocgs-question` extension with TUI |
 | **Path-scoped rules** | OpenCode rule loading | `ocgs-path-guard` extension |
 | **Audit log** | `ccgs-hooks.ts` plugin | `ocgs-audit` extension (byte-identical) |
+| **Session and tool hooks** | `ccgs-hooks.ts` plugin (12 hooks) | `ocgs-hooks` extension (same 12 hooks; Pi and omp events, see `pi-extensions.md`) |
 | **Drift detection** | `drift-detector.ts` plugin | `ocgs-drift-detector` extension (richer — inline tool_result mutation) |
 | **Changelog** | `changelog-generator.ts` plugin | `ocgs-changelog` extension (TUI modal) |
 | **Content validation** | `validate.mjs` CI script | `ocgs-validate` extension + CI script |
