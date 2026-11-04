@@ -22,7 +22,7 @@ Each engine gets its own directory:
 ├── deprecated-apis.md      # "Don't use X → Use Y" lookup tables
 ├── current-best-practices.md  # New practices not in model training data
 ├── PLUGINS.md              # Engine plugin/extension API notes (unity/, unreal/)
-└── modules/                # Per-subsystem quick references (~150 lines max each)
+└── modules/                # Per-subsystem quick references (target ≤350 lines; hard cap 450)
     ├── rendering.md
     ├── physics.md
     └── ...
@@ -57,8 +57,8 @@ Engine-specialist agents are instructed to:
 
 ### Quality Rules
 
-- Every file must have a "Last verified: YYYY-MM-DD" date
-- Keep module files under 150 lines (context budget)
+- Every file must carry a verification date: `Last verified: YYYY-MM-DD` (or `Last Docs Verified` in `VERSION.md`)
+- Keep files focused: target ≤350 lines per module and ≤450 for plugin/deep-dive pages (context budget)
 - Include code examples showing correct/incorrect patterns
 - Link to official documentation URLs for verification
 - Only document things that differ from the model's training data

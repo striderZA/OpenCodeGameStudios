@@ -1,6 +1,6 @@
 # Godot Rendering — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-11-04 | Engine: Godot 4.7.2
 
 ## What Changed Since ~4.3 (LLM Cutoff)
 
@@ -9,6 +9,13 @@ Last verified: 2026-02-12 | Engine: Godot 4.6
 - **Glow processes before tonemapping** (was after) — uses screen blending mode
 - **AgX tonemapper**: new white point and contrast controls
 - **SSR overhauled**: better realism, visual stability, and performance
+
+### 4.7 Changes
+- **`LinearToSRGB`**: No longer clamps to `[0, 1]` on Mobile and Forward+.
+- **CanvasItem lines**: No longer add the antialiasing feather; increase line
+  width if needed to match the previous appearance.
+- **`RenderingServer`**: `particles_request_process_time` parameter `time`
+  renamed to `process_time`.
 
 ### 4.5 Changes
 - **Shader Baker**: Pre-compiles shaders to reduce startup time

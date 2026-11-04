@@ -1,6 +1,6 @@
 # Godot Input — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-11-04 | Engine: Godot 4.7.2
 
 ## What Changed Since ~4.3 (LLM Cutoff)
 
@@ -9,6 +9,10 @@ Last verified: 2026-02-12 | Engine: Godot 4.6
   - Visual feedback differs by input method
   - Custom focus implementations may need updating
 - **Select Mode keybind changed**: "Select Mode" is now `v` key; old mode renamed "Transform Mode" (`q` key)
+
+### 4.7 Changes
+- **Mouse and keyboard device IDs**: Use `InputEvent.DEVICE_ID_MOUSE` and
+  `InputEvent.DEVICE_ID_KEYBOARD` instead of `0`.
 
 ### 4.5 Changes
 - **SDL3 gamepad driver**: Gamepad handling delegated to SDL library for better cross-platform support

@@ -1,6 +1,6 @@
 # Godot UI — Quick Reference
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-11-04 | Engine: Godot 4.7.2
 
 ## What Changed Since ~4.3 (LLM Cutoff)
 
@@ -10,6 +10,13 @@ Last verified: 2026-02-12 | Engine: Godot 4.6
   - Custom focus implementations may need updating
 - **TabContainer**: Tab properties editable directly in Inspector
 - **TileMapLayer scene tile rotation**: Scene tiles can be rotated like atlas tiles
+
+### 4.7 Changes
+- **`RichTextLabel.add_image` and `update_image`**: `width_in_percent` and
+  `height_in_percent` booleans were replaced by `width_unit` and `height_unit`
+  (`ImageUnit`); the defaults changed to `0`.
+- **`Control.accessibility_live`**: Type changed to
+  `AccessibilityServer.AccessibilityLiveMode`.
 
 ### 4.5 Changes
 - **FoldableContainer**: New accordion-style UI node for collapsible sections

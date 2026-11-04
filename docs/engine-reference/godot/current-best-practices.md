@@ -1,11 +1,11 @@
 # Godot — Current Best Practices
 
-Last verified: 2026-02-12 | Engine: Godot 4.6
+Last verified: 2026-11-04 | Engine: Godot 4.7.2
 
 Practices that are **new or changed** since the model's training data (~4.3).
 This supplements (not replaces) the agent's built-in knowledge.
 
-## GDScript (4.5+)
+## GDScript (4.5–4.7)
 
 - **Variadic arguments**: Functions can accept arbitrary parameter counts
   ```gdscript
@@ -25,6 +25,24 @@ This supplements (not replaces) the agent's built-in knowledge.
   ```
 
 - **Script backtracing**: Detailed call stacks available even in Release builds
+
+### GDScript 4.7 Changes
+
+- **Packed array elements**: Setting an element no longer calls the setter for the whole packed-array property.
+- **Typed-return overrides**: An override of a method with a typed return must return explicitly (the migration guide suggests `return null`).
+
+## Project and Import Defaults (4.7)
+
+- **New projects**: Stretch mode defaults to `canvas_items` and aspect defaults to `expand` (were `disabled` and `keep`).
+- **Font hinting**: `ResourceImporterDynamicFont.hinting` defaults to `3` (was `1`).
+- **Sky reflections**: `rendering/reflections/sky_reflections/roughness_layers` defaults to `8` (was `7`).
+- **macOS**: Minimum supported version is macOS 11 (was 10.13).
+
+## Core and Editor APIs (4.7)
+
+- **`Object.is_class`**: The `class` parameter changed from `String` to `StringName`; GDScript is compatible.
+- **`EditorVCSInterface._commit`**: Added an `amend` parameter; plugins overriding it must update.
+- **`EditorSceneFormatImporter`**: `IMPORT_*` constants moved to the `ImportFlags` enum; not C# source compatible.
 
 ## Physics (4.6)
 
