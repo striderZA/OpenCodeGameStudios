@@ -497,18 +497,18 @@ In a session where `disabled` is `false`, call any unity-mcp tool (e.g. `list_sc
 
 ---
 
-### 7.5. Configure Autopilot Playtesting (Optional — Godot 4.7+, OpenCode or Pi)
+### 7.5. Configure Autopilot Playtesting (Optional — Godot 4.7+, OpenCode, Pi or omp)
 
 > **What it is:** Autopilot, by the developers of Aura (Apache-2.0), plays the game open in the Godot editor and reports what it finds. Its results are automated evidence, never a human playtest. See [github.com/ramenvr/autopilot](https://github.com/ramenvr/autopilot) and the `/autopilot-playtest` skill.
 
-**Gate:** Offer this step only if all three conditions hold. If any fails, skip the step, report "Autopilot: skipped (needs Godot 4.7+ and OpenCode or Pi)" in the Output Summary, and do not offer it.
+**Gate:** Offer this step only if all three conditions hold. If any fails, skip the step, report "Autopilot: skipped (needs Godot 4.7+ and OpenCode, Pi or omp)" in the Output Summary, and do not offer it.
 - The engine chosen in this setup is Godot. If it is Unity, Unreal, or another engine, this step does not apply, even when `docs/engine-reference/godot/VERSION.md` exists.
 - The Godot version is 4.7 or later. Use the version chosen in this setup, or else the pin in `docs/engine-reference/godot/VERSION.md`. Autopilot's Godot addon documents Godot 4.7 or later and has no runtime version check.
-- The project's harness is OpenCode or Pi, asked below. Autopilot's MCP wiring is verified on OpenCode 2.2.5 and Pi 1.x.
+- The project's harness is OpenCode, Pi or omp, asked below. Autopilot's MCP wiring is verified on OpenCode 2.2.5, Pi 1.x and omp 18.16.0.
 
 Ask with `question`:
 - **Prompt**: "Which agent harness do you use for this project?"
-- **Options**: `OpenCode` / `Pi` / `Other`
+- **Options**: `OpenCode` / `Pi` / `omp` / `Other`
 
 If the answer is `Other`, skip as above. Other harnesses are not verified.
 
@@ -555,6 +555,23 @@ If the user picks Yes:
 ```
 
    Keep the entry disabled. `exposure: "direct"` is required: the default `codemode` does not show the tools to the model.
+
+   - **omp:** omp reads a project `.omp/mcp.json`. If it already has `mcpServers.autopilot`, leave it alone. If it is missing, show this block and ask: "May I add this `autopilot` server to `.omp/mcp.json`? It ships disabled." Write it only after the user says yes:
+
+```json
+{
+  "mcpServers": {
+    "autopilot": {
+      "type": "stdio",
+      "command": "autopilot",
+      "args": ["mcp"],
+      "enabled": false
+    }
+  }
+}
+```
+
+   Keep the entry disabled. Restart omp after enabling it.
 3. Do not start a run from this step.
 4. In the Output Summary, report "Autopilot: set up; addon, agent service, and keys still to do".
 
@@ -727,7 +744,7 @@ Reference Docs:  [created/skipped]
 AGENTS.md:       [updated]
 Tech Prefs:      [created/updated]
 Agent Config:    [verified]
-Autopilot:       [set up, steps pending | not set up | skipped (needs Godot 4.7+ and OpenCode or Pi)]
+Autopilot:       [set up, steps pending | not set up | skipped (needs Godot 4.7+ and OpenCode, Pi or omp)]
 
 Next Steps:
 1. Review docs/engine-reference/<engine>/VERSION.md
