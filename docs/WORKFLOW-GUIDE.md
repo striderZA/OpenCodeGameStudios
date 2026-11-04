@@ -3,11 +3,12 @@
 > **How to go from zero to a shipped game using the Agent Architecture.**
 >
 > This guide walks you through every phase of game development using the
-> 52-agent system, 77 slash commands, and 3 TypeScript plugins. It assumes you
+> 52-agent system, 78 slash commands, and 3 TypeScript plugins. It assumes you
 > have OpenCode installed and are working from the project root.
 >
 > > **Pi users:** See [`docs/pi-workflow.md`](pi-workflow.md) for harness-specific differences and
 > > [`docs/pi-compatibility.md`](pi-compatibility.md) for setup.
+> > **oh-my-pi (omp) users:** See [`docs/omp-compatibility.md`](omp-compatibility.md) for setup and known gaps.
 >
 > The pipeline has 7 phases. Each phase has a formal gate (`/gate-check`)
 > that must pass before you advance. The authoritative phase sequence is
