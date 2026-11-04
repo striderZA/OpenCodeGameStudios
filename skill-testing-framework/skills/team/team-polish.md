@@ -7,7 +7,7 @@ Orchestrates the polish team through a six-phase pipeline: performance assessmen
 engine-programmer when engine-level root causes are found) → visual polish
 (technical-artist, parallel with Phase 2) → audio polish (sound-designer, parallel
 with Phase 2) → hardening (qa-tester) → sign-off (orchestrator collects all results
-and issues READY FOR RELEASE or NEEDS MORE WORK). Uses `AskUserQuestion` at each
+and issues READY FOR RELEASE or NEEDS MORE WORK). Uses `question` at each
 phase transition. Engine-programmer is spawned conditionally only when Phase 1
 identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE WORK.
 
@@ -23,7 +23,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 - [ ] Sub-agents enforce "May I write to [path]?" before any write
 - [ ] Has a next-step handoff at the end (references `/release-checklist`, `/sprint-plan update`, `/gate-check`)
 - [ ] Error Recovery Protocol section is present
-- [ ] `AskUserQuestion` is used at phase transitions before proceeding
+- [ ] `question` is used at phase transitions before proceeding
 - [ ] Phase 3 (visual polish) and Phase 4 (audio polish) are explicitly run in parallel with Phase 2
 - [ ] engine-programmer is conditionally spawned in Phase 2 only when Phase 1 identifies engine-level root causes
 - [ ] Phase 6 sign-off compares metrics against budgets before issuing verdict
@@ -45,21 +45,21 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 
 **Expected behavior:**
 1. Phase 1: performance-analyst is spawned; profiles the combat system, measures frame budget, checks memory usage; output: performance report showing all metrics within budget, no violations
-2. `AskUserQuestion` presents performance report; user approves before Phases 2, 3, and 4 begin
+2. `question` presents performance report; user approves before Phases 2, 3, and 4 begin
 3. Phase 2: performance-analyst applies minor optimizations (e.g., draw call batching); no engine-programmer needed (no engine-level root causes identified)
 4. Phases 3 and 4 are launched in parallel alongside Phase 2:
    - Phase 3: technical-artist reviews VFX for quality, optimizes particle systems, adds screen shake and visual juice
    - Phase 4: sound-designer reviews audio events for completeness, checks mix levels, adds ambient audio layers
-5. All three parallel phases complete; `AskUserQuestion` presents results; user approves before Phase 5 begins
+5. All three parallel phases complete; `question` presents results; user approves before Phase 5 begins
 6. Phase 5: qa-tester runs edge case tests, soak tests, stress tests, and regression tests; all pass
-7. `AskUserQuestion` presents test results; user approves before Phase 6
+7. `question` presents test results; user approves before Phase 6
 8. Phase 6: orchestrator collects all results; compares before/after performance metrics against budgets; all metrics pass
 9. Subagent asks "May I write the polish report to `production/qa/evidence/polish-combat-[date].md`?" before writing
 10. Verdict: READY FOR RELEASE
 
 **Assertions:**
 - [ ] performance-analyst is spawned first in Phase 1 before any other agents
-- [ ] `AskUserQuestion` appears after Phase 1 output and before Phases 2/3/4 launch
+- [ ] `question` appears after Phase 1 output and before Phases 2/3/4 launch
 - [ ] Phases 3 and 4 Task calls are issued at the same time as Phase 2 (not after Phase 2 completes)
 - [ ] engine-programmer is NOT spawned when Phase 1 finds no engine-level root causes
 - [ ] qa-tester (Phase 5) is not launched until the parallel phases complete and user approves
@@ -82,7 +82,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 
 **Expected behavior:**
 1. Phase 1: performance-analyst identifies the 12ms frame cost vs. 6ms budget; reports "FRAME BUDGET VIOLATION: particle-storm costs 12ms, budget is 6ms"
-2. `AskUserQuestion` presents the violation; user chooses to proceed with optimization attempt
+2. `question` presents the violation; user chooses to proceed with optimization attempt
 3. Phase 2: performance-analyst applies optimizations; achieves 9ms — reduced but still over budget; reports "Optimization reduced cost to 9ms (was 12ms) — 3ms over budget. No further gains achievable without design changes."
 4. Phases 3 and 4 run in parallel with Phase 2 (visual and audio polish)
 5. Phase 5: qa-tester runs regression and edge case tests; all pass
@@ -118,7 +118,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 - [ ] Skill does NOT spawn any agents when no argument is provided
 - [ ] Usage message includes the correct invocation format with argument examples
 - [ ] Skill does NOT attempt to guess a feature from project files
-- [ ] No `AskUserQuestion` is used — output is direct guidance
+- [ ] No `question` is used — output is direct guidance
 
 ---
 
@@ -134,7 +134,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 **Expected behavior:**
 1. Phase 1: performance-analyst profiles the environment; identifies frame budget violation; root cause analysis points to engine-level rendering pipeline (spatial indexer traversal overhead)
 2. Phase 1 output explicitly classifies the root cause as engine-level
-3. `AskUserQuestion` presents the performance report including the engine-level root cause; user approves before Phase 2
+3. `question` presents the performance report including the engine-level root cause; user approves before Phase 2
 4. Phase 2: performance-analyst is spawned for game-code-level optimizations AND engine-programmer is spawned in parallel for the engine-level rendering fix
 5. Phases 3 and 4 also run in parallel with Phase 2 (visual and audio polish)
 6. engine-programmer addresses the spatial indexer traversal; provides profiler validation showing the fix reduces overhead
@@ -168,7 +168,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 4. Orchestrator surfaces the regression immediately: "qa-tester: REGRESSION FOUND — `item-highlight-hover` glow broken by Phase 3 shader optimization"
 5. Subagent files a bug report asking "May I write the bug report to `production/qa/evidence/bug-polish-inventory-ui-[date].md`?" before writing
 6. Bug report is written after approval; it includes: the broken behavior, the polish change that caused it, reproduction steps, and severity
-7. `AskUserQuestion` presents the regression with options:
+7. `question` presents the regression with options:
    - Revert the shader optimization and find an alternative approach
    - Fix the shader optimization to preserve the glow effect
    - Accept the regression and schedule a fix in the next sprint
@@ -179,7 +179,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 - [ ] The specific broken behavior and the responsible change are both named in the report
 - [ ] Subagent asks "May I write the bug report to [path]?" before filing
 - [ ] Bug report includes: broken behavior, causal change, reproduction steps, severity
-- [ ] `AskUserQuestion` offers options including revert, fix in place, and schedule later
+- [ ] `question` offers options including revert, fix in place, and schedule later
 - [ ] Verdict is NEEDS MORE WORK when a regression is present and unresolved
 - [ ] Verdict may become READY FOR RELEASE only if the regression is fixed within the current polish session and qa-tester re-runs to confirm
 
@@ -188,7 +188,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
 ## Protocol Compliance
 
 - [ ] Phase 1 (assessment) must complete before any other phase begins
-- [ ] `AskUserQuestion` is used after every phase output before the next phase launches
+- [ ] `question` is used after every phase output before the next phase launches
 - [ ] Phases 3 and 4 are always launched in parallel with Phase 2 (not deferred)
 - [ ] engine-programmer is only spawned when Phase 1 explicitly identifies engine-level root causes
 - [ ] No files are written by the orchestrator directly — all writes are delegated to sub-agents
@@ -207,7 +207,7 @@ identifies engine-level root causes. Verdict is READY FOR RELEASE or NEEDS MORE 
   separately tested — it follows the same conditional spawn pattern as engine-programmer
   and is invoked only when content authoring tools are involved in the polished area.
 - The "Retry with narrower scope" and "Skip this agent" resolution paths from the Error
-  Recovery Protocol are not separately tested — they follow the same `AskUserQuestion`
+  Recovery Protocol are not separately tested — they follow the same `question`
   + partial-report pattern validated in Cases 2 and 5.
 - Phase 6 sign-off logic (collecting and comparing all metrics) is validated implicitly
   by Cases 1 and 2. The distinction between READY FOR RELEASE and NEEDS MORE WORK is
