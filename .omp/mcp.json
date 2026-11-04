@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "autopilot": {
+      "type": "stdio",
+      "command": "autopilot",
+      "args": ["mcp"],
+      "enabled": false
+    }
+  }
+}
