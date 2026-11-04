@@ -4,7 +4,7 @@ This guide covers how to add, modify, and maintain the OCGS framework —
 agents, skills, commands, rules, and plugins. If you're building a game
 (rather than the framework), see `README.md` instead.
 
-The framework supports both [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent) coding agents.
+The framework supports [OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent), and [oh-my-pi](https://omp.sh/) (`omp`) coding agents.
 See `docs/pi-compatibility.md` for Pi-specific setup.
 
 ## Table of Contents
@@ -50,11 +50,13 @@ Every agent must have:
 ```markdown
 ---
 description: "One-sentence description of the agent's domain and purpose"
-mode: subagent          # primary (director) or subagent (specialist)
 maxTurns: 20
-permission:             # optional — add `bash: deny` for non-code agents
-  bash: deny
 ---
+
+> **Note:** Agent frontmatter is harness-neutral. Model choice, mode
+> (primary/subagent), and tool permissions belong in the harness config
+> (`.opencode/` for OpenCode, `.pi/` for Pi, `.omp/` for omp). Do not add
+> `model:`, `mode:`, `permission:`, or `tools:` to `.agents/agents/*.md`.
 
 You are the [Role Name] for a [Engine] game project. [2-3 sentence identity statement].
 
@@ -107,7 +109,7 @@ When should this agent be involved?
 
 | Section | Required for | Purpose |
 |---------|-------------|---------|
-| Frontmatter (description, mode, model, maxTurns) | All agents | Metadata for OpenCode routing |
+| Frontmatter (`description`, `maxTurns`) | All agents | Metadata for agent routing |
 | Collaboration Protocol | All agents | User interaction workflow |
 | Core Responsibilities | All agents | Domain ownership definition |
 | What This Agent Must NOT Do | All agents | Boundary enforcement |
@@ -122,7 +124,7 @@ When should this agent be involved?
 - File name: `kebab-case-role-name.md`
 - Agent role in descriptions: `PascalCase Role Name`
 - Frontmatter `name`: not used (inferred from filename)
-- `mode`: `primary` for directors, `subagent` for specialists
+- `mode` is harness-specific and must not be set in `.agents/agents/`
 
 ### Validation
 
@@ -273,10 +275,10 @@ node tests/workflow/paths.mjs         # Workflow path validation
 
 ### For Plugin Changes
 
-Verify all existing plugin tests still pass:
+Verify all existing plugin tests still pass (the suite needs the `tsx` loader):
 
 ```bash
-node .opencode/plugins/tests/test-<name>.mjs
+npm run test:plugins
 ```
 
 ### For Workflow Changes

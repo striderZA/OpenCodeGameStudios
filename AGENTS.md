@@ -1,6 +1,6 @@
 # OpenCode Game Studios
 
-Indie game development managed through 52 coordinated OpenCode agents.
+Indie game development managed through 52 coordinated agents.
 Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
@@ -18,23 +18,23 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ```text
 /
 ├── AGENTS.md                    # Project configuration
-├── opencode.json                # OpenCode config (permissions, plugins)
-├── .pi/                         # Pi settings and extensions
+├── opencode.json                # OpenCode V2 config (plugins, MCP, permissions)
+├── .pi/                         # Pi config (settings, 9 extensions)
+├── .omp/                        # oh-my-pi config and MCP
 ├── .githooks/                   # Tracked git hooks (commit-msg, pre-commit)
 ├── .agents/                     # Canonical content (harness-agnostic)
 │   ├── agents/                  # 52 agent definitions
 │   ├── skills/                  # 78 skill workflows
 │   ├── commands/                # 78 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
-│   └── modules/                 # 22 installable modules
+│   └── modules/                 # 22 Pi-target module mirrors
 ├── .opencode/                   # OpenCode-specific
 │   ├── plugins/                 # TypeScript plugins (ccgs-hooks, drift-detector, changelog-generator)
 │   ├── agents/ → ../.agents/agents/   (symlink)
 │   ├── skills/ → ../.agents/skills/   (symlink)
 │   ├── commands/ → ../.agents/commands/ (symlink)
-│   └── rules/ → ../.agents/rules/     (symlink)
-├── .pi/                         # Pi-specific extensions & settings
-│   └── extensions/              # Pi extensions (ocgs-core, delegation, question, path-guard, etc.)
+│   ├── rules/ → ../.agents/rules/     (symlink)
+│   └── modules/                 # Module CLI + 22 OpenCode-target module mirrors
 ├── docs/
 │   ├── architecture/            # Architecture Decision Records (ADRs)
 │   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
@@ -162,7 +162,7 @@ This project supports two workflow modes. Choose the one that fits your team siz
 Run `/start` in OpenCode to begin the guided onboarding flow.
 Or jump directly to:
 - `/concept-brainstorm` — explore game ideas from scratch
-- `/setup-engine godot 4.6` — configure your engine (also: unity, unreal, sfml3, raylib, bevy)
+- `/setup-engine godot 4.7` — configure your engine (also: unity, unreal, sfml3, raylib, bevy)
 - `/project-stage-detect` — analyze an existing project
 - `/prototype` — rapid prototype a concept
 - `/hybrid-prototype` — fast-lane prototype for discovery phase
@@ -174,7 +174,7 @@ Start Pi from the project root:
 pi
 ```
 
-All OCGS skills, commands, and agents load automatically through the `.pi/extensions/` extensions.
+All OCGS skills and commands load automatically through the `.pi/extensions/` extensions. The 52 agent definitions are present, but `Task` delegation has a known defect — see `docs/pi-compatibility.md#delegation`.
 
 Pi-specific commands differ from OpenCode in a few cases:
 - Use `/generate-changelog` instead of `/changelog` (Pi has a built-in with that name)

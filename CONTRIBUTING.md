@@ -2,7 +2,7 @@
 
 Thanks for your interest in OpenCode Game Studios!
 
-OpenCode Game Studios runs on both [OpenCode](https://opencode.ai) and [Pi](https://github.com/earendil-works/pi-coding-agent).
+OpenCode Game Studios runs on [OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent), and [oh-my-pi](https://omp.sh/) (`omp`).
 
 ## Quick Start
 
@@ -14,6 +14,11 @@ opencode
 ### Pi
 ```bash
 pi
+```
+
+### oh-my-pi (omp)
+```bash
+omp
 ```
 
 ## How to Contribute
@@ -38,8 +43,8 @@ Scope: the affected system (e.g., `plugin`, `agents`, `docs`)
 
 Examples:
 - `feat(plugin): add session-start time tracking`
-- `fix(agents): correct model prefix for director agents`
-- `docs: add model assignment strategy section`
+- `fix(agents): correct delegation map for a specialist`
+- `docs: explain harness-neutral frontmatter`
 
 ### Git hooks
 
