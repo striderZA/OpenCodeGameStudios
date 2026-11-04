@@ -45,8 +45,13 @@
 
     godot-specialist   -- Godot 4 lead: GDScript, node/scene, signals, resources
       godot-gdscript-specialist    -- GDScript: static typing, patterns, signals, performance
+      godot-csharp-specialist      -- C#: .NET integration, C# project structure, performance
       godot-shader-specialist      -- Shaders: Godot shading language, visual shaders, VFX
       godot-gdextension-specialist -- Native: C++/Rust bindings, GDExtension, build systems
+
+    bevy-specialist    -- Bevy lead: ECS, 2D/3D rendering, bevy_ui, assets, audio
+    sfml-specialist    -- SFML 3 lead: Graphics, Audio, Network, Window, System
+    raylib-specialist  -- Raylib lead: core, rlgl, raudio, raymath, raygui
 ```
 
 ### Legend
