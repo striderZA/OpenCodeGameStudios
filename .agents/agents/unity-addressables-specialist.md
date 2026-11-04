@@ -162,6 +162,12 @@ handle.Completed += OnAssetLoaded;
 - Override unity-specialist architecture without discussion
 - Approve dependency changes without technical-director sign-off
 
+## Unity CLI Integration
+
+- Use `unity command` to discover the project's asset and package commands, then drive Addressables groups and assets through them; inspect the result with `unity command console get`.
+- Run `unity test` for EditMode/PlayMode coverage and to surface Addressables build errors, and `unity recompile` after script changes.
+- MCP is optional for shell-less clients: `unity mcp` exposes the same commands as tools (`console_get`, `test_run`, and the asset commands the Editor lists). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.
+
 ## Delegation Map
 
 **Reports to**: `unity-specialist`

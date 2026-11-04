@@ -99,49 +99,77 @@ The MCP server is configured via `opencode.json` or editor MCP settings. See `/s
 - `create_scene`, `add_node`, `save_scene` — scene manipulation
 - `get_godot_version`, `get_project_info`, `list_projects` — project introspection
 
-### Unity-MCP (Optional — Unity Only)
+### Unity CLI (Recommended — Unity Only)
 
-The [unity-mcp](https://github.com/CoplayDev/unity-mcp) server (by CoplayDev) provides runtime tools for AI-assisted interaction with a running Unity Editor. It enables agents to manage assets, control scenes, edit scripts, and read the Editor console during development sessions.
+Unity's official agent integration is the [Unity CLI](https://docs.unity.com/unity-cli). When an agent can run shell commands, it drives a running Unity 6+ Editor directly through the project's `com.unity.pipeline` package. Unity deprecated the in-Editor MCP server in `com.unity.ai.assistant`; the CLI is its supported replacement. This replaces the community CoplayDev `unity-mcp` package the framework previously recommended.
 
 **Prerequisites:**
-- Unity 2021.3 LTS or newer
-- Python 3.10+ with `uv` (install via `pip install uv` or `winget install astral-sh.uv`)
+- Unity 6.0 (6000.0) or newer for Editor control.
+- The Unity CLI — the Hub installs and updates it by default. Verify with `unity --version`; install with `irm https://unity.com/install.ps1 | iex` (Windows PowerShell) or `curl -fsSL https://unity.com/install.sh | bash` (macOS/Linux).
+- The `com.unity.pipeline` package in the project — `unity pipeline install --project-path <project>`.
 
-**Installation:**
+**Setup:**
+1. Open the project in Unity 6+.
+2. Run `unity status --project-path <project>` and confirm `state: ready`.
+3. Run `unity command --project-path <project>` to list the commands the Editor exposes.
+4. Optional: install Unity's own skills for supported clients (`unity skill install --list`, then `unity skill install opencode`; OpenCode also has `unity setup opencode`). Pi and omp are not supported by `unity skill install`.
 
-The unity-mcp server runs as a package inside Unity Editor (not a standalone CLI). Install via the Unity Package Manager:
+**Usage:** `unity command scene get_hierarchy`, `unity command console get`, `unity command script eval`, `unity recompile`, `unity test`, `unity command editor.playmode start`.
 
-```
-# In Unity: Window → Package Manager → + → Add package from git URL
-# Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
-```
+### Unity MCP (Optional — Unity Only)
 
-Then click **Window → MCP for Unity → "Configure All Detected Clients"** to auto-configure detected MCP clients. OpenCode may require manual config — see below.
+`unity mcp` (Unity CLI 0.1.0-beta.8 or later) is the CLI's built-in stdio MCP server. Use it only for clients that cannot run shell commands; the CLI itself exposes more commands than the MCP server. It replaces the deprecated in-Editor MCP server and does not use the old relay or port 8080.
 
-**Configuration:**
+**Configure:**
+- `unity mcp configure --list` lists supported clients and config paths; `unity mcp configure <client>` writes the entry. Add `--replace-legacy` to remove an old relay entry.
+- OpenCode (`opencode.json`, `mcp.servers`):
 
-Add this block to `mcp.servers` in your `opencode.json` (the wizard may auto-configure, but manual is the reliable fallback):
+  ```json
+  "unity": {
+    "type": "local",
+    "command": ["unity", "mcp"],
+    "disabled": true,
+    "codemode": false
+  }
+  ```
 
-```json
-"unity": {
-  "type": "remote",
-  "url": "http://localhost:8080/mcp",
-  "disabled": true
-}
-```
+- Pi (`~/.pi/agent/mcp.json`; `exposure: "direct"` is required):
 
-Set `disabled` to `false` once Unity Editor is running.
+  ```json
+  {
+    "mcpServers": {
+      "unity": {
+        "command": "unity",
+        "args": ["mcp"],
+        "enabled": false,
+        "exposure": "direct"
+      }
+    }
+  }
+  ```
 
-> ⚠ **Unity Editor must be running** before OCGS agents can use unity-mcp tools. If the Editor is closed, MCP calls will fail with a connection error. Open your project in Unity, then continue.
+- omp (`.omp/mcp.json`):
 
-**Tools provided (selection):**
-- `manage_gameobject`, `manage_scene`, `find_gameobjects` — scene and GameObject management
-- `create_script`, `script_apply_edits`, `validate_script` — script creation and editing
-- `manage_material`, `manage_asset` — material and asset management
-- `manage_ui` — UI Toolkit workflows
-- `read_console` — Editor console output (errors, warnings, compile status)
-- `run_tests` — async test execution (EditMode / PlayMode)
-- `batch_execute` — multiple MCP commands in a single batch (10-100x faster)
+  ```json
+  {
+    "mcpServers": {
+      "unity": {
+        "type": "stdio",
+        "command": "unity",
+        "args": ["mcp"],
+        "enabled": false
+      }
+    }
+  }
+  ```
+
+- Pass `--project-path <project>` in `args` when the client starts outside the project or multiple Editors are open.
+
+**Tools provided (selection):** `unity-cli-status` (no Editor), `scene_get_hierarchy`, `console_get`, `script_eval`, `editor_playmode_start`, `test_run`, plus the Editor's other commands. Tool names replace spaces and dots with underscores; check `tools/list`, because an older Pipeline package may use flat names. `--cli-tools` adds six read-only CLI tools; `--tools` / `--exclude-tools` trim the list.
+
+> ⚠ **Unity Editor must be running** for Editor commands. Without one, MCP sessions expose only `unity-cli-status`; start Unity and open the project.
+
+**Older Unity:** the CLI drives Unity 6.0+ only. On Unity 2021.3–5.x, the community [MCP for Unity](https://github.com/CoplayDev/unity-mcp) package still works and is unaffected by the deprecation, but it is no longer the framework default.
 
 ### Autopilot (Optional — Godot 4.7+ Only)
 

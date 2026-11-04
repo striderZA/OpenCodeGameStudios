@@ -39,8 +39,8 @@
         }
       },
       "unity": {
-        "type": "remote",
-        "url": "http://localhost:8080/mcp",
+        "type": "local",
+        "command": ["unity", "mcp"],
         "disabled": true,
         "codemode": false
       }

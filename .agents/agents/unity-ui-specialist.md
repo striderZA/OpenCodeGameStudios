@@ -214,6 +214,12 @@ Before writing any code:
 - Override unity-specialist architecture without discussion
 - Implement non-UI gameplay systems directly (delegate to gameplay-programmer)
 
+## Unity CLI Integration
+
+- Use `unity command` to discover the project's scene and UI commands, and `unity command scene get_hierarchy` to inspect Canvas/uGUI or UI Toolkit hierarchies.
+- Scaffold UI through the Editor's commands where the Pipeline package exposes them; use `unity command script eval` for ad-hoc setup, `unity recompile` after script changes, and `unity command editor.playmode start` to run the scene.
+- MCP is optional for shell-less clients: `unity mcp` exposes the same commands as tools (`scene_get_hierarchy`, `script_eval`, `editor_playmode_start`). Requires Unity 6.0+, `com.unity.pipeline`, and a running Editor.
+
 ## Delegation Map
 
 **Reports to**: `unity-specialist`
