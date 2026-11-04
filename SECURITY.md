@@ -2,7 +2,8 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in this project, please open an
-issue at https://github.com/striderZA/OpenCodeGameStudios/issues.
+Please report security vulnerabilities privately through GitHub Security
+Advisories: https://github.com/striderZA/OpenCodeGameStudios/security/advisories/new
 
-Do not disclose the vulnerability publicly until it has been addressed.
+Do not open a public issue for an undisclosed vulnerability. Include steps to
+reproduce, affected versions, and any suggested fix.
