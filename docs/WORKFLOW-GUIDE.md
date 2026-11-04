@@ -39,10 +39,10 @@
 
 Before you start, make sure you have:
 
-- **OpenCode** installed and working
+- **One agent harness** installed and working: OpenCode 2.x, Pi 1.x, or oh-my-pi 18.16.0+
 - **Git** with Git Bash (Windows) or standard terminal (Mac/Linux)
-- **jq** (optional but recommended -- hooks fall back to `grep` if missing)
-- **Python 3** (optional -- some hooks use it for JSON validation)
+- **Node.js 18+** for the module CLI and hooks
+- No `jq` or Python dependency — the hooks are TypeScript
 
 ### Step 1: Clone and Open
 
@@ -74,8 +74,8 @@ This guided onboarding asks where you are and routes you to the right phase:
 
 ### Step 3: Verify Hooks Are Working
 
-Start a new OpenCode session. You should see output from the
-`session-start.sh` hook:
+Start a new session. The `ocgs-hooks` extension/plugin prints a session context
+block and posts audit/validation status:
 
 ```
 === OpenCode Game Studios -- Session Context ===
@@ -85,8 +85,11 @@ Recent commits:
 ===================================
 ```
 
-If you see this, hooks are working. If not, check `.opencode/settings.json` to
-make sure the hook paths are correct for your OS.
+If you see this, hooks are working. If not:
+
+- **OpenCode:** confirm `opencode.json` lists the three plugins under `plugins`
+- **Pi:** confirm `.pi/extensions/ocgs-hooks/index.ts` exists and the project is trusted
+- **omp:** confirm `.omp/config.yml` lists `ocgs-hooks` and launch from the repository root
 
 ### Step 4: Ask for Help Anytime
 
@@ -230,7 +233,7 @@ Validates structure and completeness before you proceed.
 Or with a specific engine:
 
 ```
-/setup-engine godot 4.6
+/setup-engine godot 4.7
 ```
 
 **What /setup-engine does:**
@@ -1196,13 +1199,13 @@ Every agent interaction follows this pattern:
 See `docs/COLLABORATIVE-DESIGN-PRINCIPLE.md` for the full protocol with
 examples.
 
-### The AskUserQuestion Tool
+### The Decision Tool
 
-Agents use the `AskUserQuestion` tool for structured option presentation.
-The pattern is Explain then Capture: full analysis in conversation text first,
-then a clean UI picker for the decision. Use it for design choices,
-architecture decisions, and strategic questions. Do not use it for open-ended
-discovery questions or simple yes/no confirmations.
+Agents use the `question` tool for structured option presentation (omp exposes
+the equivalent `ask`). The pattern is Explain then Capture: full analysis in
+conversation text first, then a clean UI picker for the decision. Use it for
+design choices, architecture decisions, and strategic questions. Do not use it
+for open-ended discovery questions or simple yes/no confirmations.
 
 ### Agent Coordination (3-Tier Hierarchy)
 
@@ -1239,22 +1242,25 @@ Tier 3 (Specialists):  gameplay-programmer, engine-programmer,
 
 ### Automated Hooks (Safety Net)
 
-The system has 12 hooks that run automatically:
+The 12 original CCGS hook behaviors are implemented once in `ocgs-hooks`
+(`.opencode/plugins/ccgs-hooks.ts` for OpenCode, `.pi/extensions/ocgs-hooks/`
+for Pi and omp). The table lists the behaviors by their original hook names;
+these are labels, not scripts you will find on disk.
 
-| Hook | Trigger | What It Does |
-|------|---------|-------------|
-| `session-start.sh` | Session start | Shows branch, recent commits, detects active.md for recovery |
-| `detect-gaps.sh` | Session start | Detects fresh projects (no engine, no concept) and suggests `/start` |
-| `pre-compact.sh` | Before compaction | Dumps session state into conversation for auto-recovery |
-| `post-compact.sh` | After compaction | Reminds Claude to restore session state from `active.md` |
-| `notify.sh` | Notification event | Shows Windows toast notification via PowerShell |
-| `validate-commit.sh` | Before commit | Checks for design doc references, valid JSON, no hardcoded values |
-| `validate-push.sh` | Before push | Warns on pushes to main/develop |
-| `validate-assets.sh` | Before commit | Checks asset naming and size |
-| `validate-skill-change.sh` | Skill file written | Advises running `/skill-test` after `.agents/skills/` changes |
-| `log-agent.sh` | Agent start | Logs agent invocations for audit trail |
-| `log-agent-stop.sh` | Agent stop | Completes agent audit trail (start + stop) |
-| `session-stop.sh` | Session end | Final session logging |
+| Hook behavior | Trigger | What It Does |
+|---------------|---------|-------------|
+| `session-start` | Session start | Shows branch, recent commits, detects `active.md` for recovery |
+| `detect-gaps` | Session start | Detects fresh projects (no engine, no concept) and suggests `/start` |
+| `pre-compact` | Before compaction | Preserves session state for auto-recovery |
+| `post-compact` | After compaction | Restores the recovery notice |
+| `notify` | Agent waits for input | OS notification |
+| `validate-commit` | Before commit | Checks for design doc references, valid JSON, no hardcoded values |
+| `validate-push` | Before push | Warns on pushes to `main`, `master`, or `develop` |
+| `validate-assets` | After file write | Checks asset naming and JSON validity |
+| `validate-skill-change` | Skill file written | Advises running `/skill-test` after `.agents/skills/` changes |
+| `log-agent` | Agent start | Logs agent invocations for the audit trail |
+| `log-agent-stop` | Agent stop | Completes the agent audit trail |
+| `session-stop` | Session end | Archives session state and commits |
 
 ### Context Resilience
 
@@ -1267,9 +1273,9 @@ section to file immediately after approval. This means completed sections
 survive crashes and context compactions. Previous discussion about written
 sections can be safely compacted.
 
-**Automatic recovery:** The `session-start.sh` hook detects and previews
-`active.md` automatically. The `pre-compact.sh` hook dumps state into the
-conversation before compaction.
+**Automatic recovery:** The session-start behavior detects and previews
+`active.md` automatically. The pre-compact behavior preserves state for the
+next session.
 
 **Sprint status tracking:** `production/sprint-status.yaml` is the
 machine-readable story tracker. Written by `/sprint-plan` (init) and
@@ -1385,6 +1391,7 @@ Reads existing code and generates GDD-format design documentation from it.
 | GDScript-specific help | `godot-gdscript-specialist` | 3 |
 | Godot shader help | `godot-shader-specialist` | 3 |
 | GDExtension modules | `godot-gdextension-specialist` | 3 |
+| Godot C# help | `godot-csharp-specialist` | 3 |
 | Unity-specific help | `unity-specialist` | 3 |
 | Unity DOTS/ECS | `unity-dots-specialist` | 3 |
 | Unity shaders/VFX | `unity-shader-specialist` | 3 |
@@ -1395,6 +1402,9 @@ Reads existing code and generates GDD-format design documentation from it.
 | Unreal Blueprints | `ue-blueprint-specialist` | 3 |
 | Unreal replication | `ue-replication-specialist` | 3 |
 | Unreal UMG/CommonUI | `ue-umg-specialist` | 3 |
+| Bevy help | `bevy-specialist` | 3 |
+| SFML 3 help | `sfml-specialist` | 3 |
+| Raylib help | `raylib-specialist` | 3 |
 
 ### Agent Hierarchy
 
@@ -1420,131 +1430,130 @@ conflicts go to `producer`.
 
 ## Appendix B: Slash Command Quick-Reference
 
-### All 54 Commands by Category
+### All 78 Commands by Category
 
-#### Onboarding and Navigation (5)
+#### Onboarding and Navigation (9)
 
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/start` | Guided onboarding, routes to right workflow | Any (first session) |
-| `/help` | Context-aware "what do I do next?" | Any |
-| `/project-stage-detect` | Full project audit to determine current phase | Any |
-| `/setup-engine` | Configure engine, pin version, set preferences | 1 |
-| `/adopt` | Brownfield audit and migration plan | Any (existing projects) |
+| Command | Purpose |
+|---------|---------|
+| `/adopt` | Brownfield onboarding audit and migration plan |
+| `/help` | Analyze project state and suggest next steps |
+| `/init-template` | Initialize project from OCGS template |
+| `/onboard` | Generate contextual onboarding document |
+| `/project-stage-detect` | Detect project phase and recommend actions |
+| `/setup-engine` | Configure game engine and version |
+| `/skill-improve` | Improve skill using test-fix-retest loop |
+| `/skill-test` | Validate skill structural and behavioral compliance |
+| `/start` | First-time onboarding — guided setup |
 
-#### Game Design (6)
+#### Game Design and Review (15)
 
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/concept-brainstorm` | Collaborative ideation with MDA analysis | 1 |
-| `/map-systems` | Decompose concept into systems index | 1-2 |
-| `/design-system` | Guided section-by-section GDD authoring | 2 |
-| `/quick-design` | Lightweight spec for small changes | 2+ |
-| `/review-all-gdds` | Cross-GDD consistency and design theory review | 2 |
-| `/propagate-design-change` | Find ADRs/stories affected by GDD changes | 5 |
+| Command | Purpose |
+|---------|---------|
+| `/art-bible` | Guided visual identity specification authoring |
+| `/art-generate` | Generate placeholder art from asset specs using the Aseprite MCP |
+| `/asset-audit` | Audit assets for compliance with standards |
+| `/asset-spec` | Generate asset visual specifications and AI prompts |
+| `/balance-check` | Analyze game balance data and configurations |
+| `/concept-brainstorm` | Guided game concept ideation |
+| `/consistency-check` | Detect cross-document inconsistencies |
+| `/content-audit` | Audit GDD-specified content vs implementation |
+| `/design-review` | Validate GDD completeness and consistency |
+| `/design-system` | Section-by-section GDD authoring |
+| `/map-systems` | Decompose concept into individual systems |
+| `/quick-design` | Lightweight design spec for small changes |
+| `/review-all-gdds` | Cross-GDD consistency and game design review |
+| `/ux-design` | Guided UX spec authoring for screens and flows |
+| `/ux-review` | Validate UX spec for completeness and compliance |
 
-#### UX and Interface (2)
+#### Architecture (5)
 
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/ux-design` | Author UX specs (screen/flow, HUD, patterns) | 4 |
-| `/ux-review` | Validate UX specs for accessibility and GDD alignment | 4 |
+| Command | Purpose |
+|---------|---------|
+| `/architecture-decision` | Create an Architecture Decision Record |
+| `/architecture-review` | Validate architecture against all GDDs |
+| `/create-architecture` | Author the master architecture document |
+| `/create-control-manifest` | Produce actionable programmer rules sheet |
+| `/propagate-design-change` | Propagate GDD changes to architecture and ADRs |
 
-#### Architecture (4)
+#### Stories and Sprints (6)
 
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/create-architecture` | Master architecture document | 3 |
-| `/architecture-decision` | Create or retrofit an ADR | 3 |
-| `/architecture-review` | Validate all ADRs, dependency ordering | 3 |
-| `/create-control-manifest` | Flat programmer rules from Accepted ADRs | 3 |
+| Command | Purpose |
+|---------|---------|
+| `/code-review` | Architectural and quality code review |
+| `/create-epics` | Translate GDDs + architecture into epics |
+| `/create-stories` | Break an epic into implementable stories |
+| `/dev-story` | Implement a story with full context |
+| `/story-done` | End-of-story completion review |
+| `/story-readiness` | Validate story is ready for implementation |
 
-#### Stories and Sprints (8)
+#### QA and Testing (12)
 
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/create-epics` | Translate GDDs + ADRs into epics (one per module) | 4 |
-| `/create-stories` | Break a single epic into story files | 4 |
-| `/dev-story` | Implement a story — routes to the correct programmer agent | 5 |
-| `/sprint-plan` | Create or manage sprint plans | 4-5 |
-| `/sprint-status` | Quick 30-line sprint snapshot | 5 |
-| `/story-readiness` | Validate story is implementation-ready | 4-5 |
-| `/story-done` | 8-phase story completion review | 5 |
-| `/estimate` | Effort estimation with risk assessment | 4-5 |
+| Command | Purpose |
+|---------|---------|
+| `/automated-smoke-test` | Run automated smoke test using engine MCP |
+| `/autopilot-playtest` | Run an automated playtest of the open Godot game with Autopilot |
+| `/perf-profile` | Structured performance profiling workflow |
+| `/playtest-report` | Generate structured playtest report |
+| `/qa-plan` | Generate QA test plan for sprint or feature |
+| `/regression-suite` | Map test coverage to GDD critical paths |
+| `/smoke-check` | Run critical path smoke test gate |
+| `/soak-test` | Generate soak test protocol |
+| `/test-evidence-review` | Quality review of test files |
+| `/test-flakiness` | Detect non-deterministic tests |
+| `/test-helpers` | Generate engine-specific test helpers |
+| `/test-setup` | Scaffold test framework and CI pipeline |
 
-#### Reviews and Analysis (11)
+#### Prototyping and Exploration (4)
 
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/design-review` | Validate GDD against 8-section standard | 1-2 |
-| `/code-review` | Architectural code review | 5+ |
-| `/balance-check` | Game balance formula analysis | 5-6 |
-| `/asset-audit` | Asset naming, format, size verification | 6 |
-| `/content-audit` | GDD-specified content vs. implemented | 5 |
-| `/scope-check` | Scope creep detection | 5 |
-| `/perf-profile` | Performance profiling workflow | 6 |
-| `/tech-debt` | Tech debt scanning and prioritization | 6 |
-| `/gate-check` | Formal phase gate with PASS/CONCERNS/FAIL | All transitions |
-| `/gate-check workflow-selection` | Choose Hybrid vs. Full after exploration | Pre-workflow |
-| `/reverse-document` | Generate design docs from existing code | Any |
-
-#### QA and Testing (9)
-
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/qa-plan` | Generate QA test plan for a sprint or feature | 5 |
-| `/smoke-check` | Critical path smoke test gate before QA hand-off | 5-6 |
-| `/soak-test` | Soak test protocol for extended play sessions | 6 |
-| `/regression-suite` | Map test coverage, identify fixed bugs lacking regression tests | 5-6 |
-| `/test-setup` | Scaffold test framework and CI/CD pipeline | 4 |
-| `/test-helpers` | Generate engine-specific test helper libraries | 4-5 |
-| `/test-evidence-review` | Quality review of test files and manual evidence | 5 |
-| `/test-flakiness` | Detect non-deterministic tests from CI logs | 5-6 |
-| `/skill-test` | Validate skill files for structural and behavioral correctness | Any |
-
-#### Production Management (6)
-
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/milestone-review` | Milestone progress and go/no-go | 5 |
-| `/retrospective` | Sprint retrospective analysis | 5 |
-| `/bug-report` | Structured bug report creation | 5+ |
-| `/bug-triage` | Re-evaluate open bugs for priority, severity, and owner | 5+ |
-| `/playtest-report` | Structured playtest session report | 4-6 |
-| `/onboard` | Onboard a new team member | Any |
-
-#### Release (5)
-
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/release-checklist` | Pre-release validation | 7 |
-| `/launch-checklist` | Full cross-department launch readiness | 7 |
-| `/changelog` | Auto-generate internal changelog | 7 |
-| `/patch-notes` | Player-facing patch notes | 7 |
-| `/hotfix` | Emergency fix workflow | 7+ |
-
-#### Creative (4)
-
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/explore` | Pre-workflow rapid prototyping — no workflow commitment | Pre-workflow |
-| `/prototype` | Throwaway prototype in isolated worktree | 4 |
-| `/hybrid-prototype` | Fast-lane prototype for hybrid discovery phase | Discovery |
-| `/localize` | String extraction and validation | 6-7 |
+| Command | Purpose |
+|---------|---------|
+| `/explore` | Pre-workflow rapid prototyping for exploring multiple game ideas |
+| `/hybrid-prototype` | Fast-lane prototype for discovery phase |
+| `/prototype` | Rapid prototyping workflow |
+| `/reverse-document` | Generate docs from existing implementation |
 
 #### Team Orchestration (9)
 
-| Command | Purpose | Phase |
-|---------|---------|-------|
-| `/team-combat` | Combat feature: design through implementation | 5 |
-| `/team-narrative` | Narrative content: structure through dialogue | 5 |
-| `/team-ui` | UI feature: UX spec through polished implementation | 5 |
-| `/team-level` | Level: layout through dressed encounters | 5 |
-| `/team-audio` | Audio: direction through implemented events | 5-6 |
-| `/team-polish` | Coordinated polish: perf + art + audio + QA | 6 |
-| `/team-release` | Release coordination: build + QA + deployment | 7 |
-| `/team-live-ops` | Live-ops planning: seasonal events, battle pass, retention | 7+ |
-| `/team-qa` | Full QA cycle: strategy, execution, coverage, sign-off | 6-7 |
+| Command | Purpose |
+|---------|---------|
+| `/team-audio` | Orchestrate audio design team |
+| `/team-combat` | Orchestrate combat design team |
+| `/team-level` | Orchestrate level design team |
+| `/team-live-ops` | Orchestrate live-ops team for post-launch content planning |
+| `/team-narrative` | Orchestrate narrative design team |
+| `/team-polish` | Orchestrate polish and optimization team |
+| `/team-qa` | Orchestrate QA testing team |
+| `/team-release` | Orchestrate release deployment team |
+| `/team-ui` | Orchestrate UI/UX design team |
+
+#### Release and Production (12)
+
+| Command | Purpose |
+|---------|---------|
+| `/changelog` | Auto-generate changelog from git and design docs |
+| `/estimate` | Estimate task effort with confidence levels |
+| `/gate-check` | Validate readiness to advance between phases |
+| `/launch-checklist` | Complete launch readiness validation |
+| `/localize` | Full localization pipeline and cultural review |
+| `/milestone-review` | Comprehensive milestone progress review |
+| `/patch-notes` | Generate player-facing patch notes |
+| `/release-checklist` | Pre-release validation checklist |
+| `/retrospective` | Sprint or milestone retrospective |
+| `/scope-check` | Analyze feature or sprint for scope creep |
+| `/sprint-plan` | Generate or update sprint plan |
+| `/sprint-status` | Quick sprint progress snapshot |
+
+#### Operations (6)
+
+| Command | Purpose |
+|---------|---------|
+| `/bug-report` | Create structured bug report |
+| `/bug-triage` | Re-evaluate open bugs and surface trends |
+| `/day-one-patch` | Prepare day-one patch for launch |
+| `/hotfix` | Emergency fix workflow with audit trail |
+| `/security-audit` | Audit for security vulnerabilities |
+| `/tech-debt` | Track and prioritize technical debt |
 
 ---
 
