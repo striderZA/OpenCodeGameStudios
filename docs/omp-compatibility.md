@@ -8,6 +8,7 @@ omp loads the same `.pi/extensions/*` modules that Pi does. Nothing is copied in
 
 1. Install oh-my-pi. Tested with 18.16.0 (see [Tested Versions](#tested-versions)).
 2. From the repository root (the directory with `AGENTS.md` and `.omp/`), run `omp`.
+3. Generate the project agent roster: `node .opencode/modules/install.mjs add core --harness omp` (or run `/init-template --harness omp`). This writes `.omp/agents/*.md`; press `Ctrl`+`R` in `/agents` to reload the hub.
 
 Project config is read from `.omp/config.yml` in the working directory. Launch from the repository root. Launching from `src/` loads no OCGS extensions (see [Acceptance Matrix](#acceptance-matrix), row 12).
 
@@ -20,7 +21,17 @@ omp's built-in `agents` provider reads `.agents/` directly, so these load withou
 - `.agents/commands/*.md` as slash commands.
 - `.agents/rules/*.md`, which load but are not applied on their own. See [Rules](#rules).
 
-`.agents/agents/` does not load. See [What Does Not Carry Over](#what-does-not-carry-over).
+`.agents/agents/` does not load; the installer generates `.omp/agents/` from it. See [Generated Agents](#generated-agents).
+
+## Generated Agents
+
+omp reads project agents from `.omp/agents/<name>.md`. Install a module with `--harness omp` to generate one file per agent in `.agents/agents/`:
+
+```bash
+node .opencode/modules/install.mjs add core --harness omp
+```
+
+Each generated file carries `name` and `description`; the source body becomes the agent's instructions. `tools` is omitted, so the agent inherits the session's tool set. Add an explicit `tools` list to an individual `.omp/agents/<name>.md` when you want a narrower boundary. omp reads the nearest `.omp/agents` directory, so a project definition wins over a user-level one. Press `Ctrl`+`R` in `/agents` after generating or editing.
 
 ## What `.omp/config.yml` Wires
 
@@ -66,13 +77,15 @@ omp reads MCP servers from `mcpServers` in `.omp/mcp.json` (project) and `~/.omp
 
 To run `/autopilot-playtest`, set `enabled` to `true` and restart omp. Its tools are named `mcp__autopilot_<tool>`, for example `mcp__autopilot_start_run`. The `autopilot` command must be on PATH. In our test, the OpenCode V2 `mcp.servers` entry in `opencode.json` gave omp no Autopilot tools, so `.omp/mcp.json` is the entry that applies.
 
+Module installs write here when you pass `--harness omp`. For example, `node .opencode/modules/install.mjs add art --harness omp` merges the Aseprite fragment into `.omp/mcp.json`; an existing server with the same name is left untouched.
+
 ## What Does Not Carry Over
 
 | Item | On Pi | On omp | Reason |
 |---|---|---|---|
 | `ocgs-core` barrel | Loaded via explicit `-e`; discovery requires `-a` (see [Pi Notes](#pi-notes)) | Not wired | omp's agents provider reads `.agents/` directly, so the barrel is unnecessary |
 | `ocgs-delegation` (`Task`, `/consult`) | Loaded, but broken | Not wired | See the delegation defect below |
-| `.agents/agents/` roster (52 agents) | Read by `Task`, which is broken | Not loaded | omp's `task` tool reads `.omp/agents/` and its bundled agents |
+| `.agents/agents/` roster (52 agents) | Read by `Task`, which is broken | Generated into `.omp/agents/` by the installer | omp reads `.omp/agents/`, not `.agents/agents/` |
 | `.pi/settings.json` | Read | Not read | Set `skills.enableSkillCommands` in `.omp/config.yml` instead |
 
 ### Delegation defect (both harnesses)

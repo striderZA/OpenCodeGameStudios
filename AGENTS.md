@@ -9,6 +9,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 - **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint / C / C++17]
 - **Build System**: [SPECIFY after choosing engine]
 - **Asset Pipeline**: [SPECIFY after choosing engine]
+- **Agent Harness**: [CHOOSE: OpenCode / Pi / oh-my-pi / Claude Code / Codex]
 
 > **Note**: Engine-specialist agents exist for Godot, Unity, Unreal, SFML 3,
 > Raylib, and Bevy. Use the set matching your engine.
@@ -20,21 +21,24 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 ├── AGENTS.md                    # Project configuration
 ├── opencode.json                # OpenCode V2 config (plugins, MCP, permissions)
 ├── .pi/                         # Pi config (settings, 9 extensions)
-├── .omp/                        # oh-my-pi config and MCP
+├── .omp/                        # oh-my-pi config, generated agents, MCP
+├── .claude/                     # Claude Code target (agents, skills, commands, rules)
+├── .mcp.json                    # Claude Code project MCP servers
+├── .codex/                      # Codex target (agents, MCP config)
 ├── .githooks/                   # Tracked git hooks (commit-msg, pre-commit)
 ├── .agents/                     # Canonical content (harness-agnostic)
 │   ├── agents/                  # 52 agent definitions
 │   ├── skills/                  # 78 skill workflows
 │   ├── commands/                # 78 slash commands
 │   ├── rules/                   # 11 path-scoped coding standards
-│   └── modules/                 # 22 Pi-target module mirrors
+│   └── modules/                 # 22 module sources (non-OpenCode targets)
 ├── .opencode/                   # OpenCode-specific
 │   ├── plugins/                 # TypeScript plugins (ccgs-hooks, drift-detector, changelog-generator)
 │   ├── agents/ → ../.agents/agents/   (symlink)
 │   ├── skills/ → ../.agents/skills/   (symlink)
 │   ├── commands/ → ../.agents/commands/ (symlink)
 │   ├── rules/ → ../.agents/rules/     (symlink)
-│   └── modules/                 # Module CLI + 22 OpenCode-target module mirrors
+│   └── modules/                 # Module CLI + 22 OpenCode-target module sources
 ├── docs/
 │   ├── architecture/            # Architecture Decision Records (ADRs)
 │   ├── engine-reference/        # Curated engine API snapshots (version-pinned)
@@ -81,9 +85,9 @@ The framework is partitioned into installable theme modules.
 
 **Available modules:** art, design, architecture, stories, programming, ui, audio, narrative, level-design, qa, release, prototyping, live-ops, localization, data, engine-godot, engine-unity, engine-unreal, engine-sfml3, engine-raylib, engine-bevy.
 
-**Install:** `node .opencode/modules/install.mjs add <name>`
-**Remove:** `node .opencode/modules/install.mjs remove <name>`
-**List:** `node .opencode/modules/install.mjs list`
+**Install:** `node .opencode/modules/install.mjs add <name> [--harness <id>]`
+**Remove:** `node .opencode/modules/install.mjs remove <name> [--harness <id>]`
+**List:** `node .opencode/modules/install.mjs list [--harness <id>]`
 
 ## Coordination Rules
 
@@ -196,10 +200,26 @@ See [docs/omp-compatibility.md](docs/omp-compatibility.md) for omp setup, extens
 
 | Command | OpenCode | Pi | oh-my-pi (omp) |
 |---------|----------|----|----------------|
-| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) | omp's built-in task tool; OCGS roster not loaded |
+| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) | omp's built-in task tool; OCGS agents generated into `.omp/agents/` |
 | Peer review | — | `/consult <agent>` (ocgs-delegation extension) | — (ocgs-delegation not wired) |
 | Decision capture | question tool | question tool (ocgs-question with TUI) | ask (omp built-in); answers logged to `agent-decisions.jsonl` by ocgs-question |
 | Skill invocation | `/command-name` | `/command-name` (via prompt templates) | `/skill:<name>` (`skills.enableSkillCommands`) |
+
+### Harness targets
+
+`/init-template` asks which harness the project uses, and the module CLI accepts
+`--harness` on `add`, `remove`, `list`, and `info`:
+
+| Harness | `--harness` | Content target | MCP file |
+|---------|-------------|----------------|----------|
+| OpenCode | `opencode` (default) | `.opencode/{agents,skills,commands,rules}` | `opencode.json` → `mcp.servers` |
+| Pi | `pi` (or `--pi`) | `.agents/{agents,skills,commands,rules}` | `.pi/mcp.json` → `mcpServers` |
+| oh-my-pi | `omp` (or `--omp`) | `.omp/agents` + `.agents/{skills,commands,rules}` | `.omp/mcp.json` → `mcpServers` |
+| Claude Code | `claude` (or `--claude`) | `.claude/{agents,skills,commands,rules}` | `.mcp.json` → `mcpServers` |
+| Codex | `codex` (or `--codex`) | `.codex/agents` + `.agents/skills` | `.codex/config.toml` → `[mcp_servers.*]` |
+
+Module sources live in `.opencode/modules/` (OpenCode target) and
+`.agents/modules/` (all other targets). Both trees are tracked; keep them in sync.
 
 ## Available Commands
 

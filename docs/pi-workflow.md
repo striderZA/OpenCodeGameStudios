@@ -108,6 +108,16 @@ If you've been using OCGS with OpenCode and want to try Pi:
 
 To switch back, just run `opencode` instead. Both harnesses share the same `.agents/` content.
 
+Module installs are per harness. Content for Pi lands in `.agents/`; MCP fragments
+go to `.pi/mcp.json`:
+
+```bash
+node .opencode/modules/install.mjs add art --harness pi
+```
+
+Use `--harness omp` for oh-my-pi: same skills/commands/rules target, with
+`.omp/agents/` for generated agent definitions and `.omp/mcp.json` for MCP.
+
 ## Troubleshooting
 
 | Symptom | Likely Cause | Fix |

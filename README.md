@@ -4,7 +4,7 @@
   <img src="assets/banner.png" alt="OpenCode Game Studios Banner" width="100%">
 </p>
 
-> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework supporting [OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent) and [oh-my-pi](https://omp.sh/) coding agents.
+> ⚡ Evolved from [Claude Code Game Studios (CCGS)](https://github.com/Donchitos/Claude-Code-Game-Studios) — now a standalone framework supporting [OpenCode](https://opencode.ai), [Pi](https://github.com/earendil-works/pi-coding-agent), [oh-my-pi](https://omp.sh/), [Claude Code](https://code.claude.com/docs/), and [Codex](https://developers.openai.com/codex/) coding agents.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-52-blueviolet)](.agents/agents/)
@@ -70,7 +70,7 @@ and [oh-my-pi](https://omp.sh/).
 
 | Component | CCGS (Claude Code) | OpenCode | Pi | omp | Status |
 |-----------|-------------------|----------|-----|-----|--------|
-| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | Not loaded — omp's task tool reads `.omp/agents/` | ✅ |
+| 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | Generated into `.omp/agents/` by the installer | ✅ |
 | ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`/skill:<name>`) | ✅ +6 |
 | ⌨️ **Commands** | — | 78 commands (`.agents/commands/`) | → prompt templates | → slash commands | ✅ New |
 | 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 9 Pi extensions (`.pi/extensions/`) | 7 shared via config | ✅ **177 plugin + 54 hook tests** |
@@ -101,8 +101,20 @@ definitions are present, but `Task` delegation has a known defect — see
 ```bash
 omp
 ```
-omp reads `.agents/` skills, commands, and rules natively and loads the shared Pi extensions through `.omp/config.yml`. It does not load `.agents/agents/`; its task tool uses `.omp/agents/`.
+omp reads `.agents/` skills, commands, and rules natively and loads the shared Pi extensions through `.omp/config.yml`. Its task tool reads project agents from `.omp/agents/`; run `/init-template --harness omp` (or `add core --harness omp`) to generate them from `.agents/agents/`.
 See [docs/omp-compatibility.md](docs/omp-compatibility.md) for setup details and known gaps.
+
+### Claude Code
+```bash
+claude
+```
+Claude Code reads `AGENTS.md` natively and `.claude/rules/` with `paths` frontmatter. Run `/init-template --harness claude` (or `add core --harness claude`) to install agents, skills, and commands into `.claude/`; agent files gain the required `name:` frontmatter. Project MCP servers live in `.mcp.json` and need approval in an interactive session.
+
+### Codex
+```bash
+codex
+```
+Codex reads `.agents/skills` and `AGENTS.md` natively. Run `/init-template --harness codex` (or `add core --harness codex`) to generate `.codex/agents/*.toml`. Codex has no project-level slash commands and no path-scoped rule equivalent; its MCP entries live in `.codex/config.toml` and load only in trusted projects.
 
 ### 🎮 Demo Game
 
@@ -140,9 +152,14 @@ The framework is partitioned into **22 pluggable theme modules**. Only install w
 | `data` | Data file conventions and validation |
 
 ```bash
-# Install modules
+# Install modules (OpenCode target is the default)
 node .opencode/modules/install.mjs add core
 node .opencode/modules/install.mjs add engine-godot art design qa
+
+# Install for a specific harness
+node .opencode/modules/install.mjs add core --harness omp
+node .opencode/modules/install.mjs add core --harness claude
+node .opencode/modules/install.mjs add core --harness codex
 
 # List all available and installed modules
 node .opencode/modules/install.mjs list
@@ -155,9 +172,17 @@ node .opencode/modules/install.mjs remove art
 ```
 
 Module sources are mirrored: `.opencode/modules/` feeds the OpenCode target (the
-default) and `.agents/modules/` feeds the Pi target (`--pi`). Both trees are
+default) and `.agents/modules/` feeds every other target. Both trees are
 tracked; keep them in sync when changing a module. User-modified files are
 detected during removal and left in place.
+
+| Harness | `--harness` | Content target | MCP file |
+|---------|-------------|----------------|----------|
+| OpenCode | `opencode` (default) | `.opencode/{agents,skills,commands,rules}` | `opencode.json` |
+| Pi | `pi` / `--pi` | `.agents/{agents,skills,commands,rules}` | `.pi/mcp.json` |
+| oh-my-pi (omp) | `omp` / `--omp` | `.omp/agents` + `.agents/{skills,commands,rules}` | `.omp/mcp.json` |
+| Claude Code | `claude` / `--claude` | `.claude/{agents,skills,commands,rules}` | `.mcp.json` |
+| Codex | `codex` / `--codex` | `.codex/agents` + `.agents/skills` | `.codex/config.toml` |
 
 ---
 
@@ -191,7 +216,7 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 | CCGS (Claude Code) | OpenCode | Pi | omp |
 |--------------------|----------|-----|-----|
 | `.claude/skills/*.md` → | `.agents/skills/*.md` | `.agents/skills/*.md` | `.agents/skills/*.md` |
-| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` | Not loaded — task tool reads `.omp/agents/` |
+| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` | Generated into `.omp/agents/` |
 | `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` | `.pi/extensions/` | `.pi/extensions/` (via `.omp/config.yml`) |
 | `.claude/rules/*.md` → | `.agents/rules/*.md` | `.agents/rules/*.md` | `.agents/rules/*.md` |
 | `CLAUDE.md` → | `AGENTS.md` | `AGENTS.md` | `AGENTS.md` |
@@ -207,13 +232,16 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 ├── opencode.json              ⚙️ OpenCode config (permissions, plugins)
 ├── .pi/                       ⚙️ Pi config (extensions, settings)
 │   └── extensions/            🧩 Pi extensions (ocgs-core, delegation, question, etc.)
-├── .omp/                      ⚙️ oh-my-pi config (extensions, MCP)
+├── .omp/                      ⚙️ oh-my-pi config (extensions, generated agents, MCP)
+├── .claude/                   ⚙️ Claude Code target (agents, skills, commands, rules)
+├── .mcp.json                  ⚙️ Claude Code project MCP servers
+├── .codex/                    ⚙️ Codex target (agents, MCP config)
 ├── .agents/                   📦 Canonical content (harness-agnostic)
 │   ├── agents/                🤖 52 agent definitions
 │   ├── skills/                🛠️ 78 skill workflows
 │   ├── commands/              ⌨️ 78 slash commands
 │   ├── rules/                 📏 11 coding standards
-│   └── modules/               🧩 22 Pi-target module mirrors
+│   └── modules/               🧩 22 module sources (non-OpenCode targets)
 │       ├── ...                22 modules total
 ├── .opencode/                 ⚙️ OpenCode-specific (plugins, config)
 │   ├── commands/ → .agents/commands/ (symlink)

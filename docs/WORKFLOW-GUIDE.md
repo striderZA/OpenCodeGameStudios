@@ -39,7 +39,7 @@
 
 Before you start, make sure you have:
 
-- **One agent harness** installed and working: OpenCode 2.x, Pi 1.x, or oh-my-pi 18.16.0+
+- **One agent harness** installed and working: OpenCode 2.x, Pi 1.x, oh-my-pi 18.16.0+, Claude Code 2.1.277+, or Codex
 - **Git** with Git Bash (Windows) or standard terminal (Mac/Linux)
 - **Node.js 18+** for the module CLI and hooks
 - No `jq` or Python dependency — the hooks are TypeScript
