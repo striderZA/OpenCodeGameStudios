@@ -33,4 +33,4 @@ To run one suite, keep the loader:
 node --import tsx --test .opencode/plugins/tests/test-validate-commit.mjs
 ```
 
-For a complete list of test suites, see the [README Hooks Plugin section](../../README.md#-hooks-plugin).
+For a complete list of test suites, see the [README Hooks Mapping table](../../README.md#hooks-mapping).

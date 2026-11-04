@@ -26,7 +26,7 @@
 - [🔌 Recommended Plugins](#-recommended-plugins)
 - [🗺️ Key Mappings](#️-key-mappings)
 - [📁 Directory Tree](#-directory-tree)
-- [🔗 Hooks Plugin](#-hooks-plugin)
+- [🔌 Plugin Architecture](#-plugin-architecture)
 - [🏗️ Studio Hierarchy](#️-studio-hierarchy)
 - [🐛 Known Issues](#-known-issues)
 - [📄 License](#-license)
@@ -191,7 +191,7 @@ on startup. See [docs/pi-extensions.md](docs/pi-extensions.md) for details.
 | CCGS (Claude Code) | OpenCode | Pi | omp |
 |--------------------|----------|-----|-----|
 | `.claude/skills/*.md` → | `.agents/skills/*.md` | `.agents/skills/*.md` | `.agents/skills/*.md` |
-| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` | `.agents/agents/*.md` |
+| `.claude/agents/*.md` → | `.agents/agents/*.md` | `.agents/agents/*.md` | Not loaded — task tool reads `.omp/agents/` |
 | `.claude/hooks/*.sh` → | `.opencode/plugins/ccgs-hooks.ts` | `.pi/extensions/` | `.pi/extensions/` (via `.omp/config.yml`) |
 | `.claude/rules/*.md` → | `.agents/rules/*.md` | `.agents/rules/*.md` | `.agents/rules/*.md` |
 | `CLAUDE.md` → | `AGENTS.md` | `AGENTS.md` | `AGENTS.md` |
