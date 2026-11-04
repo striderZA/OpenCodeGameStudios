@@ -238,8 +238,8 @@ If you already know what you need, jump directly to the relevant path:
     # In Unity: Window → Package Manager → + → Add package from git URL
     # Paste: https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
     ```
-    Then add the `mcp.unity` block to your MCP config (`opencode.json` for OpenCode, `pi.json` for Pi) and set
-    `enabled: true` once Unity Editor is running. See `/setup-engine` §7.4
+    Then add the `mcp.servers.unity` block to your MCP config (`opencode.json` for OpenCode, `pi.json` for Pi) and set
+    `disabled` to `false` once Unity Editor is running. See `/setup-engine` §7.4
     for full details.
 5. **Validate the concept** — Run `/design-review design/gdd/game-concept.md`
 6. **Decompose into systems** — Run `/map-systems` to map all systems and dependencies

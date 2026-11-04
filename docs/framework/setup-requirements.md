@@ -120,17 +120,17 @@ Then click **Window → MCP for Unity → "Configure All Detected Clients"** to 
 
 **Configuration:**
 
-Add this block to the `mcp` object in your `opencode.json` (the wizard may auto-configure, but manual is the reliable fallback):
+Add this block to `mcp.servers` in your `opencode.json` (the wizard may auto-configure, but manual is the reliable fallback):
 
 ```json
 "unity": {
-  "type": "local",
+  "type": "remote",
   "url": "http://localhost:8080/mcp",
-  "enabled": false
+  "disabled": true
 }
 ```
 
-Flip `enabled` to `true` once Unity Editor is running.
+Set `disabled` to `false` once Unity Editor is running.
 
 > ⚠ **Unity Editor must be running** before OCGS agents can use unity-mcp tools. If the Editor is closed, MCP calls will fail with a connection error. Open your project in Unity, then continue.
 

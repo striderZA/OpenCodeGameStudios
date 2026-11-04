@@ -243,7 +243,7 @@ See `.opencode/plugins/README.md` for the complete plugin architecture guide.
 
 Briefly:
 1. Create `{plugin-name}.ts` in `.opencode/plugins/`
-2. Export a `Plugin` instance conforming to `@opencode-ai/plugin`
+2. Default-export a V2 plugin definition (`Plugin.define` from `@opencode/plugin`) with a stable `id` and `setup(ctx)`
 3. Register in `opencode.json` under the `plugins` array
 4. Write tests in `.opencode/plugins/tests/test-{name}.mjs`
 5. Document the plugin in `.opencode/plugins/README.md`

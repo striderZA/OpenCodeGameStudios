@@ -27,7 +27,7 @@ export default Plugin.define({
     const controller = new AbortController()
 
     await ctx.tool.hook("execute.before", (event) => {
-      if (event.tool === "bash") {
+      if (event.tool === "shell") {
         const input = event.input as { command?: string }
         console.info("[example] command", input.command)
       }
@@ -88,14 +88,11 @@ await ctx.session.hook("compaction", (event) => {
 })
 ```
 
-OpenCode V2 has no direct equivalent of the V1
-`experimental.compaction.autocontinue` hook. Use the public
-`session.compacted` event for post-compaction notifications.
+For post-compaction notifications, use the public `session.compacted` event.
 
 ## Logging and Errors
 
-The V2 context does not expose the V1 `client.app.log` method. Use the
-supported console methods for plugin diagnostics:
+Use the console methods for plugin diagnostics:
 
 ```typescript
 console.info("[example] plugin loaded", { directory: ctx.location.directory })
