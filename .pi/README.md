@@ -12,7 +12,7 @@ Pi discovers `.agents/` content through the `ocgs-core` extension's `resources_d
 |-----------|-------------|---------|
 | `ocgs-core` | `resources_discover` | Barrel: loads all extensions, discovers `.agents/` skills/commands |
 | `ocgs-delegation` | `registerTool` + `registerCommand` | `Task` tool + `/consult` command for agent delegation |
-| `ocgs-question` | `registerTool` | `question` tool with TUI for strategic decision capture |
+| `ocgs-question` | `registerTool` + `tool_result` | `question` tool with TUI for strategic decision capture; logs omp `ask` answers to `agent-decisions.jsonl` |
 | `ocgs-path-guard` | `tool_call` + `before_agent_start` | Dynamic injection of path-scoped rules from `.agents/rules/` |
 | `ocgs-audit` | `session_start` + `tool_call` + `tool_result` + `agent_end` | Session/tool audit logging to `production/session-logs/` |
 | `ocgs-drift-detector` | `resources_discover` + `tool_result` | Detects structural drift in `.agents/` files after writes |
@@ -28,7 +28,6 @@ Pi auto-discovers extensions in `.pi/extensions/` at startup. The `ocgs-core/ind
 - `@earendil-works/pi-coding-agent` — ExtensionAPI, lifecycle events, tool registration (provided by Pi at runtime)
 - `@earendil-works/pi-ai` — `StringEnum` utility for TypeBox schemas (provided by Pi at runtime)
 - `typebox` — Schema definitions for tool parameters (provided by Pi at runtime)
-- `minimatch` — Used by `ocgs-path-guard` for glob matching (declared in `ocgs-path-guard/package.json`)
 
 ## Settings
 

@@ -1,4 +1,4 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -64,10 +64,25 @@ function validateFile(filePath: string): ValidationIssue[] {
 	return issues;
 }
 
-export default function (pi: ExtensionAPI) {
-	pi.on("resources_discover", async (event, _ctx) => {
-		if (event.reason !== "startup") return;
+// Paths under .agents/ that a write or edit touched. omp's hashline edit names each file in a [PATH#TAG] header.
+function writtenAgentsPaths(toolName: string, input: Record<string, unknown>): string[] {
+	const named: string[] = [];
+	if (toolName === "write" && typeof input.path === "string") named.push(input.path);
+	if (toolName === "edit") {
+		if (typeof input.path === "string") {
+			named.push(input.path);
+		} else if (typeof input.input === "string") {
+			for (const match of input.input.matchAll(/^\[([^\]\n#]+)#[0-9A-Fa-f]{4}\]/gm)) named.push(match[1]);
+		}
+	}
+	return named.filter((p) => p.startsWith(".agents") && fs.existsSync(p));
+}
 
+export default function (pi: ExtensionAPI) {
+	// Pi fires startup resources_discover and session_start for the same start; scan once per session.
+	let startupScanned = false;
+
+	function runStartupScan(ctx: ExtensionContext, reason: string) {
 		const allIssues: ValidationIssue[] = [];
 
 		function scanDir(dir: string) {
@@ -98,7 +113,7 @@ export default function (pi: ExtensionAPI) {
 				const report = [
 					`# OCGS Validation Report`,
 					`**Date:** ${new Date().toISOString().split("T")[0]}`,
-					`**Session startup:** ${event.reason}`,
+					`**Session startup:** ${reason}`,
 					`**Total issues:** ${allIssues.length} (${allIssues.filter((i) => i.severity === "error").length} errors, ${allIssues.filter((i) => i.severity === "warning").length} warnings)`,
 					"",
 					...allIssues.map(
@@ -110,41 +125,52 @@ export default function (pi: ExtensionAPI) {
 				/* report writing is best-effort */
 			}
 
-			if (_ctx.hasUI) {
-				_ctx.ui.setStatus(
+			if (ctx.hasUI) {
+				ctx.ui.setStatus(
 					"ocgs-validate",
 					`validation: ${allIssues.length} issues`,
 				);
-				_ctx.ui.notify(
+				ctx.ui.notify(
 					`OCGS validation: ${allIssues.filter((i) => i.severity === "error").length} errors, ${allIssues.filter((i) => i.severity === "warning").length} warnings — see ${path.relative(process.cwd(), reportPath)}`,
 					"warn",
 				);
 			}
 		}
+	}
+
+	pi.on("session_start", async (_event, ctx) => {
+		if (startupScanned) return;
+		startupScanned = true;
+		runStartupScan(ctx, "session_start");
+	});
+
+	pi.on("resources_discover", async (event, ctx) => {
+		if (event.reason !== "startup" || startupScanned) return;
+		startupScanned = true;
+		runStartupScan(ctx, event.reason);
+	});
+
+	pi.on("session_shutdown", async () => {
+		startupScanned = false;
 	});
 
 	// Post-write validation
 	pi.on("tool_result", async (event, _ctx) => {
-		if (
-			(event.toolName === "write" || event.toolName === "edit") &&
-			typeof event.input.path === "string" &&
-			event.input.path.startsWith(".agents")
-		) {
-			const issues = validateFile(event.input.path);
-			if (issues.length > 0) {
-				return {
-					content: [
-						...(Array.isArray(event.content)
-							? event.content
-							: [{ type: "text" as const, text: String(event.content) }]),
-						...issues.map((i) => ({
-							type: "text" as const,
-							text: `\n[${i.severity.toUpperCase()}] ${i.file}: ${i.message}`,
-						})),
-					],
-					details: { ...event.details, validation: issues },
-				};
-			}
+		const input = (event.input ?? {}) as Record<string, unknown>;
+		const issues = writtenAgentsPaths(event.toolName, input).flatMap((filePath) => validateFile(filePath));
+		if (issues.length > 0) {
+			return {
+				content: [
+					...(Array.isArray(event.content)
+						? event.content
+						: [{ type: "text" as const, text: String(event.content) }]),
+					...issues.map((i) => ({
+						type: "text" as const,
+						text: `\n[${i.severity.toUpperCase()}] ${i.file}: ${i.message}`,
+					})),
+				],
+				details: { ...event.details, validation: issues },
+			};
 		}
 	});
 }

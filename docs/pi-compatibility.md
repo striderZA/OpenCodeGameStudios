@@ -48,6 +48,7 @@ All OCGS skills, commands, and agents are available automatically through the `.
 |---|---|
 | [`docs/pi-extensions.md`](pi-extensions.md) | Full reference for every Pi extension — tools, commands, events, and schemas |
 | [`docs/pi-workflow.md`](pi-workflow.md) | Day-to-day workflow differences between OpenCode and Pi |
+| [`docs/omp-compatibility.md`](omp-compatibility.md) | oh-my-pi (omp) setup, extension wiring, and known gaps |
 | [`.pi/README.md`](../.pi/README.md) | Extension directory overview and dependency info |
 
 ## Delegation

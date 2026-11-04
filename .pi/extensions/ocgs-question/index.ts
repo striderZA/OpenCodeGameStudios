@@ -18,6 +18,7 @@ import {
 import { Type } from "typebox";
 import fs from "node:fs";
 import path from "node:path";
+import { askDecisions } from "./ask-log";
 
 const DECISIONS_LOG = path.resolve(
 	process.cwd(),
@@ -75,6 +76,12 @@ const QuestionParams = Type.Object({
 // ─── Extension ──────────────────────────────────────────────────────────────
 
 export default function (pi: ExtensionAPI) {
+	// omp's built-in ask tool never writes a decision log, so record its answers here.
+	pi.on("tool_result", async (event, _ctx) => {
+		if (event.toolName !== "ask") return;
+		for (const decision of askDecisions(event.details)) logDecision(decision);
+	});
+
 	pi.registerTool({
 		name: "question",
 		label: "Question",
