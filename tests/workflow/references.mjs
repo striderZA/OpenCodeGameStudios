@@ -80,7 +80,7 @@ const knownNonCommands = new Set([
   'tech-debt', 'playtest-report', 'onboard', 'estimate', 'adopt',
   'hybrid-prototype', 'caveman', 'caveman-help', 'caveman-commit',
   'caveman-compress', 'caveman-review',
-  'skill-name', 'command',
+  'skill-name', 'command', 'agents',
 ]);
 
 { // R1: Every /command ref in skills matches a command file
