@@ -178,7 +178,7 @@ Start Pi from the project root:
 pi
 ```
 
-All OCGS skills and commands load automatically through the `.pi/extensions/` extensions. The 52 agent definitions are present, but `Task` delegation has a known defect — see `docs/pi-compatibility.md#delegation`.
+All OCGS skills and commands load automatically through the `.pi/extensions/` extensions. Pi has no subagent tool; `ocgs-tool-map` maps `Task` to direct work — see `docs/pi-compatibility.md#delegation`.
 
 Pi-specific commands differ from OpenCode in a few cases:
 - Use `/generate-changelog` instead of `/changelog` (Pi has a built-in with that name)
@@ -200,8 +200,8 @@ See [docs/omp-compatibility.md](docs/omp-compatibility.md) for omp setup, extens
 
 | Command | OpenCode | Pi | oh-my-pi (omp) |
 |---------|----------|----|----------------|
-| Delegation | `Task` tool (built-in) | `Task` tool (ocgs-delegation extension) | omp's built-in task tool; OCGS agents generated into `.omp/agents/` |
-| Peer review | — | `/consult <agent>` (ocgs-delegation extension) | — (ocgs-delegation not wired) |
+| Delegation | `Task` tool (built-in) | No subagent tool; `ocgs-tool-map` maps `Task` to direct work | omp's built-in task tool; OCGS agents generated into `.omp/agents/` |
+| Peer review | — | — (removed with `ocgs-delegation`) | — |
 | Decision capture | question tool | question tool (ocgs-question with TUI) | ask (omp built-in); answers logged to `agent-decisions.jsonl` by ocgs-question |
 | Skill invocation | `/command-name` | `/command-name` (via prompt templates) | `/skill:<name>` (`skills.enableSkillCommands`) |
 

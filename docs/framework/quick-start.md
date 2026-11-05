@@ -306,9 +306,9 @@ Type `/` to browse all skills and commands, or `/start` for onboarding.
 ```bash
 pi
 ```
-All OCGS skills and commands load through Pi extensions; the 52 agent
-definitions are present, but `Task` delegation has a known defect (see
-`docs/pi-compatibility.md#delegation`).
+All OCGS skills and commands load through Pi extensions. Pi has no subagent tool;
+`ocgs-tool-map` tells agents to do the work directly when a workflow names `Task`
+(see `docs/pi-compatibility.md#delegation`).
 
 #### oh-my-pi (omp)
 ```bash

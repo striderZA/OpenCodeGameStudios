@@ -8,9 +8,9 @@ OpenCode Game Studios (OCGS) supports the [Pi coding agent harness](https://pi.d
 2. Clone this project: `git clone <repo> && cd <project>`
 3. Start Pi: `pi`
 
-All OCGS skills and commands are available through `.agents/`. The 52 agent
-definitions are present, but the `Task` delegation path has a known defect (see
-[Delegation](#delegation)); treat agent definitions as prompts until it is fixed.
+All OCGS skills and commands are available through `.agents/`. Pi has no
+subagent tool; `ocgs-tool-map` tells agents to do the work directly when a
+workflow names `Task` (see [Delegation](#delegation)).
 Tested baseline: Pi 0.85.1. Autopilot MCP wiring was separately verified on Pi 1.5.0.
 
 ## Project Structure
@@ -32,7 +32,7 @@ Tested baseline: Pi 0.85.1. Autopilot MCP wiring was separately verified on Pi 1
 | Extension | Purpose |
 |---|---|
 | `ocgs-core` | Discovers `.agents/` skills and commands via `resources_discover` |
-| `ocgs-delegation` | `Task` tool for agent delegation, `/consult` for peer review (known defect; see below) |
+| `ocgs-tool-map` | Injects per-harness tool names: `Task` → `task` (with `subagent_type` → `agent`, prompt → `task`, and required `solutionSpace`) and `question` → `ask` on omp; on Pi it says no `Task` tool exists and to use another delegation tool if installed |
 | `ocgs-question` | Strategic decision capture with TUI picker; logs omp `ask` answers |
 | `ocgs-path-guard` | Path-scoped rules injected dynamically into system prompt |
 | `ocgs-audit` | Session and tool audit logging |
@@ -45,7 +45,7 @@ Tested baseline: Pi 0.85.1. Autopilot MCP wiring was separately verified on Pi 1
 
 - **`.agents/`** — canonical source of all agents, skills, commands, rules, and modules. Harness-neutral frontmatter.
 - **`.pi/extensions/`** — Pi-specific extension implementations using `@earendil-works/pi-coding-agent` API.
-- **Cross-harness names** — `Task`, `question`, and `/consult` are intended to work identically in OpenCode and Pi. omp exposes `ask` instead of `question` and does not wire `ocgs-delegation`; see the omp guide.
+- **OCGS tool names** — canonical content uses OpenCode's `Task`, `question`, and `/consult`. `ocgs-tool-map` translates them per harness: omp uses `task` and `ask`; Pi has no `Task` tool.
 
 ## Detailed Documentation
 
@@ -58,17 +58,28 @@ Tested baseline: Pi 0.85.1. Autopilot MCP wiring was separately verified on Pi 1
 
 ## Delegation
 
-OCGS uses two delegation primitives:
+Pi exposes no sub-session API on `ExtensionContext`: `sessionManager` is a
+`ReadonlySessionManager` in the 1.5.0 types — a `Pick` of read-only accessors.
+`newSession()` and `fork()` exist only on `ExtensionCommandContext` and move the
+host session; they do not spawn a subagent.
 
-1. **`Task` tool** — vertical delegation (Director → Lead → Specialist). Use `Task` when you need another agent to do work.
-2. **`/consult <agent> [question]`** — horizontal peer review. Use `/consult` when you need a second opinion without delegating work.
+The former `ocgs-delegation` extension called `sessionManager.inMemory(...)`,
+which does not exist, so its `Task` and `/consult` primitives failed before any
+work started. It has been removed. `ocgs-tool-map` now tells the model that a
+workflow naming `Task` or `subagent_type` should be done directly on Pi, and
+that `/consult` has no equivalent.
 
-**Known defect:** `ocgs-delegation` calls `ctx.sessionManager.inMemory(...)`. In
-the Pi 0.85.1 types, `ctx.sessionManager` is a read-only `Pick` with no
-`inMemory`, so the call is expected to throw before a subagent starts. This is
-documented in `docs/omp-compatibility.md`; it has not been reproduced at runtime.
-Until it is fixed, use `question`/`ask` for decisions and direct file reads for
-specialist context instead of relying on `Task` or `/consult`.
+**Retirement tradeoff.** The package root also exports `createAgentSession()`
+and `SessionManager.inMemory()`, so a nested session is a plausible future
+implementation. It is unverified: whether an extension can resolve the host
+package at runtime, how to collect the result of `AgentSession.prompt()` (it
+returns `Promise<void>`), and whether nested session loading recurses into
+extensions. Retirement removes a tool that always failed; it does not prove
+delegation is impossible.
+
+For real delegation today, use OpenCode, Claude Code, or omp (`task` with
+generated `.omp/agents/`). On Pi, read the specialist's definition from
+`.agents/agents/` and follow it inline.
 
 ## Path-Guard Rules
 

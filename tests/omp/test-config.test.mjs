@@ -15,6 +15,7 @@ const EXPECTED_EXTENSIONS = [
 	"./.pi/extensions/ocgs-hooks",
 	"./.pi/extensions/ocgs-path-guard",
 	"./.pi/extensions/ocgs-question",
+	"./.pi/extensions/ocgs-tool-map",
 	"./.pi/extensions/ocgs-validate",
 ];
 
@@ -29,7 +30,7 @@ function ompJson(args) {
 }
 
 describe("omp project config wiring", { skip: ompAvailable ? false : "omp is not installed" }, () => {
-	it("effective extensions are exactly the seven Pi extensions (no core, no delegation)", () => {
+	it("effective extensions are exactly the eight Pi extensions (no core, no delegation)", () => {
 		const effective = ompJson(["config", "get", "extensions"]);
 		assert.deepStrictEqual(effective.value, EXPECTED_EXTENSIONS);
 	});

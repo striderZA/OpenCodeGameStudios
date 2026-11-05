@@ -32,7 +32,7 @@ The OCGS framework has 5 component types:
 
 Components interact as follows:
 - A **command** routes to a **skill** via frontmatter `skill:` field
-- A **skill** delegates to **agents** via `subagent_type: agent-name` in Task tools
+- A **skill** or **agent** delegates via the harness's task tool (OpenCode `Task` with `subagent_type: agent-name`, omp `task`); Pi has no delegation tool, and `ocgs-tool-map` tells the model to work directly
 - An **agent** consults **rules** for their domain
 - **Plugins** hook into session lifecycle, tool execution, and compaction events
 

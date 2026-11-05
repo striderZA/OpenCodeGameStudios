@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- **Pi delegation retired** — `.pi/extensions/ocgs-delegation/` was removed. Pi's
+  `ExtensionContext.sessionManager` is a `ReadonlySessionManager` with no
+  sub-session constructor, so `Task` and `/consult` failed before any work
+  started. Pi now does the work directly when a workflow names `Task`. The
+  exported `createAgentSession()` SDK path was not evaluated; retirement is a
+  tradeoff, not proof that delegation is impossible.
+- **Harness tool map** — new `ocgs-tool-map` extension injects a short mapping
+  into the system prompt on `before_agent_start`: `Task` → `task` (with
+  `subagent_type` → `agent`, prompt → `task`, and required `solutionSpace`) and
+  `question` → `ask` on omp; Pi is told to use another delegation tool if
+  installed or work directly. Canonical `.agents/` content keeps its OpenCode
+  tool names. Wired into `.omp/config.yml`.
+
+### Removed
+
+- `.pi/extensions/ocgs-delegation/` (`Task` tool and `/consult` command)
+
+---
+
 ## [v0.14.0] — 2026-11-04
 
 ### Added

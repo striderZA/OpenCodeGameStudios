@@ -9,7 +9,7 @@ This guide covers the day-to-day workflow differences between using OCGS with Op
 | **Session start** | `opencode` | `pi` |
 | **Skills** | Loaded from `.agents/skills/` (V2 search path); `.opencode/skills/` is a symlink fallback | Registered via `ocgs-core` `resources_discover` handler |
 | **Commands** | Slash commands from `.agents/commands/`; `.opencode/commands/` is a symlink fallback | Prompt templates + extension commands |
-| **Delegation** | Built-in `Task` tool + OCGS plugin | `ocgs-delegation` extension |
+| **Delegation** | Built-in `Task` tool + OCGS plugin | No subagent tool; `ocgs-tool-map` maps `Task` to direct work |
 | **Decision capture** | OCGS plugin (`question` tool) | `ocgs-question` extension with TUI |
 | **Path-scoped rules** | OpenCode rule loading | `ocgs-path-guard` extension |
 | **Audit log** | `ccgs-hooks.ts` plugin | `ocgs-audit` extension (byte-identical) |
@@ -35,19 +35,28 @@ All OCGS skills are available via `/command-name` (same as OpenCode). Pi's `enab
 
 ## Using Agents
 
-### Delegation (Task tool)
+### Delegation (no subagent tool)
 
-Agent prompts reference the `Task` tool identically in both harnesses:
+Skills and agents are written against OpenCode's `Task` tool, for example:
 
 > "Use the `Task` tool to delegate to `game-designer`: 'Review the combat system GDD'"
 
-In Pi, `ocgs-delegation` registers this tool with all 52 agent names discovered from `.agents/agents/`. **Known defect:** it calls `ctx.sessionManager.inMemory(...)`, which is absent from the Pi 0.85.1 types. This is expected to throw before a subagent starts and has not been reproduced at runtime. See `docs/pi-compatibility.md#delegation`.
+Pi exposes no sub-session API on `ExtensionContext`, and the former
+`ocgs-delegation` extension has been removed (see
+`docs/pi-compatibility.md#delegation`). A nested session via the exported
+`createAgentSession()` SDK is plausible but unverified. `ocgs-tool-map` injects
+a note that tells the model to use another delegation tool if one is installed,
+otherwise do the work directly and say delegation is unavailable instead of
+claiming a delegation it cannot perform.
+
+For real delegation, run OpenCode, Claude Code, or omp. On Pi, load the
+specialist definition from `.agents/agents/<name>.md` and follow it inline.
 
 ### Peer Review (/consult)
 
-> "Consult `qa-tester` about: 'Review the current test coverage'"
-
-In Pi, `/consult` spawns a read-only subagent session. The consultant can inspect files but cannot write or execute commands.
+`/consult` was part of `ocgs-delegation` and is not available on Pi. Ask the
+user to switch harnesses for peer review, or read the reviewer's definition
+from `.agents/agents/` and apply it inline.
 
 ## Path-Scoped Rules
 
@@ -123,7 +132,7 @@ Use `--harness omp` for oh-my-pi: same skills/commands/rules target, with
 | Symptom | Likely Cause | Fix |
 |---------|-------------|-----|
 | Skills not showing in Pi | `ocgs-core` not loading | Check `.pi/extensions/ocgs-core/index.ts` exists |
-| `Task` tool not recognized | `ocgs-delegation` failed to load | Check for console errors at Pi startup |
+| `Task` tool not recognized | Expected on Pi — no subagent tool exists | `ocgs-tool-map` instructs direct work; use OpenCode, Claude Code, or omp for delegation |
 | No rules being injected | Path patterns don't match | Check rule `paths:` globs match actual file paths |
-| Audit log empty | `ocgs-audit` not registered | Verify barrel imports `ocgs-audit` |
+| Audit log empty | `ocgs-audit` not registered | Check `.pi/extensions/ocgs-audit/index.ts` exists |
 | `question` tool shows no TUI | Pi running in non-TUI mode | Use interactive mode or check `ctx.mode` |

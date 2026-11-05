@@ -19,53 +19,44 @@ other extensions; Pi auto-discovers each `.pi/extensions/*/index.ts` module.
 
 ---
 
-## ocgs-delegation
+## ocgs-tool-map (harness tool names)
 
-**File:** `.pi/extensions/ocgs-delegation/index.ts`
+**File:** `.pi/extensions/ocgs-tool-map/index.ts`
 
-Two cross-harness delegation primitives: `Task` tool (vertical execution) and `/consult` command (horizontal review).
+OCGS skills and commands use OpenCode's tool vocabulary (`Task`, `question`,
+`/consult`). Pi and omp do not expose all of those names. This extension injects
+a short mapping into the system prompt on `before_agent_start` instead of
+rewriting canonical content.
 
-**Known defect:** the implementation calls `ctx.sessionManager.inMemory(...)`,
-which is absent from the Pi 0.85.1 types. The call is expected to throw before a
-subagent starts (unverified at runtime). See `docs/pi-compatibility.md#delegation`.
+### Mapping
 
-### Task tool
+| OCGS name | On Pi | On omp |
+|---|---|---|
+| `Task` / `subagent_type` | No `Task` tool. Use another delegation tool if installed; otherwise do the work directly and say delegation is unavailable | `task`, passing the agent name as `agent`. `task` also requires `task` and `solutionSpace`, and has no `prompt` field |
+| `question` | `question` when registered; otherwise ask in plain text | `ask` |
+| `/consult` | No equivalent | No equivalent |
 
-```typescript
-pi.registerTool({
-  name: "Task",
-  parameters: {
-    agent: StringEnum([...52 agent names]),  // Optional, auto-detected
-    prompt: string,                           // What to delegate
-    context?: string,                         // Optional additional context
-    isolation?: "same-context" | "forked",    // Default: same-context
-  },
-})
-```
+Harness detection uses event markers: Pi 1.5.0 sends `systemPromptOptions`, omp
+sends `reason`. The prompt shape (Pi string, omp `string[]`) is the fallback for
+older Pi versions. The injected block carries an
+`<!-- ocgs-tool-map:v1 -->` marker so it is not added twice.
 
-**Behavior:**
-1. Loads the target agent's system prompt from `.agents/agents/<name>.md`
-2. Spawns an in-memory subagent session (ephemeral, not persisted in session tree)
-3. Streams progress back via `onUpdate`
-4. Returns the subagent's final response as the tool result
-5. Falls back to `creative-director` if no agent specified
+### Why Pi delegation was retired
 
-**Agent name discovery:** Reads `.agents/agents/` directory at startup. Each `.md` file becomes an agent name. No codegen needed — just add a file to `.agents/agents/`.
+Pi's `ExtensionContext.sessionManager` is a `ReadonlySessionManager` in the
+1.5.0 types: a `Pick` of read-only accessors with no sub-session constructor.
+`newSession()` and `fork()` exist only on `ExtensionCommandContext`, and they
+move the host session rather than spawning a subagent. The previous
+`ocgs-delegation` extension called `sessionManager.inMemory(...)`, which does
+not exist, so `Task` and `/consult` failed before any work started. See
+`docs/pi-compatibility.md#delegation`.
 
-### /consult command
-
-```typescript
-pi.registerCommand("consult", {
-  argumentHint: "<agent-name> [question]",
-})
-```
-
-**Behavior:**
-1. Validates the agent name against the discovered agent list
-2. Loads the agent's system prompt with a consultation suffix
-3. Spawns an in-memory subagent with **read-only tools** (`read`, `grep`, `find`, `ls`)
-4. The consultant's response becomes part of the conversation
-5. Shows a notification when consultation completes
+The package root exports `createAgentSession()` and `SessionManager.inMemory()`,
+so a nested-session implementation is plausible. It is unverified: runtime
+package resolution from an extension, collecting the result of
+`AgentSession.prompt()` (which returns `Promise<void>`), and extension
+recursion were not tested. Retirement is a tradeoff, not a proof that delegation
+is impossible.
 
 ---
 
@@ -289,6 +280,6 @@ Writes to `production/session-logs/agent-audit.log`, `session-log.md`, and `comp
 | Term | Definition |
 |---|---|
 | **Barrel** | An extension that imports and registers other extensions. OCGS no longer uses one; `ocgs-core` only registers content paths. |
-| **In-memory subagent** | A subagent whose session is ephemeral — not persisted in the session tree. Used by `Task` tool and `/consult`. |
+| **Harness tool map** | A short system-prompt block injected by `ocgs-tool-map` that translates OCGS/OpenCode tool names to the running harness's names, or states that no equivalent exists. |
 | **Harness-neutral frontmatter** | Agent frontmatter without `model:`, `mode:`, or `permission:` fields. Model choice and tool permissions belong to the harness; this repository does not assign models. |
-| **cross-harness name** | A tool or command name that is identical in OpenCode and Pi. `Task`, `question`, and `consult` are cross-harness names. omp exposes `ask` instead of `question`. |
+| **OCGS tool name** | A tool name used in canonical `.agents/` content. `Task`, `question`, and `/consult` are OCGS names; `ocgs-tool-map` translates them per harness. |
