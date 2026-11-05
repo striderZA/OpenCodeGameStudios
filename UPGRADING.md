@@ -126,8 +126,8 @@ agent files in `.agents/agents/`.
 ### 5. Harness support
 
 - **OpenCode 2.x** — V2 config, plugins under `.opencode/plugins/`
-- **Pi 1.x** — extensions under `.pi/extensions/`
-- **omp 18.16.0+** — `.omp/config.yml` loads the shared Pi extensions
+- **Pi 1.x** — extensions under `.pi/extensions/`; no subagent tool. `ocgs-tool-map` maps OCGS `Task`/`question` names to direct work
+- **omp 18.16.0+** — `.omp/config.yml` loads the shared Pi extensions, including `ocgs-tool-map` (`Task` → `task`, `question` → `ask`)
 - **Claude Code 2.1.277+** — `.claude/` content, `.mcp.json`, native `AGENTS.md`
 - **Codex** — `.agents/skills` and `AGENTS.md` native; `.codex/agents/*.toml`
 
@@ -154,6 +154,7 @@ the Unity CLI; the old `unity-mcp` setup in the v0.4.0 notes is historical.
 - [ ] Reinstall the modules you use with `node .opencode/modules/install.mjs add ...`
 - [ ] Move `opencode.json` to the V2 schema (`plugins`, `mcp.servers`, `permissions`, `commands`)
 - [ ] Remove `model:`, `mode:`, and `permission:` from `.agents/agents/*.md`
+- [ ] On Pi, stop relying on `Task`/`/consult`; `ocgs-tool-map` now instructs direct work
 - [ ] Re-run `node tests/agents/validate.mjs` and `node tests/workflow/run-all.mjs`
 - [ ] Re-run `npm run test:plugins` and `npm run test:hooks`
 - [ ] Refresh `docs/framework/technical-preferences.md` with `/setup-engine`

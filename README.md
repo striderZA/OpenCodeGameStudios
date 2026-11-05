@@ -73,7 +73,7 @@ and [oh-my-pi](https://omp.sh/).
 | 🤖 **Agents** | 49 agents (`.claude/agents/`) | 52 agents (`.agents/agents/`) | 52 agents (`.agents/agents/`) | Generated into `.omp/agents/` by the installer | ✅ |
 | ⌨️ **Skills** | 72 skills (`.claude/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`.agents/skills/`) | 78 skills (`/skill:<name>`) | ✅ +6 |
 | ⌨️ **Commands** | — | 78 commands (`.agents/commands/`) | → prompt templates | → slash commands | ✅ New |
-| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 9 Pi extensions (`.pi/extensions/`) | 7 shared via config | ✅ **177 plugin + 54 hook tests** |
+| 🔗 **Plugins** | 12 bash hooks (`.claude/hooks/`) | 3 TS plugins (`.opencode/plugins/`) | 9 Pi extensions (`.pi/extensions/`) | 8 shared via config | ✅ **177 plugin + 54 hook tests** |
 | 📏 **Rules** | 11 rule files (`.claude/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | 11 rule files (`.agents/rules/`) | ✅ |
 | ⚙️ **Config** | `CLAUDE.md` + `.claude/settings.json` | `AGENTS.md` + `opencode.json` | `AGENTS.md` + `.pi/settings.json` | `AGENTS.md` + `.omp/config.yml` | ✅ |
 
@@ -93,8 +93,9 @@ Type `/` to browse all 78 skills and 78 commands, or `/start` for onboarding.
 ```bash
 pi
 ```
-All OCGS skills and commands load automatically through Pi extensions. The 52 agent
-definitions are present, but `Task` delegation has a known defect — see
+All OCGS skills and commands load automatically through Pi extensions. Pi has no
+subagent tool; the `ocgs-tool-map` extension tells agents to do the work directly
+when a workflow names `Task`. See
 [docs/pi-compatibility.md#delegation](docs/pi-compatibility.md#delegation).
 
 ### oh-my-pi (omp)

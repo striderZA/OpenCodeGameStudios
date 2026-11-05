@@ -31,8 +31,10 @@ Multiple independent OpenCode *sessions* running simultaneously, coordinated
 via a shared task list. Each session has its own context window and token budget.
 OpenCode does not currently support this pattern.
 
-**Use subagents instead** — the `Task` tool spawns agents within a single session
-and supports both sequential and parallel execution. See the Subagents section above.
+**Use subagents instead** — the harness's task tool (OpenCode `Task`, omp `task`)
+spawns agents within a single session and supports both sequential and parallel
+execution. Pi has no subagent tool; do the work directly there. See the Subagents
+section above.
 
 ## Parallel Task Protocol
 
