@@ -11,7 +11,7 @@ Pi discovers `.agents/` content through the `ocgs-core` extension's `resources_d
 | Directory | Registration | Purpose |
 |-----------|-------------|---------|
 | `ocgs-core` | `resources_discover` | Discovers `.agents/` skills and commands; does not load other extensions |
-| `ocgs-delegation` | `registerTool` + `registerCommand` | `Task` tool + `/consult` command for agent delegation (known defect; see `docs/pi-compatibility.md#delegation`) |
+| `ocgs-tool-map` | `before_agent_start` | Injects a per-harness tool map: `Task` → `task` and `question` → `ask` on omp; Pi has no delegation tool, and the map says so |
 | `ocgs-question` | `registerTool` + `tool_result` | `question` tool with TUI for strategic decision capture; logs omp `ask` answers to `agent-decisions.jsonl` |
 | `ocgs-path-guard` | `tool_call` + `before_agent_start` | Dynamic injection of path-scoped rules from `.agents/rules/` (own matcher; no external dependency) |
 | `ocgs-audit` | `session_start` + `tool_call` + `tool_result` + `agent_end` | Session/tool audit logging to `production/session-logs/` |
@@ -30,7 +30,6 @@ the same failure and continues.
 ## Dependencies
 
 - `@earendil-works/pi-coding-agent` — ExtensionAPI, lifecycle events, tool registration (provided by Pi at runtime)
-- `@earendil-works/pi-ai` — `StringEnum` utility for TypeBox schemas (provided by Pi at runtime)
 - `typebox` — Schema definitions for tool parameters (provided by Pi at runtime)
 
 ## Settings
