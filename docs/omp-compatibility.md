@@ -43,6 +43,7 @@ extensions:
   - ./.pi/extensions/ocgs-hooks
   - ./.pi/extensions/ocgs-path-guard
   - ./.pi/extensions/ocgs-question
+  - ./.pi/extensions/ocgs-tool-map
   - ./.pi/extensions/ocgs-validate
 skills:
   enableSkillCommands: true
@@ -56,6 +57,7 @@ skills:
 | `ocgs-hooks` | Runs the 12 CCGS hooks: session context, commit and push guards, asset and skill checks, agent audit, compaction context (omp `session.compacting`), notifications | Load verified headlessly (see Verification). Not in the acceptance matrix |
 | `ocgs-path-guard` | Injects path-scoped rules into the system prompt when a read, write, or edit matches a rule's `paths:` | Rows 4, 5 |
 | `ocgs-question` | Registers the `question` tool (TUI picker, inactive by default on omp). Also logs omp `ask` answers to `agent-decisions.jsonl` through a `tool_result` hook | Row 10 (decision append, `rpc-ui`) |
+| `ocgs-tool-map` | Injects a system-prompt mapping so skills that say `Task` use `task` and skills that say `question` use `ask` | Not covered by the matrix; see `tests/extensions/test-tool-map.test.mjs` |
 | `ocgs-validate` | Validates `.agents/` content on startup and after writes | Rows 7, 8 |
 
 ## MCP Servers
@@ -84,13 +86,28 @@ Module installs write here when you pass `--harness omp`. For example, `node .op
 | Item | On Pi | On omp | Reason |
 |---|---|---|---|
 | `ocgs-core` barrel | Loaded via explicit `-e`; discovery requires `-a` (see [Pi Notes](#pi-notes)) | Not wired | omp's agents provider reads `.agents/` directly, so the barrel is unnecessary |
-| `ocgs-delegation` (`Task`, `/consult`) | Loaded, but broken | Not wired | See the delegation defect below |
-| `.agents/agents/` roster (52 agents) | Read by `Task`, which is broken | Generated into `.omp/agents/` by the installer | omp reads `.omp/agents/`, not `.agents/agents/` |
+| `ocgs-delegation` (`Task`, `/consult`) | Removed | Not wired | Pi exposes no sub-session API on `ExtensionContext`; the exported SDK path is unverified. omp uses its native `task`; `ocgs-tool-map` maps the names |
+| `.agents/agents/` roster (52 agents) | Loaded inline as prompts; no subagent tool | Generated into `.omp/agents/` by the installer | omp reads `.omp/agents/`, not `.agents/agents/` |
 | `.pi/settings.json` | Read | Not read | Set `skills.enableSkillCommands` in `.omp/config.yml` instead |
 
-### Delegation defect (both harnesses)
+### Delegation
 
-`ocgs-delegation` calls `ctx.sessionManager.inMemory(...)`. In the Pi 0.85.1 types, `ctx.sessionManager` is a read-only `Pick` with no `inMemory`. omp documents `ctx.sessionManager` as read-only and does not document `inMemory`. [INFERENCE] The call is expected to throw before any subagent starts. This comes from reading the types, not from running `Task` or `/consult` on either harness, so it is unverified at runtime. The extension stays out of `.omp/config.yml`. It remains loaded on Pi, where the defect is still open.
+Pi 1.5.0's `ExtensionContext.sessionManager` is a `ReadonlySessionManager`: a
+`Pick` of read-only accessors with no sub-session constructor. `newSession()`
+and `fork()` exist only on `ExtensionCommandContext` and move the host session
+instead of spawning a subagent. The former `ocgs-delegation` extension called
+`sessionManager.inMemory(...)`, which does not exist, so `Task` and `/consult`
+failed before any work started. It has been removed from `.pi/extensions/`.
+
+omp's native `task` tool is the supported delegation path; it reads generated
+definitions from `.omp/agents/`. `ocgs-tool-map` translates canonical `Task`
+and `question` references to `task` and `ask` at run time, so `.agents/` content
+does not need a rewrite.
+
+The package root also exports `createAgentSession()` and
+`SessionManager.inMemory()`. A nested-session implementation through that path
+was not evaluated, so the Pi retirement is a tradeoff rather than proof that
+delegation is impossible.
 
 ### Rules
 
@@ -107,6 +124,7 @@ Decision: keep `.agents/rules/` unchanged and rely on path-guard. [INFERENCE] Th
 5. **Retired test.** `test-path-guard.test.mjs` reimplemented the matcher and never imported the extension. It is replaced by `test-path-guard-contract.test.mjs`, which imports the real module.
 6. **False dependency claim.** `.pi/README.md` said path-guard depends on `minimatch`, declared in a `package.json` that does not exist. path-guard uses its own matcher. The claim was removed.
 7. **Decision log for omp `ask` (ocgs-question).** omp's built-in `ask` never writes `agent-decisions.jsonl`. `ocgs-question` now logs `ask` answers from a `tool_result` hook, using the pure helper `ask-log.ts` (6 unit tests). The `question` tool path is unchanged.
+8. **Pi delegation retired (ocgs-delegation).** Pi's extension context exposes no sub-session constructor, so `Task` and `/consult` could not start. The extension was removed. `ocgs-tool-map` now injects the per-harness mapping on both Pi and omp.
 
 ## Acceptance Matrix
 
@@ -114,7 +132,7 @@ Run on 2026-11-03 and 2026-11-04. The matrix is run headlessly through `omp --mo
 
 | # | Scenario | Pass means | omp 18.16.0 | Pi 0.85.1 |
 |---|---|---|---|---|
-| 1 | Startup load | Gate passes; all six observed extensions bind (hooks verified separately) | PASS. All six act in a default session: validate and drift status (rows 7, 8), path-guard `rules:` status (rows 4, 5), audit lines (row 6), changelog widget (row 9), and the `ocgs-question` decision hook (row 10). The `question` tool itself stays inactive by default | PARTIAL. Trusted discovery (`-a`) binds OCGS; validate and drift status observed, and the changelog widget in row 9. Audit, path-guard, and question not individually observed at startup |
+| 1 | Startup load | Gate passes; the six status-emitting extensions bind (hooks and tool-map verified separately) | PASS. All six act in a default session: validate and drift status (rows 7, 8), path-guard `rules:` status (rows 4, 5), audit lines (row 6), changelog widget (row 9), and the `ocgs-question` decision hook (row 10). The `question` tool itself stays inactive by default | PARTIAL. Trusted discovery (`-a`) binds OCGS; validate and drift status observed, and the changelog widget in row 9. Audit, path-guard, and question not individually observed at startup |
 | 2 | Skill command | `/skill:help` runs | PASS. Output is the OCGS help workflow | BLOCKED: model unavailable (see [Pi Notes](#pi-notes)) |
 | 3 | Slash command | `/help` from `.agents/commands` runs | PASS. Reads `skill://help` | BLOCKED: model unavailable |
 | 4 | Path-guard, read/write | `read` or `write` of `src/ai/x.gd` injects `ai-code` | PASS. `rules: ai-code` on the turn after a read, and again after a write | BLOCKED: needs model tool calls |
@@ -137,11 +155,12 @@ Run on 2026-11-03 and 2026-11-04. The matrix is run headlessly through `omp --mo
 - **Verification profile.** The first omp run used `--profile ocgs-verify`. Its first model call failed with `404 ... Function ... Not found for account` (exit 1). The acceptance runs used the default profile instead, with `--max-cost 0.10` on every model call.
 - **Row 10** runs through omp's built-in `ask`. It is registered only in interactive and `rpc-ui` modes. Plain `--mode rpc` has no `ask` tool, which is why the first omp run in plain `rpc` failed.
 - **Row 1** on omp: all six act. The `question` tool itself stays inactive by default; see Open Issues.
+- **Matrix predates `ocgs-tool-map`.** The extension was added after these runs. Its prompt injection is covered by `tests/extensions/test-tool-map.test.mjs`, not by these rows.
 - **Rows 2–7 and 10 on Pi** were not run (see [Pi Notes](#pi-notes)).
 
 ## Open Issues
 
-- **`question` is not active on omp by default; `ask` is the omp equivalent.** omp registers `question` and leaves it inactive. None of the 599 keys in `omp config list` enables extension tools, and `disabledExtensions` is empty. omp's built-in `ask` is enabled by default (`ask.enabled: true`) and does the same job. One sample: when prompted with the agent wording "Use `question`", the model called `ask` under `rpc-ui` (n=1). About 110 files under `.agents/` say "use `question`". Renaming them changes canonical content and needs sign-off. Decision: keep the wording and rely on the model's mapping, or rename.
+- **`question` is not active on omp by default; `ask` is the omp equivalent.** omp registers `question` and leaves it inactive. None of the 599 keys in `omp config list` enables extension tools, and `disabledExtensions` is empty. omp's built-in `ask` is enabled by default (`ask.enabled: true`) and does the same job. One sample: when prompted with the agent wording "Use `question`", the model called `ask` under `rpc-ui` (n=1). About 110 files under `.agents/` say "use `question`". Renaming them changes canonical content and needs sign-off. Decision: keep the wording; `ocgs-tool-map` injects the `question` → `ask` mapping at run time.
 - **The `question` tool is still TUI-only.** It logs to `agent-decisions.jsonl` only after its picker answers, and its picker has not been run on omp. `ask` answers are logged headlessly by the hook in `ocgs-question`.
 - **Pi aborts startup on a broken extension.** See [Pi Notes](#pi-notes). This contradicts the claim in `.pi/README.md` ("Individual extension failures are caught and logged"). That claim is not true on Pi 0.85.1.
 
