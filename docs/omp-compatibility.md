@@ -57,7 +57,7 @@ skills:
 | `ocgs-hooks` | Runs the 12 CCGS hooks: session context, commit and push guards, asset and skill checks, agent audit, compaction context (omp `session.compacting`), notifications | Load verified headlessly (see Verification). Not in the acceptance matrix |
 | `ocgs-path-guard` | Injects path-scoped rules into the system prompt when a read, write, or edit matches a rule's `paths:` | Rows 4, 5 |
 | `ocgs-question` | Registers the `question` tool (TUI picker, inactive by default on omp). Also logs omp `ask` answers to `agent-decisions.jsonl` through a `tool_result` hook | Row 10 (decision append, `rpc-ui`) |
-| `ocgs-tool-map` | Injects a system-prompt mapping so skills that say `Task` use `task` and skills that say `question` use `ask` | Not covered by the matrix; see `tests/extensions/test-tool-map.test.mjs` |
+| `ocgs-tool-map` | Injects a system-prompt mapping so skills that say `Task` use `task` (with `subagent_type` → `agent`, prompt → `task`, and required `solutionSpace`) and skills that say `question` use `ask` | Not covered by the matrix; see `tests/extensions/test-tool-map.test.mjs` |
 | `ocgs-validate` | Validates `.agents/` content on startup and after writes | Rows 7, 8 |
 
 ## MCP Servers
@@ -101,8 +101,9 @@ failed before any work started. It has been removed from `.pi/extensions/`.
 
 omp's native `task` tool is the supported delegation path; it reads generated
 definitions from `.omp/agents/`. `ocgs-tool-map` translates canonical `Task`
-and `question` references to `task` and `ask` at run time, so `.agents/` content
-does not need a rewrite.
+and `question` references at run time: `subagent_type` becomes `agent`, the
+instructions go in the required `task` and `solutionSpace` fields, and
+`question` becomes `ask`. `.agents/` content does not need a rewrite.
 
 The package root also exports `createAgentSession()` and
 `SessionManager.inMemory()`. A nested-session implementation through that path

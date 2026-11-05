@@ -18,9 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   exported `createAgentSession()` SDK path was not evaluated; retirement is a
   tradeoff, not proof that delegation is impossible.
 - **Harness tool map** — new `ocgs-tool-map` extension injects a short mapping
-  into the system prompt on `before_agent_start`: `Task` → `task` and `question`
-  → `ask` on omp; Pi is told delegation is unavailable. Canonical `.agents/`
-  content keeps its OpenCode tool names. Wired into `.omp/config.yml`.
+  into the system prompt on `before_agent_start`: `Task` → `task` (with
+  `subagent_type` → `agent`, prompt → `task`, and required `solutionSpace`) and
+  `question` → `ask` on omp; Pi is told to use another delegation tool if
+  installed or work directly. Canonical `.agents/` content keeps its OpenCode
+  tool names. Wired into `.omp/config.yml`.
 
 ### Removed
 

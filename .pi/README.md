@@ -11,7 +11,7 @@ Pi discovers `.agents/` content through the `ocgs-core` extension's `resources_d
 | Directory | Registration | Purpose |
 |-----------|-------------|---------|
 | `ocgs-core` | `resources_discover` | Discovers `.agents/` skills and commands; does not load other extensions |
-| `ocgs-tool-map` | `before_agent_start` | Injects a per-harness tool map: `Task` → `task` and `question` → `ask` on omp; Pi has no delegation tool, and the map says so |
+| `ocgs-tool-map` | `before_agent_start` | Injects a per-harness tool map: `Task` → `task` (with `subagent_type` → `agent`, prompt → `task`, and required `solutionSpace`) and `question` → `ask` on omp; on Pi it says no `Task` tool exists and to use another delegation tool if installed |
 | `ocgs-question` | `registerTool` + `tool_result` | `question` tool with TUI for strategic decision capture; logs omp `ask` answers to `agent-decisions.jsonl` |
 | `ocgs-path-guard` | `tool_call` + `before_agent_start` | Dynamic injection of path-scoped rules from `.agents/rules/` (own matcher; no external dependency) |
 | `ocgs-audit` | `session_start` + `tool_call` + `tool_result` + `agent_end` | Session/tool audit logging to `production/session-logs/` |

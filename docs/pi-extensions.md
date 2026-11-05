@@ -32,13 +32,14 @@ rewriting canonical content.
 
 | OCGS name | On Pi | On omp |
 |---|---|---|
-| `Task` / `subagent_type` | No delegation tool. Do the work directly and say delegation is unavailable | `task`, with agent names from `.omp/agents/` |
+| `Task` / `subagent_type` | No `Task` tool. Use another delegation tool if installed; otherwise do the work directly and say delegation is unavailable | `task`, passing the agent name as `agent`. `task` also requires `task` and `solutionSpace`, and has no `prompt` field |
 | `question` | `question` when registered; otherwise ask in plain text | `ask` |
 | `/consult` | No equivalent | No equivalent |
 
-Harness detection matches `ocgs-path-guard`: Pi passes `systemPrompt` as a
-string, omp passes `string[]` and expects `string[]` back. The injected block
-carries an `<!-- ocgs-tool-map:v1 -->` marker so it is not added twice.
+Harness detection uses event markers: Pi 1.5.0 sends `systemPromptOptions`, omp
+sends `reason`. The prompt shape (Pi string, omp `string[]`) is the fallback for
+older Pi versions. The injected block carries an
+`<!-- ocgs-tool-map:v1 -->` marker so it is not added twice.
 
 ### Why Pi delegation was retired
 

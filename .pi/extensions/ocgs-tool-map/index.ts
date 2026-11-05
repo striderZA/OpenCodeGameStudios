@@ -8,8 +8,9 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
  * none at all. Rather than rewriting canonical content, this extension tells
  * the model how to translate the names at run time.
  *
- * Harness detection matches `ocgs-path-guard`: Pi passes `systemPrompt` as a
- * string; omp passes `string[]` and expects `string[]` back.
+ * Detect the harness from event markers first: Pi 1.5.0 sends
+ * `systemPromptOptions`, omp sends `reason`. The prompt shape (Pi string,
+ * omp `string[]`) remains the fallback for older Pi versions.
  */
 
 const MARKER = "<!-- ocgs-tool-map:v1 -->";
@@ -19,39 +20,55 @@ const OMP_MAP = `${MARKER}
 
 OCGS workflows use OpenCode tool names. In oh-my-pi:
 
-- \`Task\` / \`subagent_type\` → call \`task\`. Agent names come from \`.omp/agents/\`.
+- \`Task\` / \`subagent_type\` → call \`task\`. Pass the agent name as \`agent\`; names come from \`.omp/agents/\`.
+- Pass the prompt as \`task\` and describe how open-ended the work is in \`solutionSpace\`; both fields are required. There is no \`prompt\` field.
 - \`question\` → call \`ask\`.
 - \`/consult\` → no equivalent. Skip peer review and say so.
 
-Do not call \`Task\` or \`question\` literally; prefer \`task\` and \`ask\`, which are active here.`;
+Do not call \`Task\` or \`question\` literally; prefer \`task\` and \`ask\`.`;
 
 const PI_MAP = `${MARKER}
 ## OCGS Harness Tool Map
 
 OCGS workflows use OpenCode tool names. In Pi:
 
-- \`Task\` / \`subagent_type\` → no delegation tool is available. Do the work directly and say delegation is unavailable. Never claim to have delegated.
+- \`Task\` / \`subagent_type\` → no \`Task\` tool is available here. If another delegation tool is installed, use it; otherwise do the work directly and say delegation is unavailable. Never claim to have delegated.
 - \`question\` → call \`question\` if it is registered; otherwise ask in plain text and wait.
 - \`/consult\` → no equivalent. Skip peer review and say so.`;
 
 export default function (pi: ExtensionAPI) {
 	pi.on("before_agent_start", async (event) => {
-		// Pi types systemPrompt as string; omp passes string[]. Handle both.
-		const systemPrompt: unknown = event.systemPrompt;
+		const raw = event as unknown as Record<string, unknown>;
+		const systemPrompt = raw.systemPrompt;
 
-		if (Array.isArray(systemPrompt)) {
-			if (systemPrompt.some((part) => String(part).includes(MARKER))) return;
+		// Pi 1.5.0 carries systemPromptOptions; omp carries reason. Fall back to
+		// the prompt shape for older Pi versions and for hand-built events.
+		const isPi =
+			raw.systemPromptOptions !== undefined ||
+			(raw.reason === undefined && typeof systemPrompt === "string");
+
+		if (isPi) {
+			const base = Array.isArray(systemPrompt)
+				? systemPrompt.join("\n\n")
+				: typeof systemPrompt === "string"
+					? systemPrompt
+					: "";
+			if (base.includes(MARKER)) return;
 			return {
-				systemPrompt: [...systemPrompt, OMP_MAP],
+				...event,
+				systemPrompt: base ? `${base}\n\n${PI_MAP}` : PI_MAP,
 			};
 		}
 
-		const base = typeof systemPrompt === "string" ? systemPrompt : "";
-		if (base.includes(MARKER)) return;
+		const parts = Array.isArray(systemPrompt)
+			? systemPrompt
+			: typeof systemPrompt === "string" && systemPrompt
+				? [systemPrompt]
+				: [];
+		if (parts.some((part) => String(part).includes(MARKER))) return;
 
 		return {
-			...event,
-			systemPrompt: base ? `${base}\n\n${PI_MAP}` : PI_MAP,
+			systemPrompt: [...parts, OMP_MAP],
 		};
 	});
 }

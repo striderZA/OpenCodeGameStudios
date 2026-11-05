@@ -45,8 +45,9 @@ Pi exposes no sub-session API on `ExtensionContext`, and the former
 `ocgs-delegation` extension has been removed (see
 `docs/pi-compatibility.md#delegation`). A nested session via the exported
 `createAgentSession()` SDK is plausible but unverified. `ocgs-tool-map` injects
-a note that tells the model to do the work directly and say delegation is
-unavailable instead of claiming a delegation it cannot perform.
+a note that tells the model to use another delegation tool if one is installed,
+otherwise do the work directly and say delegation is unavailable instead of
+claiming a delegation it cannot perform.
 
 For real delegation, run OpenCode, Claude Code, or omp. On Pi, load the
 specialist definition from `.agents/agents/<name>.md` and follow it inline.

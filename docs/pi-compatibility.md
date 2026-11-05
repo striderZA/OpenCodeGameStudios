@@ -32,7 +32,7 @@ Tested baseline: Pi 0.85.1. Autopilot MCP wiring was separately verified on Pi 1
 | Extension | Purpose |
 |---|---|
 | `ocgs-core` | Discovers `.agents/` skills and commands via `resources_discover` |
-| `ocgs-tool-map` | Injects per-harness tool names: `Task` → `task` and `question` → `ask` on omp; states that Pi has no delegation tool |
+| `ocgs-tool-map` | Injects per-harness tool names: `Task` → `task` (with `subagent_type` → `agent`, prompt → `task`, and required `solutionSpace`) and `question` → `ask` on omp; on Pi it says no `Task` tool exists and to use another delegation tool if installed |
 | `ocgs-question` | Strategic decision capture with TUI picker; logs omp `ask` answers |
 | `ocgs-path-guard` | Path-scoped rules injected dynamically into system prompt |
 | `ocgs-audit` | Session and tool audit logging |
@@ -45,7 +45,7 @@ Tested baseline: Pi 0.85.1. Autopilot MCP wiring was separately verified on Pi 1
 
 - **`.agents/`** — canonical source of all agents, skills, commands, rules, and modules. Harness-neutral frontmatter.
 - **`.pi/extensions/`** — Pi-specific extension implementations using `@earendil-works/pi-coding-agent` API.
-- **OCGS tool names** — canonical content uses OpenCode's `Task`, `question`, and `/consult`. `ocgs-tool-map` translates them per harness: omp uses `task` and `ask`; Pi has no delegation tool.
+- **OCGS tool names** — canonical content uses OpenCode's `Task`, `question`, and `/consult`. `ocgs-tool-map` translates them per harness: omp uses `task` and `ask`; Pi has no `Task` tool.
 
 ## Detailed Documentation
 
