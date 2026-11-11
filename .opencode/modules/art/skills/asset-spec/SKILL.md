@@ -6,6 +6,8 @@ user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Task, question
 ---
 
+**Question-tool discipline:** whenever a step says to use `question`, make that tool call in the same turn, then stop. Do not announce it ("I'll call question", "let me ask"), describe its arguments in prose, or write the call as text or pseudo-code. Use one of two shapes, depending on the harness. OpenCode: `{"questions": [{"question": "...", "header": "...", "options": [{"label": "...", "description": "..."}]}]}`, where `header` (max 30 chars) and each option's `description` are required, and `questions` must be non-empty. oh-my-pi: `{"question": "...", "options": [{"label": "...", "description": "..."}]}`, where `header` is optional and `description` may be omitted. Never send a `prompt` field or bare-string options. The "Prompt:" and "Options:" labels in this skill describe what to show the user, not parameter names. Analysis goes in ordinary text before the call; the user's answer is the next input.
+
 If no argument is provided, check whether `design/assets/asset-manifest.md` exists:
 - If it exists: read it, find the first context (system/level/character) with any asset at status "Needed" but no spec file written yet, and use `question`:
   - Prompt: "The next unspecced context is **[target]**. Generate asset specs for it?"
