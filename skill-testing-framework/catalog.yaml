@@ -335,8 +335,8 @@ skills:
     priority: low
     category: utility
 
-  - name: brainstorm
-    spec: CCGS Skill Testing Framework/skills/utility/brainstorm.md
+  - name: concept-brainstorm
+    spec: CCGS Skill Testing Framework/skills/utility/concept-brainstorm.md
     last_static: ""
     last_static_result: ""
     last_spec: ""
