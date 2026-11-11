@@ -6,6 +6,8 @@ user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, webfetch, Task, question
 ---
 
+**Question-tool discipline:** whenever a step says to use `question`, make that tool call in the same turn, then stop. Do not announce it ("I'll call question", "let me ask"), describe its arguments in prose, or write the call as text or pseudo-code. Use one of two shapes, depending on the harness. OpenCode: `{"questions": [{"question": "...", "header": "...", "options": [{"label": "...", "description": "..."}]}]}`, where `header` (max 30 chars) and each option's `description` are required, and `questions` must be non-empty. oh-my-pi: `{"question": "...", "options": [{"label": "...", "description": "..."}]}`, where `header` is optional and `description` may be omitted. Never send a `prompt` field or bare-string options. The "Prompt:" and "Options:" labels in this skill describe what to show the user, not parameter names. Analysis goes in ordinary text before the call; the user's answer is the next input.
+
 When this skill is invoked:
 
 1. **Parse the argument** for an optional genre/theme hint (e.g., `roguelike`,
@@ -31,8 +33,8 @@ When this skill is invoked:
    - Concept selection ("Which 2-3 concepts resonate?") after presenting options
    - Direction choices ("Develop further, explore more, or prototype?")
    - Pillar ranking after concepts are refined
-   Write full creative analysis in conversation text first, then use
-   `question` to capture the decision with concise labels.
+   Write the full creative analysis in conversation text, then make the
+   `question` call with concise labels in that same turn.
 
    Professional studio brainstorming principles to follow:
    - Withhold judgment — no idea is bad during exploration
@@ -108,22 +110,12 @@ For each concept, present:
 
 Present all three. Then use `question` to capture the selection.
 
-**CRITICAL**: This MUST be a plain list call — no tabs, no form fields. Use exactly this structure:
+**CRITICAL**: This MUST be a plain single-question call with no tabs and no form fields. Build the call with the shape from the rule above. Values:
+- question: "Which concept resonates with you? You can pick one, combine elements, or ask for fresh directions."
+- header: "Concept pick"
+- options (label, then description): "Concept 1 — [Title]" / "[One-line unique hook]"; "Concept 2 — [Title]" / "[One-line unique hook]"; "Concept 3 — [Title]" / "[One-line unique hook]"; "Combine elements across concepts" / "Blend the strongest parts of two or more concepts."; "Generate fresh directions" / "Discard these and brainstorm three new concepts."
 
-```
-question(
-  prompt: "Which concept resonates with you? You can pick one, combine elements, or ask for fresh directions.",
-  options: [
-    "Concept 1 — [Title]",
-    "Concept 2 — [Title]",
-    "Concept 3 — [Title]",
-    "Combine elements across concepts",
-    "Generate fresh directions"
-  ]
-)
-```
-
-Do NOT use a `tabs` field here. The `tabs` form is for multi-field input only — using it here causes an "Invalid tool parameters" error. This is a plain `prompt` + `options` call.
+Do NOT use a `tabs` field here. The `tabs` form is for multi-field input only — using it here causes an "Invalid tool parameters" error. This is a plain single-question call.
 
 Never pressure toward a choice — let them sit with it.
 
