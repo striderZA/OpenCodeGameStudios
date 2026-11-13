@@ -51,6 +51,7 @@ Best when: you didn't use git to set up the template (just downloaded a zip).
 
 | Version | Date | Commit | Summary |
 |---------|------|--------|---------|
+| `v0.14.1` | 2026-11-13 | `bb0c728` | Harness-aware setup for five agents, harness tool map, Unity CLI integration, question-tool narration fix |
 | `v0.14.0` | 2026-11-04 | `4196cce` | oh-my-pi support, `ocgs-hooks`, tracked git hooks, Autopilot playtest, Godot 4.7.2 reference, OpenCode V2 config, model assignment removed |
 | `v0.13.1` | 2026-10-06 | `f2ceaaf` | OpenCode V2 plugin migration (`Plugin.define` / `setup(ctx)`) |
 | `v0.13.0` | 2026-08-10 | `c5abd9a` | Bevy engine support |

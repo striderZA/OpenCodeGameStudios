@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [v0.14.1] — 2026-11-13
+
+### Added
+
+- **Harness-aware project setup for five agents** — the module installer takes
+  `--harness opencode|pi|omp|claude|codex`, writes each target's content layout and MCP
+  config, and records install state per harness. `omp` agents are generated into
+  `.omp/agents/`, Claude Code agents gain the required `name:` frontmatter, and Codex
+  agents are emitted as TOML. `/init-template` selects and validates the harness,
+  repairs Windows OpenCode symlinks, and prunes other harnesses only on request (#118)
+- **Unity CLI integration** — `/setup-engine` §7.4 and the five Unity specialist agents
+  now use Unity's official CLI (`unity status`, `unity command`, `unity recompile`,
+  `unity test`), with `unity mcp` as the stdio fallback for harnesses that cannot run
+  shell commands. The community CoplayDev `unity-mcp` package remains documented for
+  Unity 2021.3–5.x only (#116)
+
 ### Changed
 
 - **Pi delegation retired** — `.pi/extensions/ocgs-delegation/` was removed. Pi's
@@ -23,10 +41,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `question` → `ask` on omp; Pi is told to use another delegation tool if
   installed or work directly. Canonical `.agents/` content keeps its OpenCode
   tool names. Wired into `.omp/config.yml`.
+- **Documentation and guide sweep** — 14 commits correcting onboarding and setup
+  truth, Pi and `omp` harness guidance, `WORKFLOW-GUIDE` appendices and hook guidance,
+  the Godot 4.7.2 reference, Unity module links, core document templates, and playtest
+  artifact paths (#117)
 
 ### Removed
 
 - `.pi/extensions/ocgs-delegation/` (`Task` tool and `/consult` command)
+
+### Fixed
+
+- **Question-tool narration loop** — `concept-brainstorm`, `design-system`, `ux-design`,
+  `asset-spec`, `team-qa`, and `start` now spell out both call shapes (OpenCode's
+  `questions` array and `omp`'s flat `question`), require the call in the same turn, and
+  forbid announcing or pseudo-coding it. Applied to `.agents/skills`,
+  `.agents/modules`, and `.opencode/modules` (18 files) (#122, refs #120)
 
 ---
 
